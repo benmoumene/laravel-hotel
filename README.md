@@ -1,11 +1,16 @@
 # laravel-hotel
-App para gestionar reservas hotel desde backend y frontend. Uso de Vue.
-Tambien gestiona el inventario, clientes, facturacion, stock, servicios
+Esta aplicacion es un dashboard (Backend) que permite gestionar Clientes/Inventario/Facturacion/Servicios/Reservas de un hotel.
+
+## Tecnologias
+- Laravel
+- Star Admin Bootstrap para el theme
+- VueJS/Vuex/VueRouter
+- WebSockets (Laravel Echo)
 
 ## Pendiente
 ================
-- Usar Services
-- Usar websocket
-- Vuex/Vue Router
+- Usar ServiceProvider de Laravel
+- Usar websocket (Laravel Echo)
+- Vuex/Vue Router/VueJS
 - Star admin bootstrap?? Vue admin bootstrap
-- Backend/Frontend?
+- Backend?
