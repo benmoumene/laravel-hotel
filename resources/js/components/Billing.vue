@@ -1,11 +1,11 @@
 <template>
-  <b-container id="app-wrap" class="app">
-    <b-row class="app-one">Billing component</b-row>
-  </b-container>
+  <b-row>
+    <b-col cols="12">BILLING COMPONENT</b-col>
+  </b-row>
 </template>
 <script>
 export default {
-  name: "Hello",
+  name: "Billing",
   methods: {},
   computed: {},
   components: {},

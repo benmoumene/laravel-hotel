@@ -1,11 +1,11 @@
 <template>
   <b-container id="app-wrap" class="app">
-    <b-row class="app-one">Inventory</b-row>
+    <b-row class="app-one">Inventory component</b-row>
   </b-container>
 </template>
 <script>
 export default {
-  name: "Hello",
+  name: "Inventory",
   methods: {},
   computed: {},
   components: {},

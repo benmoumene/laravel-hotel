@@ -1,11 +1,11 @@
 <template>
   <b-row>
-    <b-col cols="12">CLIENTS COMPONENT</b-col>
+    <b-col cols="12">ABOUT COMPONENT</b-col>
   </b-row>
 </template>
 <script>
 export default {
-  name: "Clients",
+  name: "About",
   methods: {},
   computed: {},
   components: {},
