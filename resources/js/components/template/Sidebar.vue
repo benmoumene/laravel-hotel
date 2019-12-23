@@ -13,7 +13,7 @@
           <img src="dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image" />
         </div>
         <div class="info">
-          <a href="#" class="d-block">username</a>
+          <a href="#" class="d-block">{{ appUser.name }}</a>
         </div>
       </div>
 
@@ -31,19 +31,28 @@
               Dashboard
             </router-link>
           </li>
-          <li class="nav-item">
-            <router-link to="/clients" class="nav-link">
+          <li class="nav-item has-treeview">
+            <a href="#" class="nav-link">
               <i class="nav-icon fa fa-users"></i>
-              Clients
-            </router-link>
-          </li>
-
-          <li class="nav-item">
-            <router-link to="/billing" class="nav-link">
-              <i class="nav-icon fa fa-file-invoice-dollar"></i>
-              Billing
-              <span class="right badge badge-danger">New</span>
-            </router-link>
+              <p>
+                Manage Clients
+                <i class="fa fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <router-link to="/clients" class="nav-link">
+                  <i class="nav-icon fa fa-user-plus"></i>
+                  Add Client
+                </router-link>
+              </li>
+              <li class="nav-item">
+                <router-link to="/rooms" class="nav-link">
+                  <i class="nav-icon fa fa-edit"></i>
+                  Edit Client
+                </router-link>
+              </li>
+            </ul>
           </li>
 
           <li class="nav-item has-treeview">
@@ -82,7 +91,13 @@
               </li>
             </ul>
           </li>
-
+          <li class="nav-item">
+            <router-link to="/billing" class="nav-link">
+              <i class="nav-icon fa fa-file-invoice-dollar"></i>
+              Billing
+              <span class="right badge badge-danger">New</span>
+            </router-link>
+          </li>
           <li class="nav-item">
             <router-link to="/inventory" class="nav-link">
               <i class="nav-icon fa fa-shopping-cart"></i>
@@ -135,13 +150,19 @@
   </div>
 </template>
 <script>
+import { mapGetters, mapState, mapActions } from "vuex";
 export default {
   name: "Sidebar",
   methods: {},
-  computed: {},
+  computed: {
+    ...mapState(["appUser"])
+  },
   components: {},
   mounted() {}
 };
 </script>
 <style scoped>
+.nav-treeview li {
+  padding-left: 20px;
+}
 </style>

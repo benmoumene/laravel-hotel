@@ -53,7 +53,12 @@ import Sidebar from "./template/Sidebar";
 import Footer from "./template/Footer";
 export default {
   name: "HotelApp",
-  methods: {},
+  methods: {
+    init() {
+      // Peticion al servidor de los datos necesarios para inicializar la app
+      this.$store.dispatch("fetchData");
+    }
+  },
   computed: {
     getRouterName: function() {
       return this.$route.name;
@@ -64,7 +69,9 @@ export default {
     myfooter: Footer,
     navbar: Navbar
   },
-  mounted() {}
+  mounted() {
+    this.init();
+  }
 };
 </script>
 <style scoped>
