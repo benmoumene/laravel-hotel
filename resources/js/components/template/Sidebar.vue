@@ -157,10 +157,10 @@
           </li>
 
           <li class="nav-item">
-            <router-link to="/logout" class="nav-link">
+            <a href="#" @click.prevent="logout()" class="nav-link">
               <i class="nav-icon fa fa-sign-out-alt"></i>
               Logout
-            </router-link>
+            </a>
           </li>
         </ul>
       </nav>
@@ -173,7 +173,11 @@
 import { mapGetters, mapState, mapActions } from "vuex";
 export default {
   name: "Sidebar",
-  methods: {},
+  methods: {
+    logout() {
+      return this.$store.dispatch("logout");
+    }
+  },
   computed: {
     ...mapState(["appUser"])
   },

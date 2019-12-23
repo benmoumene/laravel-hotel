@@ -2514,7 +2514,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Sidebar",
-  methods: {},
+  methods: {
+    logout: function logout() {
+      return this.$store.dispatch("logout");
+    }
+  },
   computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])(["appUser"])),
   components: {},
   mounted: function mounted() {}
@@ -68883,21 +68887,25 @@ var render = function() {
               1
             ),
             _vm._v(" "),
-            _c(
-              "li",
-              { staticClass: "nav-item" },
-              [
-                _c(
-                  "router-link",
-                  { staticClass: "nav-link", attrs: { to: "/logout" } },
-                  [
-                    _c("i", { staticClass: "nav-icon fa fa-sign-out-alt" }),
-                    _vm._v("\n            Logout\n          ")
-                  ]
-                )
-              ],
-              1
-            )
+            _c("li", { staticClass: "nav-item" }, [
+              _c(
+                "a",
+                {
+                  staticClass: "nav-link",
+                  attrs: { href: "#" },
+                  on: {
+                    click: function($event) {
+                      $event.preventDefault()
+                      return _vm.logout()
+                    }
+                  }
+                },
+                [
+                  _c("i", { staticClass: "nav-icon fa fa-sign-out-alt" }),
+                  _vm._v("\n            Logout\n          ")
+                ]
+              )
+            ])
           ]
         )
       ])
@@ -86248,6 +86256,12 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
           context.commit('SET_USER', data['app_user']);
         }
       });
+    },
+    logout: function logout(context) {
+      axios.post("http://127.0.0.1:8000/logout")["catch"](function (error) {
+        window.location.href = '/login';
+      });
+      ;
     }
   }
 }));

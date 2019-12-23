@@ -46,6 +46,11 @@ export default new Vuex.Store({
                 }
             });
         },
+        logout(context) {
+            axios.post("http://127.0.0.1:8000/logout").catch(error => {
+                window.location.href = '/login';
+            });;
+        }
 
     }
 })
