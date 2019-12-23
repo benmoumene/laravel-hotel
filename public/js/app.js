@@ -2491,6 +2491,26 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Sidebar",
@@ -68621,6 +68641,22 @@ var render = function() {
                       "router-link",
                       { staticClass: "nav-link", attrs: { to: "/clients" } },
                       [
+                        _c("i", { staticClass: "nav-icon fa fa-users" }),
+                        _vm._v("\n                Guests\n              ")
+                      ]
+                    )
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "li",
+                  { staticClass: "nav-item" },
+                  [
+                    _c(
+                      "router-link",
+                      { staticClass: "nav-link", attrs: { to: "/clients" } },
+                      [
                         _c("i", { staticClass: "nav-icon fa fa-user-plus" }),
                         _vm._v("\n                Add Client\n              ")
                       ]
@@ -68695,9 +68731,31 @@ var render = function() {
                       },
                       [
                         _c("i", { staticClass: "nav-icon fa fa-bed" }),
-                        _vm._v(
-                          "\n                Pending Rooms\n              "
-                        )
+                        _vm._v("\n                Reservations\n              ")
+                      ]
+                    )
+                  ],
+                  1
+                )
+              ])
+            ]),
+            _vm._v(" "),
+            _c("li", { staticClass: "nav-item has-treeview" }, [
+              _vm._m(4),
+              _vm._v(" "),
+              _c("ul", { staticClass: "nav nav-treeview" }, [
+                _c(
+                  "li",
+                  { staticClass: "nav-item" },
+                  [
+                    _c(
+                      "router-link",
+                      { staticClass: "nav-link", attrs: { to: "/services" } },
+                      [
+                        _c("i", {
+                          staticClass: "nav-icon fa fa-hand-holding-usd"
+                        }),
+                        _vm._v("\n                Add Service\n              ")
                       ]
                     )
                   ],
@@ -68710,15 +68768,12 @@ var render = function() {
                   [
                     _c(
                       "router-link",
-                      {
-                        staticClass: "nav-link",
-                        attrs: { to: "/reservations" }
-                      },
+                      { staticClass: "nav-link", attrs: { to: "/services" } },
                       [
-                        _c("i", { staticClass: "nav-icon fa fa-bed" }),
-                        _vm._v(
-                          "\n                Room Reservations\n              "
-                        )
+                        _c("i", {
+                          staticClass: "nav-icon fa fa-hand-holding-usd"
+                        }),
+                        _vm._v("\n                Edit Service\n              ")
                       ]
                     )
                   ],
@@ -68774,22 +68829,6 @@ var render = function() {
                   [
                     _c("i", { staticClass: "nav-icon fa fa-wallet" }),
                     _vm._v("\n            Payments\n          ")
-                  ]
-                )
-              ],
-              1
-            ),
-            _vm._v(" "),
-            _c(
-              "li",
-              { staticClass: "nav-item" },
-              [
-                _c(
-                  "router-link",
-                  { staticClass: "nav-link", attrs: { to: "/services" } },
-                  [
-                    _c("i", { staticClass: "nav-icon fa fa-hand-holding-usd" }),
-                    _vm._v("\n            Services\n          ")
                   ]
                 )
               ],
@@ -68912,6 +68951,19 @@ var staticRenderFns = [
         _c("i", { staticClass: "fa fa-angle-left right" }),
         _vm._v(" "),
         _c("span", { staticClass: "badge badge-info right" }, [_vm._v("6")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("a", { staticClass: "nav-link", attrs: { href: "#" } }, [
+      _c("i", { staticClass: "nav-icon fa fa-hand-holding-usd" }),
+      _vm._v(" "),
+      _c("p", [
+        _vm._v("\n              Manage Services\n              "),
+        _c("i", { staticClass: "fa fa-angle-left right" })
       ])
     ])
   }

@@ -42,6 +42,13 @@
             <ul class="nav nav-treeview">
               <li class="nav-item">
                 <router-link to="/clients" class="nav-link">
+                  <i class="nav-icon fa fa-users"></i>
+                  Guests
+                </router-link>
+              </li>
+
+              <li class="nav-item">
+                <router-link to="/clients" class="nav-link">
                   <i class="nav-icon fa fa-user-plus"></i>
                   Add Client
                 </router-link>
@@ -80,13 +87,32 @@
               <li class="nav-item">
                 <router-link to="/reservations" class="nav-link">
                   <i class="nav-icon fa fa-bed"></i>
-                  Pending Rooms
+                  Reservations
                 </router-link>
               </li>
+            </ul>
+          </li>
+
+          <li class="nav-item has-treeview">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fa fa-hand-holding-usd"></i>
+              <p>
+                Manage Services
+                <i class="fa fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
               <li class="nav-item">
-                <router-link to="/reservations" class="nav-link">
-                  <i class="nav-icon fa fa-bed"></i>
-                  Room Reservations
+                <router-link to="/services" class="nav-link">
+                  <i class="nav-icon fa fa-hand-holding-usd"></i>
+                  Add Service
+                </router-link>
+              </li>
+
+              <li class="nav-item">
+                <router-link to="/services" class="nav-link">
+                  <i class="nav-icon fa fa-hand-holding-usd"></i>
+                  Edit Service
                 </router-link>
               </li>
             </ul>
@@ -108,12 +134,6 @@
             <router-link to="/payments" class="nav-link">
               <i class="nav-icon fa fa-wallet"></i>
               Payments
-            </router-link>
-          </li>
-          <li class="nav-item">
-            <router-link to="/services" class="nav-link">
-              <i class="nav-icon fa fa-hand-holding-usd"></i>
-              Services
             </router-link>
           </li>
 
