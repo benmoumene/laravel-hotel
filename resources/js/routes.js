@@ -5,7 +5,8 @@ Vue.use(VueRouter)
 import Dashboard from './components/template/Dashboard.vue'
 import Billing from './components/Billing.vue'
 import Services from './components/Services.vue'
-import Clients from './components/Clients.vue'
+import GuestAdd from './components/guests/GuestAdd.vue'
+import GuestEdit from './components/guests/GuestEdit.vue'
 import Profile from './components/Profile.vue'
 import About from './components/About.vue'
 import Inventory from './components/Inventory.vue'
@@ -21,9 +22,16 @@ export default new VueRouter({
       component: Dashboard
     },
     {
-      path: '/clients',
-      name: 'Clients',
-      component: Clients
+      path: '/guest-add',
+      title: 'Add a new guest',
+      name: 'GuestAdd',
+      component: GuestAdd
+    },
+    {
+      path: '/guest-edit',
+      title: 'Add a new guest',
+      name: 'Guest Edit',
+      component: GuestEdit
     },
     {
       path: '/billing',

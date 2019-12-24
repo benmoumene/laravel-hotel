@@ -5,26 +5,35 @@ Vue.use(Vuex)
 export default new Vuex.Store({
     state: {
         // Datos de usuario y perfil
-        appUser: { name: 'non-set' },
-        clients: [],
+        appUser: { name: '' },
+        guests: [],
         rooms: [],
         services: [],
 
     },
     getters: {
-        getClient: (state, getters) => (clientId) => {
+        getGuest: (state, getters) => (clientId) => {
 
         },
-
     },
     mutations: {
         // Asigna el usuario de la app
         SET_USER(state, user) {
             state.appUser = user;
         },
+        // 
+        SET_GUESTS(state, guests) {
+            state.guests = guests;
+        },
+        SET_SERVICES(state, services) {
+            state.services = services;
+        },
+        SET_ROOMS(state, rooms) {
+            state.rooms = rooms;
+        },
         // Agrega un usuario a people
-        ADD_CLIENT(state, client) {
-            state.clients.push(client);
+        ADD_GUEST(state, guest) {
+            state.guests.push(guest);
         },
     },
     actions: {
@@ -41,16 +50,49 @@ export default new Vuex.Store({
                 // Si el request tuvo exito (codigo 200)
                 if (response.status == 200) {
                     var data = response["data"];
+
                     // Userdata
                     context.commit('SET_USER', data['app_user']);
+                    // Guests
+                    context.commit('SET_GUESTS', data['guests']);
                 }
             });
         },
         logout(context) {
             axios.post("http://127.0.0.1:8000/logout").catch(error => {
                 window.location.href = '/login';
-            });;
-        }
+            });
+        },
+        addGuest(context, guest) {
+            axios.post("http://127.0.0.1:8000/guest/", {
+                guest
+            }).then(function (response) {
+                // Si el request tuvo exito (codigo 200)
+                if (response.status == 200) {
+                    // Agregamos una nueva conversacion si existe el objeto
+                    if (response['data'].length == 0) {
+                        return;
+                    }
+
+                    var newGuest = response['data']['guest'];
+                    context.commit('ADD_GUEST', newGuest);
+                }
+            });
+        },
+        editGuest(context, guest) {
+            axios.post("http://127.0.0.1:8000/guest/", {
+                guest
+            }).then(function (response) {
+                // Si el request tuvo exito (codigo 200)
+                if (response.status == 200) {
+                    // Agregamos una nueva conversacion si existe el objeto
+                    if (response['data'].length == 0) {
+                        return;
+                    }
+                    // console.log('success');
+                }
+            });
+        },
 
     }
 })

@@ -15,3 +15,8 @@ Auth::routes();
 
 Route::get('/', 'HomeController@index');
 Route::get('/hotel/fetch', 'HotelController@index');
+
+// Nuevo guest
+Route::post('/guest', 'GuestController@store');
+// Actualizar datos guest
+Route::put('/guest/{guest_id}', 'GuestController@update');

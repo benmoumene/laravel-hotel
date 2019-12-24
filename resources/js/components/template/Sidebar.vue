@@ -8,12 +8,9 @@
     <!-- Sidebar -->
     <div class="sidebar">
       <!-- Sidebar user panel (optional) -->
-      <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-        <div class="image">
-          <img src="dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image" />
-        </div>
+      <div class="user-panel mt-3 mb-3 d-flex">
         <div class="info">
-          <a href="#" class="d-block">{{ appUser.name }}</a>
+          <router-link to="/profile" class="nav-link">Welcome, {{ appUser.name }}</router-link>
         </div>
       </div>
 
@@ -35,28 +32,21 @@
             <a href="#" class="nav-link">
               <i class="nav-icon fa fa-users"></i>
               <p>
-                Manage Clients
+                Guests
                 <i class="fa fa-angle-left right"></i>
               </p>
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <router-link to="/clients" class="nav-link">
-                  <i class="nav-icon fa fa-users"></i>
-                  Guests
-                </router-link>
-              </li>
-
-              <li class="nav-item">
-                <router-link to="/clients" class="nav-link">
+                <router-link to="/guest-add" class="nav-link">
                   <i class="nav-icon fa fa-user-plus"></i>
-                  Add Client
+                  New Guest
                 </router-link>
               </li>
               <li class="nav-item">
-                <router-link to="/rooms" class="nav-link">
+                <router-link to="/guest-edit" class="nav-link">
                   <i class="nav-icon fa fa-edit"></i>
-                  Edit Client
+                  Manage Guests
                 </router-link>
               </li>
             </ul>
@@ -117,24 +107,56 @@
               </li>
             </ul>
           </li>
-          <li class="nav-item">
-            <router-link to="/billing" class="nav-link">
-              <i class="nav-icon fa fa-file-invoice-dollar"></i>
-              Billing
-              <span class="right badge badge-danger">New</span>
-            </router-link>
-          </li>
-          <li class="nav-item">
-            <router-link to="/inventory" class="nav-link">
+
+          <li class="nav-item has-treeview">
+            <a href="#" class="nav-link">
               <i class="nav-icon fa fa-shopping-cart"></i>
-              Inventory
-            </router-link>
+              <p>
+                Inventory
+                <i class="fa fa-angle-left right"></i>
+                <span class="badge badge-danger right">Low Stock!</span>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <router-link to="/inventory" class="nav-link">
+                  <i class="nav-icon fa fa-shopping-cart"></i>
+                  Stock
+                </router-link>
+              </li>
+              <li class="nav-item">
+                <router-link to="/inventory" class="nav-link">
+                  <i class="nav-icon fa fa-shopping-cart"></i>
+                  Inventory
+                </router-link>
+              </li>
+            </ul>
           </li>
-          <li class="nav-item">
-            <router-link to="/payments" class="nav-link">
+
+          <li class="nav-item has-treeview">
+            <a href="#" class="nav-link">
               <i class="nav-icon fa fa-wallet"></i>
-              Payments
-            </router-link>
+              <p>
+                Manage Payments
+                <i class="fa fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <router-link to="/billing" class="nav-link">
+                  <i class="nav-icon fa fa-file-invoice-dollar"></i>
+                  Billing
+                  <span class="right badge badge-danger">New</span>
+                </router-link>
+              </li>
+              <li class="nav-item">
+                <router-link to="/billing" class="nav-link">
+                  <i class="nav-icon fa fa-file-invoice-dollar"></i>
+                  Pending Invoices
+                  <span class="right badge badge-danger">6</span>
+                </router-link>
+              </li>
+            </ul>
           </li>
 
           <li class="nav-item">
