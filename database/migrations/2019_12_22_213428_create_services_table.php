@@ -4,6 +4,8 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
+// En esta tabla se agregan los servicios ofrecidos por el hotel junto
+// y sus precios
 class CreateServicesTable extends Migration
 {
     /**
@@ -15,7 +17,9 @@ class CreateServicesTable extends Migration
     {
         Schema::create('services', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->timestamps();
+            $table->string('name'); // nombre del servicio
+            $table->decimal('cost'); // coste del servicio
+            $table->string('comments'); // comentarios acerca del servicio
         });
     }
 
