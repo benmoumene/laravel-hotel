@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Auth;
+use App\Guest;
 
 class HotelController extends Controller
 {
@@ -23,7 +24,7 @@ class HotelController extends Controller
         // ID del usuario logeado en la app
         $currentUserId = Auth::user()->id;
         $data['app_user'] = array('name' => 'damianS7');
-        $data['clients'] = [];
+        $data['guests'] = Guest::all();
         $data['rooms'] = [];
         return response()->json($data, 200);
     }
