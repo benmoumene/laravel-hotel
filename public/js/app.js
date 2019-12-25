@@ -2619,15 +2619,19 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "RoomAdd",
   data: function data() {
     return {
       room: {
         name: "",
-        type: "common",
-        capacity: 1,
-        status: "not_avaliable"
+        type: "single",
+        location: "1F"
       }
     };
   },
@@ -3371,7 +3375,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       return this.$store.dispatch("logout");
     }
   },
-  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])(["appUser"])),
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])(["isAdmin", "isRecepcionist", "isManager"]), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])(["appUser"])),
   components: {},
   mounted: function mounted() {}
 });
@@ -69857,7 +69861,11 @@ var render = function() {
                 staticClass: "col-3",
                 attrs: {
                   value: null,
-                  options: { common: "Common", suite: "Suite" }
+                  options: {
+                    single: "Single",
+                    double: "Double",
+                    suite: "Suite"
+                  }
                 },
                 model: {
                   value: _vm.room.type,
@@ -69881,17 +69889,20 @@ var render = function() {
             "b-form",
             { attrs: { inline: "" } },
             [
-              _c("label", { staticClass: "col-3" }, [_vm._v("Capacity")]),
+              _c("label", { staticClass: "col-3" }, [_vm._v("Location")]),
               _vm._v(" "),
               _c("b-form-select", {
                 staticClass: "col-3",
-                attrs: { value: null, options: [1, 2, 3, 4] },
+                attrs: {
+                  value: null,
+                  options: { "1F": "1 Floor", "2F": "2 Floor", "3F": "3 Floor" }
+                },
                 model: {
-                  value: _vm.room.capacity,
+                  value: _vm.room.location,
                   callback: function($$v) {
-                    _vm.$set(_vm.room, "capacity", $$v)
+                    _vm.$set(_vm.room, "location", $$v)
                   },
-                  expression: "room.capacity"
+                  expression: "room.location"
                 }
               })
             ],
@@ -70804,12 +70815,12 @@ var render = function() {
               ])
             ]),
             _vm._v(" "),
-            _c("li", { staticClass: "nav-item has-treeview" }, [
-              _vm._m(2),
-              _vm._v(" "),
-              _c("ul", { staticClass: "nav nav-treeview" }, [
-                _vm.appUser.role === "admin" || _vm.appUser.role === "manager"
-                  ? _c(
+            _vm.isAdmin || _vm.isManager
+              ? _c("li", { staticClass: "nav-item has-treeview" }, [
+                  _vm._m(2),
+                  _vm._v(" "),
+                  _c("ul", { staticClass: "nav nav-treeview" }, [
+                    _c(
                       "li",
                       { staticClass: "nav-item" },
                       [
@@ -70828,26 +70839,29 @@ var render = function() {
                         )
                       ],
                       1
-                    )
-                  : _vm._e(),
-                _vm._v(" "),
-                _c(
-                  "li",
-                  { staticClass: "nav-item" },
-                  [
+                    ),
+                    _vm._v(" "),
                     _c(
-                      "router-link",
-                      { staticClass: "nav-link", attrs: { to: "/rooms/add" } },
+                      "li",
+                      { staticClass: "nav-item" },
                       [
-                        _c("i", { staticClass: "nav-icon fa fa-bed" }),
-                        _vm._v("\n                Add Room\n              ")
-                      ]
+                        _c(
+                          "router-link",
+                          {
+                            staticClass: "nav-link",
+                            attrs: { to: "/rooms/add" }
+                          },
+                          [
+                            _c("i", { staticClass: "nav-icon fa fa-bed" }),
+                            _vm._v("\n                Add Room\n              ")
+                          ]
+                        )
+                      ],
+                      1
                     )
-                  ],
-                  1
-                )
-              ])
-            ]),
+                  ])
+                ])
+              : _vm._e(),
             _vm._v(" "),
             _c("li", { staticClass: "nav-item has-treeview" }, [
               _vm._m(3),
@@ -70933,107 +70947,119 @@ var render = function() {
               ])
             ]),
             _vm._v(" "),
-            _c("li", { staticClass: "nav-item has-treeview" }, [
-              _vm._m(5),
-              _vm._v(" "),
-              _c("ul", { staticClass: "nav nav-treeview" }, [
-                _c(
-                  "li",
-                  { staticClass: "nav-item" },
-                  [
+            _vm.isManager || _vm.isAdmin
+              ? _c("li", { staticClass: "nav-item has-treeview" }, [
+                  _vm._m(5),
+                  _vm._v(" "),
+                  _c("ul", { staticClass: "nav nav-treeview" }, [
                     _c(
-                      "router-link",
-                      { staticClass: "nav-link", attrs: { to: "/billing" } },
+                      "li",
+                      { staticClass: "nav-item" },
                       [
-                        _c("i", {
-                          staticClass: "nav-icon fa fa-file-invoice-dollar"
-                        }),
-                        _vm._v("\n                Billing\n                "),
                         _c(
-                          "span",
-                          { staticClass: "right badge badge-danger" },
-                          [_vm._v("New")]
+                          "router-link",
+                          {
+                            staticClass: "nav-link",
+                            attrs: { to: "/billing" }
+                          },
+                          [
+                            _c("i", {
+                              staticClass: "nav-icon fa fa-file-invoice-dollar"
+                            }),
+                            _vm._v(
+                              "\n                Billing\n                "
+                            ),
+                            _c(
+                              "span",
+                              { staticClass: "right badge badge-danger" },
+                              [_vm._v("New")]
+                            )
+                          ]
                         )
-                      ]
-                    )
-                  ],
-                  1
-                ),
-                _vm._v(" "),
-                _c(
-                  "li",
-                  { staticClass: "nav-item" },
-                  [
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
                     _c(
-                      "router-link",
-                      { staticClass: "nav-link", attrs: { to: "/billing" } },
+                      "li",
+                      { staticClass: "nav-item" },
                       [
-                        _c("i", {
-                          staticClass: "nav-icon fa fa-file-invoice-dollar"
-                        }),
-                        _vm._v(
-                          "\n                Pending Invoices\n                "
-                        ),
                         _c(
-                          "span",
-                          { staticClass: "right badge badge-danger" },
-                          [_vm._v("6")]
+                          "router-link",
+                          {
+                            staticClass: "nav-link",
+                            attrs: { to: "/billing" }
+                          },
+                          [
+                            _c("i", {
+                              staticClass: "nav-icon fa fa-file-invoice-dollar"
+                            }),
+                            _vm._v(
+                              "\n                Pending Invoices\n                "
+                            ),
+                            _c(
+                              "span",
+                              { staticClass: "right badge badge-danger" },
+                              [_vm._v("6")]
+                            )
+                          ]
                         )
-                      ]
+                      ],
+                      1
                     )
-                  ],
-                  1
-                )
-              ])
-            ]),
+                  ])
+                ])
+              : _vm._e(),
             _vm._v(" "),
-            _c("li", { staticClass: "nav-item has-treeview" }, [
-              _vm._m(6),
-              _vm._v(" "),
-              _c("ul", { staticClass: "nav nav-treeview" }, [
-                _c(
-                  "li",
-                  { staticClass: "nav-item" },
-                  [
+            _vm.isRecepcionist || _vm.isAdmin
+              ? _c("li", { staticClass: "nav-item has-treeview" }, [
+                  _vm._m(6),
+                  _vm._v(" "),
+                  _c("ul", { staticClass: "nav nav-treeview" }, [
                     _c(
-                      "router-link",
-                      {
-                        staticClass: "nav-link",
-                        attrs: { to: "/reservations" }
-                      },
+                      "li",
+                      { staticClass: "nav-item" },
                       [
-                        _c("i", { staticClass: "nav-icon fa fa-bed" }),
-                        _vm._v(
-                          "\n                New Reservation\n              "
+                        _c(
+                          "router-link",
+                          {
+                            staticClass: "nav-link",
+                            attrs: { to: "/reservations" }
+                          },
+                          [
+                            _c("i", { staticClass: "nav-icon fa fa-bed" }),
+                            _vm._v(
+                              "\n                New Reservation\n              "
+                            )
+                          ]
                         )
-                      ]
-                    )
-                  ],
-                  1
-                ),
-                _vm._v(" "),
-                _c(
-                  "li",
-                  { staticClass: "nav-item" },
-                  [
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
                     _c(
-                      "router-link",
-                      {
-                        staticClass: "nav-link",
-                        attrs: { to: "/reservations" }
-                      },
+                      "li",
+                      { staticClass: "nav-item" },
                       [
-                        _c("i", { staticClass: "nav-icon fa fa-bed" }),
-                        _vm._v(
-                          "\n                Manage Reservations\n              "
+                        _c(
+                          "router-link",
+                          {
+                            staticClass: "nav-link",
+                            attrs: { to: "/reservations" }
+                          },
+                          [
+                            _c("i", { staticClass: "nav-icon fa fa-bed" }),
+                            _vm._v(
+                              "\n                Manage Reservations\n              "
+                            )
+                          ]
                         )
-                      ]
+                      ],
+                      1
                     )
-                  ],
-                  1
-                )
-              ])
-            ]),
+                  ])
+                ])
+              : _vm._e(),
             _vm._v(" "),
             _c(
               "li",
@@ -89035,6 +89061,9 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
     // Agrega un usuario a people
     ADD_GUEST: function ADD_GUEST(state, guest) {
       state.guests.push(guest);
+    },
+    ADD_ROOM: function ADD_ROOM(state, room) {
+      state.rooms.push(room);
     }
   },
   actions: {
@@ -89090,6 +89119,22 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
             return;
           } // console.log('success');
 
+        }
+      });
+    },
+    addRoom: function addRoom(context, room) {
+      axios.post("http://127.0.0.1:8000/room/", {
+        room: room
+      }).then(function (response) {
+        // Si el request tuvo exito (codigo 200)
+        if (response.status == 200) {
+          // Agregamos una nueva conversacion si existe el objeto
+          if (response['data'].length == 0) {
+            return;
+          }
+
+          var newRoom = response['data']['room'];
+          context.commit('ADD_ROOM', newRoom);
         }
       });
     }

@@ -56,6 +56,9 @@ export default new Vuex.Store({
         ADD_GUEST(state, guest) {
             state.guests.push(guest);
         },
+        ADD_ROOM(state, room) {
+            state.rooms.push(room);
+        },
     },
     actions: {
         // Selecciona el usuario con el id indicado
@@ -113,6 +116,23 @@ export default new Vuex.Store({
                         return;
                     }
                     // console.log('success');
+                }
+            });
+        },
+
+        addRoom(context, room) {
+            axios.post("http://127.0.0.1:8000/room/", {
+                room
+            }).then(function (response) {
+                // Si el request tuvo exito (codigo 200)
+                if (response.status == 200) {
+                    // Agregamos una nueva conversacion si existe el objeto
+                    if (response['data'].length == 0) {
+                        return;
+                    }
+
+                    var newRoom = response['data']['room'];
+                    context.commit('ADD_ROOM', newRoom);
                 }
             });
         },

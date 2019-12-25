@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Auth;
+use App\Room;
 
 class RoomController extends Controller
 {
@@ -40,7 +42,13 @@ class RoomController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $currentUserId = Auth::user()->id;
+        $room = new Room;
+        $room->name = $request['room']['name'];
+        $room->type = $request['room']['type'];
+        $room->location = $request['room']['location'];
+        $room->save();
+        return response()->json(['room' => $room], 200);
     }
 
     /**

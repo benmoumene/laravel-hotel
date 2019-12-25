@@ -13,7 +13,7 @@
         <b-form-select
           class="col-3"
           :value="null"
-          :options="{'common':'Common', 'suite':'Suite'}"
+          :options="{ 'single': 'Single', 'double': 'Double', 'suite': 'Suite'}"
           v-model="room.type"
         ></b-form-select>
       </b-form>
@@ -21,8 +21,13 @@
 
     <b-form-group>
       <b-form inline>
-        <label class="col-3">Capacity</label>
-        <b-form-select class="col-3" :value="null" :options="[1,2,3,4]" v-model="room.capacity"></b-form-select>
+        <label class="col-3">Location</label>
+        <b-form-select
+          class="col-3"
+          :value="null"
+          :options="{'1F':'1 Floor', '2F': '2 Floor' , '3F': '3 Floor'}"
+          v-model="room.location"
+        ></b-form-select>
       </b-form>
     </b-form-group>
 
@@ -41,9 +46,8 @@ export default {
     return {
       room: {
         name: "",
-        type: "common",
-        capacity: 1,
-        status: "not_avaliable"
+        type: "single",
+        location: "1F"
       }
     };
   },

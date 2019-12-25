@@ -20,3 +20,7 @@ Route::get('/hotel/fetch', 'HotelController@index');
 Route::post('/guest', 'GuestController@store');
 // Actualizar datos guest
 Route::put('/guest/{guest_id}', 'GuestController@update');
+// Nuevo Habitacion
+Route::post('/room', 'RoomController@store');
+// Actualizar Habitacion
+Route::put('/room/{room_id}', 'RoomController@update');
