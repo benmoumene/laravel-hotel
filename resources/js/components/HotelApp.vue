@@ -60,6 +60,9 @@ export default {
     }
   },
   computed: {
+    getRouterTitle: function() {
+      return this.$route.title;
+    },
     getRouterName: function() {
       return this.$route.name;
     }

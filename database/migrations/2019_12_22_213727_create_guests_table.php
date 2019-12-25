@@ -16,15 +16,9 @@ class CreateGuestsTable extends Migration
     {
         Schema::create('guests', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('first_name');
-            $table->string('last_name');
-            $table->string('address');
-            $table->enum('document_id_type', ['national_id', 'passport']);
-            $table->string('document_id');
-            $table->string('phone');
-            $table->string('sex');
-            $table->string('nationality');
-            $table->timestamps();
+            //reservation_id
+            //check_in
+            //check_out
         });
     }
 

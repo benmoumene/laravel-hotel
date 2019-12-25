@@ -74,6 +74,9 @@
       </div>
     </div>
     <!-- ./col -->
+    TOTAL ROOMS:
+    FREE ROOMS:
+    OCUPPIED ROOMS:
   </div>
 </template>
 <script>
