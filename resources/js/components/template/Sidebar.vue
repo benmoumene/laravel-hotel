@@ -32,19 +32,37 @@
             <a href="#" class="nav-link">
               <i class="nav-icon fa fa-users"></i>
               <p>
-                Guests
+                Customers
                 <i class="fa fa-angle-left right"></i>
               </p>
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <router-link to="/guest-add" class="nav-link">
+                <router-link to="/guest/add" class="nav-link">
+                  <i class="nav-icon fa fa-user-plus"></i>
+                  New Customer
+                </router-link>
+              </li>
+              <li class="nav-item">
+                <router-link to="/guest/add" class="nav-link">
+                  <i class="nav-icon fa fa-user-plus"></i>
+                  Customers
+                </router-link>
+              </li>
+              <li class="nav-item">
+                <router-link to="/guest/add" class="nav-link">
+                  <i class="nav-icon fa fa-user-plus"></i>
+                  Guests
+                </router-link>
+              </li>
+              <li class="nav-item">
+                <router-link to="/guest/add" class="nav-link">
                   <i class="nav-icon fa fa-user-plus"></i>
                   New Guest
                 </router-link>
               </li>
               <li class="nav-item">
-                <router-link to="/guest-edit" class="nav-link">
+                <router-link to="/guest/list" class="nav-link">
                   <i class="nav-icon fa fa-edit"></i>
                   Manage Guests
                 </router-link>
@@ -56,28 +74,22 @@
             <a href="#" class="nav-link">
               <i class="nav-icon fa fa-bed"></i>
               <p>
-                Manage Rooms
+                Rooms
                 <i class="fa fa-angle-left right"></i>
                 <span class="badge badge-info right">6</span>
               </p>
             </a>
             <ul class="nav nav-treeview">
+              <li class="nav-item" v-if="appUser.role === 'admin' || appUser.role ==='manager'">
+                <router-link to="/rooms/list" class="nav-link">
+                  <i class="nav-icon fa fa-bed"></i>
+                  Manage Rooms
+                </router-link>
+              </li>
               <li class="nav-item">
-                <router-link to="/rooms" class="nav-link">
+                <router-link to="/rooms/add" class="nav-link">
                   <i class="nav-icon fa fa-bed"></i>
                   Add Room
-                </router-link>
-              </li>
-              <li class="nav-item">
-                <router-link to="/rooms" class="nav-link">
-                  <i class="nav-icon fa fa-bed"></i>
-                  Edit Room
-                </router-link>
-              </li>
-              <li class="nav-item">
-                <router-link to="/reservations" class="nav-link">
-                  <i class="nav-icon fa fa-bed"></i>
-                  Reservations
                 </router-link>
               </li>
             </ul>
@@ -154,6 +166,30 @@
                   <i class="nav-icon fa fa-file-invoice-dollar"></i>
                   Pending Invoices
                   <span class="right badge badge-danger">6</span>
+                </router-link>
+              </li>
+            </ul>
+          </li>
+
+          <li class="nav-item has-treeview">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fa fa-bed"></i>
+              <p>
+                Reservations
+                <i class="fa fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <router-link to="/reservations" class="nav-link">
+                  <i class="nav-icon fa fa-bed"></i>
+                  New Reservation
+                </router-link>
+              </li>
+              <li class="nav-item">
+                <router-link to="/reservations" class="nav-link">
+                  <i class="nav-icon fa fa-bed"></i>
+                  Manage Reservations
                 </router-link>
               </li>
             </ul>

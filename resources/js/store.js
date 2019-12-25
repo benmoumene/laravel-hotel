@@ -15,6 +15,27 @@ export default new Vuex.Store({
         getGuest: (state, getters) => (clientId) => {
 
         },
+        getRoomById: (state, getters) => (roomId) => {
+            return state.rooms.find(room => room.id === roomId);
+        },
+        isAdmin: (state, getters) => {
+            if (state.appUser.role === 'admin') {
+                return true;
+            }
+            return false;
+        },
+        isManager: (state, getters) => {
+            if (state.appUser.role === 'manager') {
+                return true;
+            }
+            return false;
+        },
+        isRecepcionist: (state, getters) => {
+            if (state.appUser.role === 'recepcionist') {
+                return true;
+            }
+            return false;
+        },
     },
     mutations: {
         // Asigna el usuario de la app
@@ -55,6 +76,8 @@ export default new Vuex.Store({
                     context.commit('SET_USER', data['app_user']);
                     // Guests
                     context.commit('SET_GUESTS', data['guests']);
+                    // Rooms
+                    context.commit('SET_ROOMS', data['rooms']);
                 }
             });
         },
