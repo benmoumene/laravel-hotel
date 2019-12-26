@@ -13,16 +13,21 @@
         <b-form-select
           class="col-3"
           :value="null"
-          :options="{'common':'Common', 'suite':'Suite'}"
-          v-model="room.type"
+          :options="{ 'single': 'Single', 'double': 'Double', 'suite': 'Suite'}"
+          v-model="getRoom.type"
         ></b-form-select>
       </b-form>
     </b-form-group>
 
     <b-form-group>
       <b-form inline>
-        <label class="col-3">Capacity</label>
-        <b-form-select class="col-3" :value="null" :options="[1,2,3,4]" v-model="room.capacity"></b-form-select>
+        <label class="col-3">Location</label>
+        <b-form-select
+          class="col-3"
+          :value="null"
+          :options="{'1F':'1 Floor', '2F': '2 Floor' , '3F': '3 Floor'}"
+          v-model="getRoom.location"
+        ></b-form-select>
       </b-form>
     </b-form-group>
 
@@ -41,25 +46,22 @@ import { mapGetters } from "vuex";
 export default {
   name: "RoomEdit",
   data: function() {
-    return {
-      room: {
-        name: "",
-        type: "common",
-        capacity: 1,
-        status: "not_avaliable"
-      }
-    };
+    return {};
   },
   methods: {
-    update() {}
+    update() {
+      this.$store.dispatch("editRoom", this.getRoom);
+    }
   },
   computed: {
     ...mapGetters(["getRoomById"]),
-
     getRoom: function() {
-      var roomId = this.$route.params.id;
-      return this.getRoomById(roomId);
-      //return this.room;
+      var roomId = parseInt(this.$route.params.id);
+      var room = this.getRoomById(roomId);
+      if (typeof room === "undefined") {
+        return "";
+      }
+      return room;
     }
   },
   updated() {}

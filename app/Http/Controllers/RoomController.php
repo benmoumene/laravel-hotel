@@ -80,9 +80,18 @@ class RoomController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $roomId)
     {
-        //
+        // ID del usuario logeado en la app
+        $currentUserId = Auth::user()->id;
+        $room = Room::where('id', $roomId)->first();
+        $room->name = $request['room']['name'];
+        $room->type = $request['room']['type'];
+        $room->location = $request['room']['location'];
+        $room->save();
+                
+        // Devolvemos el json con el perfil y codigo 200
+        return response()->json(['room' => $room], 200);
     }
 
     /**

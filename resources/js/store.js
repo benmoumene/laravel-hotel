@@ -119,7 +119,6 @@ export default new Vuex.Store({
                 }
             });
         },
-
         addRoom(context, room) {
             axios.post("http://127.0.0.1:8000/room/", {
                 room
@@ -136,6 +135,20 @@ export default new Vuex.Store({
                 }
             });
         },
-
+        editRoom(context, room) {
+            axios.post("http://127.0.0.1:8000/room/" + room.id, {
+                room,
+                _method: "put"
+            }).then(function (response) {
+                // Si el request tuvo exito (codigo 200)
+                if (response.status == 200) {
+                    // Agregamos una nueva conversacion si existe el objeto
+                    if (response['data'].length == 0) {
+                        return;
+                    }
+                    console.log('success');
+                }
+            });
+        },
     }
 })

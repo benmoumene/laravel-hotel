@@ -2638,6 +2638,16 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     add: function add() {
       this.$store.dispatch("addRoom", this.room);
+      this.makeToast(true);
+    },
+    makeToast: function makeToast() {
+      var append = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+      this.toastCount++;
+      this.$bvToast.toast("Room added", {
+        title: "BootstrapVue Toast",
+        autoHideDelay: 5000,
+        appendToast: append
+      });
     }
   },
   computed: {},
@@ -2700,26 +2710,32 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "RoomEdit",
   data: function data() {
-    return {
-      room: {
-        name: "",
-        type: "common",
-        capacity: 1,
-        status: "not_avaliable"
-      }
-    };
+    return {};
   },
   methods: {
-    update: function update() {}
+    update: function update() {
+      this.$store.dispatch("editRoom", this.getRoom);
+    }
   },
   computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])(["getRoomById"]), {
     getRoom: function getRoom() {
-      var roomId = this.$route.params.id;
-      return this.getRoomById(roomId); //return this.room;
+      var roomId = parseInt(this.$route.params.id);
+      var room = this.getRoomById(roomId);
+
+      if (typeof room === "undefined") {
+        return "";
+      }
+
+      return room;
     }
   }),
   updated: function updated() {}
@@ -2841,10 +2857,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         key: "actions",
         label: "Actions"
       }],
-      totalRows: 1,
       currentPage: 1,
-      perPage: 2,
-      pageOptions: [2, 5, 10, 15],
+      perPage: 5,
+      pageOptions: [5, 10, 15],
       sortBy: "",
       sortDesc: false,
       sortDirection: "asc",
@@ -2870,13 +2885,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           value: f.key
         };
       });
-    } // filter rooms by name
-
+    },
+    totalRows: function totalRows() {
+      return this.rooms.length;
+    }
   }),
   mounted: function mounted() {},
-  updated: function updated() {
-    this.totalRows = this.rooms.length;
-  }
+  updated: function updated() {}
 });
 
 /***/ }),
@@ -70006,14 +70021,18 @@ var render = function() {
                 staticClass: "col-3",
                 attrs: {
                   value: null,
-                  options: { common: "Common", suite: "Suite" }
+                  options: {
+                    single: "Single",
+                    double: "Double",
+                    suite: "Suite"
+                  }
                 },
                 model: {
-                  value: _vm.room.type,
+                  value: _vm.getRoom.type,
                   callback: function($$v) {
-                    _vm.$set(_vm.room, "type", $$v)
+                    _vm.$set(_vm.getRoom, "type", $$v)
                   },
-                  expression: "room.type"
+                  expression: "getRoom.type"
                 }
               })
             ],
@@ -70030,17 +70049,20 @@ var render = function() {
             "b-form",
             { attrs: { inline: "" } },
             [
-              _c("label", { staticClass: "col-3" }, [_vm._v("Capacity")]),
+              _c("label", { staticClass: "col-3" }, [_vm._v("Location")]),
               _vm._v(" "),
               _c("b-form-select", {
                 staticClass: "col-3",
-                attrs: { value: null, options: [1, 2, 3, 4] },
+                attrs: {
+                  value: null,
+                  options: { "1F": "1 Floor", "2F": "2 Floor", "3F": "3 Floor" }
+                },
                 model: {
-                  value: _vm.room.capacity,
+                  value: _vm.getRoom.location,
                   callback: function($$v) {
-                    _vm.$set(_vm.room, "capacity", $$v)
+                    _vm.$set(_vm.getRoom, "location", $$v)
                   },
-                  expression: "room.capacity"
+                  expression: "getRoom.location"
                 }
               })
             ],
@@ -89135,6 +89157,22 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
 
           var newRoom = response['data']['room'];
           context.commit('ADD_ROOM', newRoom);
+        }
+      });
+    },
+    editRoom: function editRoom(context, room) {
+      axios.post("http://127.0.0.1:8000/room/" + room.id, {
+        room: room,
+        _method: "put"
+      }).then(function (response) {
+        // Si el request tuvo exito (codigo 200)
+        if (response.status == 200) {
+          // Agregamos una nueva conversacion si existe el objeto
+          if (response['data'].length == 0) {
+            return;
+          }
+
+          console.log('success');
         }
       });
     }
