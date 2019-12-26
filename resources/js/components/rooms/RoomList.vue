@@ -96,12 +96,17 @@ export default {
           sortable: true,
           class: "text-center"
         },
+        {
+          key: "location",
+          label: "Location room",
+          sortable: true,
+          class: "text-center"
+        },
         { key: "actions", label: "Actions" }
       ],
-      totalRows: 1,
       currentPage: 1,
-      perPage: 2,
-      pageOptions: [2, 5, 10, 15],
+      perPage: 5,
+      pageOptions: [5, 10, 15],
       sortBy: "",
       sortDesc: false,
       sortDirection: "asc",
@@ -125,13 +130,13 @@ export default {
         .map(f => {
           return { text: f.label, value: f.key };
         });
+    },
+    totalRows() {
+      return this.rooms.length;
     }
-    // filter rooms by name
   },
   mounted() {},
-  updated() {
-    this.totalRows = this.rooms.length;
-  }
+  updated() {}
 };
 </script>
 <style scoped>
