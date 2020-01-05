@@ -15,10 +15,10 @@ class CreateCustomersTable extends Migration
     {
         Schema::create('customers', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->enum('document_id_type', ['national_id', 'passport']);
-            $table->string('document_id');
             $table->string('first_name');
             $table->string('last_name');
+            $table->enum('document_id_type', ['national_id', 'passport']);
+            $table->string('document_id');
             $table->string('address');
             $table->string('phone');
             $table->string('sex');
