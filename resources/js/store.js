@@ -7,10 +7,10 @@ export default new Vuex.Store({
         // Datos de usuario y perfil
         appUser: { name: '' },
         customers: [],
+        reservations: [],
         guests: [],
         rooms: [],
         services: [],
-
     },
     getters: {
         getGuest: (state, getters) => (clientId) => {
@@ -59,6 +59,9 @@ export default new Vuex.Store({
         SET_ROOMS(state, rooms) {
             state.rooms = rooms;
         },
+        SET_RESERVATIONS(state, reservations) {
+            state.reservations = reservations;
+        },
         // Agrega un usuario a people
         ADD_GUEST(state, guest) {
             state.guests.push(guest);
@@ -68,6 +71,9 @@ export default new Vuex.Store({
         },
         ADD_ROOM(state, room) {
             state.rooms.push(room);
+        },
+        ADD_RESERVATION(state, reservation) {
+            state.reservation.push(reservation);
         },
     },
     actions: {
@@ -91,6 +97,8 @@ export default new Vuex.Store({
                     context.commit('SET_GUESTS', data['guests']);
                     // Customers
                     context.commit('SET_CUSTOMERS', data['customers']);
+                    // Reservations
+                    context.commit('SET_RESERVATIONS', data['reservations']);
                     // Rooms
                     context.commit('SET_ROOMS', data['rooms']);
                 }
@@ -99,6 +107,37 @@ export default new Vuex.Store({
         logout(context) {
             axios.post("http://127.0.0.1:8000/logout").catch(error => {
                 window.location.href = '/login';
+            });
+        },
+        addCustomer(context, reservation) {
+            axios.post("http://127.0.0.1:8000/reservations/", {
+                reservation
+            }).then(function (response) {
+                // Si el request tuvo exito (codigo 200)
+                if (response.status == 200) {
+                    // Agregamos una nueva conversacion si existe el objeto
+                    if (response['data'].length == 0) {
+                        return;
+                    }
+
+                    var newReservation = response['data']['reservation'];
+                    context.commit('ADD_RESERVATION', newReservation);
+                }
+            });
+        },
+        deleteReservation(context, reservation) {
+            axios.post("http://127.0.0.1:8000/reservations/" + reservation.id, {
+                reservation,
+                _method: "delete"
+            }).then(function (response) {
+                // Si el request tuvo exito (codigo 200)
+                if (response.status == 200) {
+                    // Agregamos una nueva conversacion si existe el objeto
+                    if (response['data'].length == 0) {
+                        return;
+                    }
+                    // console.log('success');
+                }
             });
         },
         addCustomer(context, customer) {

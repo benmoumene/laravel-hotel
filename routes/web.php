@@ -21,6 +21,13 @@ Route::post('/customers', 'CustomerController@store');
 // Actualizar datos customer
 Route::put('/customers/{customer_id}', 'CustomerController@update');
 
+// Nueva reserva
+Route::post('/reservations', 'ReservationController@store');
+// Actualiza reserva
+Route::put('/reservations/{reservation_id}', 'ReservationController@update');
+// Cancelar reserva
+Route::delete('/reservations/{reservation_id}', 'ReservationController@destroy');
+
 // Nuevo guest
 Route::post('/guest', 'GuestController@store');
 // Actualizar datos guest

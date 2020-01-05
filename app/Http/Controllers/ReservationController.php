@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Auth;
+use App\Reservation;
 
 class ReservationController extends Controller
 {
@@ -34,7 +36,15 @@ class ReservationController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $currentUserId = Auth::user()->id;
+        $reservation = new Reservation;
+        $reservation->customer_id = $request['reservation']['customer_id'];
+        $reservation->room_id = $request['reservation']['room_id'];
+        $reservation->check_in = $request['reservation']['check_in'];
+        $reservation->check_out = $request['reservation']['check_out'];
+        $reservation->save();
+
+        return response()->json(['reservation' => $reservation], 200);
     }
 
     /**
@@ -68,7 +78,13 @@ class ReservationController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $currentUserId = Auth::user()->id;
+        $reservation = Reservation::where('id', $id)->first(); // firstOrFail???
+        $reservation->check_in = $request['reservation']['check_in'];
+        $reservation->check_out = $request['reservation']['check_out'];
+        $reservation->save();
+
+        return response()->json(['reservation' => $reservation], 200);
     }
 
     /**
@@ -79,6 +95,10 @@ class ReservationController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $currentUserId = Auth::user()->id;
+        $reservation = Reservation::where('id', $id)->first(); // firstOrFail???
+        $reservation->delete();
+
+        return response()->json(['reservation' => $reservation], 204);
     }
 }

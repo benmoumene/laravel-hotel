@@ -26,6 +26,8 @@ import RoomAdd from './components/rooms/RoomAdd.vue'
 import RoomEdit from './components/rooms/RoomEdit.vue'
 import RoomList from './components/rooms/RoomList.vue'
 
+import Reservations from './components/reservations/Reservations.vue'
+import ReservationsRouter from './components/reservations/ReservationsRouter.vue'
 
 export default new VueRouter({
   routes: [
@@ -101,6 +103,16 @@ export default new VueRouter({
           path: ':id/edit',
           name: 'RoomEdit',
           component: RoomEdit
+        },
+      ]
+    },
+    {
+      path: '/reservations', component: ReservationsRouter,
+      children: [
+        {
+          path: '',
+          name: 'Reservations',
+          component: Reservations
         },
       ]
     },
