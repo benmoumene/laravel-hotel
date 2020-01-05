@@ -16,9 +16,10 @@ class CreateGuestsTable extends Migration
     {
         Schema::create('guests', function (Blueprint $table) {
             $table->bigIncrements('id');
-            //reservation_id
-            //check_in
-            //check_out
+            $table->unsignedBigInteger('reservation_id');
+            $table->timestamp('check_in')->nullable();
+            $table->timestamp('check_out')->nullable();
+            $table->foreign('reservation_id')->references('id')->on('reservations')->onDelete('CASCADE');
         });
     }
 

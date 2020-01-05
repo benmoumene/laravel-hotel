@@ -15,11 +15,11 @@ class CreateReservationsTable extends Migration
     {
         Schema::create('reservations', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('guest_id');
+            $table->unsignedBigInteger('customer_id');
             $table->unsignedBigInteger('room_id');
             $table->timestamp('check_in')->nullable(); // Fecha de entrada
             $table->timestamp('check_out')->nullable(); // Fecha de salida
-            $table->foreign('guest_id')->references('id')->on('guests')->onDelete('CASCADE');
+            $table->foreign('customer_id')->references('id')->on('customers')->onDelete('CASCADE');
             $table->foreign('room_id')->references('id')->on('rooms')->onDelete('CASCADE');
         });
     }
