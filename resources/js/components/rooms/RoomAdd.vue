@@ -26,7 +26,7 @@
           class="col-3"
           :value="null"
           :options="{'1F':'1 Floor', '2F': '2 Floor' , '3F': '3 Floor'}"
-          v-model="room.location"
+          v-model="room.floor"
         ></b-form-select>
       </b-form>
     </b-form-group>
@@ -47,13 +47,22 @@ export default {
       room: {
         name: "",
         type: "single",
-        location: "1F"
+        floor: "1F"
       }
     };
   },
   methods: {
     add() {
       this.$store.dispatch("addRoom", this.room);
+      this.makeToast(true);
+    },
+    makeToast(append = false) {
+      this.toastCount++;
+      this.$bvToast.toast("Room added", {
+        title: "BootstrapVue Toast",
+        autoHideDelay: 5000,
+        appendToast: append
+      });
     }
   },
   computed: {},

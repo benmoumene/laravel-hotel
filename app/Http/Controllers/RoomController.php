@@ -46,7 +46,7 @@ class RoomController extends Controller
         $room = new Room;
         $room->name = $request['room']['name'];
         $room->type = $request['room']['type'];
-        $room->location = $request['room']['location'];
+        $room->floor = $request['room']['floor'];
         $room->save();
         return response()->json(['room' => $room], 200);
     }
@@ -87,7 +87,7 @@ class RoomController extends Controller
         $room = Room::where('id', $roomId)->first();
         $room->name = $request['room']['name'];
         $room->type = $request['room']['type'];
-        $room->location = $request['room']['location'];
+        $room->floor = $request['room']['floor'];
         $room->save();
                 
         // Devolvemos el json con el perfil y codigo 200
