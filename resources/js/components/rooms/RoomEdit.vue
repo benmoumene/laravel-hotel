@@ -26,7 +26,7 @@
           class="col-3"
           :value="null"
           :options="{'1F':'1 Floor', '2F': '2 Floor' , '3F': '3 Floor'}"
-          v-model="getRoom.location"
+          v-model="getRoom.floor"
         ></b-form-select>
       </b-form>
     </b-form-group>
