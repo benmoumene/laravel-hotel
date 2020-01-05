@@ -38,13 +38,13 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <router-link to="/guest/add" class="nav-link">
+                <router-link to="/customers/add" class="nav-link">
                   <i class="nav-icon fa fa-user-plus"></i>
                   New Customer
                 </router-link>
               </li>
               <li class="nav-item">
-                <router-link to="/guest/add" class="nav-link">
+                <router-link to="/customers/list" class="nav-link">
                   <i class="nav-icon fa fa-user-plus"></i>
                   Customers
                 </router-link>
@@ -70,7 +70,7 @@
             </ul>
           </li>
 
-          <li class="nav-item has-treeview">
+          <li class="nav-item has-treeview" v-if="isAdmin || isManager">
             <a href="#" class="nav-link">
               <i class="nav-icon fa fa-bed"></i>
               <p>
@@ -80,7 +80,7 @@
               </p>
             </a>
             <ul class="nav nav-treeview">
-              <li class="nav-item" v-if="appUser.role === 'admin' || appUser.role ==='manager'">
+              <li class="nav-item">
                 <router-link to="/rooms/list" class="nav-link">
                   <i class="nav-icon fa fa-bed"></i>
                   Manage Rooms
@@ -90,6 +90,30 @@
                 <router-link to="/rooms/add" class="nav-link">
                   <i class="nav-icon fa fa-bed"></i>
                   Add Room
+                </router-link>
+              </li>
+            </ul>
+          </li>
+
+          <li class="nav-item has-treeview" v-if="isRecepcionist || isAdmin">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fa fa-bed"></i>
+              <p>
+                Reservations
+                <i class="fa fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <router-link to="/reservations" class="nav-link">
+                  <i class="nav-icon fa fa-bed"></i>
+                  New Reservation
+                </router-link>
+              </li>
+              <li class="nav-item">
+                <router-link to="/reservations" class="nav-link">
+                  <i class="nav-icon fa fa-bed"></i>
+                  Manage Reservations
                 </router-link>
               </li>
             </ul>
@@ -145,7 +169,7 @@
             </ul>
           </li>
 
-          <li class="nav-item has-treeview">
+          <li class="nav-item has-treeview" v-if="isManager || isAdmin">
             <a href="#" class="nav-link">
               <i class="nav-icon fa fa-wallet"></i>
               <p>
@@ -166,30 +190,6 @@
                   <i class="nav-icon fa fa-file-invoice-dollar"></i>
                   Pending Invoices
                   <span class="right badge badge-danger">6</span>
-                </router-link>
-              </li>
-            </ul>
-          </li>
-
-          <li class="nav-item has-treeview">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fa fa-bed"></i>
-              <p>
-                Reservations
-                <i class="fa fa-angle-left right"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <router-link to="/reservations" class="nav-link">
-                  <i class="nav-icon fa fa-bed"></i>
-                  New Reservation
-                </router-link>
-              </li>
-              <li class="nav-item">
-                <router-link to="/reservations" class="nav-link">
-                  <i class="nav-icon fa fa-bed"></i>
-                  Manage Reservations
                 </router-link>
               </li>
             </ul>
@@ -237,6 +237,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(["isAdmin", "isRecepcionist", "isManager"]),
     ...mapState(["appUser"])
   },
   components: {},

@@ -11,6 +11,10 @@ import Inventory from './components/Inventory.vue'
 import Payments from './components/Payments.vue'
 import Settings from './components/Settings.vue'
 
+import Customer from './components/customers/Customer.vue'
+import CustomerAdd from './components/customers/CustomerAdd.vue'
+import CustomerEdit from './components/customers/CustomerEdit.vue'
+import CustomerList from './components/customers/CustomerList.vue'
 
 import Guest from './components/guests/Guest.vue'
 import GuestList from './components/guests/GuestList.vue'
@@ -29,6 +33,31 @@ export default new VueRouter({
       path: '/',
       name: 'Dashboard',
       component: Dashboard
+    },
+    {
+      path: '/customers', component: Customer,
+      children: [
+        {
+          path: '',
+          name: 'Customer',
+          component: CustomerList
+        },
+        {
+          path: 'list',
+          name: 'CustomerList',
+          component: CustomerList
+        },
+        {
+          path: 'add',
+          name: 'CustomerAdd',
+          component: CustomerAdd
+        },
+        {
+          path: ':id/edit',
+          name: 'CustomerEdit',
+          component: CustomerEdit
+        },
+      ]
     },
     {
       path: '/guest', component: Guest,
@@ -55,7 +84,7 @@ export default new VueRouter({
       children: [
         {
           path: '',
-          name: 'RoomList',
+          name: 'Room',
           component: RoomList
         },
         {

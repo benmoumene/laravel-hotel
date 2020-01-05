@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Guest extends Model
 {
-    public $timestamps = true;
+    public $timestamps = false;
     protected $table = "guests";
 
     // Conversaciones en las que participa el usuario

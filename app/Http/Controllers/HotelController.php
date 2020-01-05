@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Auth;
+use App\Customer;
 use App\Guest;
 use App\Room;
 
@@ -26,6 +27,7 @@ class HotelController extends Controller
         $currentUserId = Auth::user()->id;
         $data['app_user'] = Auth::user();
         $data['guests'] = Guest::all();
+        $data['customers'] = Customer::all();
         $data['rooms'] = Room::all();
         return response()->json($data, 200);
     }

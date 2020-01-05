@@ -6,6 +6,7 @@ export default new Vuex.Store({
     state: {
         // Datos de usuario y perfil
         appUser: { name: '' },
+        customers: [],
         guests: [],
         rooms: [],
         services: [],
@@ -17,6 +18,9 @@ export default new Vuex.Store({
         },
         getRoomById: (state, getters) => (roomId) => {
             return state.rooms.find(room => room.id === roomId);
+        },
+        getCustomerById: (state, getters) => (customerId) => {
+            return state.customers.find(customer => customer.id === customerId);
         },
         isAdmin: (state, getters) => {
             if (state.appUser.role === 'admin') {
@@ -46,6 +50,9 @@ export default new Vuex.Store({
         SET_GUESTS(state, guests) {
             state.guests = guests;
         },
+        SET_CUSTOMERS(state, customers) {
+            state.customers = customers;
+        },
         SET_SERVICES(state, services) {
             state.services = services;
         },
@@ -55,6 +62,9 @@ export default new Vuex.Store({
         // Agrega un usuario a people
         ADD_GUEST(state, guest) {
             state.guests.push(guest);
+        },
+        ADD_CUSTOMER(state, customer) {
+            state.customers.push(customer);
         },
         ADD_ROOM(state, room) {
             state.rooms.push(room);
@@ -79,6 +89,8 @@ export default new Vuex.Store({
                     context.commit('SET_USER', data['app_user']);
                     // Guests
                     context.commit('SET_GUESTS', data['guests']);
+                    // Customers
+                    context.commit('SET_CUSTOMERS', data['customers']);
                     // Rooms
                     context.commit('SET_ROOMS', data['rooms']);
                 }
@@ -87,6 +99,37 @@ export default new Vuex.Store({
         logout(context) {
             axios.post("http://127.0.0.1:8000/logout").catch(error => {
                 window.location.href = '/login';
+            });
+        },
+        addCustomer(context, customer) {
+            axios.post("http://127.0.0.1:8000/customers/", {
+                customer
+            }).then(function (response) {
+                // Si el request tuvo exito (codigo 200)
+                if (response.status == 200) {
+                    // Agregamos una nueva conversacion si existe el objeto
+                    if (response['data'].length == 0) {
+                        return;
+                    }
+
+                    var newCustomer = response['data']['customer'];
+                    context.commit('ADD_CUSTOMER', newCustomer);
+                }
+            });
+        },
+        editCustomer(context, customer) {
+            axios.post("http://127.0.0.1:8000/customers/" + customer.id, {
+                customer,
+                _method: "put"
+            }).then(function (response) {
+                // Si el request tuvo exito (codigo 200)
+                if (response.status == 200) {
+                    // Agregamos una nueva conversacion si existe el objeto
+                    if (response['data'].length == 0) {
+                        return;
+                    }
+                    // console.log('success');
+                }
             });
         },
         addGuest(context, guest) {
@@ -107,7 +150,8 @@ export default new Vuex.Store({
         },
         editGuest(context, guest) {
             axios.post("http://127.0.0.1:8000/guest/", {
-                guest
+                guest,
+                _method: "put"
             }).then(function (response) {
                 // Si el request tuvo exito (codigo 200)
                 if (response.status == 200) {
