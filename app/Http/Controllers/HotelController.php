@@ -8,6 +8,7 @@ use App\Customer;
 use App\Guest;
 use App\Room;
 use App\Reservation;
+use App\Setting;
 
 class HotelController extends Controller
 {
@@ -31,6 +32,7 @@ class HotelController extends Controller
         $data['customers'] = Customer::all();
         $data['reservations'] = Reservation::all();
         $data['rooms'] = Room::all();
+        $data['settings'] = Setting::all();
         return response()->json($data, 200);
     }
 }

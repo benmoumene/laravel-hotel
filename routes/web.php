@@ -37,3 +37,6 @@ Route::put('/guest/{guest_id}', 'GuestController@update');
 Route::post('/room', 'RoomController@store');
 // Actualizar Habitacion
 Route::put('/room/{room_id}', 'RoomController@update');
+
+// Actualizar setting
+Route::put('/settings/{setting_id}', 'SettingController@update');

@@ -11,6 +11,7 @@ export default new Vuex.Store({
         guests: [],
         rooms: [],
         services: [],
+        settings: []
     },
     getters: {
         getGuest: (state, getters) => (clientId) => {
@@ -56,6 +57,9 @@ export default new Vuex.Store({
         SET_SERVICES(state, services) {
             state.services = services;
         },
+        SET_SETTINGS(state, settings) {
+            state.settings = settings;
+        },
         SET_ROOMS(state, rooms) {
             state.rooms = rooms;
         },
@@ -97,6 +101,8 @@ export default new Vuex.Store({
                     context.commit('SET_GUESTS', data['guests']);
                     // Customers
                     context.commit('SET_CUSTOMERS', data['customers']);
+                    // Settings
+                    context.commit('SET_SETTINGS', data['settings']);
                     // Reservations
                     context.commit('SET_RESERVATIONS', data['reservations']);
                     // Rooms
@@ -221,6 +227,21 @@ export default new Vuex.Store({
         editRoom(context, room) {
             axios.post("http://127.0.0.1:8000/room/" + room.id, {
                 room,
+                _method: "put"
+            }).then(function (response) {
+                // Si el request tuvo exito (codigo 200)
+                if (response.status == 200) {
+                    // Agregamos una nueva conversacion si existe el objeto
+                    if (response['data'].length == 0) {
+                        return;
+                    }
+                    console.log('success');
+                }
+            });
+        },
+        editSetting(context, setting) {
+            axios.post("http://127.0.0.1:8000/settings/" + setting.id, {
+                setting,
                 _method: "put"
             }).then(function (response) {
                 // Si el request tuvo exito (codigo 200)
