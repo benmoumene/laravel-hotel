@@ -17,6 +17,9 @@ export default new Vuex.Store({
         getGuest: (state, getters) => (clientId) => {
 
         },
+        getSettingValue: (state, getters) => (name) => {
+            return state.settings.find(setting => setting.name === name).value;
+        },
         getRoomById: (state, getters) => (roomId) => {
             return state.rooms.find(room => room.id === roomId);
         },

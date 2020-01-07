@@ -49,24 +49,6 @@
                   Customers
                 </router-link>
               </li>
-              <li class="nav-item">
-                <router-link to="/guest/add" class="nav-link">
-                  <i class="nav-icon fa fa-user-plus"></i>
-                  Guests
-                </router-link>
-              </li>
-              <li class="nav-item">
-                <router-link to="/guest/add" class="nav-link">
-                  <i class="nav-icon fa fa-user-plus"></i>
-                  New Guest
-                </router-link>
-              </li>
-              <li class="nav-item">
-                <router-link to="/guest/list" class="nav-link">
-                  <i class="nav-icon fa fa-edit"></i>
-                  Manage Guests
-                </router-link>
-              </li>
             </ul>
           </li>
 
@@ -76,7 +58,6 @@
               <p>
                 Rooms
                 <i class="fa fa-angle-left right"></i>
-                <span class="badge badge-info right">6</span>
               </p>
             </a>
             <ul class="nav nav-treeview">
@@ -90,6 +71,19 @@
                 <router-link to="/rooms/add" class="nav-link">
                   <i class="nav-icon fa fa-bed"></i>
                   Add Room
+                </router-link>
+              </li>
+              <li class="nav-item">
+                <router-link to="/guest/list" class="nav-link">
+                  <i class="nav-icon fa fa-edit"></i>
+                  Guests
+                </router-link>
+              </li>
+              <li class="nav-item">
+                <router-link to="/rooms/availability" class="nav-link">
+                  <i class="nav-icon fa fa-bed"></i>
+                  Availability
+                  <span class="badge badge-info right">6</span>
                 </router-link>
               </li>
             </ul>
@@ -107,13 +101,13 @@
               <li class="nav-item">
                 <router-link to="/reservations" class="nav-link">
                   <i class="nav-icon fa fa-bed"></i>
-                  New Reservation
+                  Manage Reservations
                 </router-link>
               </li>
               <li class="nav-item">
                 <router-link to="/reservations" class="nav-link">
                   <i class="nav-icon fa fa-bed"></i>
-                  Manage Reservations
+                  New Reservation
                 </router-link>
               </li>
             </ul>
@@ -195,7 +189,7 @@
             </ul>
           </li>
 
-          <li class="nav-item">
+          <li class="nav-item" v-if="isAdmin">
             <router-link to="/settings" class="nav-link">
               <i class="nav-icon fa fa-wrench"></i>
               Settings
