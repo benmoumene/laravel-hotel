@@ -2074,11 +2074,33 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Profile",
-  methods: {},
-  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])(["appUser"])),
+  methods: {
+    chooseAvatar: function chooseAvatar() {
+      console.log("choose your avatar!");
+    }
+  },
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])(["appUser"]), {
+    avatarPath: function avatarPath() {
+      return "/storage/" + this.appUser.avatar_filename;
+    }
+  }),
   components: {},
   mounted: function mounted() {}
 });
@@ -37553,7 +37575,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.avatar[data-v-3bd692e4] {\n  padding: 5px;\n}\n", ""]);
+exports.push([module.i, "\n.avatar[data-v-3bd692e4] {\n  padding: 5px;\n  max-width: 30em;\n  max-height: 30em;\n}\n", ""]);
 
 // exports
 
@@ -70102,29 +70124,45 @@ var render = function() {
             "b-col",
             { attrs: { cols: "8" } },
             [
-              _c("b-row", [_vm._v("NAME")]),
+              _c("b-row", [
+                _c("strong", [_vm._v("Username:")]),
+                _vm._v(" "),
+                _c("span", [_vm._v(_vm._s(_vm.appUser.name))])
+              ]),
               _vm._v(" "),
-              _c("b-row", [_vm._v("FIRST NAME")]),
+              _c("b-row", [
+                _c("strong", [_vm._v("First Name:")]),
+                _vm._v(" "),
+                _c("span", [_vm._v(_vm._s(_vm.appUser.first_name))])
+              ]),
               _vm._v(" "),
-              _c("b-row", [_vm._v("LAST NAME")]),
+              _c("b-row", [
+                _c("strong", [_vm._v("Last Name:")]),
+                _vm._v(" "),
+                _c("span", [_vm._v(_vm._s(_vm.appUser.last_name))])
+              ]),
               _vm._v(" "),
-              _c("b-row", [_vm._v("EMAIL")]),
+              _c("b-row", [
+                _c("strong", [_vm._v("Email:")]),
+                _vm._v(" "),
+                _c("span", [_vm._v(_vm._s(_vm.appUser.email))])
+              ]),
               _vm._v(" "),
-              _c("b-row", [_vm._v("ROLE")])
+              _c("b-row", [
+                _c("strong", [_vm._v("Role:")]),
+                _vm._v(" "),
+                _c("span", [_vm._v(_vm._s(_vm.appUser.role))])
+              ])
             ],
             1
           ),
           _vm._v(" "),
-          _c("b-col", { attrs: { cols: "4" } }, [_vm._v("AVATAR")])
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _c(
-        "b-row",
-        [
-          _c("b-col", { attrs: { cols: "12" } }, [
-            _vm._v(_vm._s(_vm.appUser.name))
+          _c("b-col", { attrs: { cols: "4" } }, [
+            _c("img", {
+              staticClass: "avatar",
+              attrs: { src: _vm.avatarPath },
+              on: { click: _vm.chooseAvatar }
+            })
           ])
         ],
         1
