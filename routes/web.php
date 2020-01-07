@@ -40,3 +40,11 @@ Route::put('/room/{room_id}', 'RoomController@update');
 
 // Actualizar setting
 Route::put('/settings/{setting_id}', 'SettingController@update');
+
+// Actualizar Avatar
+Route::put('/users/{user_id}', 'UserAvatarController@update');
+
+// Nuevo servicio
+Route::post('/services', 'ServiceController@store');
+// Actualizar servicio
+Route::put('/services/{service_id}', 'ServiceController@update');

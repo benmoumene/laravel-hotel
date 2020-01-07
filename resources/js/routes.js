@@ -4,7 +4,6 @@ Vue.use(VueRouter)
 
 import Dashboard from './components/template/Dashboard.vue'
 import Billing from './components/Billing.vue'
-import Services from './components/services/Services.vue'
 import Profile from './components/Profile.vue'
 import About from './components/About.vue'
 import Inventory from './components/Inventory.vue'
@@ -25,9 +24,15 @@ import Room from './components/rooms/Room.vue'
 import RoomAdd from './components/rooms/RoomAdd.vue'
 import RoomEdit from './components/rooms/RoomEdit.vue'
 import RoomList from './components/rooms/RoomList.vue'
+import RoomAvailability from './components/rooms/RoomAvailability.vue'
 
 import Reservations from './components/reservations/Reservations.vue'
 import ReservationsRouter from './components/reservations/ReservationsRouter.vue'
+
+import Services from './components/services/Services.vue'
+import ServiceAdd from './components/services/ServiceAdd.vue'
+import ServiceList from './components/services/ServiceList.vue'
+import ServicesRouter from './components/services/ServiceRouter.vue'
 
 export default new VueRouter({
   routes: [
@@ -90,6 +95,11 @@ export default new VueRouter({
           component: RoomList
         },
         {
+          path: 'availability',
+          name: 'RoomAvailability',
+          component: RoomAvailability
+        },
+        {
           path: 'list',
           name: 'RoomList',
           component: RoomList
@@ -122,9 +132,24 @@ export default new VueRouter({
       component: Billing
     },
     {
-      path: '/services',
-      name: 'Services',
-      component: Services
+      path: '/services', component: ServicesRouter,
+      children: [
+        {
+          path: '',
+          name: 'Services',
+          component: Services
+        },
+        {
+          path: 'add',
+          name: 'ServiceAdd',
+          component: ServiceAdd
+        },
+        {
+          path: 'list',
+          name: 'ServiceList',
+          component: ServiceList
+        },
+      ]
     },
     {
       path: '/about',

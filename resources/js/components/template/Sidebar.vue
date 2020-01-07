@@ -123,16 +123,15 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <router-link to="/services" class="nav-link">
+                <router-link to="/services/add" class="nav-link">
                   <i class="nav-icon fa fa-hand-holding-usd"></i>
                   Add Service
                 </router-link>
               </li>
-
               <li class="nav-item">
-                <router-link to="/services" class="nav-link">
+                <router-link to="/services/list" class="nav-link">
                   <i class="nav-icon fa fa-hand-holding-usd"></i>
-                  Edit Service
+                  Show Services
                 </router-link>
               </li>
             </ul>

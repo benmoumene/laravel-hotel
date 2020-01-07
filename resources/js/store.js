@@ -106,6 +106,8 @@ export default new Vuex.Store({
                     context.commit('SET_CUSTOMERS', data['customers']);
                     // Settings
                     context.commit('SET_SETTINGS', data['settings']);
+                    // Services
+                    context.commit('SET_SERVICES', data['services']);
                     // Reservations
                     context.commit('SET_RESERVATIONS', data['reservations']);
                     // Rooms
@@ -118,7 +120,7 @@ export default new Vuex.Store({
                 window.location.href = '/login';
             });
         },
-        addCustomer(context, reservation) {
+        addReservation(context, reservation) {
             axios.post("http://127.0.0.1:8000/reservations/", {
                 reservation
             }).then(function (response) {
@@ -245,6 +247,53 @@ export default new Vuex.Store({
         editSetting(context, setting) {
             axios.post("http://127.0.0.1:8000/settings/" + setting.id, {
                 setting,
+                _method: "put"
+            }).then(function (response) {
+                // Si el request tuvo exito (codigo 200)
+                if (response.status == 200) {
+                    // Agregamos una nueva conversacion si existe el objeto
+                    if (response['data'].length == 0) {
+                        return;
+                    }
+                    console.log('success');
+                }
+            });
+        },
+        addService(context, service) {
+            axios.post("http://127.0.0.1:8000/services/", {
+                service
+            }).then(function (response) {
+                // Si el request tuvo exito (codigo 200)
+                if (response.status == 200) {
+                    // Agregamos una nueva conversacion si existe el objeto
+                    if (response['data'].length == 0) {
+                        return;
+                    }
+
+                    var newCustomer = response['data']['customer'];
+                    context.commit('ADD_CUSTOMER', newCustomer);
+                }
+            });
+        },
+        editService(context, service) {
+            axios.post("http://127.0.0.1:8000/services/" + service.id, {
+                service,
+                _method: "put"
+            }).then(function (response) {
+                // Si el request tuvo exito (codigo 200)
+                if (response.status == 200) {
+                    // Agregamos una nueva conversacion si existe el objeto
+                    if (response['data'].length == 0) {
+                        return;
+                    }
+                    // console.log('success');
+                }
+            });
+        },
+        uploadAvatar(context, avatar) {
+            return console.log("uploading");
+            axios.post("http://127.0.0.1:8000/users/" + appUser.id, {
+                avatar,
                 _method: "put"
             }).then(function (response) {
                 // Si el request tuvo exito (codigo 200)

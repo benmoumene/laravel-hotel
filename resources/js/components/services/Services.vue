@@ -5,7 +5,7 @@
 </template>
 <script>
 export default {
-  name: "Hello",
+  name: "Services",
   methods: {},
   computed: {},
   components: {},
