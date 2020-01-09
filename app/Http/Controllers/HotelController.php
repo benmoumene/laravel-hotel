@@ -33,7 +33,7 @@ class HotelController extends Controller
         $data['customers'] = Customer::all();
         $data['reservations'] = Reservation::all();
         $data['services'] = Service::all();
-        $data['rooms'] = Room::all();
+        $data['rooms'] = Room::with('reservations')->get();
         $data['settings'] = Setting::all();
         return response()->json($data, 200);
     }

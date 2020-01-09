@@ -3492,7 +3492,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       roomTypes: ["single", "double", "suite"],
       hotelFloors: ["1F", "2F", "3F"],
       fromDate: this.getTodayDate(),
-      toDate: this.getTodayDate(),
+      toDate: null,
       selectedRoom: {},
       selectedReservation: {}
     };
@@ -3514,8 +3514,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     makeReservation: function makeReservation() {},
     cancelReservation: function cancelReservation() {},
     isAvailabe: function isAvailabe(roomId) {
-      var room = this.reservations.find(function (reservation) {
-        return reservation.room_id === roomId;
+      var room = this.filteredRooms.find(function (room) {
+        return room.id === roomId;
       });
 
       if (typeof room === "undefined") {
@@ -3523,11 +3523,55 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }
 
       return true;
+    },
+    applyFilters: function applyFilters(room) {
+      if (room.type == this.roomType && room.floor == this.hotelFloor) {
+        var _iteratorNormalCompletion = true;
+        var _didIteratorError = false;
+        var _iteratorError = undefined;
+
+        try {
+          for (var _iterator = room.reservations[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+            /*
+            if (this.fromDate > reservation.check_in) {
+              if (reservation.check_out !== null && this.toDate !== null) {
+                if (this.toDate < reservation.check_out) {
+                  return false;
+                }
+              }
+            }
+            */
+
+            var reservation = _step.value;
+          }
+        } catch (err) {
+          _didIteratorError = true;
+          _iteratorError = err;
+        } finally {
+          try {
+            if (!_iteratorNormalCompletion && _iterator["return"] != null) {
+              _iterator["return"]();
+            }
+          } finally {
+            if (_didIteratorError) {
+              throw _iteratorError;
+            }
+          }
+        }
+
+        return true;
+      }
+
+      return false;
     }
   },
-  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])(["rooms", "reservations"]), {
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])(["rooms"]), {
     filteredRooms: function filteredRooms() {
-      return this.rooms;
+      var _this = this;
+
+      return this.rooms.filter(function (room) {
+        return _this.applyFilters(room);
+      });
     }
   }),
   components: {},
@@ -72755,7 +72799,7 @@ var render = function() {
               ],
               key: room.id,
               staticClass: "room",
-              class: [_vm.isAvailabe(room.id) ? "occupied" : "available"],
+              class: [_vm.isAvailabe(room.id) ? "available" : "occupied"],
               on: { click: _vm.showInfo }
             },
             [_vm._v(_vm._s(room.name))]
