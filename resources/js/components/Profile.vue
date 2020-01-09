@@ -24,7 +24,13 @@
         </b-row>
       </b-col>
       <b-col cols="4">
-        <img class="avatar" :src="avatarPath" @click="chooseAvatar" />
+        <b-row>
+          <img class="avatar" :src="avatarPath" @click="chooseAvatar" />
+          <b-form-file v-model="image" id="fileChooser" class="mt-3 hidden" plain></b-form-file>
+        </b-row>
+        <b-row>
+          <b-button variant="success" @click="uploadAvatar">UPLOAD</b-button>
+        </b-row>
       </b-col>
     </b-row>
   </b-container>
@@ -33,9 +39,20 @@
 import { mapState } from "vuex";
 export default {
   name: "Profile",
+  data: function() {
+    return {
+      image: null
+    };
+  },
   methods: {
     chooseAvatar() {
-      console.log("choose your avatar!");
+      var chooser = document.getElementById("fileChooser");
+      chooser.click();
+    },
+    uploadAvatar() {
+      if (this.image !== null) {
+        this.$store.dispatch("uploadAvatar", this.image);
+      }
     }
   },
   computed: {
@@ -51,7 +68,10 @@ export default {
 <style scoped>
 .avatar {
   padding: 5px;
-  max-width: 30em;
-  max-height: 30em;
+  max-width: 15em;
+  max-height: 15em;
+}
+.hidden {
+  display: none;
 }
 </style>

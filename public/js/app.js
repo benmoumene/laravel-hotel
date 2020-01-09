@@ -2094,9 +2094,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Profile",
@@ -2106,32 +2103,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     };
   },
   methods: {
-    onImageChange: function onImageChange(e) {
-      var files = e.target.files || e.dataTransfer.files;
-      if (!files.length) return;
-      this.createImage(files[0]);
-    },
-    createImage: function createImage(file) {
-      var reader = new FileReader();
-      var vm = this;
-
-      reader.onload = function (e) {
-        vm.image = e.target.result;
-      };
-
-      reader.readAsDataURL(file);
-    },
     chooseAvatar: function chooseAvatar() {
       var chooser = document.getElementById("fileChooser");
       chooser.click();
     },
     uploadAvatar: function uploadAvatar() {
-      if (this.image === null) {
-        return;
+      if (this.image !== null) {
+        this.$store.dispatch("uploadAvatar", this.image);
       }
-
-      console.log(this.image);
-      this.$store.dispatch("uploadAvatar", this.image);
     }
   },
   computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])(["appUser"]), {
@@ -37872,7 +37851,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.avatar[data-v-3bd692e4] {\n  padding: 5px;\n  max-width: 30em;\n  max-height: 30em;\n}\n.hidden[data-v-3bd692e4] {\n  display: none;\n}\n", ""]);
+exports.push([module.i, "\n.avatar[data-v-3bd692e4] {\n  padding: 5px;\n  max-width: 15em;\n  max-height: 15em;\n}\n.hidden[data-v-3bd692e4] {\n  display: none;\n}\n", ""]);
 
 // exports
 
@@ -70458,41 +70437,43 @@ var render = function() {
             "b-col",
             { attrs: { cols: "4" } },
             [
-              _c("input", {
-                staticClass: "form-control",
-                attrs: { type: "file" },
-                on: { change: _vm.onImageChange }
-              }),
-              _vm._v(" "),
-              _c("img", {
-                staticClass: "avatar",
-                attrs: { src: _vm.avatarPath },
-                on: { click: _vm.chooseAvatar }
-              }),
-              _vm._v(" "),
-              _c("b-form-file", {
-                staticClass: "mt-3",
-                attrs: {
-                  accept: "image/jpeg, image/png",
-                  id: "fileChooser",
-                  plain: ""
-                },
-                model: {
-                  value: _vm.image,
-                  callback: function($$v) {
-                    _vm.image = $$v
-                  },
-                  expression: "image"
-                }
-              }),
+              _c(
+                "b-row",
+                [
+                  _c("img", {
+                    staticClass: "avatar",
+                    attrs: { src: _vm.avatarPath },
+                    on: { click: _vm.chooseAvatar }
+                  }),
+                  _vm._v(" "),
+                  _c("b-form-file", {
+                    staticClass: "mt-3 hidden",
+                    attrs: { id: "fileChooser", plain: "" },
+                    model: {
+                      value: _vm.image,
+                      callback: function($$v) {
+                        _vm.image = $$v
+                      },
+                      expression: "image"
+                    }
+                  })
+                ],
+                1
+              ),
               _vm._v(" "),
               _c(
-                "b-button",
-                {
-                  attrs: { variant: "success" },
-                  on: { click: _vm.uploadAvatar }
-                },
-                [_vm._v("UPLOAD")]
+                "b-row",
+                [
+                  _c(
+                    "b-button",
+                    {
+                      attrs: { variant: "success" },
+                      on: { click: _vm.uploadAvatar }
+                    },
+                    [_vm._v("UPLOAD")]
+                  )
+                ],
+                1
               )
             ],
             1
@@ -93028,7 +93009,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_reservations_Reservations_vue__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ./components/reservations/Reservations.vue */ "./resources/js/components/reservations/Reservations.vue");
 /* harmony import */ var _components_reservations_ReservationsRouter_vue__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ./components/reservations/ReservationsRouter.vue */ "./resources/js/components/reservations/ReservationsRouter.vue");
 /* harmony import */ var _components_services_Services_vue__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! ./components/services/Services.vue */ "./resources/js/components/services/Services.vue");
-/* harmony import */ var _components_services_ServiceAdd_vue__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! ./components/services/ServiceAdd.vue */ "./resources/js/components/services/ServiceAdd.vue");
+/* harmony import */ var _components_services_ServiceAdd_vue__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! ./components/services/ServiceAdd.vue */ "./resources/js/components/services/ServiceAdd.vue");
 /* harmony import */ var _components_services_ServiceList_vue__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! ./components/services/ServiceList.vue */ "./resources/js/components/services/ServiceList.vue");
 /* harmony import */ var _components_services_ServiceRouter_vue__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! ./components/services/ServiceRouter.vue */ "./resources/js/components/services/ServiceRouter.vue");
 
@@ -93147,7 +93128,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_router__WEBPACK_IMPORTED_MODU
     }, {
       path: 'add',
       name: 'ServiceAdd',
-      component: _components_services_ServiceAdd_vue__WEBPACK_IMPORTED_MODULE_28__["default"]
+      component: _components_services_ServiceAdd_vue__WEBPACK_IMPORTED_MODULE_25__["default"]
     }, {
       path: 'list',
       name: 'ServiceList',
@@ -93498,11 +93479,14 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
       });
     },
     uploadAvatar: function uploadAvatar(context, avatar) {
-      return console.log("uploading");
-      axios.post("http://127.0.0.1:8000/users/" + appUser.id, {
-        avatar: avatar,
-        _method: "put"
-      }).then(function (response) {
+      //return console.log("uploading");
+      //return console.log(context.state.appUser.id);
+      var userId = context.state.appUser.id;
+      console.log(avatar);
+      var fd = new FormData();
+      fd.append('image', avatar);
+      fd.append('_method', 'put');
+      axios.post("http://127.0.0.1:8000/users/" + userId, fd).then(function (response) {
         // Si el request tuvo exito (codigo 200)
         if (response.status == 200) {
           // Agregamos una nueva conversacion si existe el objeto
@@ -93510,7 +93494,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
             return;
           }
 
-          console.log('success');
+          context.state.appUser.avatar_filename = response['data']['avatar'];
         }
       });
     }

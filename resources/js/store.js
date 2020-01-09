@@ -291,18 +291,22 @@ export default new Vuex.Store({
             });
         },
         uploadAvatar(context, avatar) {
-            return console.log("uploading");
-            axios.post("http://127.0.0.1:8000/users/" + appUser.id, {
-                avatar,
-                _method: "put"
-            }).then(function (response) {
+            //return console.log("uploading");
+            //return console.log(context.state.appUser.id);
+            var userId = context.state.appUser.id;
+            console.log(avatar);
+            var fd = new FormData();
+            fd.append('image', avatar);
+            fd.append('_method', 'put');
+            axios.post("http://127.0.0.1:8000/users/" + userId, fd).then(function (response) {
                 // Si el request tuvo exito (codigo 200)
                 if (response.status == 200) {
                     // Agregamos una nueva conversacion si existe el objeto
                     if (response['data'].length == 0) {
                         return;
                     }
-                    console.log('success');
+
+                    context.state.appUser.avatar_filename = response['data']['avatar'];
                 }
             });
         },

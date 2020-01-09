@@ -42,7 +42,7 @@ Route::put('/room/{room_id}', 'RoomController@update');
 Route::put('/settings/{setting_id}', 'SettingController@update');
 
 // Actualizar Avatar
-Route::put('/users/{user_id}', 'UserAvatarController@update');
+Route::put('/users/{user_id}', 'ProfileController@update');
 
 // Nuevo servicio
 Route::post('/services', 'ServiceController@store');
