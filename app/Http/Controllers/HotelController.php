@@ -10,6 +10,7 @@ use App\Room;
 use App\Reservation;
 use App\Setting;
 use App\Service;
+use App\InventoryItem;
 
 class HotelController extends Controller
 {
@@ -35,6 +36,7 @@ class HotelController extends Controller
         $data['services'] = Service::all();
         $data['rooms'] = Room::with('reservations')->get();
         $data['settings'] = Setting::all();
+        $data['inventory'] = InventoryItem::all();
         return response()->json($data, 200);
     }
 }

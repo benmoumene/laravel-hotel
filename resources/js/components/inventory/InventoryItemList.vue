@@ -57,7 +57,7 @@
       show-empty
       small
       stacked="md"
-      :items="customers"
+      :items="inventory"
       :fields="fields"
       :current-page="currentPage"
       :per-page="perPage"
@@ -68,19 +68,20 @@
       :sort-direction="sortDirection"
       @filtered="onFiltered"
     >
+      <template v-slot:cell(name)="row">
+        <b-form-input v-model="row.item.name"></b-form-input>
+      </template>
+
+      <template v-slot:cell(quantity)="row">
+        <b-form-input v-model="row.item.quantity"></b-form-input>
+      </template>
+
+      <template v-slot:cell(description)="row">
+        <b-form-input v-model="row.item.description"></b-form-input>
+      </template>
+
       <template v-slot:cell(actions)="row">
-        <router-link :to="{path: row.item.id +'/edit'}" class="nav-link">
-          <i class="nav-icon fa fa-bed"></i>
-          Edit Customer
-        </router-link>
-        <router-link
-          :to="{path: '/reservations/' + row.item.id +'/new'}"
-          class="nav-link"
-        >New Reservation</router-link>
-        <router-link
-          :to="{path: '/reservations/' + row.item.id +'/show'}"
-          class="nav-link"
-        >Show Reservations</router-link>
+        <b-button variant="info" @click="updateItem(row.item)">Update</b-button>
       </template>
     </b-table>
   </b-container>
@@ -88,39 +89,33 @@
 <script>
 import { mapState } from "vuex";
 export default {
-  name: "CustomerList",
+  name: "InventoryItemList",
   data: function() {
     return {
       fields: [
         {
-          key: "first_name",
-          label: "First Name",
+          key: "name",
+          label: "Name",
           sortable: true,
           sortDirection: "desc"
         },
         {
-          key: "last_name",
-          label: "Last Name",
-          sortable: true,
+          key: "quantity",
+          label: "Quantity",
+          sortable: false,
           sortDirection: "desc"
         },
         {
-          key: "phone",
-          label: "phone",
-          sortable: true,
-          class: "text-center"
-        },
-        {
-          key: "document_id",
-          label: "Document Id",
-          sortable: true,
+          key: "description",
+          label: "Description",
+          sortable: false,
           class: "text-center"
         },
         { key: "actions", label: "Actions" }
       ],
       currentPage: 1,
-      perPage: 5,
-      pageOptions: [5, 10, 15],
+      perPage: 20,
+      pageOptions: [5, 10, 15, 20, 25, 50],
       sortBy: "",
       sortDesc: false,
       sortDirection: "asc",
@@ -129,6 +124,9 @@ export default {
     };
   },
   methods: {
+    updateItem(item) {
+      this.$store.dispatch("editInventoryItem", item);
+    },
     onFiltered(filteredItems) {
       // Trigger pagination to update the number of buttons/pages due to filtering
       this.totalRows = filteredItems.length;
@@ -136,7 +134,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(["customers"]),
+    ...mapState(["inventory"]),
     sortOptions() {
       // Create an options list from our fields
       return this.fields
@@ -146,7 +144,7 @@ export default {
         });
     },
     totalRows() {
-      return this.customers.length;
+      return this.inventory.length;
     }
   },
   mounted() {},

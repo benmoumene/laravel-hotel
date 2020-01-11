@@ -155,20 +155,22 @@
                 <p>
                   Inventory
                   <i class="fa fa-angle-left right"></i>
-                  <span class="badge badge-danger right">Low Stock!</span>
                 </p>
               </a>
               <ul class="nav nav-treeview">
                 <li class="nav-item">
-                  <router-link to="/inventory" class="nav-link">
+                  <router-link to="/inventory/add" class="nav-link">
                     <i class="nav-icon fa fa-shopping-cart"></i>
-                    Stock
+                    Add Item
                   </router-link>
                 </li>
                 <li class="nav-item">
-                  <router-link to="/inventory" class="nav-link">
+                  <router-link to="/inventory/list" class="nav-link">
                     <i class="nav-icon fa fa-shopping-cart"></i>
-                    Inventory
+                    Inventory Items
+                    <span
+                      class="badge badge-danger right"
+                    >Low Stock!</span>
                   </router-link>
                 </li>
               </ul>

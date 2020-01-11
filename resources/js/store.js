@@ -11,7 +11,8 @@ export default new Vuex.Store({
         guests: [],
         rooms: [],
         services: [],
-        settings: []
+        settings: [],
+        inventory: []
     },
     getters: {
         getGuest: (state, getters) => (clientId) => {
@@ -69,6 +70,9 @@ export default new Vuex.Store({
         SET_RESERVATIONS(state, reservations) {
             state.reservations = reservations;
         },
+        SET_INVENTORY(state, items) {
+            state.inventory = items;
+        },
         // Agrega un usuario a people
         ADD_GUEST(state, guest) {
             state.guests.push(guest);
@@ -81,6 +85,9 @@ export default new Vuex.Store({
         },
         ADD_RESERVATION(state, reservation) {
             state.reservation.push(reservation);
+        },
+        ADD_INVENTORY_ITEM(state, item) {
+            state.inventory.push(item);
         },
     },
     actions: {
@@ -110,6 +117,8 @@ export default new Vuex.Store({
                     context.commit('SET_SERVICES', data['services']);
                     // Reservations
                     context.commit('SET_RESERVATIONS', data['reservations']);
+                    // Inventory
+                    context.commit('SET_INVENTORY', data['inventory']);
                     // Rooms
                     context.commit('SET_ROOMS', data['rooms']);
                 }
@@ -278,6 +287,37 @@ export default new Vuex.Store({
         editService(context, service) {
             axios.post("http://127.0.0.1:8000/services/" + service.id, {
                 service,
+                _method: "put"
+            }).then(function (response) {
+                // Si el request tuvo exito (codigo 200)
+                if (response.status == 200) {
+                    // Agregamos una nueva conversacion si existe el objeto
+                    if (response['data'].length == 0) {
+                        return;
+                    }
+                    // console.log('success');
+                }
+            });
+        },
+        addInventoryItem(context, item) {
+            axios.post("http://127.0.0.1:8000/inventory/", {
+                item
+            }).then(function (response) {
+                // Si el request tuvo exito (codigo 200)
+                if (response.status == 200) {
+                    // Agregamos una nueva conversacion si existe el objeto
+                    if (response['data'].length == 0) {
+                        return;
+                    }
+
+                    var newItem = response['data']['item'];
+                    context.commit('ADD_INVENTORY_ITEM', newItem);
+                }
+            });
+        },
+        editInventoryItem(context, item) {
+            axios.post("http://127.0.0.1:8000/inventory/" + item.id, {
+                item,
                 _method: "put"
             }).then(function (response) {
                 // Si el request tuvo exito (codigo 200)

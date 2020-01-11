@@ -6,7 +6,6 @@ import Dashboard from './components/template/Dashboard.vue'
 import Billing from './components/Billing.vue'
 import Profile from './components/Profile.vue'
 import About from './components/About.vue'
-import Inventory from './components/Inventory.vue'
 import Payments from './components/Payments.vue'
 import Settings from './components/Settings.vue'
 
@@ -29,10 +28,13 @@ import RoomAvailability from './components/rooms/RoomAvailability.vue'
 import Reservations from './components/reservations/Reservations.vue'
 import ReservationsRouter from './components/reservations/ReservationsRouter.vue'
 
-import Services from './components/services/Services.vue'
 import ServiceAdd from './components/services/ServiceAdd.vue'
 import ServiceList from './components/services/ServiceList.vue'
 import ServicesRouter from './components/services/ServiceRouter.vue'
+
+import InventoryItemAdd from './components/inventory/InventoryItemAdd.vue'
+import InventoryItemList from './components/inventory/InventoryItemList.vue'
+import InventoryRouter from './components/inventory/InventoryRouter.vue'
 
 export default new VueRouter({
   routes: [
@@ -135,11 +137,6 @@ export default new VueRouter({
       path: '/services', component: ServicesRouter,
       children: [
         {
-          path: '',
-          name: 'Services',
-          component: Services
-        },
-        {
           path: 'add',
           name: 'ServiceAdd',
           component: ServiceAdd
@@ -152,14 +149,24 @@ export default new VueRouter({
       ]
     },
     {
+      path: '/inventory', component: InventoryRouter,
+      children: [
+        {
+          path: 'add',
+          name: 'InventoryItemAdd',
+          component: InventoryItemAdd
+        },
+        {
+          path: 'list',
+          name: 'InventoryItemList',
+          component: InventoryItemList
+        },
+      ]
+    },
+    {
       path: '/about',
       name: 'About',
       component: About
-    },
-    {
-      path: '/inventory',
-      name: 'Inventory',
-      component: Inventory
     },
     {
       path: '/settings',

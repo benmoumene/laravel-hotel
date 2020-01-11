@@ -48,3 +48,8 @@ Route::put('/users/{user_id}', 'ProfileController@update');
 Route::post('/services', 'ServiceController@store');
 // Actualizar servicio
 Route::put('/services/{service_id}', 'ServiceController@update');
+
+// Nuevo Item de inventario
+Route::post('/inventory', 'InventoryController@store');
+// Actualizar item
+Route::put('/inventory/{item_id}', 'InventoryController@update');
