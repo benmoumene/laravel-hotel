@@ -2,21 +2,21 @@
   <b-container fluid>
     <b-form-group>
       <b-form inline>
-        <label class="col-3">item Name</label>
+        <label class="col-3">Item Name</label>
         <b-input class="col-3" placeholder="001" v-model="item.name"></b-input>
       </b-form>
     </b-form-group>
 
     <b-form-group>
       <b-form inline>
-        <label class="col-3">item cost</label>
+        <label class="col-3">Quantity</label>
         <b-input class="col-3" placeholder="10.01" v-model="item.quantity"></b-input>
       </b-form>
     </b-form-group>
 
     <b-form-group>
       <b-form inline>
-        <label class="col-3">item Comments</label>
+        <label class="col-3">Description</label>
         <b-input class="col-3" placeholder="..." v-model="item.description"></b-input>
       </b-form>
     </b-form-group>
