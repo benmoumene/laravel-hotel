@@ -18,11 +18,12 @@ class CreateInvoicesTable extends Migration
     {
         Schema::create('invoices', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('reservation_id');
+            $table->unsignedBigInteger('guest_id');
             $table->decimal('total');
             $table->enum('status', ['pending', 'success'])->default('pending');
             $table->enum('payment_method', ['', 'cash', 'credit_card'])->default('');
-            $table->foreign('reservation_id')->references('id')->on('reservations')->onDelete('CASCADE');
+            $table->timestamp('generated_on');
+            $table->foreign('guest_id')->references('id')->on('guests')->onDelete('CASCADE');
         });
     }
 
