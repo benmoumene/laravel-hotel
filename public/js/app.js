@@ -72552,7 +72552,7 @@ var render = function() {
             "b-form",
             { attrs: { inline: "" } },
             [
-              _c("label", { staticClass: "col-3" }, [_vm._v("item Name")]),
+              _c("label", { staticClass: "col-3" }, [_vm._v("Item Name")]),
               _vm._v(" "),
               _c("b-input", {
                 staticClass: "col-3",
@@ -72579,7 +72579,7 @@ var render = function() {
             "b-form",
             { attrs: { inline: "" } },
             [
-              _c("label", { staticClass: "col-3" }, [_vm._v("item cost")]),
+              _c("label", { staticClass: "col-3" }, [_vm._v("Quantity")]),
               _vm._v(" "),
               _c("b-input", {
                 staticClass: "col-3",
@@ -72606,7 +72606,7 @@ var render = function() {
             "b-form",
             { attrs: { inline: "" } },
             [
-              _c("label", { staticClass: "col-3" }, [_vm._v("item Comments")]),
+              _c("label", { staticClass: "col-3" }, [_vm._v("Description")]),
               _vm._v(" "),
               _c("b-input", {
                 staticClass: "col-3",
@@ -94126,6 +94126,9 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
     ADD_CUSTOMER: function ADD_CUSTOMER(state, customer) {
       state.customers.push(customer);
     },
+    ADD_SERVICE: function ADD_SERVICE(state, service) {
+      state.services.push(service);
+    },
     ADD_ROOM: function ADD_ROOM(state, room) {
       state.rooms.push(room);
     },
@@ -94324,8 +94327,8 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
             return;
           }
 
-          var newCustomer = response['data']['customer'];
-          context.commit('ADD_CUSTOMER', newCustomer);
+          var newService = response['data']['service'];
+          context.commit('ADD_SERVICE', newService);
         }
       });
     },

@@ -80,6 +80,9 @@ export default new Vuex.Store({
         ADD_CUSTOMER(state, customer) {
             state.customers.push(customer);
         },
+        ADD_SERVICE(state, service) {
+            state.services.push(service);
+        },
         ADD_ROOM(state, room) {
             state.rooms.push(room);
         },
@@ -279,8 +282,8 @@ export default new Vuex.Store({
                         return;
                     }
 
-                    var newCustomer = response['data']['customer'];
-                    context.commit('ADD_CUSTOMER', newCustomer);
+                    var newService = response['data']['service'];
+                    context.commit('ADD_SERVICE', newService);
                 }
             });
         },
