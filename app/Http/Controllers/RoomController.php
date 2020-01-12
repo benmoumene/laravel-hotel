@@ -48,29 +48,9 @@ class RoomController extends Controller
         $room->type = $request['room']['type'];
         $room->floor = $request['room']['floor'];
         $room->save();
+
+        $room['reservations'] = array();
         return response()->json(['room' => $room], 200);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
     }
 
     /**
