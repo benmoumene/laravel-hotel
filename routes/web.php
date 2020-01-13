@@ -38,8 +38,8 @@ Route::post('/room', 'RoomController@store');
 // Actualizar Habitacion
 Route::put('/room/{room_id}', 'RoomController@update');
 
-// Actualizar setting
-Route::put('/settings/{setting_id}', 'SettingController@update');
+// Actualizar setting (middleware admin)
+Route::put('/settings/{setting_id}', 'SettingController@update')->middleware('role:admin');
 
 // Actualizar Avatar
 Route::put('/users/{user_id}', 'ProfileController@update');
