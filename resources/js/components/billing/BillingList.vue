@@ -68,6 +68,11 @@
       :sort-direction="sortDirection"
       @filtered="onFiltered"
     >
+      <template v-slot:cell(status)="row">
+        <b-badge
+          :variant="row.item.status == 'success' ? 'success' : 'danger'"
+        >{{ row.item.status }}</b-badge>
+      </template>
       <template v-slot:cell(actions)="row">
         <router-link :to="{path: '/billing/' + row.item.id +'/show'}" class="nav-link">View Invoice</router-link>
       </template>

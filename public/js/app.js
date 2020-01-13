@@ -2642,6 +2642,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "CustomerList",
@@ -71961,6 +71966,23 @@ var render = function() {
           filtered: _vm.onFiltered
         },
         scopedSlots: _vm._u([
+          {
+            key: "cell(status)",
+            fn: function(row) {
+              return [
+                _c(
+                  "b-badge",
+                  {
+                    attrs: {
+                      variant:
+                        row.item.status == "success" ? "success" : "danger"
+                    }
+                  },
+                  [_vm._v(_vm._s(row.item.status))]
+                )
+              ]
+            }
+          },
           {
             key: "cell(actions)",
             fn: function(row) {
