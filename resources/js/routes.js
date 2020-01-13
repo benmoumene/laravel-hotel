@@ -2,12 +2,14 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 Vue.use(VueRouter)
 
-import Dashboard from './components/template/Dashboard.vue'
-import Billing from './components/Billing.vue'
+import Dashboard from './components/Dashboard.vue'
 import Profile from './components/Profile.vue'
 import About from './components/About.vue'
-import Payments from './components/Payments.vue'
 import Settings from './components/Settings.vue'
+
+import BillingRouter from './components/billing/BillingRouter.vue'
+import BillingEdit from './components/billing/BillingEdit.vue'
+import BillingList from './components/billing/BillingList.vue'
 
 import CustomerRouter from './components/customers/CustomerRouter.vue'
 import CustomerAdd from './components/customers/CustomerAdd.vue'
@@ -130,9 +132,19 @@ export default new VueRouter({
       ]
     },
     {
-      path: '/billing',
-      name: 'Billing',
-      component: Billing
+      path: '/billing', component: BillingRouter,
+      children: [
+        {
+          path: 'edit',
+          name: 'BillingEdit',
+          component: BillingEdit
+        },
+        {
+          path: 'list',
+          name: 'BillingList',
+          component: BillingList
+        },
+      ]
     },
     {
       path: '/services', component: ServiceRouter,
@@ -173,11 +185,6 @@ export default new VueRouter({
       path: '/settings',
       name: 'Settings',
       component: Settings
-    },
-    {
-      path: '/payments',
-      name: 'Payments',
-      component: Payments
     },
     {
       path: '/profile',

@@ -12,6 +12,7 @@ export default new Vuex.Store({
         rooms: [],
         services: [],
         settings: [],
+        invoices: [],
         inventory: []
     },
     getters: {
@@ -73,6 +74,9 @@ export default new Vuex.Store({
         SET_INVENTORY(state, items) {
             state.inventory = items;
         },
+        SET_INVOICES(state, invoices) {
+            state.invoices = invoices;
+        },
         // Agrega un usuario a people
         ADD_GUEST(state, guest) {
             state.guests.push(guest);
@@ -120,6 +124,8 @@ export default new Vuex.Store({
                     context.commit('SET_SERVICES', data['services']);
                     // Reservations
                     context.commit('SET_RESERVATIONS', data['reservations']);
+                    // Invoices
+                    context.commit('SET_INVOICES', data['invoices']);
                     // Inventory
                     context.commit('SET_INVENTORY', data['inventory']);
                     // Rooms

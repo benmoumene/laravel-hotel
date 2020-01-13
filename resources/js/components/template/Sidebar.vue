@@ -186,17 +186,10 @@
               </a>
               <ul class="nav nav-treeview">
                 <li class="nav-item">
-                  <router-link to="/billing" class="nav-link">
+                  <router-link to="/billing/list" class="nav-link">
                     <i class="nav-icon fa fa-file-invoice-dollar"></i>
                     Invoices List
                     <span class="right badge badge-danger">New</span>
-                  </router-link>
-                </li>
-                <li class="nav-item">
-                  <router-link to="/billing" class="nav-link">
-                    <i class="nav-icon fa fa-file-invoice-dollar"></i>
-                    Pending Invoices
-                    <span class="right badge badge-danger">6</span>
                   </router-link>
                 </li>
               </ul>

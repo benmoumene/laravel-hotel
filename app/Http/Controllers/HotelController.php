@@ -11,6 +11,7 @@ use App\Reservation;
 use App\Setting;
 use App\Service;
 use App\InventoryItem;
+use App\Invoice;
 
 class HotelController extends Controller
 {
@@ -37,6 +38,7 @@ class HotelController extends Controller
         $data['rooms'] = Room::with('reservations')->get();
         $data['settings'] = Setting::all();
         $data['inventory'] = InventoryItem::all();
+        $data['invoices'] = Invoice::all();
         return response()->json($data, 200);
     }
 }
