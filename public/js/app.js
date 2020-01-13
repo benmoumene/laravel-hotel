@@ -38396,7 +38396,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n.nav-treeview li[data-v-b095751c] {\n  padding-left: 20px;\n}\n.user-panel img[data-v-b095751c] {\n  padding: 0.4rem;\n  width: 100%;\n}\nnav .nav-link.router-link-exact-active[data-v-b095751c] {\n  background-color: rgba(255, 255, 255, 0.1);\n  cursor: pointer;\n  color: #fff;\n}\n", ""]);
+exports.push([module.i, "\n.nav-treeview li[data-v-b095751c] {\n  padding-left: 10px;\n}\n.user-panel img[data-v-b095751c] {\n  padding: 0.4rem;\n  width: 100%;\n}\nnav .nav-link.router-link-exact-active[data-v-b095751c] {\n  background-color: rgba(255, 255, 255, 0.1);\n  cursor: pointer;\n  color: #fff;\n}\n", ""]);
 
 // exports
 
@@ -75242,10 +75242,11 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "b-container",
-    { attrs: { fluid: "" } },
+    { staticClass: "p-0", attrs: { fluid: "" } },
     [
       _c(
         "b-row",
+        { staticClass: "m-0" },
         [
           _c("b-col", { staticClass: "brand-link" }, [
             _c("a", { attrs: { href: "#" } }, [
@@ -75260,7 +75261,7 @@ var render = function() {
       _vm._v(" "),
       _c(
         "b-row",
-        { staticClass: "user-panel" },
+        { staticClass: "user-panel m-0" },
         [
           _c(
             "b-col",
@@ -75298,9 +75299,9 @@ var render = function() {
       _vm._v(" "),
       _c(
         "b-row",
-        { staticClass: "sidebar" },
+        { staticClass: "sidebar m-0" },
         [
-          _c("b-col", [
+          _c("b-col", { staticClass: "p-0" }, [
             _c("nav", { staticClass: "mt-2" }, [
               _c(
                 "ul",

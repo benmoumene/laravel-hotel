@@ -1,6 +1,6 @@
 <template>
-  <b-container fluid>
-    <b-row>
+  <b-container fluid class="p-0">
+    <b-row class="m-0">
       <b-col class="brand-link">
         <!-- Brand Logo -->
         <a href="#">
@@ -9,7 +9,7 @@
       </b-col>
     </b-row>
 
-    <b-row class="user-panel">
+    <b-row class="user-panel m-0">
       <b-col cols="4" class="pull-left image">
         <img :src="avatarPath" class="img-circle" alt="User Image" />
       </b-col>
@@ -24,8 +24,8 @@
     </b-row>
 
     <!-- Sidebar -->
-    <b-row class="sidebar">
-      <b-col>
+    <b-row class="sidebar m-0">
+      <b-col class="p-0">
         <!-- Sidebar Menu -->
         <nav class="mt-2">
           <ul
@@ -257,7 +257,7 @@ export default {
 </script>
 <style scoped>
 .nav-treeview li {
-  padding-left: 20px;
+  padding-left: 10px;
 }
 .user-panel img {
   padding: 0.4rem;
