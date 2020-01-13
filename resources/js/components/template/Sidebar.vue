@@ -35,7 +35,7 @@
             data-accordion="false"
           >
             <li class="nav-item">
-              <router-link to="/" class="nav-link">
+              <router-link to="/" class="nav-link" exact>
                 <i class="nav-icon fa fa-tachometer-alt"></i>
                 Dashboard
               </router-link>
@@ -50,15 +50,15 @@
               </a>
               <ul class="nav nav-treeview">
                 <li class="nav-item">
-                  <router-link to="/customers/add" class="nav-link">
+                  <router-link to="/customer/add" class="nav-link">
                     <i class="nav-icon fa fa-user-plus"></i>
-                    New Customer
+                    Add Customer
                   </router-link>
                 </li>
                 <li class="nav-item">
-                  <router-link to="/customers/list" class="nav-link">
-                    <i class="nav-icon fa fa-user-plus"></i>
-                    Customers
+                  <router-link to="/customer/list" class="nav-link">
+                    <i class="nav-icon fa fa-search"></i>
+                    Customer List
                   </router-link>
                 </li>
               </ul>
@@ -74,15 +74,15 @@
               </a>
               <ul class="nav nav-treeview">
                 <li class="nav-item">
-                  <router-link to="/rooms/list" class="nav-link">
-                    <i class="nav-icon fa fa-bed"></i>
-                    Manage Rooms
-                  </router-link>
-                </li>
-                <li class="nav-item">
                   <router-link to="/rooms/add" class="nav-link">
                     <i class="nav-icon fa fa-bed"></i>
                     Add Room
+                  </router-link>
+                </li>
+                <li class="nav-item">
+                  <router-link to="/rooms/list" class="nav-link">
+                    <i class="nav-icon fa fa-search"></i>
+                    Room List
                   </router-link>
                 </li>
                 <li class="nav-item">
@@ -180,7 +180,7 @@
               <a href="#" class="nav-link">
                 <i class="nav-icon fa fa-wallet"></i>
                 <p>
-                  Manage Payments
+                  Billing
                   <i class="fa fa-angle-left right"></i>
                 </p>
               </a>
@@ -188,7 +188,7 @@
                 <li class="nav-item">
                   <router-link to="/billing" class="nav-link">
                     <i class="nav-icon fa fa-file-invoice-dollar"></i>
-                    Billing
+                    Invoices List
                     <span class="right badge badge-danger">New</span>
                   </router-link>
                 </li>
@@ -262,5 +262,11 @@ export default {
 .user-panel img {
   padding: 0.4rem;
   width: 100%;
+}
+
+nav .nav-link.router-link-exact-active {
+  background-color: rgba(255, 255, 255, 0.1);
+  cursor: pointer;
+  color: #fff;
 }
 </style>
