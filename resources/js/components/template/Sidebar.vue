@@ -74,13 +74,13 @@
               </a>
               <ul class="nav nav-treeview">
                 <li class="nav-item">
-                  <router-link to="/rooms/add" class="nav-link">
+                  <router-link to="/room/add" class="nav-link">
                     <i class="nav-icon fa fa-bed"></i>
                     Add Room
                   </router-link>
                 </li>
                 <li class="nav-item">
-                  <router-link to="/rooms/list" class="nav-link">
+                  <router-link to="/room/list" class="nav-link">
                     <i class="nav-icon fa fa-search"></i>
                     Room List
                   </router-link>

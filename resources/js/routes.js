@@ -9,28 +9,28 @@ import About from './components/About.vue'
 import Payments from './components/Payments.vue'
 import Settings from './components/Settings.vue'
 
-import Customer from './components/customers/Customer.vue'
+import CustomerRouter from './components/customers/CustomerRouter.vue'
 import CustomerAdd from './components/customers/CustomerAdd.vue'
 import CustomerEdit from './components/customers/CustomerEdit.vue'
 import CustomerList from './components/customers/CustomerList.vue'
 
-import Guest from './components/guests/Guest.vue'
+import GuestRouter from './components/guests/GuestRouter.vue'
 import GuestList from './components/guests/GuestList.vue'
 import GuestAdd from './components/guests/GuestAdd.vue'
 import GuestEdit from './components/guests/GuestEdit.vue'
 
-import Room from './components/rooms/Room.vue'
+import RoomRouter from './components/rooms/RoomRouter.vue'
 import RoomAdd from './components/rooms/RoomAdd.vue'
 import RoomEdit from './components/rooms/RoomEdit.vue'
 import RoomList from './components/rooms/RoomList.vue'
 import RoomAvailability from './components/rooms/RoomAvailability.vue'
 
 import Reservations from './components/reservations/Reservations.vue'
-import ReservationsRouter from './components/reservations/ReservationsRouter.vue'
+import ReservationRouter from './components/reservations/ReservationRouter.vue'
 
 import ServiceAdd from './components/services/ServiceAdd.vue'
 import ServiceList from './components/services/ServiceList.vue'
-import ServicesRouter from './components/services/ServiceRouter.vue'
+import ServiceRouter from './components/services/ServiceRouter.vue'
 
 import InventoryItemAdd from './components/inventory/InventoryItemAdd.vue'
 import InventoryItemList from './components/inventory/InventoryItemList.vue'
@@ -44,13 +44,8 @@ export default new VueRouter({
       component: Dashboard
     },
     {
-      path: '/customers', component: Customer,
+      path: '/customer', component: CustomerRouter,
       children: [
-        {
-          path: '',
-          name: 'Customer',
-          component: CustomerList
-        },
         {
           path: 'list',
           name: 'CustomerList',
@@ -59,17 +54,23 @@ export default new VueRouter({
         {
           path: 'add',
           name: 'CustomerAdd',
+          meta: {
+            title: 'Customer Add'
+          },
           component: CustomerAdd
         },
         {
           path: ':id/edit',
           name: 'CustomerEdit',
+          meta: {
+            title: 'Customer Edit'
+          },
           component: CustomerEdit
         },
       ]
     },
     {
-      path: '/guest', component: Guest,
+      path: '/guest', component: GuestRouter,
       children: [
         {
           path: 'list',
@@ -89,7 +90,7 @@ export default new VueRouter({
       ]
     },
     {
-      path: '/rooms', component: Room,
+      path: '/room', component: RoomRouter,
       children: [
         {
           path: '',
@@ -119,7 +120,7 @@ export default new VueRouter({
       ]
     },
     {
-      path: '/reservations', component: ReservationsRouter,
+      path: '/reservations', component: ReservationRouter,
       children: [
         {
           path: '',
@@ -134,7 +135,7 @@ export default new VueRouter({
       component: Billing
     },
     {
-      path: '/services', component: ServicesRouter,
+      path: '/services', component: ServiceRouter,
       children: [
         {
           path: 'add',

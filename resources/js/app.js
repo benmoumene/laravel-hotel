@@ -43,7 +43,7 @@ const app = new Vue({
     el: '#app',
     components: {},
     store: store,
-    //roomstore: roomstore,
-    //gueststore:gueststore
+    //roomStore: roomstore,
+    //guestStore:gueststore
     router: routes
 });
