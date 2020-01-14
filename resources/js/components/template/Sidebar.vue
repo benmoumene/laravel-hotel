@@ -63,7 +63,6 @@
                 </li>
               </ul>
             </li>
-
             <li class="nav-item has-treeview" v-if="isAdmin || isManager">
               <a href="#" class="nav-link">
                 <i class="nav-icon fa fa-bed"></i>
@@ -92,7 +91,7 @@
                   </router-link>
                 </li>
                 <li class="nav-item">
-                  <router-link to="/rooms/availability" class="nav-link">
+                  <router-link to="/room/availability" class="nav-link">
                     <i class="nav-icon fa fa-bed"></i>
                     Availability
                     <span class="badge badge-info right">6</span>
