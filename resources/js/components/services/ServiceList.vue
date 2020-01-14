@@ -134,7 +134,10 @@ export default {
     }
   },
   computed: {
-    ...mapState(["services"]),
+    ...mapState({
+      services: state => state.service.services
+    }),
+
     sortOptions() {
       // Create an options list from our fields
       return this.fields

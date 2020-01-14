@@ -3081,7 +3081,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.currentPage = 1;
     }
   },
-  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])(["customers"]), {
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])({
+    customers: function customers(state) {
+      return state.customer.customers;
+    }
+  }), {
     sortOptions: function sortOptions() {
       // Create an options list from our fields
       return this.fields.filter(function (f) {
@@ -3832,7 +3836,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.currentPage = 1;
     }
   },
-  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])(["inventory"]), {
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])({
+    inventory: function inventory(state) {
+      return state.inventory.items;
+    }
+  }), {
     sortOptions: function sortOptions() {
       // Create an options list from our fields
       return this.fields.filter(function (f) {
@@ -4038,16 +4046,20 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     add: function add() {
-      this.$store.dispatch("addRoom", this.room);
-      this.makeToast(true);
+      this.$store.dispatch("room/addRoom", {
+        room: this.room,
+        vm: this
+      });
     },
-    makeToast: function makeToast() {
-      var append = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
-      this.toastCount++;
-      this.$bvToast.toast("Room added", {
-        title: "BootstrapVue Toast",
+    makeToast: function makeToast(title, message) {
+      var variant = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "info";
+      this.$bvToast.toast(message, {
+        title: title,
         autoHideDelay: 5000,
-        appendToast: append
+        variant: variant,
+        solid: true,
+        toaster: "b-toaster-bottom-right",
+        appendToast: true
       });
     }
   },
@@ -4249,7 +4261,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       return false;
     }
   },
-  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])(["rooms"]), {
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])({
+    rooms: function rooms(state) {
+      return state.room.rooms;
+    }
+  }), {
     filteredRooms: function filteredRooms() {
       var _this = this;
 
@@ -4487,7 +4503,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.currentPage = 1;
     }
   },
-  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])(["rooms"]), {
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])({
+    rooms: function rooms(state) {
+      return state.room.rooms;
+    }
+  }), {
     sortOptions: function sortOptions() {
       // Create an options list from our fields
       return this.fields.filter(function (f) {
@@ -4747,7 +4767,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.currentPage = 1;
     }
   },
-  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])(["services"]), {
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])({
+    services: function services(state) {
+      return state.service.services;
+    }
+  }), {
     sortOptions: function sortOptions() {
       // Create an options list from our fields
       return this.fields.filter(function (f) {
@@ -4921,7 +4945,6 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-//
 //
 //
 //
@@ -38524,7 +38547,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n.roomList[data-v-e47c3c90] {\n  max-width: 400px;\n}\n.room[data-v-e47c3c90] {\n  padding: 5px;\n  text-align: center;\n  border: 1px solid black;\n  width: 40px;\n  max-width: 40px;\n  cursor: pointer;\n  background-color: beige;\n}\n.available[data-v-e47c3c90] {\n  background-color: greenyellow;\n}\n.occupied[data-v-e47c3c90] {\n  background-color: red;\n}\n", ""]);
+exports.push([module.i, "\n.roomList[data-v-e47c3c90] {\n  max-width: 400px;\n}\n.room[data-v-e47c3c90] {\n  padding: 5px;\n  text-align: center;\n  border: 1px solid black;\n  width: 40px;\n  max-width: 60px;\n  height: 60px;\n  cursor: pointer;\n  background-color: beige;\n}\n.available[data-v-e47c3c90] {\n  background-color: greenyellow;\n}\n.occupied[data-v-e47c3c90] {\n  background-color: red;\n}\n", ""]);
 
 // exports
 
@@ -74297,10 +74320,11 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "b-container",
-    { staticClass: "app", attrs: { id: "app-wrap" } },
+    { attrs: { fluid: "" } },
     [
       _c(
         "b-row",
+        { staticClass: "mb-3" },
         [
           _c(
             "b-col",
@@ -74454,7 +74478,7 @@ var render = function() {
         { staticClass: "roomList" },
         _vm._l(_vm.rooms, function(room) {
           return _c(
-            "span",
+            "b-col",
             {
               directives: [
                 {
@@ -74464,14 +74488,17 @@ var render = function() {
                 }
               ],
               key: room.id,
-              staticClass: "room",
-              class: [_vm.isAvailabe(room.id) ? "available" : "occupied"],
+              class: [
+                "room",
+                _vm.isAvailabe(room.id) ? "available" : "occupied"
+              ],
+              attrs: { cols: "1" },
               on: { click: _vm.showInfo }
             },
             [_vm._v(_vm._s(room.name))]
           )
         }),
-        0
+        1
       ),
       _vm._v(" "),
       _c(
@@ -75859,7 +75886,7 @@ var render = function() {
                                 "router-link",
                                 {
                                   staticClass: "nav-link",
-                                  attrs: { to: "/rooms/availability" }
+                                  attrs: { to: "/room/availability" }
                                 },
                                 [
                                   _c("i", {
@@ -92351,7 +92378,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var bootstrap_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! bootstrap-vue */ "./node_modules/bootstrap-vue/esm/index.js");
 /* harmony import */ var _routes__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./routes */ "./resources/js/routes.js");
-/* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./store */ "./resources/js/store.js");
+/* harmony import */ var _store_index__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./store/index */ "./resources/js/store/index.js");
 /* harmony import */ var bootstrap_dist_css_bootstrap_css__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! bootstrap/dist/css/bootstrap.css */ "./node_modules/bootstrap/dist/css/bootstrap.css");
 /* harmony import */ var bootstrap_dist_css_bootstrap_css__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(bootstrap_dist_css_bootstrap_css__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var bootstrap_vue_dist_bootstrap_vue_css__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! bootstrap-vue/dist/bootstrap-vue.css */ "./node_modules/bootstrap-vue/dist/bootstrap-vue.css");
@@ -92393,7 +92420,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('hotelapp', __webpack_requi
 var app = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
   el: '#app',
   components: {},
-  store: _store__WEBPACK_IMPORTED_MODULE_3__["default"],
+  store: _store_index__WEBPACK_IMPORTED_MODULE_3__["default"],
   //roomStore: roomstore,
   //guestStore:gueststore
   router: _routes__WEBPACK_IMPORTED_MODULE_2__["default"]
@@ -94943,35 +94970,48 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_router__WEBPACK_IMPORTED_MODU
 
 /***/ }),
 
-/***/ "./resources/js/store.js":
-/*!*******************************!*\
-  !*** ./resources/js/store.js ***!
-  \*******************************/
+/***/ "./resources/js/store/index.js":
+/*!*************************************!*\
+  !*** ./resources/js/store/index.js ***!
+  \*************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _modules_room__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules/room */ "./resources/js/store/modules/room.js");
+/* harmony import */ var _modules_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/service */ "./resources/js/store/modules/service.js");
+/* harmony import */ var _modules_customer__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modules/customer */ "./resources/js/store/modules/customer.js");
+/* harmony import */ var _modules_reservation__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./modules/reservation */ "./resources/js/store/modules/reservation.js");
+/* harmony import */ var _modules_inventory__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./modules/inventory */ "./resources/js/store/modules/inventory.js");
+
+ // Modules
 
 
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__["default"]);
-/* harmony default export */ __webpack_exports__["default"] = (new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
+
+
+
+
+vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_0__["default"]);
+/* harmony default export */ __webpack_exports__["default"] = (new vuex__WEBPACK_IMPORTED_MODULE_0__["default"].Store({
+  modules: {
+    room: _modules_room__WEBPACK_IMPORTED_MODULE_2__["default"],
+    service: _modules_service__WEBPACK_IMPORTED_MODULE_3__["default"],
+    customer: _modules_customer__WEBPACK_IMPORTED_MODULE_4__["default"],
+    inventory: _modules_inventory__WEBPACK_IMPORTED_MODULE_6__["default"],
+    reservation: _modules_reservation__WEBPACK_IMPORTED_MODULE_5__["default"]
+  },
   state: {
     // Datos de usuario y perfil
     appUser: {
       name: ''
     },
-    customers: [],
-    reservations: [],
-    guests: [],
-    rooms: [],
-    services: [],
     settings: [],
     invoices: [],
-    inventory: []
+    guests: []
   },
   getters: {
     getGuest: function getGuest(state, getters) {
@@ -94982,20 +95022,6 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
         return state.settings.find(function (setting) {
           return setting.name === name;
         }).value;
-      };
-    },
-    getRoomById: function getRoomById(state, getters) {
-      return function (roomId) {
-        return state.rooms.find(function (room) {
-          return room.id === roomId;
-        });
-      };
-    },
-    getCustomerById: function getCustomerById(state, getters) {
-      return function (customerId) {
-        return state.customers.find(function (customer) {
-          return customer.id === customerId;
-        });
       };
     },
     isAdmin: function isAdmin(state, getters) {
@@ -95029,23 +95055,8 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
     SET_GUESTS: function SET_GUESTS(state, guests) {
       state.guests = guests;
     },
-    SET_CUSTOMERS: function SET_CUSTOMERS(state, customers) {
-      state.customers = customers;
-    },
-    SET_SERVICES: function SET_SERVICES(state, services) {
-      state.services = services;
-    },
     SET_SETTINGS: function SET_SETTINGS(state, settings) {
       state.settings = settings;
-    },
-    SET_ROOMS: function SET_ROOMS(state, rooms) {
-      state.rooms = rooms;
-    },
-    SET_RESERVATIONS: function SET_RESERVATIONS(state, reservations) {
-      state.reservations = reservations;
-    },
-    SET_INVENTORY: function SET_INVENTORY(state, items) {
-      state.inventory = items;
     },
     SET_INVOICES: function SET_INVOICES(state, invoices) {
       state.invoices = invoices;
@@ -95053,21 +95064,6 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
     // Agrega un usuario a people
     ADD_GUEST: function ADD_GUEST(state, guest) {
       state.guests.push(guest);
-    },
-    ADD_CUSTOMER: function ADD_CUSTOMER(state, customer) {
-      state.customers.push(customer);
-    },
-    ADD_SERVICE: function ADD_SERVICE(state, service) {
-      state.services.push(service);
-    },
-    ADD_ROOM: function ADD_ROOM(state, room) {
-      state.rooms.push(room);
-    },
-    ADD_RESERVATION: function ADD_RESERVATION(state, reservation) {
-      state.reservation.push(reservation);
-    },
-    ADD_INVENTORY_ITEM: function ADD_INVENTORY_ITEM(state, item) {
-      state.inventory.push(item);
     }
   },
   actions: {
@@ -95087,87 +95083,25 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
 
           context.commit('SET_GUESTS', data['guests']); // Customers
 
-          context.commit('SET_CUSTOMERS', data['customers']); // Settings
+          context.commit('customer/SET_CUSTOMERS', data['customers']); // Settings
 
           context.commit('SET_SETTINGS', data['settings']); // Services
 
-          context.commit('SET_SERVICES', data['services']); // Reservations
+          context.commit('service/SET_SERVICES', data['services']); // Reservations
 
-          context.commit('SET_RESERVATIONS', data['reservations']); // Invoices
+          context.commit('reservation/SET_RESERVATIONS', data['reservations']); // Invoices
 
           context.commit('SET_INVOICES', data['invoices']); // Inventory
 
-          context.commit('SET_INVENTORY', data['inventory']); // Rooms
+          context.commit('inventory/SET_ITEMS', data['inventory']); // Rooms
 
-          context.commit('SET_ROOMS', data['rooms']);
+          context.commit('room/SET_ROOMS', data['rooms']);
         }
       });
     },
     logout: function logout(context) {
       axios.post("http://127.0.0.1:8000/logout")["catch"](function (error) {
         window.location.href = '/login';
-      });
-    },
-    addReservation: function addReservation(context, reservation) {
-      axios.post("http://127.0.0.1:8000/reservations/", {
-        reservation: reservation
-      }).then(function (response) {
-        // Si el request tuvo exito (codigo 200)
-        if (response.status == 200) {
-          // Agregamos una nueva conversacion si existe el objeto
-          if (response['data'].length == 0) {
-            return;
-          }
-
-          var newReservation = response['data']['reservation'];
-          context.commit('ADD_RESERVATION', newReservation);
-        }
-      });
-    },
-    deleteReservation: function deleteReservation(context, reservation) {
-      axios.post("http://127.0.0.1:8000/reservations/" + reservation.id, {
-        reservation: reservation,
-        _method: "delete"
-      }).then(function (response) {
-        // Si el request tuvo exito (codigo 200)
-        if (response.status == 200) {
-          // Agregamos una nueva conversacion si existe el objeto
-          if (response['data'].length == 0) {
-            return;
-          } // console.log('success');
-
-        }
-      });
-    },
-    addCustomer: function addCustomer(context, customer) {
-      axios.post("http://127.0.0.1:8000/customers/", {
-        customer: customer
-      }).then(function (response) {
-        // Si el request tuvo exito (codigo 200)
-        if (response.status == 200) {
-          // Agregamos una nueva conversacion si existe el objeto
-          if (response['data'].length == 0) {
-            return;
-          }
-
-          var newCustomer = response['data']['customer'];
-          context.commit('ADD_CUSTOMER', newCustomer);
-        }
-      });
-    },
-    editCustomer: function editCustomer(context, customer) {
-      axios.post("http://127.0.0.1:8000/customers/" + customer.id, {
-        customer: customer,
-        _method: "put"
-      }).then(function (response) {
-        // Si el request tuvo exito (codigo 200)
-        if (response.status == 200) {
-          // Agregamos una nueva conversacion si existe el objeto
-          if (response['data'].length == 0) {
-            return;
-          } // console.log('success');
-
-        }
       });
     },
     addGuest: function addGuest(context, guest) {
@@ -95201,38 +95135,6 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
         }
       });
     },
-    addRoom: function addRoom(context, room) {
-      axios.post("http://127.0.0.1:8000/room/", {
-        room: room
-      }).then(function (response) {
-        // Si el request tuvo exito (codigo 200)
-        if (response.status == 200) {
-          // Agregamos una nueva conversacion si existe el objeto
-          if (response['data'].length == 0) {
-            return;
-          }
-
-          var newRoom = response['data']['room'];
-          context.commit('ADD_ROOM', newRoom);
-        }
-      });
-    },
-    editRoom: function editRoom(context, room) {
-      axios.post("http://127.0.0.1:8000/room/" + room.id, {
-        room: room,
-        _method: "put"
-      }).then(function (response) {
-        // Si el request tuvo exito (codigo 200)
-        if (response.status == 200) {
-          // Agregamos una nueva conversacion si existe el objeto
-          if (response['data'].length == 0) {
-            return;
-          }
-
-          console.log('success');
-        }
-      });
-    },
     editSetting: function editSetting(context, setting) {
       axios.post("http://127.0.0.1:8000/settings/" + setting.id, {
         setting: setting,
@@ -95249,9 +95151,66 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
         }
       });
     },
-    addService: function addService(context, service) {
-      axios.post("http://127.0.0.1:8000/services/", {
-        service: service
+    uploadAvatar: function uploadAvatar(context, avatar) {
+      //return console.log("uploading");
+      //return console.log(context.state.appUser.id);
+      var userId = context.state.appUser.id;
+      console.log(avatar);
+      var fd = new FormData();
+      fd.append('image', avatar);
+      fd.append('_method', 'put');
+      axios.post("http://127.0.0.1:8000/users/" + userId, fd).then(function (response) {
+        // Si el request tuvo exito (codigo 200)
+        if (response.status == 200) {
+          // Agregamos una nueva conversacion si existe el objeto
+          if (response['data'].length == 0) {
+            return;
+          }
+
+          context.state.appUser.avatar_filename = response['data']['avatar'];
+        }
+      });
+    }
+  }
+}));
+
+/***/ }),
+
+/***/ "./resources/js/store/modules/customer.js":
+/*!************************************************!*\
+  !*** ./resources/js/store/modules/customer.js ***!
+  \************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ({
+  namespaced: true,
+  state: {
+    customers: []
+  },
+  getters: {
+    getCustomerById: function getCustomerById(state, getters) {
+      return function (customerId) {
+        return state.customers.find(function (customer) {
+          return customer.id === customerId;
+        });
+      };
+    }
+  },
+  mutations: {
+    SET_CUSTOMERS: function SET_CUSTOMERS(state, customers) {
+      state.customers = customers;
+    },
+    ADD_CUSTOMER: function ADD_CUSTOMER(state, customer) {
+      state.customers.push(customer);
+    }
+  },
+  actions: {
+    addCustomer: function addCustomer(context, customer) {
+      axios.post("http://127.0.0.1:8000/customers/", {
+        customer: customer
       }).then(function (response) {
         // Si el request tuvo exito (codigo 200)
         if (response.status == 200) {
@@ -95260,14 +95219,14 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
             return;
           }
 
-          var newService = response['data']['service'];
-          context.commit('ADD_SERVICE', newService);
+          var newCustomer = response['data']['customer'];
+          context.commit('ADD_CUSTOMER', newCustomer);
         }
       });
     },
-    editService: function editService(context, service) {
-      axios.post("http://127.0.0.1:8000/services/" + service.id, {
-        service: service,
+    editCustomer: function editCustomer(context, customer) {
+      axios.post("http://127.0.0.1:8000/customers/" + customer.id, {
+        customer: customer,
         _method: "put"
       }).then(function (response) {
         // Si el request tuvo exito (codigo 200)
@@ -95279,7 +95238,36 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
 
         }
       });
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./resources/js/store/modules/inventory.js":
+/*!*************************************************!*\
+  !*** ./resources/js/store/modules/inventory.js ***!
+  \*************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ({
+  namespaced: true,
+  state: {
+    items: []
+  },
+  getters: {},
+  mutations: {
+    SET_ITEMS: function SET_ITEMS(state, items) {
+      state.items = items;
     },
+    ADD_ITEM: function ADD_ITEM(state, item) {
+      state.items.push(item);
+    }
+  },
+  actions: {
     addInventoryItem: function addInventoryItem(context, item) {
       axios.post("http://127.0.0.1:8000/inventory/", {
         item: item
@@ -95310,16 +95298,40 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
 
         }
       });
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./resources/js/store/modules/reservation.js":
+/*!***************************************************!*\
+  !*** ./resources/js/store/modules/reservation.js ***!
+  \***************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ({
+  namespaced: true,
+  state: {
+    reservation: []
+  },
+  getters: {},
+  mutations: {
+    SET_RESERVATIONS: function SET_RESERVATIONS(state, reservations) {
+      state.reservations = reservations;
     },
-    uploadAvatar: function uploadAvatar(context, avatar) {
-      //return console.log("uploading");
-      //return console.log(context.state.appUser.id);
-      var userId = context.state.appUser.id;
-      console.log(avatar);
-      var fd = new FormData();
-      fd.append('image', avatar);
-      fd.append('_method', 'put');
-      axios.post("http://127.0.0.1:8000/users/" + userId, fd).then(function (response) {
+    ADD_RESERVATION: function ADD_RESERVATION(state, reservation) {
+      state.reservation.push(reservation);
+    }
+  },
+  actions: {
+    addReservation: function addReservation(context, reservation) {
+      axios.post("http://127.0.0.1:8000/reservations/", {
+        reservation: reservation
+      }).then(function (response) {
         // Si el request tuvo exito (codigo 200)
         if (response.status == 200) {
           // Agregamos una nueva conversacion si existe el objeto
@@ -95327,12 +95339,162 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
             return;
           }
 
-          context.state.appUser.avatar_filename = response['data']['avatar'];
+          var newReservation = response['data']['reservation'];
+          context.commit('ADD_RESERVATION', newReservation);
+        }
+      });
+    },
+    deleteReservation: function deleteReservation(context, reservation) {
+      axios.post("http://127.0.0.1:8000/reservations/" + reservation.id, {
+        reservation: reservation,
+        _method: "delete"
+      }).then(function (response) {
+        // Si el request tuvo exito (codigo 200)
+        if (response.status == 200) {
+          // Agregamos una nueva conversacion si existe el objeto
+          if (response['data'].length == 0) {
+            return;
+          } // console.log('success');
+
         }
       });
     }
   }
-}));
+});
+
+/***/ }),
+
+/***/ "./resources/js/store/modules/room.js":
+/*!********************************************!*\
+  !*** ./resources/js/store/modules/room.js ***!
+  \********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ({
+  namespaced: true,
+  state: {
+    rooms: []
+  },
+  getters: {
+    getRoomById: function getRoomById(state, getters) {
+      return function (roomId) {
+        return state.rooms.find(function (room) {
+          return room.id === roomId;
+        });
+      };
+    }
+  },
+  mutations: {
+    SET_ROOMS: function SET_ROOMS(state, rooms) {
+      state.rooms = rooms;
+    },
+    ADD_ROOM: function ADD_ROOM(state, room) {
+      state.rooms.push(room);
+    }
+  },
+  actions: {
+    addRoom: function addRoom(context, _ref) {
+      var vm = _ref.vm,
+          room = _ref.room;
+      axios.post("http://127.0.0.1:8000/room/", {
+        room: room
+      }).then(function (response) {
+        // Si el request tuvo exito (codigo 200)
+        if (response.status == 200) {
+          // Agregamos una nueva conversacion si existe el objeto
+          if (response['data'].length == 0) {
+            return;
+          }
+
+          var newRoom = response['data']['room'];
+          context.commit('ADD_ROOM', newRoom);
+          vm.makeToast("Room added", newRoom.name + ' added.', 'success');
+        }
+      })["catch"](function (response) {
+        vm.makeToast("Error", 'The room cannot be added!!!', 'danger');
+      });
+    },
+    editRoom: function editRoom(context, room) {
+      axios.post("http://127.0.0.1:8000/room/" + room.id, {
+        room: room,
+        _method: "put"
+      }).then(function (response) {
+        // Si el request tuvo exito (codigo 200)
+        if (response.status == 200) {
+          // Agregamos una nueva conversacion si existe el objeto
+          if (response['data'].length == 0) {
+            return;
+          }
+
+          console.log('success');
+        }
+      });
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./resources/js/store/modules/service.js":
+/*!***********************************************!*\
+  !*** ./resources/js/store/modules/service.js ***!
+  \***********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ({
+  namespaced: true,
+  state: {
+    services: []
+  },
+  getters: {},
+  mutations: {
+    SET_SERVICES: function SET_SERVICES(state, services) {
+      state.services = services;
+    },
+    ADD_SERVICE: function ADD_SERVICE(state, service) {
+      state.services.push(service);
+    }
+  },
+  actions: {
+    addService: function addService(context, service) {
+      axios.post("http://127.0.0.1:8000/services/", {
+        service: service
+      }).then(function (response) {
+        // Si el request tuvo exito (codigo 200)
+        if (response.status == 200) {
+          // Agregamos una nueva conversacion si existe el objeto
+          if (response['data'].length == 0) {
+            return;
+          }
+
+          var newService = response['data']['service'];
+          context.commit('ADD_SERVICE', newService);
+        }
+      });
+    },
+    editService: function editService(context, service) {
+      axios.post("http://127.0.0.1:8000/services/" + service.id, {
+        service: service,
+        _method: "put"
+      }).then(function (response) {
+        // Si el request tuvo exito (codigo 200)
+        if (response.status == 200) {
+          // Agregamos una nueva conversacion si existe el objeto
+          if (response['data'].length == 0) {
+            return;
+          } // console.log('success');
+
+        }
+      });
+    }
+  }
+});
 
 /***/ }),
 

@@ -1,6 +1,6 @@
 <template>
-  <b-container id="app-wrap" class="app">
-    <b-row>
+  <b-container fluid>
+    <b-row class="mb-3">
       <b-col sm="5" md="6" class="my-1">
         <b-form-group
           label="Room Type"
@@ -59,14 +59,14 @@
       </b-col>
     </b-row>
     <b-row class="roomList">
-      <span
+      <b-col
+        cols="1"
         v-b-modal.modal-center
         v-for="room in rooms"
         :key="room.id"
-        class="room"
-        :class="[ isAvailabe(room.id) ? 'available' : 'occupied']"
+        :class="['room', isAvailabe(room.id) ? 'available' : 'occupied']"
         @click="showInfo"
-      >{{room.name}}</span>
+      >{{room.name}}</b-col>
     </b-row>
 
     <b-modal id="modal-center" centered title="Reservation Info">
@@ -150,7 +150,9 @@ export default {
     }
   },
   computed: {
-    ...mapState(["rooms"]),
+    ...mapState({
+      rooms: state => state.room.rooms
+    }),
     filteredRooms: function() {
       return this.rooms.filter(room => this.applyFilters(room));
     }
@@ -168,7 +170,8 @@ export default {
   text-align: center;
   border: 1px solid black;
   width: 40px;
-  max-width: 40px;
+  max-width: 60px;
+  height: 60px;
   cursor: pointer;
   background-color: beige;
 }

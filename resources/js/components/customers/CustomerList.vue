@@ -136,7 +136,9 @@ export default {
     }
   },
   computed: {
-    ...mapState(["customers"]),
+    ...mapState({
+      customers: state => state.customer.customers
+    }),
     sortOptions() {
       // Create an options list from our fields
       return this.fields

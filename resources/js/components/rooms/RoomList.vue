@@ -122,7 +122,9 @@ export default {
     }
   },
   computed: {
-    ...mapState(["rooms"]),
+    ...mapState({
+      rooms: state => state.room.rooms
+    }),
     sortOptions() {
       // Create an options list from our fields
       return this.fields

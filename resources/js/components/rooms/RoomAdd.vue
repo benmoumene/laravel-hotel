@@ -53,15 +53,16 @@ export default {
   },
   methods: {
     add() {
-      this.$store.dispatch("addRoom", this.room);
-      this.makeToast(true);
+      this.$store.dispatch("room/addRoom", { room: this.room, vm: this });
     },
-    makeToast(append = false) {
-      this.toastCount++;
-      this.$bvToast.toast("Room added", {
-        title: "BootstrapVue Toast",
+    makeToast(title, message, variant = "info") {
+      this.$bvToast.toast(message, {
+        title,
         autoHideDelay: 5000,
-        appendToast: append
+        variant,
+        solid: true,
+        toaster: "b-toaster-bottom-right",
+        appendToast: true
       });
     }
   },

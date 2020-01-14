@@ -134,7 +134,9 @@ export default {
     }
   },
   computed: {
-    ...mapState(["inventory"]),
+    ...mapState({
+      inventory: state => state.inventory.items
+    }),
     sortOptions() {
       // Create an options list from our fields
       return this.fields
