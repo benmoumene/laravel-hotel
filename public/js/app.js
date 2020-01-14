@@ -3077,7 +3077,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   methods: {
     onFiltered: function onFiltered(filteredItems) {
       // Trigger pagination to update the number of buttons/pages due to filtering
-      this.totalRows = filteredItems.length;
       this.currentPage = 1;
     }
   },
@@ -4497,9 +4496,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     };
   },
   methods: {
-    onFiltered: function onFiltered(filteredItems) {
+    onFiltered: function onFiltered() {
       // Trigger pagination to update the number of buttons/pages due to filtering
-      this.totalRows = filteredItems.length;
       this.currentPage = 1;
     }
   },
