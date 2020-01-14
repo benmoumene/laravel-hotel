@@ -92377,7 +92377,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var bootstrap_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! bootstrap-vue */ "./node_modules/bootstrap-vue/esm/index.js");
-/* harmony import */ var _routes__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./routes */ "./resources/js/routes.js");
+/* harmony import */ var _routes_index__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./routes/index */ "./resources/js/routes/index.js");
 /* harmony import */ var _store_index__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./store/index */ "./resources/js/store/index.js");
 /* harmony import */ var bootstrap_dist_css_bootstrap_css__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! bootstrap/dist/css/bootstrap.css */ "./node_modules/bootstrap/dist/css/bootstrap.css");
 /* harmony import */ var bootstrap_dist_css_bootstrap_css__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(bootstrap_dist_css_bootstrap_css__WEBPACK_IMPORTED_MODULE_4__);
@@ -92421,9 +92421,7 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
   el: '#app',
   components: {},
   store: _store_index__WEBPACK_IMPORTED_MODULE_3__["default"],
-  //roomStore: roomstore,
-  //guestStore:gueststore
-  router: _routes__WEBPACK_IMPORTED_MODULE_2__["default"]
+  router: _routes_index__WEBPACK_IMPORTED_MODULE_2__["default"]
 });
 
 /***/ }),
@@ -94771,10 +94769,10 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/routes.js":
-/*!********************************!*\
-  !*** ./resources/js/routes.js ***!
-  \********************************/
+/***/ "./resources/js/routes/index.js":
+/*!**************************************!*\
+  !*** ./resources/js/routes/index.js ***!
+  \**************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -94783,34 +94781,34 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.esm.js");
-/* harmony import */ var _components_Dashboard_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/Dashboard.vue */ "./resources/js/components/Dashboard.vue");
-/* harmony import */ var _components_Profile_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/Profile.vue */ "./resources/js/components/Profile.vue");
-/* harmony import */ var _components_About_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/About.vue */ "./resources/js/components/About.vue");
-/* harmony import */ var _components_Settings_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/Settings.vue */ "./resources/js/components/Settings.vue");
-/* harmony import */ var _components_billing_BillingRouter_vue__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./components/billing/BillingRouter.vue */ "./resources/js/components/billing/BillingRouter.vue");
-/* harmony import */ var _components_billing_BillingEdit_vue__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./components/billing/BillingEdit.vue */ "./resources/js/components/billing/BillingEdit.vue");
-/* harmony import */ var _components_billing_BillingList_vue__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./components/billing/BillingList.vue */ "./resources/js/components/billing/BillingList.vue");
-/* harmony import */ var _components_customers_CustomerRouter_vue__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./components/customers/CustomerRouter.vue */ "./resources/js/components/customers/CustomerRouter.vue");
-/* harmony import */ var _components_customers_CustomerAdd_vue__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./components/customers/CustomerAdd.vue */ "./resources/js/components/customers/CustomerAdd.vue");
-/* harmony import */ var _components_customers_CustomerEdit_vue__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./components/customers/CustomerEdit.vue */ "./resources/js/components/customers/CustomerEdit.vue");
-/* harmony import */ var _components_customers_CustomerList_vue__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./components/customers/CustomerList.vue */ "./resources/js/components/customers/CustomerList.vue");
-/* harmony import */ var _components_guests_GuestRouter_vue__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./components/guests/GuestRouter.vue */ "./resources/js/components/guests/GuestRouter.vue");
-/* harmony import */ var _components_guests_GuestList_vue__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./components/guests/GuestList.vue */ "./resources/js/components/guests/GuestList.vue");
-/* harmony import */ var _components_guests_GuestAdd_vue__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./components/guests/GuestAdd.vue */ "./resources/js/components/guests/GuestAdd.vue");
-/* harmony import */ var _components_guests_GuestEdit_vue__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./components/guests/GuestEdit.vue */ "./resources/js/components/guests/GuestEdit.vue");
-/* harmony import */ var _components_rooms_RoomRouter_vue__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./components/rooms/RoomRouter.vue */ "./resources/js/components/rooms/RoomRouter.vue");
-/* harmony import */ var _components_rooms_RoomAdd_vue__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./components/rooms/RoomAdd.vue */ "./resources/js/components/rooms/RoomAdd.vue");
-/* harmony import */ var _components_rooms_RoomEdit_vue__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./components/rooms/RoomEdit.vue */ "./resources/js/components/rooms/RoomEdit.vue");
-/* harmony import */ var _components_rooms_RoomList_vue__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./components/rooms/RoomList.vue */ "./resources/js/components/rooms/RoomList.vue");
-/* harmony import */ var _components_rooms_RoomAvailability_vue__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./components/rooms/RoomAvailability.vue */ "./resources/js/components/rooms/RoomAvailability.vue");
-/* harmony import */ var _components_reservations_Reservations_vue__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ./components/reservations/Reservations.vue */ "./resources/js/components/reservations/Reservations.vue");
-/* harmony import */ var _components_reservations_ReservationRouter_vue__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ./components/reservations/ReservationRouter.vue */ "./resources/js/components/reservations/ReservationRouter.vue");
-/* harmony import */ var _components_services_ServiceAdd_vue__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! ./components/services/ServiceAdd.vue */ "./resources/js/components/services/ServiceAdd.vue");
-/* harmony import */ var _components_services_ServiceList_vue__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! ./components/services/ServiceList.vue */ "./resources/js/components/services/ServiceList.vue");
-/* harmony import */ var _components_services_ServiceRouter_vue__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! ./components/services/ServiceRouter.vue */ "./resources/js/components/services/ServiceRouter.vue");
-/* harmony import */ var _components_inventory_InventoryItemAdd_vue__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! ./components/inventory/InventoryItemAdd.vue */ "./resources/js/components/inventory/InventoryItemAdd.vue");
-/* harmony import */ var _components_inventory_InventoryItemList_vue__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! ./components/inventory/InventoryItemList.vue */ "./resources/js/components/inventory/InventoryItemList.vue");
-/* harmony import */ var _components_inventory_InventoryRouter_vue__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! ./components/inventory/InventoryRouter.vue */ "./resources/js/components/inventory/InventoryRouter.vue");
+/* harmony import */ var _components_Dashboard_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/Dashboard.vue */ "./resources/js/components/Dashboard.vue");
+/* harmony import */ var _components_Profile_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../components/Profile.vue */ "./resources/js/components/Profile.vue");
+/* harmony import */ var _components_About_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../components/About.vue */ "./resources/js/components/About.vue");
+/* harmony import */ var _components_Settings_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../components/Settings.vue */ "./resources/js/components/Settings.vue");
+/* harmony import */ var _components_billing_BillingRouter_vue__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../components/billing/BillingRouter.vue */ "./resources/js/components/billing/BillingRouter.vue");
+/* harmony import */ var _components_billing_BillingEdit_vue__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../components/billing/BillingEdit.vue */ "./resources/js/components/billing/BillingEdit.vue");
+/* harmony import */ var _components_billing_BillingList_vue__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../components/billing/BillingList.vue */ "./resources/js/components/billing/BillingList.vue");
+/* harmony import */ var _components_customers_CustomerRouter_vue__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../components/customers/CustomerRouter.vue */ "./resources/js/components/customers/CustomerRouter.vue");
+/* harmony import */ var _components_customers_CustomerAdd_vue__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../components/customers/CustomerAdd.vue */ "./resources/js/components/customers/CustomerAdd.vue");
+/* harmony import */ var _components_customers_CustomerEdit_vue__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../components/customers/CustomerEdit.vue */ "./resources/js/components/customers/CustomerEdit.vue");
+/* harmony import */ var _components_customers_CustomerList_vue__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../components/customers/CustomerList.vue */ "./resources/js/components/customers/CustomerList.vue");
+/* harmony import */ var _components_guests_GuestRouter_vue__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../components/guests/GuestRouter.vue */ "./resources/js/components/guests/GuestRouter.vue");
+/* harmony import */ var _components_guests_GuestList_vue__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../components/guests/GuestList.vue */ "./resources/js/components/guests/GuestList.vue");
+/* harmony import */ var _components_guests_GuestAdd_vue__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ../components/guests/GuestAdd.vue */ "./resources/js/components/guests/GuestAdd.vue");
+/* harmony import */ var _components_guests_GuestEdit_vue__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ../components/guests/GuestEdit.vue */ "./resources/js/components/guests/GuestEdit.vue");
+/* harmony import */ var _components_rooms_RoomRouter_vue__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ../components/rooms/RoomRouter.vue */ "./resources/js/components/rooms/RoomRouter.vue");
+/* harmony import */ var _components_rooms_RoomAdd_vue__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ../components/rooms/RoomAdd.vue */ "./resources/js/components/rooms/RoomAdd.vue");
+/* harmony import */ var _components_rooms_RoomEdit_vue__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ../components/rooms/RoomEdit.vue */ "./resources/js/components/rooms/RoomEdit.vue");
+/* harmony import */ var _components_rooms_RoomList_vue__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ../components/rooms/RoomList.vue */ "./resources/js/components/rooms/RoomList.vue");
+/* harmony import */ var _components_rooms_RoomAvailability_vue__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ../components/rooms/RoomAvailability.vue */ "./resources/js/components/rooms/RoomAvailability.vue");
+/* harmony import */ var _components_reservations_Reservations_vue__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ../components/reservations/Reservations.vue */ "./resources/js/components/reservations/Reservations.vue");
+/* harmony import */ var _components_reservations_ReservationRouter_vue__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ../components/reservations/ReservationRouter.vue */ "./resources/js/components/reservations/ReservationRouter.vue");
+/* harmony import */ var _components_services_ServiceAdd_vue__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! ../components/services/ServiceAdd.vue */ "./resources/js/components/services/ServiceAdd.vue");
+/* harmony import */ var _components_services_ServiceList_vue__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! ../components/services/ServiceList.vue */ "./resources/js/components/services/ServiceList.vue");
+/* harmony import */ var _components_services_ServiceRouter_vue__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! ../components/services/ServiceRouter.vue */ "./resources/js/components/services/ServiceRouter.vue");
+/* harmony import */ var _components_inventory_InventoryItemAdd_vue__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! ../components/inventory/InventoryItemAdd.vue */ "./resources/js/components/inventory/InventoryItemAdd.vue");
+/* harmony import */ var _components_inventory_InventoryItemList_vue__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! ../components/inventory/InventoryItemList.vue */ "./resources/js/components/inventory/InventoryItemList.vue");
+/* harmony import */ var _components_inventory_InventoryRouter_vue__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! ../components/inventory/InventoryRouter.vue */ "./resources/js/components/inventory/InventoryRouter.vue");
 
 
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]);
@@ -94842,34 +94840,35 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_router__WEBPACK_IMPORTED_MODU
 
 
 
+var customerRoutes = {
+  path: '/customer',
+  component: _components_customers_CustomerRouter_vue__WEBPACK_IMPORTED_MODULE_9__["default"],
+  children: [{
+    path: 'list',
+    name: 'CustomerList',
+    component: _components_customers_CustomerList_vue__WEBPACK_IMPORTED_MODULE_12__["default"]
+  }, {
+    path: 'add',
+    name: 'CustomerAdd',
+    meta: {
+      title: 'Customer Add'
+    },
+    component: _components_customers_CustomerAdd_vue__WEBPACK_IMPORTED_MODULE_10__["default"]
+  }, {
+    path: ':id/edit',
+    name: 'CustomerEdit',
+    meta: {
+      title: 'Customer Edit'
+    },
+    component: _components_customers_CustomerEdit_vue__WEBPACK_IMPORTED_MODULE_11__["default"]
+  }]
+};
 /* harmony default export */ __webpack_exports__["default"] = (new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
   routes: [{
     path: '/',
     name: 'Dashboard',
     component: _components_Dashboard_vue__WEBPACK_IMPORTED_MODULE_2__["default"]
-  }, {
-    path: '/customer',
-    component: _components_customers_CustomerRouter_vue__WEBPACK_IMPORTED_MODULE_9__["default"],
-    children: [{
-      path: 'list',
-      name: 'CustomerList',
-      component: _components_customers_CustomerList_vue__WEBPACK_IMPORTED_MODULE_12__["default"]
-    }, {
-      path: 'add',
-      name: 'CustomerAdd',
-      meta: {
-        title: 'Customer Add'
-      },
-      component: _components_customers_CustomerAdd_vue__WEBPACK_IMPORTED_MODULE_10__["default"]
-    }, {
-      path: ':id/edit',
-      name: 'CustomerEdit',
-      meta: {
-        title: 'Customer Edit'
-      },
-      component: _components_customers_CustomerEdit_vue__WEBPACK_IMPORTED_MODULE_11__["default"]
-    }]
-  }, {
+  }, customerRoutes, {
     path: '/guest',
     component: _components_guests_GuestRouter_vue__WEBPACK_IMPORTED_MODULE_13__["default"],
     children: [{
