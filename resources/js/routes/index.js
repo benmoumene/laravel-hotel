@@ -28,6 +28,7 @@ import RoomList from '../components/rooms/RoomList.vue'
 import RoomAvailability from '../components/rooms/RoomAvailability.vue'
 
 import Reservations from '../components/reservations/Reservations.vue'
+import ReservationList from '../components/reservations/ReservationList.vue'
 import ReservationRouter from '../components/reservations/ReservationRouter.vue'
 
 import ServiceAdd from '../components/services/ServiceAdd.vue'
@@ -125,13 +126,23 @@ export default new VueRouter({
       ]
     },
     {
-      path: '/reservations', component: ReservationRouter,
+      path: '/reservation', component: ReservationRouter,
       children: [
         {
-          path: '',
-          name: 'Reservations',
-          component: Reservations
+          path: 'list',
+          name: 'ReservationsList',
+          component: ReservationList
         },
+        {
+          path: ':id/cancel',
+          name: 'ReservationsList',
+          component: ReservationList
+        },
+        {
+          path: 'wizard',
+          name: 'ReservationsList',
+          component: ReservationList
+        }
       ]
     },
     {

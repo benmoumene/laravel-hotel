@@ -33,12 +33,12 @@ class HotelController extends Controller
         $data['app_user'] = Auth::user();
         $data['guests'] = Guest::all();
         $data['customers'] = Customer::all();
-        $data['reservations'] = Reservation::all();
+        $data['reservations'] = Reservation::with(['customer', 'room'])->get();
         $data['services'] = Service::all();
         $data['rooms'] = Room::with('reservations')->get();
         $data['settings'] = Setting::all();
         $data['inventory'] = InventoryItem::all();
-        $data['invoices'] = Invoice::all();
+        $data['invoices'] = Invoice::all(); // with client
         return response()->json($data, 200);
     }
 }

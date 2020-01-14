@@ -110,15 +110,15 @@
               </a>
               <ul class="nav nav-treeview">
                 <li class="nav-item">
-                  <router-link to="/reservations" class="nav-link">
-                    <i class="nav-icon fa fa-bed"></i>
-                    Manage Reservations
+                  <router-link to="/reservation/wizard" class="nav-link">
+                    <i class="nav-icon fa fa-hat-wizard"></i>
+                    Reservation Wizard
                   </router-link>
                 </li>
                 <li class="nav-item">
-                  <router-link to="/reservations" class="nav-link">
-                    <i class="nav-icon fa fa-bed"></i>
-                    New Reservation
+                  <router-link to="/reservation/list" class="nav-link">
+                    <i class="nav-icon fa fa-search"></i>
+                    List Reservations
                   </router-link>
                 </li>
               </ul>

@@ -1,7 +1,7 @@
 export default ({
     namespaced: true,
     state: {
-        reservation: [],
+        reservations: [],
     },
     getters: {
 
