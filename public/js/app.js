@@ -72174,7 +72174,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "b-row",
-    [_c("b-col", { attrs: { cols: "12" } }, [_vm._v("BILLING COMPONENT")])],
+    [_c("b-col", { attrs: { cols: "12" } }, [_vm._v("BILLING EDIT")])],
     1
   )
 }
@@ -72394,7 +72394,7 @@ var render = function() {
                   "router-link",
                   {
                     staticClass: "nav-link",
-                    attrs: { to: { path: "/billing/" + row.item.id + "/show" } }
+                    attrs: { to: { path: "/billing/" + row.item.id + "/edit" } }
                   },
                   [_vm._v("View Invoice")]
                 )
@@ -95943,7 +95943,7 @@ var customerRoutes = {
     path: '/billing',
     component: _components_billing_BillingRouter_vue__WEBPACK_IMPORTED_MODULE_6__["default"],
     children: [{
-      path: 'edit',
+      path: ':id/edit',
       name: 'BillingEdit',
       component: _components_billing_BillingEdit_vue__WEBPACK_IMPORTED_MODULE_7__["default"]
     }, {
@@ -96009,8 +96009,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_customer__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modules/customer */ "./resources/js/store/modules/customer.js");
 /* harmony import */ var _modules_reservation__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./modules/reservation */ "./resources/js/store/modules/reservation.js");
 /* harmony import */ var _modules_inventory__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./modules/inventory */ "./resources/js/store/modules/inventory.js");
+/* harmony import */ var _modules_billing__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./modules/billing */ "./resources/js/store/modules/billing.js");
 
  // Modules
+
 
 
 
@@ -96024,7 +96026,8 @@ vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_0__
     service: _modules_service__WEBPACK_IMPORTED_MODULE_3__["default"],
     customer: _modules_customer__WEBPACK_IMPORTED_MODULE_4__["default"],
     inventory: _modules_inventory__WEBPACK_IMPORTED_MODULE_6__["default"],
-    reservation: _modules_reservation__WEBPACK_IMPORTED_MODULE_5__["default"]
+    reservation: _modules_reservation__WEBPACK_IMPORTED_MODULE_5__["default"],
+    billing: _modules_billing__WEBPACK_IMPORTED_MODULE_7__["default"]
   },
   state: {
     // Datos de usuario y perfil
@@ -96032,7 +96035,6 @@ vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_0__
       name: ''
     },
     settings: [],
-    invoices: [],
     guests: []
   },
   getters: {
@@ -96084,9 +96086,6 @@ vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_0__
     SET_SETTINGS: function SET_SETTINGS(state, settings) {
       state.settings = settings;
     },
-    SET_INVOICES: function SET_INVOICES(state, invoices) {
-      state.invoices = invoices;
-    },
     // Agrega un usuario a people
     ADD_GUEST: function ADD_GUEST(state, guest) {
       state.guests.push(guest);
@@ -96117,7 +96116,7 @@ vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_0__
 
           context.commit('reservation/SET_RESERVATIONS', data['reservations']); // Invoices
 
-          context.commit('SET_INVOICES', data['invoices']); // Inventory
+          context.commit('billing/SET_INVOICES', data['invoices']); // Inventory
 
           context.commit('inventory/SET_ITEMS', data['inventory']); // Rooms
 
@@ -96199,6 +96198,40 @@ vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_0__
     }
   }
 }));
+
+/***/ }),
+
+/***/ "./resources/js/store/modules/billing.js":
+/*!***********************************************!*\
+  !*** ./resources/js/store/modules/billing.js ***!
+  \***********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ({
+  namespaced: true,
+  state: {
+    invoices: []
+  },
+  getters: {},
+  mutations: {
+    SET_INVOICES: function SET_INVOICES(state, invoices) {
+      state.invoices = invoices;
+    }
+  },
+  actions: {
+    editInvoice: function editInvoice(context, _ref) {
+      var vm = _ref.vm,
+          reservation = _ref.reservation;
+      axios.post("http://127.0.0.1:8000/reservations/" + reservation.id, {
+        reservation: reservation,
+        _method: "put"
+      }).then(function (response) {})["catch"](function (response) {});
+    }
+  }
+});
 
 /***/ }),
 

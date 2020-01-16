@@ -138,7 +138,7 @@ export default new VueRouter({
       path: '/billing', component: BillingRouter,
       children: [
         {
-          path: 'edit',
+          path: ':id/edit',
           name: 'BillingEdit',
           component: BillingEdit
         },

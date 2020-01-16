@@ -7,18 +7,18 @@ import service from './modules/service'
 import customer from './modules/customer'
 import reservation from './modules/reservation'
 import inventory from './modules/inventory'
+import billing from './modules/billing'
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
     modules: {
-        room, service, customer, inventory, reservation
+        room, service, customer, inventory, reservation, billing
     },
     state: {
         // Datos de usuario y perfil
         appUser: { name: '' },
         settings: [],
-        invoices: [],
         guests: [],
     },
     getters: {
@@ -62,9 +62,7 @@ export default new Vuex.Store({
         SET_SETTINGS(state, settings) {
             state.settings = settings;
         },
-        SET_INVOICES(state, invoices) {
-            state.invoices = invoices;
-        },
+
         // Agrega un usuario a people
         ADD_GUEST(state, guest) {
             state.guests.push(guest);
@@ -98,7 +96,7 @@ export default new Vuex.Store({
                     // Reservations
                     context.commit('reservation/SET_RESERVATIONS', data['reservations']);
                     // Invoices
-                    context.commit('SET_INVOICES', data['invoices']);
+                    context.commit('billing/SET_INVOICES', data['invoices']);
                     // Inventory
                     context.commit('inventory/SET_ITEMS', data['inventory']);
                     // Rooms
