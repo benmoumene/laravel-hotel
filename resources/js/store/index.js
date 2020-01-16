@@ -26,7 +26,10 @@ export default new Vuex.Store({
 
         },
         getSettingValue: (state, getters) => (name) => {
-            return state.settings.find(setting => setting.name === name).value;
+            var setting = state.settings.find(setting => setting.name === name);
+            if (typeof setting !== 'undefined') {
+                return setting.value;
+            }
         },
         isAdmin: (state, getters) => {
             if (state.appUser.role === 'admin') {

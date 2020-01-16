@@ -96041,9 +96041,13 @@ vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_0__
     },
     getSettingValue: function getSettingValue(state, getters) {
       return function (name) {
-        return state.settings.find(function (setting) {
+        var setting = state.settings.find(function (setting) {
           return setting.name === name;
-        }).value;
+        });
+
+        if (typeof setting !== 'undefined') {
+          return setting.value;
+        }
       };
     },
     isAdmin: function isAdmin(state, getters) {
