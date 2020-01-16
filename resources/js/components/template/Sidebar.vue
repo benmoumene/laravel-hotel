@@ -90,13 +90,6 @@
                     Guests
                   </router-link>
                 </li>
-                <li class="nav-item">
-                  <router-link to="/room/availability" class="nav-link">
-                    <i class="nav-icon fa fa-bed"></i>
-                    Availability
-                    <span class="badge badge-info right">6</span>
-                  </router-link>
-                </li>
               </ul>
             </li>
 

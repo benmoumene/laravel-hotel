@@ -8,26 +8,12 @@ use App\Reservation;
 
 class ReservationController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function __construct()
     {
-        //
+        // Se necesita esta autentificado para llevar a cabo acciones
+        $this->middleware('auth');
     }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
+    
     /**
      * Store a newly created resource in storage.
      *
@@ -38,8 +24,8 @@ class ReservationController extends Controller
     {
         $currentUserId = Auth::user()->id;
         $reservation = new Reservation;
-        $reservation->customer_id = $request['reservation']['customer_id'];
-        $reservation->room_id = $request['reservation']['room_id'];
+        $reservation->customer_id = $request->input('reservation.customer.id');
+        $reservation->room_id = $request->input('reservation.room.id');
         $reservation->check_in = $request['reservation']['check_in'];
         $reservation->check_out = $request['reservation']['check_out'];
         $reservation->save();

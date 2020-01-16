@@ -102,6 +102,7 @@
   </b-container>
 </template>
 <script>
+// Implementar filtro de fechas por defecto en RESERVATION LIST.
 import { mapState } from "vuex";
 export default {
   name: "ReservationList",

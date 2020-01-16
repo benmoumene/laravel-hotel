@@ -12,7 +12,7 @@
           label-for="perPageSelect"
           class="mb-0"
         >
-          <b-form-select v-model="roomType" size="sm" :options="roomTypes"></b-form-select>
+          <b-form-select v-model="filter.roomType" size="sm" :options="roomTypes"></b-form-select>
         </b-form-group>
       </b-col>
       <b-col sm="5" md="6" class="my-1">
@@ -26,7 +26,7 @@
           label-for="perPageSelect"
           class="mb-0"
         >
-          <b-form-select v-model="hotelFloor" :options="hotelFloors" size="sm"></b-form-select>
+          <b-form-select v-model="filter.hotelFloor" :options="hotelFloors" size="sm"></b-form-select>
         </b-form-group>
       </b-col>
       <b-col sm="5" md="6" class="my-1">
@@ -40,7 +40,7 @@
           label-for="perPageSelect"
           class="mb-0"
         >
-          <b-form-input v-model="fromDate" id="from_date" type="date"></b-form-input>
+          <b-form-input v-model="filter.check_in" id="from_date" type="date"></b-form-input>
         </b-form-group>
       </b-col>
       <b-col sm="5" md="6" class="my-1">
@@ -54,55 +54,38 @@
           label-for="perPageSelect"
           class="mb-0"
         >
-          <b-form-input v-model="toDate" id="to_date" type="date"></b-form-input>
+          <b-form-input v-model="filter.check_out" id="to_date" type="date"></b-form-input>
         </b-form-group>
       </b-col>
     </b-row>
     <b-row class="roomList">
       <b-col
         cols="1"
-        v-b-modal.modal-center
         v-for="room in rooms"
         :key="room.id"
         :class="['room', isAvailabe(room.id) ? 'available' : 'occupied']"
-        @click="showInfo"
+        @click="selectRoom(room)"
       >{{room.name}}</b-col>
     </b-row>
-
-    <b-modal id="modal-center" centered title="Reservation Info">
-      <b-row>
-        <b-col sm="3" class="avatar-menu-inner">Room Name:</b-col>
-      </b-row>
-      <b-row>
-        <b-col sm="3" class="avatar-menu-inner">Type:</b-col>
-      </b-row>
-      <b-row>
-        <b-col sm="3" class="avatar-menu-inner">Floor:</b-col>
-      </b-row>
-      <b-row>
-        <b-col sm="3" class="avatar-menu-inner">From:</b-col>
-        <b-col sm="3" class="avatar-menu-inner">To:</b-col>
-      </b-row>
-      <b-row>
-        <b-col sm="3" class="avatar-menu-inner">
-          <b-button variant="danger">Cancel</b-button>
-        </b-col>
-      </b-row>
-    </b-modal>
   </b-container>
 </template>
 <script>
 import { mapState } from "vuex";
 export default {
-  name: "RoomAvailability",
+  name: "RoomFinder",
+  props: {
+    reservation: Object
+  },
   data: function() {
     return {
-      roomType: "single",
-      hotelFloor: "1F",
+      filter: {
+        roomType: "single",
+        hotelFloor: "1F",
+        check_in: this.getTodayDate(),
+        check_out: this.getTodayDate()
+      },
       roomTypes: ["single", "double", "suite"],
       hotelFloors: ["1F", "2F", "3F"],
-      fromDate: this.getTodayDate(),
-      toDate: null,
       selectedRoom: {},
       selectedReservation: {}
     };
@@ -115,13 +98,16 @@ export default {
       var yyyy = date.getFullYear();
       return yyyy + "-" + mm + "-" + dd;
     },
-    showInfo() {
-      console.log(this.roomType);
-      console.log(this.fromDate);
+    selectRoom(room) {
+      this.reservation.room = room;
+      this.reservation.check_in = this.filter.check_in;
+      this.reservation.check_out = this.filter.check_out;
+
+      console.log(this.reservation);
+      //this.$emit("updateReservation", this.reservation);
+      //this.$store.commit("reservation/SET_RESERVATION", reservation);
+      //this.$store.dispatch("reservation/addReservation", reservation);
     },
-    showReservationInfo() {},
-    makeReservation() {},
-    cancelReservation() {},
     isAvailabe(roomId) {
       var room = this.filteredRooms.find(room => room.id === roomId);
 
@@ -131,7 +117,10 @@ export default {
       return true;
     },
     applyFilters(room) {
-      if (room.type == this.roomType && room.floor == this.hotelFloor) {
+      if (
+        room.type == this.filter.roomType &&
+        room.floor == this.filter.hotelFloor
+      ) {
         for (var reservation of room.reservations) {
           /*
           if (this.fromDate > reservation.check_in) {

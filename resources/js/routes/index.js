@@ -25,9 +25,8 @@ import RoomRouter from '../components/rooms/RoomRouter.vue'
 import RoomAdd from '../components/rooms/RoomAdd.vue'
 import RoomEdit from '../components/rooms/RoomEdit.vue'
 import RoomList from '../components/rooms/RoomList.vue'
-import RoomAvailability from '../components/rooms/RoomAvailability.vue'
 
-import Reservations from '../components/reservations/Reservations.vue'
+import ReservationWizard from '../components/reservations/wizard/ReservationWizard.vue'
 import ReservationList from '../components/reservations/ReservationList.vue'
 import ReservationRouter from '../components/reservations/ReservationRouter.vue'
 
@@ -104,11 +103,6 @@ export default new VueRouter({
           component: RoomList
         },
         {
-          path: 'availability',
-          name: 'RoomAvailability',
-          component: RoomAvailability
-        },
-        {
           path: 'list',
           name: 'RoomList',
           component: RoomList
@@ -134,14 +128,9 @@ export default new VueRouter({
           component: ReservationList
         },
         {
-          path: ':id/cancel',
-          name: 'ReservationsList',
-          component: ReservationList
-        },
-        {
           path: 'wizard',
-          name: 'ReservationsList',
-          component: ReservationList
+          name: 'ReservationsWizard',
+          component: ReservationWizard
         }
       ]
     },
