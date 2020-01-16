@@ -76,6 +76,10 @@
         <b-form-input v-model="row.item.quantity"></b-form-input>
       </template>
 
+      <template v-slot:cell(min_stock)="row">
+        <b-form-input v-model="row.item.min_stock"></b-form-input>
+      </template>
+
       <template v-slot:cell(description)="row">
         <b-form-input v-model="row.item.description"></b-form-input>
       </template>
@@ -106,6 +110,12 @@ export default {
           sortDirection: "desc"
         },
         {
+          key: "min_stock",
+          label: "Alert stock",
+          sortable: false,
+          sortDirection: "desc"
+        },
+        {
           key: "description",
           label: "Description",
           sortable: false,
@@ -125,12 +135,22 @@ export default {
   },
   methods: {
     updateItem(item) {
-      this.$store.dispatch("editInventoryItem", item);
+      this.$store.dispatch("inventory/editItem", { vm: this, item });
     },
     onFiltered(filteredItems) {
       // Trigger pagination to update the number of buttons/pages due to filtering
       this.totalRows = filteredItems.length;
       this.currentPage = 1;
+    },
+    makeToast(title, message, variant = "info") {
+      this.$bvToast.toast(message, {
+        title,
+        autoHideDelay: 5000,
+        variant,
+        solid: true,
+        toaster: "b-toaster-bottom-right",
+        appendToast: true
+      });
     }
   },
   computed: {

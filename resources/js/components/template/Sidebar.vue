@@ -162,6 +162,7 @@
             <li class="nav-item has-treeview">
               <a href="#" class="nav-link">
                 <i class="nav-icon fa fa-shopping-cart"></i>
+                <span v-if="lowStock" class="badge badge-danger right">Low Stock!</span>
                 <p>
                   Inventory
                   <i class="fa fa-angle-left right"></i>
@@ -177,10 +178,7 @@
                 <li class="nav-item">
                   <router-link to="/inventory/list" class="nav-link">
                     <i class="nav-icon fa fa-shopping-cart"></i>
-                    Inventory Items
-                    <span
-                      class="badge badge-danger right"
-                    >Low Stock!</span>
+                    Stock
                   </router-link>
                 </li>
               </ul>
@@ -250,8 +248,19 @@ export default {
   computed: {
     ...mapGetters(["isAdmin", "isRecepcionist", "isManager"]),
     ...mapState(["appUser"]),
+    ...mapState({
+      inventory: state => state.inventory.items
+    }),
     avatarPath() {
       return "/storage/" + this.appUser.avatar_filename;
+    },
+    lowStock() {
+      for (var item of this.inventory) {
+        if (item.quantity < item.min_stock) {
+          return true;
+        }
+      }
+      return false;
     }
   },
   components: {},

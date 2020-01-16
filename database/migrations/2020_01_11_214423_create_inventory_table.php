@@ -17,7 +17,8 @@ class CreateInventoryTable extends Migration
             $table->bigIncrements('id');
             $table->string('name');
             $table->string('description');
-            $table->integer('quantity');
+            $table->integer('quantity'); // cambiar a stock?
+            $table->integer('min_stock');
         });
     }
 

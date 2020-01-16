@@ -26,6 +26,7 @@ class InventoryController extends Controller
         $item = new InventoryItem;
         $item->name = $request['item']['name'];
         $item->description = $request['item']['description'];
+        $item->min_stock = $request['item']['min_stock'];
         $item->quantity = $request['item']['quantity'];
         $item->save();
         return response()->json(['item' => $item], 200);
@@ -45,6 +46,7 @@ class InventoryController extends Controller
         $item = InventoryItem::where('id', $id)->first();
         $item->name = $request['item']['name'];
         $item->description = $request['item']['description'];
+        $item->min_stock = $request['item']['min_stock'];
         $item->quantity = $request['item']['quantity'];
         $item->save();
                 

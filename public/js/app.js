@@ -3655,6 +3655,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "InventoryItemAdd",
   data: function data() {
@@ -3662,22 +3669,27 @@ __webpack_require__.r(__webpack_exports__);
       item: {
         name: "",
         quantity: 0,
+        min_stock: 10,
         description: ""
       }
     };
   },
   methods: {
     add: function add() {
-      this.$store.dispatch("addInventoryItem", this.item);
-      this.makeToast(true);
+      this.$store.dispatch("inventory/addItem", {
+        vm: this,
+        item: this.item
+      });
     },
-    makeToast: function makeToast() {
-      var append = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
-      this.toastCount++;
-      this.$bvToast.toast("Inventory Item added", {
-        title: "BootstrapVue Toast",
+    makeToast: function makeToast(title, message) {
+      var variant = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "info";
+      this.$bvToast.toast(message, {
+        title: title,
         autoHideDelay: 5000,
-        appendToast: append
+        variant: variant,
+        solid: true,
+        toaster: "b-toaster-bottom-right",
+        appendToast: true
       });
     }
   },
@@ -3791,6 +3803,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "InventoryItemList",
@@ -3804,6 +3820,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }, {
         key: "quantity",
         label: "Quantity",
+        sortable: false,
+        sortDirection: "desc"
+      }, {
+        key: "min_stock",
+        label: "Alert stock",
         sortable: false,
         sortDirection: "desc"
       }, {
@@ -3827,12 +3848,26 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   },
   methods: {
     updateItem: function updateItem(item) {
-      this.$store.dispatch("editInventoryItem", item);
+      this.$store.dispatch("inventory/editItem", {
+        vm: this,
+        item: item
+      });
     },
     onFiltered: function onFiltered(filteredItems) {
       // Trigger pagination to update the number of buttons/pages due to filtering
       this.totalRows = filteredItems.length;
       this.currentPage = 1;
+    },
+    makeToast: function makeToast(title, message) {
+      var variant = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "info";
+      this.$bvToast.toast(message, {
+        title: title,
+        autoHideDelay: 5000,
+        variant: variant,
+        solid: true,
+        toaster: "b-toaster-bottom-right",
+        appendToast: true
+      });
     }
   },
   computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])({
@@ -5552,8 +5587,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Sidebar",
@@ -5562,9 +5595,43 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       return this.$store.dispatch("logout");
     }
   },
-  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])(["isAdmin", "isRecepcionist", "isManager"]), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])(["appUser"]), {
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])(["isAdmin", "isRecepcionist", "isManager"]), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])(["appUser"]), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])({
+    inventory: function inventory(state) {
+      return state.inventory.items;
+    }
+  }), {
     avatarPath: function avatarPath() {
       return "/storage/" + this.appUser.avatar_filename;
+    },
+    lowStock: function lowStock() {
+      var _iteratorNormalCompletion = true;
+      var _didIteratorError = false;
+      var _iteratorError = undefined;
+
+      try {
+        for (var _iterator = this.inventory[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+          var item = _step.value;
+
+          if (item.quantity < item.min_stock) {
+            return true;
+          }
+        }
+      } catch (err) {
+        _didIteratorError = true;
+        _iteratorError = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion && _iterator["return"] != null) {
+            _iterator["return"]();
+          }
+        } finally {
+          if (_didIteratorError) {
+            throw _iteratorError;
+          }
+        }
+      }
+
+      return false;
     }
   }),
   components: {},
@@ -74036,6 +74103,33 @@ var render = function() {
             "b-form",
             { attrs: { inline: "" } },
             [
+              _c("label", { staticClass: "col-3" }, [_vm._v("Min. Stock")]),
+              _vm._v(" "),
+              _c("b-input", {
+                staticClass: "col-3",
+                attrs: { placeholder: "50" },
+                model: {
+                  value: _vm.item.min_stock,
+                  callback: function($$v) {
+                    _vm.$set(_vm.item, "min_stock", $$v)
+                  },
+                  expression: "item.min_stock"
+                }
+              })
+            ],
+            1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "b-form-group",
+        [
+          _c(
+            "b-form",
+            { attrs: { inline: "" } },
+            [
               _c("label", { staticClass: "col-3" }, [_vm._v("Description")]),
               _vm._v(" "),
               _c("b-input", {
@@ -74302,6 +74396,22 @@ var render = function() {
                       _vm.$set(row.item, "quantity", $$v)
                     },
                     expression: "row.item.quantity"
+                  }
+                })
+              ]
+            }
+          },
+          {
+            key: "cell(min_stock)",
+            fn: function(row) {
+              return [
+                _c("b-form-input", {
+                  model: {
+                    value: row.item.min_stock,
+                    callback: function($$v) {
+                      _vm.$set(row.item, "min_stock", $$v)
+                    },
+                    expression: "row.item.min_stock"
                   }
                 })
               ]
@@ -76928,6 +77038,14 @@ var render = function() {
                     _c("a", { staticClass: "nav-link", attrs: { href: "#" } }, [
                       _c("i", { staticClass: "nav-icon fa fa-shopping-cart" }),
                       _vm._v(" "),
+                      _vm.lowStock
+                        ? _c(
+                            "span",
+                            { staticClass: "badge badge-danger right" },
+                            [_vm._v("Low Stock!")]
+                          )
+                        : _vm._e(),
+                      _vm._v(" "),
                       _c("p", [
                         _vm._v("\n                Inventory\n                "),
                         _c("i", { staticClass: "fa fa-angle-left right" })
@@ -76973,12 +77091,7 @@ var render = function() {
                                 staticClass: "nav-icon fa fa-shopping-cart"
                               }),
                               _vm._v(
-                                "\n                  Inventory Items\n                  "
-                              ),
-                              _c(
-                                "span",
-                                { staticClass: "badge badge-danger right" },
-                                [_vm._v("Low Stock!")]
+                                "\n                  Stock\n                "
                               )
                             ]
                           )
@@ -96327,7 +96440,9 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   actions: {
-    addInventoryItem: function addInventoryItem(context, item) {
+    addItem: function addItem(context, _ref) {
+      var vm = _ref.vm,
+          item = _ref.item;
       axios.post("http://127.0.0.1:8000/inventory/", {
         item: item
       }).then(function (response) {
@@ -96339,11 +96454,16 @@ __webpack_require__.r(__webpack_exports__);
           }
 
           var newItem = response['data']['item'];
-          context.commit('ADD_INVENTORY_ITEM', newItem);
+          context.commit('ADD_ITEM', newItem);
+          vm.makeToast("Item ", newItem.name + ' added.', 'success');
         }
+      })["catch"](function (response) {
+        vm.makeToast("Error", 'The item cannot be added!!!', 'danger');
       });
     },
-    editInventoryItem: function editInventoryItem(context, item) {
+    editItem: function editItem(context, _ref2) {
+      var vm = _ref2.vm,
+          item = _ref2.item;
       axios.post("http://127.0.0.1:8000/inventory/" + item.id, {
         item: item,
         _method: "put"
@@ -96353,9 +96473,13 @@ __webpack_require__.r(__webpack_exports__);
           // Agregamos una nueva conversacion si existe el objeto
           if (response['data'].length == 0) {
             return;
-          } // console.log('success');
+          }
 
+          var item = response['data']['item'];
+          vm.makeToast("Item ", item.name + ' update.', 'success');
         }
+      })["catch"](function (response) {
+        vm.makeToast("Error", 'The item cannot be updated!!!', 'danger');
       });
     }
   }

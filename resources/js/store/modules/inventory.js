@@ -15,7 +15,7 @@ export default ({
         },
     },
     actions: {
-        addInventoryItem(context, item) {
+        addItem(context, { vm, item }) {
             axios.post("http://127.0.0.1:8000/inventory/", {
                 item
             }).then(function (response) {
@@ -27,11 +27,14 @@ export default ({
                     }
 
                     var newItem = response['data']['item'];
-                    context.commit('ADD_INVENTORY_ITEM', newItem);
+                    context.commit('ADD_ITEM', newItem);
+                    vm.makeToast("Item ", newItem.name + ' added.', 'success');
                 }
+            }).catch(function (response) {
+                vm.makeToast("Error", 'The item cannot be added!!!', 'danger');
             });
         },
-        editInventoryItem(context, item) {
+        editItem(context, { vm, item }) {
             axios.post("http://127.0.0.1:8000/inventory/" + item.id, {
                 item,
                 _method: "put"
@@ -42,8 +45,12 @@ export default ({
                     if (response['data'].length == 0) {
                         return;
                     }
-                    // console.log('success');
+
+                    var item = response['data']['item'];
+                    vm.makeToast("Item ", item.name + ' update.', 'success');
                 }
+            }).catch(function (response) {
+                vm.makeToast("Error", 'The item cannot be updated!!!', 'danger');
             });
         },
     }

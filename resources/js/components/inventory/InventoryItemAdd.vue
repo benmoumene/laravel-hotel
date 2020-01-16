@@ -16,6 +16,13 @@
 
     <b-form-group>
       <b-form inline>
+        <label class="col-3">Min. Stock</label>
+        <b-input class="col-3" placeholder="50" v-model="item.min_stock"></b-input>
+      </b-form>
+    </b-form-group>
+
+    <b-form-group>
+      <b-form inline>
         <label class="col-3">Description</label>
         <b-input class="col-3" placeholder="..." v-model="item.description"></b-input>
       </b-form>
@@ -37,21 +44,23 @@ export default {
       item: {
         name: "",
         quantity: 0,
+        min_stock: 10,
         description: ""
       }
     };
   },
   methods: {
     add() {
-      this.$store.dispatch("addInventoryItem", this.item);
-      this.makeToast(true);
+      this.$store.dispatch("inventory/addItem", { vm: this, item: this.item });
     },
-    makeToast(append = false) {
-      this.toastCount++;
-      this.$bvToast.toast("Inventory Item added", {
-        title: "BootstrapVue Toast",
+    makeToast(title, message, variant = "info") {
+      this.$bvToast.toast(message, {
+        title,
         autoHideDelay: 5000,
-        appendToast: append
+        variant,
+        solid: true,
+        toaster: "b-toaster-bottom-right",
+        appendToast: true
       });
     }
   },
