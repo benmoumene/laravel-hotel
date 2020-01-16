@@ -77,10 +77,7 @@
           <i class="nav-icon fa fa-bed"></i>
           Show
         </router-link>
-        <router-link :to="{path: row.item.id +'/cancel'}" class="nav-link">
-          <i class="nav-icon fa fa-bed"></i>
-          Cancel
-        </router-link>
+        <b-button @click="cancelReservation(row.item)" variant="primary">CANCEL</b-button>
       </template>
     </b-table>
 
@@ -164,9 +161,25 @@ export default {
     };
   },
   methods: {
+    cancelReservation(reservation) {
+      this.$store.dispatch("reservation/deleteReservation", {
+        vm: this,
+        reservation
+      });
+    },
     onFiltered(filteredItems) {
       // Trigger pagination to update the number of buttons/pages due to filtering
       this.currentPage = 1;
+    },
+    makeToast(title, message, variant = "info") {
+      this.$bvToast.toast(message, {
+        title,
+        autoHideDelay: 5000,
+        variant,
+        solid: true,
+        toaster: "b-toaster-bottom-right",
+        appendToast: true
+      });
     }
   },
   computed: {

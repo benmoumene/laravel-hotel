@@ -84,10 +84,28 @@
                     Room List
                   </router-link>
                 </li>
+              </ul>
+            </li>
+
+            <li class="nav-item has-treeview" v-if="isRecepcionist || isAdmin">
+              <a href="#" class="nav-link">
+                <i class="nav-icon fa fa-user"></i>
+                <p>
+                  Guest
+                  <i class="fa fa-angle-left right"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <router-link to="/reservation/list" class="nav-link">
+                    <i class="nav-icon fa fa-search"></i>
+                    List Reservations
+                  </router-link>
+                </li>
                 <li class="nav-item">
                   <router-link to="/guest/list" class="nav-link">
-                    <i class="nav-icon fa fa-edit"></i>
-                    Guests
+                    <i class="nav-icon fa fa-search"></i>
+                    Guest List
                   </router-link>
                 </li>
               </ul>

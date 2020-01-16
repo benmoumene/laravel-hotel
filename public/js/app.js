@@ -3995,9 +3995,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
-//
-//
 // Implementar filtro de fechas por defecto en RESERVATION LIST.
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -4054,9 +4051,26 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     };
   },
   methods: {
+    cancelReservation: function cancelReservation(reservation) {
+      this.$store.dispatch("reservation/deleteReservation", {
+        vm: this,
+        reservation: reservation
+      });
+    },
     onFiltered: function onFiltered(filteredItems) {
       // Trigger pagination to update the number of buttons/pages due to filtering
       this.currentPage = 1;
+    },
+    makeToast: function makeToast(title, message) {
+      var variant = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "info";
+      this.$bvToast.toast(message, {
+        title: title,
+        autoHideDelay: 5000,
+        variant: variant,
+        solid: true,
+        toaster: "b-toaster-bottom-right",
+        appendToast: true
+      });
     }
   },
   computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])({
@@ -5300,6 +5314,24 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -74568,15 +74600,16 @@ var render = function() {
                 ),
                 _vm._v(" "),
                 _c(
-                  "router-link",
+                  "b-button",
                   {
-                    staticClass: "nav-link",
-                    attrs: { to: { path: row.item.id + "/cancel" } }
+                    attrs: { variant: "primary" },
+                    on: {
+                      click: function($event) {
+                        return _vm.cancelReservation(row.item)
+                      }
+                    }
                   },
-                  [
-                    _c("i", { staticClass: "nav-icon fa fa-bed" }),
-                    _vm._v("\n        Cancel\n      ")
-                  ]
+                  [_vm._v("CANCEL")]
                 )
               ]
             }
@@ -76689,6 +76722,50 @@ var render = function() {
                               )
                             ],
                             1
+                          )
+                        ])
+                      ])
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _vm.isRecepcionist || _vm.isAdmin
+                    ? _c("li", { staticClass: "nav-item has-treeview" }, [
+                        _c(
+                          "a",
+                          { staticClass: "nav-link", attrs: { href: "#" } },
+                          [
+                            _c("i", { staticClass: "nav-icon fa fa-user" }),
+                            _vm._v(" "),
+                            _c("p", [
+                              _vm._v(
+                                "\n                Guest\n                "
+                              ),
+                              _c("i", { staticClass: "fa fa-angle-left right" })
+                            ])
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c("ul", { staticClass: "nav nav-treeview" }, [
+                          _c(
+                            "li",
+                            { staticClass: "nav-item" },
+                            [
+                              _c(
+                                "router-link",
+                                {
+                                  staticClass: "nav-link",
+                                  attrs: { to: "/reservation/list" }
+                                },
+                                [
+                                  _c("i", {
+                                    staticClass: "nav-icon fa fa-search"
+                                  }),
+                                  _vm._v(
+                                    "\n                  List Reservations\n                "
+                                  )
+                                ]
+                              )
+                            ],
+                            1
                           ),
                           _vm._v(" "),
                           _c(
@@ -76703,10 +76780,10 @@ var render = function() {
                                 },
                                 [
                                   _c("i", {
-                                    staticClass: "nav-icon fa fa-edit"
+                                    staticClass: "nav-icon fa fa-search"
                                   }),
                                   _vm._v(
-                                    "\n                  Guests\n                "
+                                    "\n                  Guest List\n                "
                                   )
                                 ]
                               )
@@ -96273,9 +96350,18 @@ __webpack_require__.r(__webpack_exports__);
     },
     ADD_RESERVATION: function ADD_RESERVATION(state, reservation) {
       state.reservations.push(reservation);
+    },
+    DELETE_RESERVATION: function DELETE_RESERVATION(state, index) {
+      Vue["delete"](state.reservations, index);
     }
   },
   actions: {
+    deleteReservationById: function deleteReservationById(context, reservationId) {
+      var index = context.state.reservations.findIndex(function (reservation) {
+        return reservation.id === reservationId;
+      });
+      context.commit('DELETE_RESERVATION', index);
+    },
     addReservation: function addReservation(context, _ref) {
       var vm = _ref.vm,
           reservation = _ref.reservation;
@@ -96298,19 +96384,17 @@ __webpack_require__.r(__webpack_exports__);
         vm.makeToast("Error", 'Reservation failed!!!', 'danger');
       });
     },
-    deleteReservation: function deleteReservation(context, reservation) {
+    deleteReservation: function deleteReservation(context, _ref2) {
+      var vm = _ref2.vm,
+          reservation = _ref2.reservation;
       axios.post("http://127.0.0.1:8000/reservations/" + reservation.id, {
         reservation: reservation,
         _method: "delete"
       }).then(function (response) {
-        // Si el request tuvo exito (codigo 200)
-        if (response.status == 200) {
-          // Agregamos una nueva conversacion si existe el objeto
-          if (response['data'].length == 0) {
-            return;
-          } // console.log('success');
-
-        }
+        vm.makeToast("Error", 'Reservation cancelled!!!', 'success');
+        context.dispatch('deleteReservationById', reservation.id);
+      })["catch"](function (response) {
+        vm.makeToast("Error", 'Cancellation failed!!!', 'danger');
       });
     }
   }

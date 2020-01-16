@@ -16,8 +16,16 @@ export default ({
         ADD_RESERVATION(state, reservation) {
             state.reservations.push(reservation);
         },
+        DELETE_RESERVATION(state, index) {
+            Vue.delete(state.reservations, index);
+        }
     },
     actions: {
+        deleteReservationById(context, reservationId) {
+            var index = context.state.reservations.findIndex(
+                reservation => reservation.id === reservationId);
+            context.commit('DELETE_RESERVATION', index);
+        },
         addReservation(context, { vm, reservation }) {
             axios.post("http://127.0.0.1:8000/reservations/", {
                 reservation
@@ -38,19 +46,15 @@ export default ({
                 vm.makeToast("Error", 'Reservation failed!!!', 'danger');
             });
         },
-        deleteReservation(context, reservation) {
+        deleteReservation(context, { vm, reservation }) {
             axios.post("http://127.0.0.1:8000/reservations/" + reservation.id, {
                 reservation,
                 _method: "delete"
             }).then(function (response) {
-                // Si el request tuvo exito (codigo 200)
-                if (response.status == 200) {
-                    // Agregamos una nueva conversacion si existe el objeto
-                    if (response['data'].length == 0) {
-                        return;
-                    }
-                    // console.log('success');
-                }
+                vm.makeToast("Error", 'Reservation cancelled!!!', 'success');
+                context.dispatch('deleteReservationById', reservation.id);
+            }).catch(function (response) {
+                vm.makeToast("Error", 'Cancellation failed!!!', 'danger');
             });
         },
     }
