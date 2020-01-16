@@ -57,7 +57,7 @@
                 </li>
                 <li class="nav-item">
                   <router-link to="/customer/list" class="nav-link">
-                    <i class="nav-icon fa fa-search"></i>
+                    <i class="nav-icon fa fa-list"></i>
                     Customer List
                   </router-link>
                 </li>
@@ -74,13 +74,13 @@
               <ul class="nav nav-treeview">
                 <li class="nav-item">
                   <router-link to="/room/add" class="nav-link">
-                    <i class="nav-icon fa fa-bed"></i>
+                    <i class="nav-icon fa fa-plus"></i>
                     Add Room
                   </router-link>
                 </li>
                 <li class="nav-item">
                   <router-link to="/room/list" class="nav-link">
-                    <i class="nav-icon fa fa-search"></i>
+                    <i class="nav-icon fa fa-list"></i>
                     Room List
                   </router-link>
                 </li>
@@ -98,13 +98,13 @@
               <ul class="nav nav-treeview">
                 <li class="nav-item">
                   <router-link to="/reservation/list" class="nav-link">
-                    <i class="nav-icon fa fa-search"></i>
+                    <i class="nav-icon fa fa-list"></i>
                     List Reservations
                   </router-link>
                 </li>
                 <li class="nav-item">
                   <router-link to="/guest/list" class="nav-link">
-                    <i class="nav-icon fa fa-search"></i>
+                    <i class="nav-icon fa fa-list"></i>
                     Guest List
                   </router-link>
                 </li>
@@ -113,7 +113,7 @@
 
             <li class="nav-item has-treeview" v-if="isRecepcionist || isAdmin">
               <a href="#" class="nav-link">
-                <i class="nav-icon fa fa-bed"></i>
+                <i class="nav-icon fa fa-calendar-alt"></i>
                 <p>
                   Reservations
                   <i class="fa fa-angle-left right"></i>
@@ -128,7 +128,7 @@
                 </li>
                 <li class="nav-item">
                   <router-link to="/reservation/list" class="nav-link">
-                    <i class="nav-icon fa fa-search"></i>
+                    <i class="nav-icon fa fa-list"></i>
                     List Reservations
                   </router-link>
                 </li>
@@ -137,23 +137,23 @@
 
             <li class="nav-item has-treeview">
               <a href="#" class="nav-link">
-                <i class="nav-icon fa fa-hand-holding-usd"></i>
+                <i class="nav-icon fa fa-coffee"></i>
                 <p>
-                  Manage Services
+                  Services
                   <i class="fa fa-angle-left right"></i>
                 </p>
               </a>
               <ul class="nav nav-treeview">
                 <li class="nav-item">
                   <router-link to="/services/add" class="nav-link">
-                    <i class="nav-icon fa fa-hand-holding-usd"></i>
+                    <i class="nav-icon fa fa-plus"></i>
                     Add Service
                   </router-link>
                 </li>
                 <li class="nav-item">
                   <router-link to="/services/list" class="nav-link">
-                    <i class="nav-icon fa fa-hand-holding-usd"></i>
-                    Show Services
+                    <i class="nav-icon fa fa-list"></i>
+                    Service List
                   </router-link>
                 </li>
               </ul>
@@ -161,7 +161,7 @@
 
             <li class="nav-item has-treeview">
               <a href="#" class="nav-link">
-                <i class="nav-icon fa fa-shopping-cart"></i>
+                <i class="nav-icon fa fa-barcode"></i>
                 <span v-if="lowStock" class="badge badge-danger right">Low Stock!</span>
                 <p>
                   Inventory
@@ -171,7 +171,7 @@
               <ul class="nav nav-treeview">
                 <li class="nav-item">
                   <router-link to="/inventory/add" class="nav-link">
-                    <i class="nav-icon fa fa-shopping-cart"></i>
+                    <i class="nav-icon fa fa-plus"></i>
                     Add Item
                   </router-link>
                 </li>
