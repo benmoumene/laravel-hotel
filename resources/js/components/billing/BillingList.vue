@@ -74,7 +74,7 @@
         >{{ row.item.status }}</b-badge>
       </template>
       <template v-slot:cell(actions)="row">
-        <router-link :to="{path: '/billing/' + row.item.id +'/show'}" class="nav-link">View Invoice</router-link>
+        <router-link :to="{path: '/billing/' + row.item.id +'/edit'}" class="nav-link">View Invoice</router-link>
       </template>
     </b-table>
   </b-container>
@@ -125,7 +125,10 @@ export default {
     }
   },
   computed: {
-    ...mapState(["invoices"]),
+    //...mapState(["billing/invoices"]),
+    ...mapState({
+      invoices: state => state.billing.invoices
+    }),
     sortOptions() {
       // Create an options list from our fields
       return this.fields
