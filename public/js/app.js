@@ -96647,8 +96647,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_reservation__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./modules/reservation */ "./resources/js/store/modules/reservation.js");
 /* harmony import */ var _modules_inventory__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./modules/inventory */ "./resources/js/store/modules/inventory.js");
 /* harmony import */ var _modules_billing__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./modules/billing */ "./resources/js/store/modules/billing.js");
+/* harmony import */ var _modules_guest__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./modules/guest */ "./resources/js/store/modules/guest.js");
 
  // Modules
+
 
 
 
@@ -96664,20 +96666,17 @@ vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_0__
     customer: _modules_customer__WEBPACK_IMPORTED_MODULE_4__["default"],
     inventory: _modules_inventory__WEBPACK_IMPORTED_MODULE_6__["default"],
     reservation: _modules_reservation__WEBPACK_IMPORTED_MODULE_5__["default"],
-    billing: _modules_billing__WEBPACK_IMPORTED_MODULE_7__["default"]
+    billing: _modules_billing__WEBPACK_IMPORTED_MODULE_7__["default"],
+    guest: _modules_guest__WEBPACK_IMPORTED_MODULE_8__["default"]
   },
   state: {
     // Datos de usuario y perfil
     appUser: {
       name: ''
     },
-    settings: [],
-    guests: []
+    settings: []
   },
   getters: {
-    getGuest: function getGuest(state, getters) {
-      return function (clientId) {};
-    },
     getSettingValue: function getSettingValue(state, getters) {
       return function (name) {
         var setting = state.settings.find(function (setting) {
@@ -96717,15 +96716,8 @@ vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_0__
       state.appUser = user;
     },
     // 
-    SET_GUESTS: function SET_GUESTS(state, guests) {
-      state.guests = guests;
-    },
     SET_SETTINGS: function SET_SETTINGS(state, settings) {
       state.settings = settings;
-    },
-    // Agrega un usuario a people
-    ADD_GUEST: function ADD_GUEST(state, guest) {
-      state.guests.push(guest);
     }
   },
   actions: {
@@ -96743,7 +96735,7 @@ vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_0__
 
           context.commit('SET_USER', data['app_user']); // Guests
 
-          context.commit('SET_GUESTS', data['guests']); // Customers
+          context.commit('guest/SET_GUESTS', data['guests']); // Customers
 
           context.commit('customer/SET_CUSTOMERS', data['customers']); // Settings
 
@@ -96967,6 +96959,64 @@ __webpack_require__.r(__webpack_exports__);
           } // console.log('success');
 
         }
+      });
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./resources/js/store/modules/guest.js":
+/*!*********************************************!*\
+  !*** ./resources/js/store/modules/guest.js ***!
+  \*********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ({
+  namespaced: true,
+  state: {
+    guests: []
+  },
+  getters: {
+    getGuestById: function getGuestById(state, getters) {
+      return function (guestId) {
+        return state.guests.find(function (guest) {
+          return guest.id === guestId;
+        });
+      };
+    }
+  },
+  mutations: {
+    SET_GUESTS: function SET_GUESTS(state, guests) {
+      state.guests = guests;
+    },
+    ADD_GUEST: function ADD_GUEST(state, guest) {
+      state.guests.push(guest);
+    }
+  },
+  actions: {
+    addGuest: function addGuest(context, _ref) {
+      var vm = _ref.vm,
+          room = _ref.room;
+      axios.post("http://127.0.0.1:8000/room/", {
+        room: room
+      }).then(function (response) {
+        // Si el request tuvo exito (codigo 200)
+        if (response.status == 200) {
+          // Agregamos una nueva conversacion si existe el objeto
+          if (response['data'].length == 0) {
+            return;
+          }
+
+          var newRoom = response['data']['room'];
+          context.commit('ADD_ROOM', newRoom);
+          vm.makeToast("Room added", newRoom.name + ' added.', 'success');
+        }
+      })["catch"](function (response) {
+        vm.makeToast("Error", 'The room cannot be added!!!', 'danger');
       });
     }
   }
