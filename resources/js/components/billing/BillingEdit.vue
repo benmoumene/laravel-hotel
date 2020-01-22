@@ -71,7 +71,12 @@
         </b-col>
         <b-col cols="12">
           <b-row v-for="billed_service in invoice.billed_services" :key="billed_service.id">
-            <b-col>{{ billed_service.service.name }}</b-col>
+            <b-col>
+              <b-link @click="deleteBilledService(billed_service.id)">
+                <i class="fas fa-trash"></i>
+              </b-link>
+              {{ billed_service.service.name }}
+            </b-col>
             <b-col>{{ billed_service.service.cost }}</b-col>
             <b-col>{{ billed_service.billed_on }}</b-col>
           </b-row>
@@ -110,6 +115,9 @@ import { mapState, mapGetters } from "vuex";
 export default {
   name: "Billing",
   methods: {
+    deleteBilledService(id) {
+      this.$store.dispatch("billing/deleteBilledService", { vm: this, id });
+    },
     markAsPaid() {
       var invoiceId = parseInt(this.$route.params.id);
       var invoice = this.getInvoiceById(invoiceId);

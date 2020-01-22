@@ -20,12 +20,13 @@ export default ({
         }
     },
     actions: {
-        deleteBilledService(context, { vm, reservation }) {
-            axios.post("http://127.0.0.1:8000/reservations/" + reservation.id, {
-                reservation,
-                _method: "put"
+        deleteBilledService(context, { vm, id }) {
+            axios.post("http://127.0.0.1:8000/billed_service/" + id, {
+                _method: "delete"
             }).then(function (response) {
+                vm.makeToast("Billed service has been removed.", 'success');
             }).catch(function (response) {
+                vm.makeToast("Billed service cannot be removed.", 'danger');
             });
         },
         generateInvoice(context, { vm, reservation }) {

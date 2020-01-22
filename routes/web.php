@@ -60,3 +60,6 @@ Route::post('/invoice', 'InvoiceController@store');
 Route::put('/invoice/{invoice_id}', 'InvoiceController@update');
 // Borrar factura
 Route::delete('/invoice/{invoice_id}', 'InvoiceController@destroy');
+
+// Borrar Billed Service
+Route::delete('/billed_service/{billed_service_id}', 'BilledServiceController@destroy');

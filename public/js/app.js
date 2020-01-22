@@ -2649,10 +2649,21 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Billing",
   methods: {
+    deleteBilledService: function deleteBilledService(id) {
+      this.$store.dispatch("billing/deleteBilledService", {
+        vm: this,
+        id: id
+      });
+    },
     markAsPaid: function markAsPaid() {
       var invoiceId = parseInt(this.$route.params.id);
       var invoice = this.getInvoiceById(invoiceId);
@@ -72607,9 +72618,30 @@ var render = function() {
                     "b-row",
                     { key: billed_service.id },
                     [
-                      _c("b-col", [
-                        _vm._v(_vm._s(billed_service.service.name))
-                      ]),
+                      _c(
+                        "b-col",
+                        [
+                          _c(
+                            "b-link",
+                            {
+                              on: {
+                                click: function($event) {
+                                  return _vm.deleteBilledService(
+                                    billed_service.id
+                                  )
+                                }
+                              }
+                            },
+                            [_c("i", { staticClass: "fas fa-trash" })]
+                          ),
+                          _vm._v(
+                            "\n            " +
+                              _vm._s(billed_service.service.name) +
+                              "\n          "
+                          )
+                        ],
+                        1
+                      ),
                       _vm._v(" "),
                       _c("b-col", [
                         _vm._v(_vm._s(billed_service.service.cost))
@@ -96839,11 +96871,14 @@ __webpack_require__.r(__webpack_exports__);
   actions: {
     deleteBilledService: function deleteBilledService(context, _ref) {
       var vm = _ref.vm,
-          reservation = _ref.reservation;
-      axios.post("http://127.0.0.1:8000/reservations/" + reservation.id, {
-        reservation: reservation,
-        _method: "put"
-      }).then(function (response) {})["catch"](function (response) {});
+          id = _ref.id;
+      axios.post("http://127.0.0.1:8000/billed_service/" + id, {
+        _method: "delete"
+      }).then(function (response) {
+        vm.makeToast("Billed service has been removed.", 'success');
+      })["catch"](function (response) {
+        vm.makeToast("Billed service cannot be removed.", 'danger');
+      });
     },
     generateInvoice: function generateInvoice(context, _ref2) {
       var vm = _ref2.vm,
