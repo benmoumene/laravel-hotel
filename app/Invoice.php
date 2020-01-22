@@ -26,12 +26,9 @@ class Invoice extends Model
 
     public function billedServices()
     {
-        return $this->hasManyThrough(
+        return $this->hasMany(
             'App\BilledService',
-            'App\Guest',
-            'id',
-            'id',
-            'id',
+            'guest_id',
             'id'
         );
     }

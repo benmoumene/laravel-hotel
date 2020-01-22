@@ -20,31 +20,12 @@ export default ({
         }
     },
     actions: {
-        editInvoice(context, { vm, reservation }) {
-            axios.post("http://127.0.0.1:8000/reservations/" + reservation.id, {
-                reservation,
-                _method: "put"
-            }).then(function (response) {
-            }).catch(function (response) {
-            });
-        },
         deleteBilledService(context, { vm, reservation }) {
             axios.post("http://127.0.0.1:8000/reservations/" + reservation.id, {
                 reservation,
                 _method: "put"
             }).then(function (response) {
             }).catch(function (response) {
-            });
-        },
-        regenerate(context, { vm, invoice }) {
-            axios.post("http://127.0.0.1:8000/invoice/" + invoice.id, {
-                invoice,
-                _method: "put"
-            }).then(function (response) {
-                vm.makeToast("Invoice ", invoice.id + ' regenerated.', 'success');
-                invoice = response['data']['invoice'];
-            }).catch(function (response) {
-                vm.makeToast("Invoice ", invoice.id + ' not regenerated.', 'danger');
             });
         },
         generateInvoice(context, { vm, reservation }) {
@@ -56,12 +37,14 @@ export default ({
             });
         },
         // Marca una factura como pagada. (Status/Payment Method)
-        setAsPaid(context, { vm, reservation }) {
-            axios.post("http://127.0.0.1:8000/reservations/" + reservation.id, {
-                reservation,
+        updateInvoice(context, { vm, invoice }) {
+            axios.post("http://127.0.0.1:8000/invoice/" + invoice.id, {
+                invoice,
                 _method: "put"
             }).then(function (response) {
+                vm.makeToast("Invoice ", invoice.id + ' has been updated.', 'success');
             }).catch(function (response) {
+                vm.makeToast("Invoice ", invoice.id + ' cannot be updated', 'danger');
             });
         },
     }

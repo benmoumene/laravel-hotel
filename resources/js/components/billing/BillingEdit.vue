@@ -87,11 +87,22 @@
 
       <b-row class="mb-3 pull-right">
         <b-col>
-          <b-button variant="success">Mark as paid</b-button>
+          <b-button v-b-modal.modal-center variant="success">Mark as paid</b-button>
           <b-button @click="regenerate" variant="success">Regenerate</b-button>
         </b-col>
       </b-row>
     </div>
+
+    <b-modal id="modal-center" centered title="Reservation Info">
+      <b-row>
+        <b-col sm="3" class="avatar-menu-inner">Payment Method:</b-col>
+      </b-row>
+      <b-row>
+        <b-col sm="3" class="avatar-menu-inner">
+          <b-button @click="markAsPaid" variant="success">DONE</b-button>
+        </b-col>
+      </b-row>
+    </b-modal>
   </b-container>
 </template>
 <script>
@@ -99,11 +110,18 @@ import { mapState, mapGetters } from "vuex";
 export default {
   name: "Billing",
   methods: {
+    markAsPaid() {
+      var invoiceId = parseInt(this.$route.params.id);
+      var invoice = this.getInvoiceById(invoiceId);
+      invoice.status = "success";
+      invoice.payment_method = "cash";
+      this.$store.dispatch("billing/updateInvoice", { vm: this, invoice });
+    },
     regenerate() {
       // invoice id
       var invoiceId = parseInt(this.$route.params.id);
       var invoice = this.getInvoiceById(invoiceId);
-      this.$store.dispatch("billing/regenerate", { vm: this, invoice });
+      this.$store.dispatch("billing/updateInvoice", { vm: this, invoice });
     },
     makeToast(title, message, variant = "info") {
       this.$bvToast.toast(message, {
