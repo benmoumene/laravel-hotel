@@ -4,7 +4,11 @@ export default ({
         reservations: [],
     },
     getters: {
-
+        getReservationById: (state, getters) => (reservationId) => {
+            return state.reservations.find(
+                reservation => reservation.id === reservationId
+            );
+        },
     },
     mutations: {
         SET_RESERVATION(state, reservation) {

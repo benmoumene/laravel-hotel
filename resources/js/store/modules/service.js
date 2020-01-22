@@ -4,7 +4,11 @@ export default ({
         services: [],
     },
     getters: {
-
+        getServiceById: (state, getters) => (serviceId) => {
+            return state.services.find(
+                service => service.id === serviceId
+            );
+        },
     },
     mutations: {
         SET_SERVICES(state, services) {
