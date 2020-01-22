@@ -8,24 +8,10 @@ use App\Service;
 
 class ServiceController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function __construct()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        // Se necesita esta autentificado para llevar a cabo acciones
+        $this->middleware('auth');
     }
 
     /**
@@ -43,28 +29,6 @@ class ServiceController extends Controller
         $service->comments = $request['service']['comments'];
         $service->save();
         return response()->json(['service' => $service], 200);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
     }
 
     /**
