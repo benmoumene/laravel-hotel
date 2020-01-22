@@ -2535,15 +2535,149 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Billing",
-  methods: {},
-  computed: {},
+  methods: {
+    regenerate: function regenerate() {
+      // invoice id
+      var invoiceId = parseInt(this.$route.params.id);
+      var invoice = this.getInvoiceById(invoiceId);
+      this.$store.dispatch("billing/regenerate", {
+        vm: this,
+        invoice: invoice
+      });
+    },
+    makeToast: function makeToast(title, message) {
+      var variant = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "info";
+      this.$bvToast.toast(message, {
+        title: title,
+        autoHideDelay: 5000,
+        variant: variant,
+        solid: true,
+        toaster: "b-toaster-bottom-right",
+        appendToast: true
+      });
+    }
+  },
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])(["settings"]), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])({
+    getSettingValue: "getSettingValue",
+    getInvoiceById: "billing/getInvoiceById"
+  }), {
+    invoice: function invoice() {
+      var invoiceId = parseInt(this.$route.params.id);
+      var invoice = this.getInvoiceById(invoiceId);
+
+      if (typeof invoice === "undefined") {
+        return "";
+      }
+
+      return invoice;
+    }
+  }),
   components: {},
   mounted: function mounted() {}
 });
@@ -2688,7 +2822,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.currentPage = 1;
     }
   },
-  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])(["invoices"]), {
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])({
+    invoices: function invoices(state) {
+      return state.billing.invoices;
+    }
+  }), {
     sortOptions: function sortOptions() {
       // Create an options list from our fields
       return this.fields.filter(function (f) {
@@ -2912,10 +3050,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   },
   methods: {
     edit: function edit() {
-      this.$store.dispatch("editCustomer", this.getCustomer);
+      this.$store.dispatch("customer/editCustomer", this.getCustomer);
     }
   },
-  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])(["getCustomerById"]), {
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])({
+    getCustomerById: "customer/getCustomerById"
+  }), {
     getCustomer: function getCustomer() {
       var customerId = parseInt(this.$route.params.id);
       var customer = this.getCustomerById(customerId);
@@ -38963,6 +39103,25 @@ exports.push([module.i, "\n.avatar[data-v-3bd692e4] {\n  padding: 5px;\n  max-wi
 
 /***/ }),
 
+/***/ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/billing/BillingEdit.vue?vue&type=style&index=0&id=ac220a14&scoped=true&lang=css&":
+/*!*************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/billing/BillingEdit.vue?vue&type=style&index=0&id=ac220a14&scoped=true&lang=css& ***!
+  \*************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-loader/lib/css-base.js */ "./node_modules/css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n.invoice[data-v-ac220a14] {\n  border: 1px solid gray;\n  padding: 5px 15px;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+
 /***/ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/reservations/wizard/ReservationWizard.vue?vue&type=style&index=0&id=6dc8d280&scoped=true&lang=css&":
 /*!*******************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/reservations/wizard/ReservationWizard.vue?vue&type=style&index=0&id=6dc8d280&scoped=true&lang=css& ***!
@@ -70566,6 +70725,36 @@ if(false) {}
 
 /***/ }),
 
+/***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/billing/BillingEdit.vue?vue&type=style&index=0&id=ac220a14&scoped=true&lang=css&":
+/*!*****************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader!./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/billing/BillingEdit.vue?vue&type=style&index=0&id=ac220a14&scoped=true&lang=css& ***!
+  \*****************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+var content = __webpack_require__(/*! !../../../../node_modules/css-loader??ref--6-1!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/src??ref--6-2!../../../../node_modules/vue-loader/lib??vue-loader-options!./BillingEdit.vue?vue&type=style&index=0&id=ac220a14&scoped=true&lang=css& */ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/billing/BillingEdit.vue?vue&type=style&index=0&id=ac220a14&scoped=true&lang=css&");
+
+if(typeof content === 'string') content = [[module.i, content, '']];
+
+var transform;
+var insertInto;
+
+
+
+var options = {"hmr":true}
+
+options.transform = transform
+options.insertInto = undefined;
+
+var update = __webpack_require__(/*! ../../../../node_modules/style-loader/lib/addStyles.js */ "./node_modules/style-loader/lib/addStyles.js")(content, options);
+
+if(content.locals) module.exports = content.locals;
+
+if(false) {}
+
+/***/ }),
+
 /***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/reservations/wizard/ReservationWizard.vue?vue&type=style&index=0&id=6dc8d280&scoped=true&lang=css&":
 /*!***********************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/style-loader!./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/reservations/wizard/ReservationWizard.vue?vue&type=style&index=0&id=6dc8d280&scoped=true&lang=css& ***!
@@ -72239,11 +72428,216 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "b-row",
-    [_c("b-col", { attrs: { cols: "12" } }, [_vm._v("BILLING EDIT")])],
-    1
-  )
+  return _c("b-container", { attrs: { fluid: "" } }, [
+    _c(
+      "div",
+      { staticClass: "invoice" },
+      [
+        _c(
+          "b-row",
+          { staticClass: "header mb-3" },
+          [
+            _c("b-col", { attrs: { cols: "12" } }, [
+              _c("strong", [_vm._v(_vm._s(_vm.getSettingValue("hotel_name")))])
+            ]),
+            _vm._v(" "),
+            _c("b-col", { attrs: { cols: "12" } }, [
+              _vm._v(_vm._s(_vm.getSettingValue("hotel_address")))
+            ]),
+            _vm._v(" "),
+            _c("b-col", { attrs: { cols: "12" } }, [
+              _vm._v(_vm._s(_vm.getSettingValue("hotel_phone")))
+            ])
+          ],
+          1
+        ),
+        _vm._v(" "),
+        _c(
+          "b-row",
+          { staticClass: "mb-3" },
+          [
+            _c("b-col", [
+              _c("strong", [_vm._v("Invoice #")]),
+              _vm._v("\n        " + _vm._s(_vm.invoice.id) + "\n      ")
+            ]),
+            _vm._v(" "),
+            _c("b-col", [
+              _c("strong", [_vm._v("Date")]),
+              _vm._v(
+                "\n        " + _vm._s(_vm.invoice.generated_on) + "\n      "
+              )
+            ])
+          ],
+          1
+        ),
+        _vm._v(" "),
+        _c(
+          "b-row",
+          { staticClass: "mb-3" },
+          [
+            _c("b-col", { attrs: { cols: "12" } }, [
+              _c("strong", [_vm._v("Customer")])
+            ]),
+            _vm._v(" "),
+            _c("b-col", { attrs: { cols: "12" } }, [
+              _c("strong", [_vm._v("Name")]),
+              _vm._v(
+                "\n        " +
+                  _vm._s(_vm.invoice.guest.customer.first_name) +
+                  "\n        " +
+                  _vm._s(_vm.invoice.guest.customer.last_name) +
+                  "\n      "
+              )
+            ]),
+            _vm._v(" "),
+            _c("b-col", { attrs: { cols: "6" } }, [
+              _c("strong", [_vm._v("Phone")]),
+              _vm._v(
+                "\n        " +
+                  _vm._s(_vm.invoice.guest.customer.phone) +
+                  "\n      "
+              )
+            ]),
+            _vm._v(" "),
+            _c("b-col", { attrs: { cols: "6" } }, [
+              _c("strong", [_vm._v("Address")]),
+              _vm._v(
+                "\n        " +
+                  _vm._s(_vm.invoice.guest.customer.address) +
+                  "\n      "
+              )
+            ])
+          ],
+          1
+        ),
+        _vm._v(" "),
+        _c(
+          "b-row",
+          { staticClass: "mb-3" },
+          [
+            _c("b-col", { attrs: { cols: "12" } }, [
+              _c("strong", [_vm._v("Reservation")])
+            ]),
+            _vm._v(" "),
+            _c("b-col", { attrs: { cols: "6" } }, [
+              _c("strong", [_vm._v("From")]),
+              _vm._v(
+                "\n        " +
+                  _vm._s(_vm.invoice.guest.reservation.check_in) +
+                  "\n      "
+              )
+            ]),
+            _vm._v(" "),
+            _c("b-col", { attrs: { cols: "6" } }, [
+              _c("strong", [_vm._v("To")]),
+              _vm._v(
+                "\n        " +
+                  _vm._s(_vm.invoice.guest.reservation.check_out) +
+                  "\n      "
+              )
+            ]),
+            _vm._v(" "),
+            _c("b-col", { attrs: { cols: "6" } }, [
+              _c("strong", [_vm._v("Arrival")]),
+              _vm._v(
+                "\n        " + _vm._s(_vm.invoice.guest.check_in) + "\n      "
+              )
+            ]),
+            _vm._v(" "),
+            _c("b-col", { attrs: { cols: "6" } }, [
+              _c("strong", [_vm._v("Left")]),
+              _vm._v(
+                "\n        " + _vm._s(_vm.invoice.guest.check_out) + "\n      "
+              )
+            ]),
+            _vm._v(" "),
+            _c("b-col", { attrs: { cols: "6" } }, [
+              _c("strong", [_vm._v("Room")]),
+              _vm._v(
+                "\n        " +
+                  _vm._s(_vm.invoice.guest.reservation.room.name) +
+                  "\n      "
+              )
+            ])
+          ],
+          1
+        ),
+        _vm._v(" "),
+        _c(
+          "b-row",
+          { staticClass: "mb-3" },
+          [
+            _c("b-col", { attrs: { cols: "12" } }, [
+              _c("strong", [_vm._v("Billed Services")])
+            ]),
+            _vm._v(" "),
+            _c(
+              "b-col",
+              { attrs: { cols: "12" } },
+              _vm._l(_vm.invoice.billed_services, function(billed_service) {
+                return _c(
+                  "b-row",
+                  { key: billed_service.id },
+                  [
+                    _c("b-col", [_vm._v(_vm._s(billed_service.service.name))]),
+                    _vm._v(" "),
+                    _c("b-col", [_vm._v(_vm._s(billed_service.service.cost))]),
+                    _vm._v(" "),
+                    _c("b-col", [_vm._v(_vm._s(billed_service.billed_on))])
+                  ],
+                  1
+                )
+              }),
+              1
+            )
+          ],
+          1
+        ),
+        _vm._v(" "),
+        _c(
+          "b-row",
+          { staticClass: "mb-3" },
+          [
+            _c("b-col", { attrs: { cols: "12" } }, [
+              _c("strong", [_vm._v("Total")])
+            ]),
+            _vm._v(" "),
+            _c("b-col", { attrs: { cols: "12" } }, [
+              _vm._v("Due amount: " + _vm._s(_vm.invoice.total))
+            ])
+          ],
+          1
+        ),
+        _vm._v(" "),
+        _c(
+          "b-row",
+          { staticClass: "mb-3 pull-right" },
+          [
+            _c(
+              "b-col",
+              [
+                _c("b-button", { attrs: { variant: "success" } }, [
+                  _vm._v("Mark as paid")
+                ]),
+                _vm._v(" "),
+                _c(
+                  "b-button",
+                  {
+                    attrs: { variant: "success" },
+                    on: { click: _vm.regenerate }
+                  },
+                  [_vm._v("Regenerate")]
+                )
+              ],
+              1
+            )
+          ],
+          1
+        )
+      ],
+      1
+    )
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -76758,7 +77152,7 @@ var render = function() {
                               attrs: { to: "/customer/list" }
                             },
                             [
-                              _c("i", { staticClass: "nav-icon fa fa-search" }),
+                              _c("i", { staticClass: "nav-icon fa fa-list" }),
                               _vm._v(
                                 "\n                  Customer List\n                "
                               )
@@ -76800,7 +77194,7 @@ var render = function() {
                                 },
                                 [
                                   _c("i", {
-                                    staticClass: "nav-icon fa fa-bed"
+                                    staticClass: "nav-icon fa fa-plus"
                                   }),
                                   _vm._v(
                                     "\n                  Add Room\n                "
@@ -76823,7 +77217,7 @@ var render = function() {
                                 },
                                 [
                                   _c("i", {
-                                    staticClass: "nav-icon fa fa-search"
+                                    staticClass: "nav-icon fa fa-list"
                                   }),
                                   _vm._v(
                                     "\n                  Room List\n                "
@@ -76867,7 +77261,7 @@ var render = function() {
                                 },
                                 [
                                   _c("i", {
-                                    staticClass: "nav-icon fa fa-search"
+                                    staticClass: "nav-icon fa fa-list"
                                   }),
                                   _vm._v(
                                     "\n                  List Reservations\n                "
@@ -76890,7 +77284,7 @@ var render = function() {
                                 },
                                 [
                                   _c("i", {
-                                    staticClass: "nav-icon fa fa-search"
+                                    staticClass: "nav-icon fa fa-list"
                                   }),
                                   _vm._v(
                                     "\n                  Guest List\n                "
@@ -76910,7 +77304,9 @@ var render = function() {
                           "a",
                           { staticClass: "nav-link", attrs: { href: "#" } },
                           [
-                            _c("i", { staticClass: "nav-icon fa fa-bed" }),
+                            _c("i", {
+                              staticClass: "nav-icon fa fa-calendar-alt"
+                            }),
                             _vm._v(" "),
                             _c("p", [
                               _vm._v(
@@ -76957,7 +77353,7 @@ var render = function() {
                                 },
                                 [
                                   _c("i", {
-                                    staticClass: "nav-icon fa fa-search"
+                                    staticClass: "nav-icon fa fa-list"
                                   }),
                                   _vm._v(
                                     "\n                  List Reservations\n                "
@@ -76973,14 +77369,10 @@ var render = function() {
                   _vm._v(" "),
                   _c("li", { staticClass: "nav-item has-treeview" }, [
                     _c("a", { staticClass: "nav-link", attrs: { href: "#" } }, [
-                      _c("i", {
-                        staticClass: "nav-icon fa fa-hand-holding-usd"
-                      }),
+                      _c("i", { staticClass: "nav-icon fa fa-coffee" }),
                       _vm._v(" "),
                       _c("p", [
-                        _vm._v(
-                          "\n                Manage Services\n                "
-                        ),
+                        _vm._v("\n                Services\n                "),
                         _c("i", { staticClass: "fa fa-angle-left right" })
                       ])
                     ]),
@@ -76997,9 +77389,7 @@ var render = function() {
                               attrs: { to: "/services/add" }
                             },
                             [
-                              _c("i", {
-                                staticClass: "nav-icon fa fa-hand-holding-usd"
-                              }),
+                              _c("i", { staticClass: "nav-icon fa fa-plus" }),
                               _vm._v(
                                 "\n                  Add Service\n                "
                               )
@@ -77020,11 +77410,9 @@ var render = function() {
                               attrs: { to: "/services/list" }
                             },
                             [
-                              _c("i", {
-                                staticClass: "nav-icon fa fa-hand-holding-usd"
-                              }),
+                              _c("i", { staticClass: "nav-icon fa fa-list" }),
                               _vm._v(
-                                "\n                  Show Services\n                "
+                                "\n                  Service List\n                "
                               )
                             ]
                           )
@@ -77036,7 +77424,7 @@ var render = function() {
                   _vm._v(" "),
                   _c("li", { staticClass: "nav-item has-treeview" }, [
                     _c("a", { staticClass: "nav-link", attrs: { href: "#" } }, [
-                      _c("i", { staticClass: "nav-icon fa fa-shopping-cart" }),
+                      _c("i", { staticClass: "nav-icon fa fa-barcode" }),
                       _vm._v(" "),
                       _vm.lowStock
                         ? _c(
@@ -77064,9 +77452,7 @@ var render = function() {
                               attrs: { to: "/inventory/add" }
                             },
                             [
-                              _c("i", {
-                                staticClass: "nav-icon fa fa-shopping-cart"
-                              }),
+                              _c("i", { staticClass: "nav-icon fa fa-plus" }),
                               _vm._v(
                                 "\n                  Add Item\n                "
                               )
@@ -93861,7 +94247,9 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _BillingEdit_vue_vue_type_template_id_ac220a14_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./BillingEdit.vue?vue&type=template&id=ac220a14&scoped=true& */ "./resources/js/components/billing/BillingEdit.vue?vue&type=template&id=ac220a14&scoped=true&");
 /* harmony import */ var _BillingEdit_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./BillingEdit.vue?vue&type=script&lang=js& */ "./resources/js/components/billing/BillingEdit.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* empty/unused harmony star reexport *//* harmony import */ var _BillingEdit_vue_vue_type_style_index_0_id_ac220a14_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./BillingEdit.vue?vue&type=style&index=0&id=ac220a14&scoped=true&lang=css& */ "./resources/js/components/billing/BillingEdit.vue?vue&type=style&index=0&id=ac220a14&scoped=true&lang=css&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
 
 
 
@@ -93869,7 +94257,7 @@ __webpack_require__.r(__webpack_exports__);
 
 /* normalize component */
 
-var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
   _BillingEdit_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
   _BillingEdit_vue_vue_type_template_id_ac220a14_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
   _BillingEdit_vue_vue_type_template_id_ac220a14_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
@@ -93898,6 +94286,22 @@ component.options.__file = "resources/js/components/billing/BillingEdit.vue"
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_BillingEdit_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./BillingEdit.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/billing/BillingEdit.vue?vue&type=script&lang=js&");
 /* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_BillingEdit_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/billing/BillingEdit.vue?vue&type=style&index=0&id=ac220a14&scoped=true&lang=css&":
+/*!******************************************************************************************************************!*\
+  !*** ./resources/js/components/billing/BillingEdit.vue?vue&type=style&index=0&id=ac220a14&scoped=true&lang=css& ***!
+  \******************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_BillingEdit_vue_vue_type_style_index_0_id_ac220a14_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/style-loader!../../../../node_modules/css-loader??ref--6-1!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/src??ref--6-2!../../../../node_modules/vue-loader/lib??vue-loader-options!./BillingEdit.vue?vue&type=style&index=0&id=ac220a14&scoped=true&lang=css& */ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/billing/BillingEdit.vue?vue&type=style&index=0&id=ac220a14&scoped=true&lang=css&");
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_BillingEdit_vue_vue_type_style_index_0_id_ac220a14_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_BillingEdit_vue_vue_type_style_index_0_id_ac220a14_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_BillingEdit_vue_vue_type_style_index_0_id_ac220a14_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_BillingEdit_vue_vue_type_style_index_0_id_ac220a14_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_BillingEdit_vue_vue_type_style_index_0_id_ac220a14_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0___default.a); 
 
 /***/ }),
 
@@ -96328,16 +96732,64 @@ __webpack_require__.r(__webpack_exports__);
   state: {
     invoices: []
   },
-  getters: {},
+  getters: {
+    getInvoiceById: function getInvoiceById(state, getters) {
+      return function (invoiceId) {
+        return state.invoices.find(function (invoice) {
+          return invoice.id === invoiceId;
+        });
+      };
+    }
+  },
   mutations: {
     SET_INVOICES: function SET_INVOICES(state, invoices) {
       state.invoices = invoices;
-    }
+    },
+    ADD_INVOICE: function ADD_INVOICE(state, invoice) {},
+    SET_INVOICE: function SET_INVOICE(state, invoice) {}
   },
   actions: {
     editInvoice: function editInvoice(context, _ref) {
       var vm = _ref.vm,
           reservation = _ref.reservation;
+      axios.post("http://127.0.0.1:8000/reservations/" + reservation.id, {
+        reservation: reservation,
+        _method: "put"
+      }).then(function (response) {})["catch"](function (response) {});
+    },
+    deleteBilledService: function deleteBilledService(context, _ref2) {
+      var vm = _ref2.vm,
+          reservation = _ref2.reservation;
+      axios.post("http://127.0.0.1:8000/reservations/" + reservation.id, {
+        reservation: reservation,
+        _method: "put"
+      }).then(function (response) {})["catch"](function (response) {});
+    },
+    regenerate: function regenerate(context, _ref3) {
+      var vm = _ref3.vm,
+          invoice = _ref3.invoice;
+      axios.post("http://127.0.0.1:8000/invoice/" + invoice.id, {
+        invoice: invoice,
+        _method: "put"
+      }).then(function (response) {
+        vm.makeToast("Invoice ", invoice.id + ' regenerated.', 'success');
+        invoice = response['data']['invoice'];
+      })["catch"](function (response) {
+        vm.makeToast("Invoice ", invoice.id + ' not regenerated.', 'danger');
+      });
+    },
+    generateInvoice: function generateInvoice(context, _ref4) {
+      var vm = _ref4.vm,
+          reservation = _ref4.reservation;
+      axios.post("http://127.0.0.1:8000/reservations/" + reservation.id, {
+        reservation: reservation,
+        _method: "put"
+      }).then(function (response) {})["catch"](function (response) {});
+    },
+    // Marca una factura como pagada. (Status/Payment Method)
+    setAsPaid: function setAsPaid(context, _ref5) {
+      var vm = _ref5.vm,
+          reservation = _ref5.reservation;
       axios.post("http://127.0.0.1:8000/reservations/" + reservation.id, {
         reservation: reservation,
         _method: "put"
@@ -96501,7 +96953,15 @@ __webpack_require__.r(__webpack_exports__);
   state: {
     reservations: []
   },
-  getters: {},
+  getters: {
+    getReservationById: function getReservationById(state, getters) {
+      return function (reservationId) {
+        return state.reservations.find(function (reservation) {
+          return reservation.id === reservationId;
+        });
+      };
+    }
+  },
   mutations: {
     SET_RESERVATION: function SET_RESERVATION(state, reservation) {
       state.reservation = reservation;
@@ -96651,7 +97111,15 @@ __webpack_require__.r(__webpack_exports__);
   state: {
     services: []
   },
-  getters: {},
+  getters: {
+    getServiceById: function getServiceById(state, getters) {
+      return function (serviceId) {
+        return state.services.find(function (service) {
+          return service.id === serviceId;
+        });
+      };
+    }
+  },
   mutations: {
     SET_SERVICES: function SET_SERVICES(state, services) {
       state.services = services;

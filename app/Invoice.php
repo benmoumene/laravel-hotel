@@ -7,4 +7,32 @@ use Illuminate\Database\Eloquent\Model;
 class Invoice extends Model
 {
     public $timestamps = false;
+
+    public function total()
+    {
+        // Select SUM billed_services where guest_id = id
+    }
+
+    public function guest()
+    {
+        return $this->belongsTo(
+            'App\Guest'
+        );
+    }
+
+    public function customer()
+    {
+    }
+
+    public function billedServices()
+    {
+        return $this->hasManyThrough(
+            'App\BilledService',
+            'App\Guest',
+            'id',
+            'id',
+            'id',
+            'id'
+        );
+    }
 }
