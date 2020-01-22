@@ -18,7 +18,6 @@ Esta aplicacion es un dashboard que permite gestionar el Backend de un hotel. La
 - Perfil de usuario (Permite subir avatares al servidor)
 
 ## Pendiente
-================
 - Limpieza de codigo y separacion de la logica del backend en Services
 - Eliminar dependencia de jQuery del sidebar, hacer todo en js y vue
 - Validacion y Filtros de input (tambien para el avatar) Request.
