@@ -9,11 +9,29 @@ class Guest extends Model
     public $timestamps = false;
     protected $table = "guests";
 
-    // Conversaciones en las que participa el usuario
-    public function reservations()
+    // Guest es un cliente
+    public function customer()
     {
-        return $this->hasMany(
-            'App\Reservation'
+        return $this->belongsTo(
+            'App\Customer'
+        );
+    }
+
+    // Reservas de este huesped
+    public function reservation()
+    {
+        return $this->hasOne(
+            'App\Reservation',
+            'id',
+            'reservation_id'
+        );
+    }
+
+    // Habitacion en la que se hospeada
+    public function room()
+    {
+        return $this->hasOne(
+            'App\Room'
         );
     }
 

@@ -38,7 +38,11 @@ class HotelController extends Controller
         $data['rooms'] = Room::with('reservations')->get();
         $data['settings'] = Setting::all();
         $data['inventory'] = InventoryItem::all();
-        $data['invoices'] = Invoice::all(); // with client
+        $data['invoices'] = Invoice::with([
+            'billedServices.service',
+            'guest.customer',
+            'guest.reservation.room'
+        ])->get(); // with client
         return response()->json($data, 200);
     }
 }
