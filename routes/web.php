@@ -53,3 +53,10 @@ Route::put('/services/{service_id}', 'ServiceController@update');
 Route::post('/inventory', 'InventoryController@store');
 // Actualizar item
 Route::put('/inventory/{item_id}', 'InventoryController@update');
+
+// Generar factura
+Route::post('/invoice', 'InvoiceController@store');
+// Actualizar factura
+Route::put('/invoice/{invoice_id}', 'InvoiceController@update');
+// Borrar factura
+Route::delete('/invoice/{invoice_id}', 'InvoiceController@destroy');
