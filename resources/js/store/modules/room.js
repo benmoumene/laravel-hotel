@@ -31,13 +31,13 @@ export default ({
 
                     var newRoom = response['data']['room'];
                     context.commit('ADD_ROOM', newRoom);
-                    vm.makeToast("Room added", newRoom.name + ' added.', 'success');
+                    vm.makeToast("Room ", newRoom.name + ' has been added.', 'success');
                 }
             }).catch(function (response) {
-                vm.makeToast("Error", 'The room cannot be added!!!', 'danger');
+                vm.makeToast("Error", 'The room' + room.name + 'cannot be added!', 'danger');
             });
         },
-        editRoom(context, room) {
+        editRoom(context, { vm, room }) {
             axios.post("http://127.0.0.1:8000/room/" + room.id, {
                 room,
                 _method: "put"
@@ -48,8 +48,11 @@ export default ({
                     if (response['data'].length == 0) {
                         return;
                     }
-                    console.log('success');
+                    vm.makeToast("Room updated", 'The room ' + room.name
+                        + ' has been updated.', 'success');
                 }
+            }).catch(function (response) {
+                vm.makeToast("Error", 'The room cannot be updated!', 'danger');
             });
         },
     }

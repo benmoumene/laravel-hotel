@@ -4830,21 +4830,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "RoomAdd",
   data: function data() {
@@ -4925,21 +4910,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "RoomEdit",
@@ -4948,10 +4918,26 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   },
   methods: {
     update: function update() {
-      this.$store.dispatch("editRoom", this.getRoom);
+      this.$store.dispatch("room/editRoom", {
+        vm: this,
+        room: this.getRoom
+      });
+    },
+    makeToast: function makeToast(title, message) {
+      var variant = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "info";
+      this.$bvToast.toast(message, {
+        title: title,
+        autoHideDelay: 5000,
+        variant: variant,
+        solid: true,
+        toaster: "b-toaster-bottom-right",
+        appendToast: true
+      });
     }
   },
-  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])(["getRoomById"]), {
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])({
+    getRoomById: "room/getRoomById"
+  }), {
     getRoom: function getRoom() {
       var roomId = parseInt(this.$route.params.id);
       var room = this.getRoomById(roomId);
@@ -5079,7 +5065,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         sortable: true,
         "class": "text-center"
       }, {
-        key: "location",
+        key: "floor",
         label: "Location room",
         sortable: true,
         "class": "text-center"
@@ -5088,7 +5074,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         label: "Actions"
       }],
       currentPage: 1,
-      perPage: 5,
+      perPage: 10,
       pageOptions: [5, 10, 15],
       sortBy: "",
       sortDesc: false,
@@ -75995,115 +75981,74 @@ var render = function() {
     [
       _c(
         "b-form-group",
+        { attrs: { "label-cols": "12", "label-cols-sm": "2", label: "Name" } },
         [
-          _c(
-            "b-form",
-            { attrs: { inline: "" } },
-            [
-              _c("label", { staticClass: "col-3" }, [_vm._v("Room Name")]),
-              _vm._v(" "),
-              _c("b-input", {
-                staticClass: "col-3",
-                attrs: { placeholder: "001" },
-                model: {
-                  value: _vm.room.name,
-                  callback: function($$v) {
-                    _vm.$set(_vm.room, "name", $$v)
-                  },
-                  expression: "room.name"
-                }
-              })
-            ],
-            1
-          )
+          _c("b-form-input", {
+            attrs: { placeholder: "001" },
+            model: {
+              value: _vm.room.name,
+              callback: function($$v) {
+                _vm.$set(_vm.room, "name", $$v)
+              },
+              expression: "room.name"
+            }
+          })
         ],
         1
       ),
       _vm._v(" "),
       _c(
         "b-form-group",
+        { attrs: { "label-cols": "12", "label-cols-sm": "2", label: "Type" } },
         [
-          _c(
-            "b-form",
-            { attrs: { inline: "" } },
-            [
-              _c("label", { staticClass: "col-3" }, [_vm._v("Room type")]),
-              _vm._v(" "),
-              _c("b-form-select", {
-                staticClass: "col-3",
-                attrs: {
-                  value: null,
-                  options: {
-                    single: "Single",
-                    double: "Double",
-                    suite: "Suite"
-                  }
-                },
-                model: {
-                  value: _vm.room.type,
-                  callback: function($$v) {
-                    _vm.$set(_vm.room, "type", $$v)
-                  },
-                  expression: "room.type"
-                }
-              })
-            ],
-            1
-          )
+          _c("b-form-select", {
+            attrs: {
+              value: null,
+              options: { single: "Single", double: "Double", suite: "Suite" }
+            },
+            model: {
+              value: _vm.room.type,
+              callback: function($$v) {
+                _vm.$set(_vm.room, "type", $$v)
+              },
+              expression: "room.type"
+            }
+          })
         ],
         1
       ),
       _vm._v(" "),
       _c(
         "b-form-group",
+        {
+          attrs: { "label-cols": "12", "label-cols-sm": "2", label: "Location" }
+        },
         [
-          _c(
-            "b-form",
-            { attrs: { inline: "" } },
-            [
-              _c("label", { staticClass: "col-3" }, [_vm._v("Location")]),
-              _vm._v(" "),
-              _c("b-form-select", {
-                staticClass: "col-3",
-                attrs: {
-                  value: null,
-                  options: { "1F": "1 Floor", "2F": "2 Floor", "3F": "3 Floor" }
-                },
-                model: {
-                  value: _vm.room.floor,
-                  callback: function($$v) {
-                    _vm.$set(_vm.room, "floor", $$v)
-                  },
-                  expression: "room.floor"
-                }
-              })
-            ],
-            1
-          )
+          _c("b-form-select", {
+            attrs: {
+              value: null,
+              options: { "1F": "1 Floor", "2F": "2 Floor", "3F": "3 Floor" }
+            },
+            model: {
+              value: _vm.room.floor,
+              callback: function($$v) {
+                _vm.$set(_vm.room, "floor", $$v)
+              },
+              expression: "room.floor"
+            }
+          })
         ],
         1
       ),
       _vm._v(" "),
       _c(
         "b-form-group",
+        { staticClass: "float-right" },
         [
           _c(
-            "b-form",
-            { attrs: { inline: "" } },
-            [
-              _c("label", { staticClass: "col-3" }),
-              _vm._v(" "),
-              _c(
-                "b-button",
-                {
-                  staticClass: "col-2 float-right",
-                  attrs: { variant: "primary" },
-                  on: { click: _vm.add }
-                },
-                [_vm._v("Add Room")]
-              )
-            ],
-            1
+            "b-button",
+            { attrs: { variant: "primary" }, on: { click: _vm.add } },
+            [_vm._v("Add Room")]
           )
         ],
         1
@@ -76140,115 +76085,74 @@ var render = function() {
     [
       _c(
         "b-form-group",
+        { attrs: { "label-cols": "12", "label-cols-sm": "2", label: "Name" } },
         [
-          _c(
-            "b-form",
-            { attrs: { inline: "" } },
-            [
-              _c("label", { staticClass: "col-3" }, [_vm._v("Room Name")]),
-              _vm._v(" "),
-              _c("b-input", {
-                staticClass: "col-3",
-                attrs: { placeholder: "001" },
-                model: {
-                  value: _vm.getRoom.name,
-                  callback: function($$v) {
-                    _vm.$set(_vm.getRoom, "name", $$v)
-                  },
-                  expression: "getRoom.name"
-                }
-              })
-            ],
-            1
-          )
+          _c("b-form-input", {
+            attrs: { placeholder: "001" },
+            model: {
+              value: _vm.getRoom.name,
+              callback: function($$v) {
+                _vm.$set(_vm.getRoom, "name", $$v)
+              },
+              expression: "getRoom.name"
+            }
+          })
         ],
         1
       ),
       _vm._v(" "),
       _c(
         "b-form-group",
+        { attrs: { "label-cols": "12", "label-cols-sm": "2", label: "Type" } },
         [
-          _c(
-            "b-form",
-            { attrs: { inline: "" } },
-            [
-              _c("label", { staticClass: "col-3" }, [_vm._v("Room type")]),
-              _vm._v(" "),
-              _c("b-form-select", {
-                staticClass: "col-3",
-                attrs: {
-                  value: null,
-                  options: {
-                    single: "Single",
-                    double: "Double",
-                    suite: "Suite"
-                  }
-                },
-                model: {
-                  value: _vm.getRoom.type,
-                  callback: function($$v) {
-                    _vm.$set(_vm.getRoom, "type", $$v)
-                  },
-                  expression: "getRoom.type"
-                }
-              })
-            ],
-            1
-          )
+          _c("b-form-select", {
+            attrs: {
+              value: null,
+              options: { single: "Single", double: "Double", suite: "Suite" }
+            },
+            model: {
+              value: _vm.getRoom.type,
+              callback: function($$v) {
+                _vm.$set(_vm.getRoom, "type", $$v)
+              },
+              expression: "getRoom.type"
+            }
+          })
         ],
         1
       ),
       _vm._v(" "),
       _c(
         "b-form-group",
+        {
+          attrs: { "label-cols": "12", "label-cols-sm": "2", label: "Location" }
+        },
         [
-          _c(
-            "b-form",
-            { attrs: { inline: "" } },
-            [
-              _c("label", { staticClass: "col-3" }, [_vm._v("Location")]),
-              _vm._v(" "),
-              _c("b-form-select", {
-                staticClass: "col-3",
-                attrs: {
-                  value: null,
-                  options: { "1F": "1 Floor", "2F": "2 Floor", "3F": "3 Floor" }
-                },
-                model: {
-                  value: _vm.getRoom.floor,
-                  callback: function($$v) {
-                    _vm.$set(_vm.getRoom, "floor", $$v)
-                  },
-                  expression: "getRoom.floor"
-                }
-              })
-            ],
-            1
-          )
+          _c("b-form-select", {
+            attrs: {
+              value: null,
+              options: { "1F": "1 Floor", "2F": "2 Floor", "3F": "3 Floor" }
+            },
+            model: {
+              value: _vm.getRoom.floor,
+              callback: function($$v) {
+                _vm.$set(_vm.getRoom, "floor", $$v)
+              },
+              expression: "getRoom.floor"
+            }
+          })
         ],
         1
       ),
       _vm._v(" "),
       _c(
         "b-form-group",
+        { staticClass: "float-right" },
         [
           _c(
-            "b-form",
-            { attrs: { inline: "" } },
-            [
-              _c("label", { staticClass: "col-3" }),
-              _vm._v(" "),
-              _c(
-                "b-button",
-                {
-                  staticClass: "col-2 float-right",
-                  attrs: { variant: "primary" },
-                  on: { click: _vm.update }
-                },
-                [_vm._v("Update Room")]
-              )
-            ],
-            1
+            "b-button",
+            { attrs: { variant: "primary" }, on: { click: _vm.update } },
+            [_vm._v("Update Room")]
           )
         ],
         1
@@ -97273,13 +97177,15 @@ __webpack_require__.r(__webpack_exports__);
 
           var newRoom = response['data']['room'];
           context.commit('ADD_ROOM', newRoom);
-          vm.makeToast("Room added", newRoom.name + ' added.', 'success');
+          vm.makeToast("Room ", newRoom.name + ' has been added.', 'success');
         }
       })["catch"](function (response) {
-        vm.makeToast("Error", 'The room cannot be added!!!', 'danger');
+        vm.makeToast("Error", 'The room' + room.name + 'cannot be added!', 'danger');
       });
     },
-    editRoom: function editRoom(context, room) {
+    editRoom: function editRoom(context, _ref2) {
+      var vm = _ref2.vm,
+          room = _ref2.room;
       axios.post("http://127.0.0.1:8000/room/" + room.id, {
         room: room,
         _method: "put"
@@ -97291,8 +97197,10 @@ __webpack_require__.r(__webpack_exports__);
             return;
           }
 
-          console.log('success');
+          vm.makeToast("Room updated", 'The room ' + room.name + ' has been updated.', 'success');
         }
+      })["catch"](function (response) {
+        vm.makeToast("Error", 'The room cannot be updated!', 'danger');
       });
     }
   }

@@ -97,7 +97,7 @@ export default {
           class: "text-center"
         },
         {
-          key: "location",
+          key: "floor",
           label: "Location room",
           sortable: true,
           class: "text-center"
@@ -105,7 +105,7 @@ export default {
         { key: "actions", label: "Actions" }
       ],
       currentPage: 1,
-      perPage: 5,
+      perPage: 10,
       pageOptions: [5, 10, 15],
       sortBy: "",
       sortDesc: false,
