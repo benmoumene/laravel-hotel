@@ -2654,12 +2654,24 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Billing",
   methods: {
+    print: function print() {
+      window.print();
+    },
+    getService: function getService(id) {
+      //return {};
+      return this.getServiceById(id);
+    },
     deleteBilledService: function deleteBilledService(id) {
-      this.$store.dispatch("billing/deleteBilledService", {
+      this.$store.dispatch("billed_services/deleteBilledService", {
         vm: this,
         id: id
       });
@@ -2696,6 +2708,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     }
   },
   computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])(["settings"]), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])({
+    getServiceById: "service/getServiceById",
+    getCustomerById: "customer/getCustomerById",
+    getBilledServices: "billed_services/getBilledServices",
+    getReservationById: "reservation/getReservationById",
+    getGuestById: "guest/getGuestById",
     getSettingValue: "getSettingValue",
     getInvoiceById: "billing/getInvoiceById"
   }), {
@@ -2708,6 +2725,18 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }
 
       return invoice;
+    },
+    guest: function guest() {
+      return this.getGuestById(this.invoice.guest_id);
+    },
+    customer: function customer() {
+      return this.getCustomerById(this.guest.customer_id);
+    },
+    reservation: function reservation() {
+      return this.getReservationById(this.guest.id);
+    },
+    billedServices: function billedServices() {
+      return this.getBilledServices(this.guest.id);
     }
   }),
   components: {},
@@ -72493,10 +72522,24 @@ var render = function() {
             "b-row",
             { staticClass: "mb-3" },
             [
-              _c("b-col", [
-                _c("strong", [_vm._v("Invoice #")]),
-                _vm._v("\n        " + _vm._s(_vm.invoice.id) + "\n      ")
-              ]),
+              _c(
+                "b-col",
+                [
+                  _c("strong", [_vm._v("Invoice #")]),
+                  _vm._v("\n        " + _vm._s(_vm.invoice.id) + "\n        "),
+                  _c(
+                    "b-badge",
+                    {
+                      attrs: {
+                        variant:
+                          _vm.invoice.status == "success" ? "success" : "danger"
+                      }
+                    },
+                    [_vm._v(_vm._s(_vm.invoice.status))]
+                  )
+                ],
+                1
+              ),
               _vm._v(" "),
               _c("b-col", [
                 _c("strong", [_vm._v("Date")]),
@@ -72520,29 +72563,21 @@ var render = function() {
                 _c("strong", [_vm._v("Name")]),
                 _vm._v(
                   "\n        " +
-                    _vm._s(_vm.invoice.guest.customer.first_name) +
+                    _vm._s(_vm.customer.first_name) +
                     "\n        " +
-                    _vm._s(_vm.invoice.guest.customer.last_name) +
+                    _vm._s(_vm.customer.last_name) +
                     "\n      "
                 )
               ]),
               _vm._v(" "),
               _c("b-col", { attrs: { cols: "6" } }, [
                 _c("strong", [_vm._v("Phone")]),
-                _vm._v(
-                  "\n        " +
-                    _vm._s(_vm.invoice.guest.customer.phone) +
-                    "\n      "
-                )
+                _vm._v("\n        " + _vm._s(_vm.customer.phone) + "\n      ")
               ]),
               _vm._v(" "),
               _c("b-col", { attrs: { cols: "6" } }, [
                 _c("strong", [_vm._v("Address")]),
-                _vm._v(
-                  "\n        " +
-                    _vm._s(_vm.invoice.guest.customer.address) +
-                    "\n      "
-                )
+                _vm._v("\n        " + _vm._s(_vm.customer.address) + "\n      ")
               ])
             ],
             1
@@ -72559,43 +72594,31 @@ var render = function() {
               _c("b-col", { attrs: { cols: "6" } }, [
                 _c("strong", [_vm._v("From")]),
                 _vm._v(
-                  "\n        " +
-                    _vm._s(_vm.invoice.guest.reservation.check_in) +
-                    "\n      "
+                  "\n        " + _vm._s(_vm.reservation.check_in) + "\n      "
                 )
               ]),
               _vm._v(" "),
               _c("b-col", { attrs: { cols: "6" } }, [
                 _c("strong", [_vm._v("To")]),
                 _vm._v(
-                  "\n        " +
-                    _vm._s(_vm.invoice.guest.reservation.check_out) +
-                    "\n      "
+                  "\n        " + _vm._s(_vm.reservation.check_out) + "\n      "
                 )
               ]),
               _vm._v(" "),
               _c("b-col", { attrs: { cols: "6" } }, [
                 _c("strong", [_vm._v("Arrival")]),
-                _vm._v(
-                  "\n        " + _vm._s(_vm.invoice.guest.check_in) + "\n      "
-                )
+                _vm._v("\n        " + _vm._s(_vm.guest.check_in) + "\n      ")
               ]),
               _vm._v(" "),
               _c("b-col", { attrs: { cols: "6" } }, [
                 _c("strong", [_vm._v("Left")]),
-                _vm._v(
-                  "\n        " +
-                    _vm._s(_vm.invoice.guest.check_out) +
-                    "\n      "
-                )
+                _vm._v("\n        " + _vm._s(_vm.guest.check_out) + "\n      ")
               ]),
               _vm._v(" "),
               _c("b-col", { attrs: { cols: "6" } }, [
                 _c("strong", [_vm._v("Room")]),
                 _vm._v(
-                  "\n        " +
-                    _vm._s(_vm.invoice.guest.reservation.room.name) +
-                    "\n      "
+                  "\n        " + _vm._s(_vm.reservation.room.name) + "\n      "
                 )
               ])
             ],
@@ -72613,7 +72636,7 @@ var render = function() {
               _c(
                 "b-col",
                 { attrs: { cols: "12" } },
-                _vm._l(_vm.invoice.billed_services, function(billed_service) {
+                _vm._l(_vm.billedServices, function(billed_service) {
                   return _c(
                     "b-row",
                     { key: billed_service.id },
@@ -72636,7 +72659,9 @@ var render = function() {
                           ),
                           _vm._v(
                             "\n            " +
-                              _vm._s(billed_service.service.name) +
+                              _vm._s(
+                                _vm.getService(billed_service.service_id).name
+                              ) +
                               "\n          "
                           )
                         ],
@@ -72644,7 +72669,9 @@ var render = function() {
                       ),
                       _vm._v(" "),
                       _c("b-col", [
-                        _vm._v(_vm._s(billed_service.service.cost))
+                        _vm._v(
+                          _vm._s(_vm.getService(billed_service.service_id).cost)
+                        )
                       ]),
                       _vm._v(" "),
                       _c("b-col", [_vm._v(_vm._s(billed_service.billed_on))])
@@ -72702,6 +72729,24 @@ var render = function() {
                       on: { click: _vm.regenerate }
                     },
                     [_vm._v("Regenerate")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "b-button",
+                    {
+                      attrs: { variant: "secondary" },
+                      on: { click: _vm.print }
+                    },
+                    [_vm._v("PRINT")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "b-button",
+                    {
+                      attrs: { variant: "info" },
+                      on: { click: _vm.regenerate }
+                    },
+                    [_vm._v("Download as PDF")]
                   )
                 ],
                 1
@@ -96648,8 +96693,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_inventory__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./modules/inventory */ "./resources/js/store/modules/inventory.js");
 /* harmony import */ var _modules_billing__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./modules/billing */ "./resources/js/store/modules/billing.js");
 /* harmony import */ var _modules_guest__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./modules/guest */ "./resources/js/store/modules/guest.js");
+/* harmony import */ var _modules_billed_services__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./modules/billed_services */ "./resources/js/store/modules/billed_services.js");
 
  // Modules
+
 
 
 
@@ -96667,7 +96714,8 @@ vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_0__
     inventory: _modules_inventory__WEBPACK_IMPORTED_MODULE_6__["default"],
     reservation: _modules_reservation__WEBPACK_IMPORTED_MODULE_5__["default"],
     billing: _modules_billing__WEBPACK_IMPORTED_MODULE_7__["default"],
-    guest: _modules_guest__WEBPACK_IMPORTED_MODULE_8__["default"]
+    guest: _modules_guest__WEBPACK_IMPORTED_MODULE_8__["default"],
+    billed_services: _modules_billed_services__WEBPACK_IMPORTED_MODULE_9__["default"]
   },
   state: {
     // Datos de usuario y perfil
@@ -96741,7 +96789,9 @@ vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_0__
 
           context.commit('SET_SETTINGS', data['settings']); // Services
 
-          context.commit('service/SET_SERVICES', data['services']); // Reservations
+          context.commit('service/SET_SERVICES', data['services']); // Billed Services
+
+          context.commit('billed_services/SET_BILLED_SERVICES', data['billed_services']); // Reservations
 
           context.commit('reservation/SET_RESERVATIONS', data['reservations']); // Invoices
 
@@ -96830,6 +96880,63 @@ vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_0__
 
 /***/ }),
 
+/***/ "./resources/js/store/modules/billed_services.js":
+/*!*******************************************************!*\
+  !*** ./resources/js/store/modules/billed_services.js ***!
+  \*******************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ({
+  namespaced: true,
+  state: {
+    billedServices: []
+  },
+  getters: {
+    getBilledServices: function getBilledServices(state, getters) {
+      return function (guestId) {
+        return state.billedServices.filter(function (service) {
+          return service.guest_id === guestId;
+        });
+      };
+    },
+    getBilledServiceIndex: function getBilledServiceIndex(state, getters) {
+      return function (serviceId) {
+        return state.billedServices.findIndex(function (service) {
+          return service.id === serviceId;
+        });
+      };
+    }
+  },
+  mutations: {
+    SET_BILLED_SERVICES: function SET_BILLED_SERVICES(state, billed_services) {
+      state.billedServices = billed_services;
+    },
+    REMOVE_SERVICE: function REMOVE_SERVICE(state, index) {
+      Vue["delete"](state.billedServices, index);
+    }
+  },
+  actions: {
+    deleteBilledService: function deleteBilledService(context, _ref) {
+      var vm = _ref.vm,
+          id = _ref.id;
+      axios.post("http://127.0.0.1:8000/billed_service/" + id, {
+        _method: "delete"
+      }).then(function (response) {
+        var index = context.getters.getBilledServiceIndex(id);
+        vm.makeToast("Billed service has been removed.", 'success');
+        context.commit('REMOVE_SERVICE', index);
+      })["catch"](function (response) {
+        vm.makeToast("Billed service cannot be removed.", 'danger');
+      });
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./resources/js/store/modules/billing.js":
 /*!***********************************************!*\
   !*** ./resources/js/store/modules/billing.js ***!
@@ -96861,29 +96968,18 @@ __webpack_require__.r(__webpack_exports__);
     SET_INVOICE: function SET_INVOICE(state, invoice) {}
   },
   actions: {
-    deleteBilledService: function deleteBilledService(context, _ref) {
+    generateInvoice: function generateInvoice(context, _ref) {
       var vm = _ref.vm,
-          id = _ref.id;
-      axios.post("http://127.0.0.1:8000/billed_service/" + id, {
-        _method: "delete"
-      }).then(function (response) {
-        vm.makeToast("Billed service has been removed.", 'success');
-      })["catch"](function (response) {
-        vm.makeToast("Billed service cannot be removed.", 'danger');
-      });
-    },
-    generateInvoice: function generateInvoice(context, _ref2) {
-      var vm = _ref2.vm,
-          reservation = _ref2.reservation;
+          reservation = _ref.reservation;
       axios.post("http://127.0.0.1:8000/reservations/" + reservation.id, {
         reservation: reservation,
         _method: "put"
       }).then(function (response) {})["catch"](function (response) {});
     },
     // Marca una factura como pagada. (Status/Payment Method)
-    updateInvoice: function updateInvoice(context, _ref3) {
-      var vm = _ref3.vm,
-          invoice = _ref3.invoice;
+    updateInvoice: function updateInvoice(context, _ref2) {
+      var vm = _ref2.vm,
+          invoice = _ref2.invoice;
       axios.post("http://127.0.0.1:8000/invoice/" + invoice.id, {
         invoice: invoice,
         _method: "put"

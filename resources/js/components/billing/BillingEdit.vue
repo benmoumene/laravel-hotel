@@ -13,6 +13,9 @@
         <b-col>
           <strong>Invoice #</strong>
           {{ invoice.id }}
+          <b-badge
+            :variant="invoice.status == 'success' ? 'success' : 'danger'"
+          >{{ invoice.status }}</b-badge>
         </b-col>
         <b-col>
           <strong>Date</strong>
@@ -25,16 +28,16 @@
         </b-col>
         <b-col cols="12">
           <strong>Name</strong>
-          {{ invoice.guest.customer.first_name }}
-          {{ invoice.guest.customer.last_name }}
+          {{ customer.first_name }}
+          {{ customer.last_name }}
         </b-col>
         <b-col cols="6">
           <strong>Phone</strong>
-          {{ invoice.guest.customer.phone }}
+          {{ customer.phone }}
         </b-col>
         <b-col cols="6">
           <strong>Address</strong>
-          {{ invoice.guest.customer.address }}
+          {{ customer.address }}
         </b-col>
       </b-row>
 
@@ -45,23 +48,23 @@
 
         <b-col cols="6">
           <strong>From</strong>
-          {{ invoice.guest.reservation.check_in }}
+          {{ reservation.check_in }}
         </b-col>
         <b-col cols="6">
           <strong>To</strong>
-          {{ invoice.guest.reservation.check_out }}
+          {{ reservation.check_out }}
         </b-col>
         <b-col cols="6">
           <strong>Arrival</strong>
-          {{ invoice.guest.check_in }}
+          {{ guest.check_in }}
         </b-col>
         <b-col cols="6">
           <strong>Left</strong>
-          {{ invoice.guest.check_out }}
+          {{ guest.check_out }}
         </b-col>
         <b-col cols="6">
           <strong>Room</strong>
-          {{ invoice.guest.reservation.room.name }}
+          {{ reservation.room.name }}
         </b-col>
       </b-row>
 
@@ -70,14 +73,14 @@
           <strong>Billed Services</strong>
         </b-col>
         <b-col cols="12">
-          <b-row v-for="billed_service in invoice.billed_services" :key="billed_service.id">
+          <b-row v-for="billed_service in billedServices" :key="billed_service.id">
             <b-col>
               <b-link @click="deleteBilledService(billed_service.id)">
                 <i class="fas fa-trash"></i>
               </b-link>
-              {{ billed_service.service.name }}
+              {{ getService(billed_service.service_id).name }}
             </b-col>
-            <b-col>{{ billed_service.service.cost }}</b-col>
+            <b-col>{{ getService(billed_service.service_id).cost }}</b-col>
             <b-col>{{ billed_service.billed_on }}</b-col>
           </b-row>
         </b-col>
@@ -94,6 +97,8 @@
         <b-col>
           <b-button v-b-modal.modal-center variant="success">Mark as paid</b-button>
           <b-button @click="regenerate" variant="success">Regenerate</b-button>
+          <b-button @click="print" variant="secondary">PRINT</b-button>
+          <b-button @click="regenerate" variant="info">Download as PDF</b-button>
         </b-col>
       </b-row>
     </div>
@@ -115,8 +120,18 @@ import { mapState, mapGetters } from "vuex";
 export default {
   name: "Billing",
   methods: {
+    print() {
+      window.print();
+    },
+    getService(id) {
+      //return {};
+      return this.getServiceById(id);
+    },
     deleteBilledService(id) {
-      this.$store.dispatch("billing/deleteBilledService", { vm: this, id });
+      this.$store.dispatch("billed_services/deleteBilledService", {
+        vm: this,
+        id
+      });
     },
     markAsPaid() {
       var invoiceId = parseInt(this.$route.params.id);
@@ -145,6 +160,11 @@ export default {
   computed: {
     ...mapState(["settings"]),
     ...mapGetters({
+      getServiceById: "service/getServiceById",
+      getCustomerById: "customer/getCustomerById",
+      getBilledServices: "billed_services/getBilledServices",
+      getReservationById: "reservation/getReservationById",
+      getGuestById: "guest/getGuestById",
       getSettingValue: "getSettingValue",
       getInvoiceById: "billing/getInvoiceById"
     }),
@@ -155,6 +175,18 @@ export default {
         return "";
       }
       return invoice;
+    },
+    guest() {
+      return this.getGuestById(this.invoice.guest_id);
+    },
+    customer() {
+      return this.getCustomerById(this.guest.customer_id);
+    },
+    reservation() {
+      return this.getReservationById(this.guest.id);
+    },
+    billedServices() {
+      return this.getBilledServices(this.guest.id);
     }
   },
   components: {},
