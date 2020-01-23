@@ -2739,7 +2739,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       return this.getBilledServices(this.guest.id);
     }
   }),
-  components: {},
   mounted: function mounted() {}
 });
 
@@ -3149,10 +3148,6 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-//
-//
-//
-//
 //
 //
 //
@@ -5180,18 +5175,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "ServiceAdd",
   data: function data() {
@@ -5205,16 +5188,20 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     add: function add() {
-      this.$store.dispatch("addService", this.service);
-      this.makeToast(true);
+      this.$store.dispatch("service/addService", {
+        vm: this,
+        service: this.service
+      });
     },
-    makeToast: function makeToast() {
-      var append = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
-      this.toastCount++;
-      this.$bvToast.toast("Service added", {
-        title: "BootstrapVue Toast",
+    makeToast: function makeToast(title, message) {
+      var variant = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "info";
+      this.$bvToast.toast(message, {
+        title: title,
         autoHideDelay: 5000,
-        appendToast: append
+        variant: variant,
+        solid: true,
+        toaster: "b-toaster-bottom-right",
+        appendToast: true
       });
     }
   },
@@ -5363,8 +5350,22 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     };
   },
   methods: {
+    makeToast: function makeToast(title, message) {
+      var variant = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "info";
+      this.$bvToast.toast(message, {
+        title: title,
+        autoHideDelay: 5000,
+        variant: variant,
+        solid: true,
+        toaster: "b-toaster-bottom-right",
+        appendToast: true
+      });
+    },
     updateService: function updateService(service) {
-      this.$store.dispatch("editService", service);
+      this.$store.dispatch("service/editService", {
+        vm: this,
+        service: service
+      });
     },
     onFiltered: function onFiltered(filteredItems) {
       // Trigger pagination to update the number of buttons/pages due to filtering
@@ -73789,17 +73790,6 @@ var render = function() {
                   {
                     staticClass: "nav-link",
                     attrs: {
-                      to: { path: "/reservations/" + row.item.id + "/new" }
-                    }
-                  },
-                  [_vm._v("New Reservation")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "router-link",
-                  {
-                    staticClass: "nav-link",
-                    attrs: {
                       to: { path: "/reservations/" + row.item.id + "/show" }
                     }
                   },
@@ -76534,107 +76524,68 @@ var render = function() {
     [
       _c(
         "b-form-group",
+        { attrs: { "label-cols": "12", "label-cols-sm": "2", label: "Name" } },
         [
-          _c(
-            "b-form",
-            { attrs: { inline: "" } },
-            [
-              _c("label", { staticClass: "col-3" }, [_vm._v("Service Name")]),
-              _vm._v(" "),
-              _c("b-input", {
-                staticClass: "col-3",
-                attrs: { placeholder: "001" },
-                model: {
-                  value: _vm.service.name,
-                  callback: function($$v) {
-                    _vm.$set(_vm.service, "name", $$v)
-                  },
-                  expression: "service.name"
-                }
-              })
-            ],
-            1
-          )
+          _c("b-form-input", {
+            attrs: { placeholder: "Mini-Bar" },
+            model: {
+              value: _vm.service.name,
+              callback: function($$v) {
+                _vm.$set(_vm.service, "name", $$v)
+              },
+              expression: "service.name"
+            }
+          })
         ],
         1
       ),
       _vm._v(" "),
       _c(
         "b-form-group",
+        { attrs: { "label-cols": "12", "label-cols-sm": "2", label: "Cost" } },
         [
-          _c(
-            "b-form",
-            { attrs: { inline: "" } },
-            [
-              _c("label", { staticClass: "col-3" }, [_vm._v("Service cost")]),
-              _vm._v(" "),
-              _c("b-input", {
-                staticClass: "col-3",
-                attrs: { placeholder: "10.01" },
-                model: {
-                  value: _vm.service.cost,
-                  callback: function($$v) {
-                    _vm.$set(_vm.service, "cost", $$v)
-                  },
-                  expression: "service.cost"
-                }
-              })
-            ],
-            1
-          )
+          _c("b-form-input", {
+            attrs: { placeholder: "10.00" },
+            model: {
+              value: _vm.service.cost,
+              callback: function($$v) {
+                _vm.$set(_vm.service, "cost", $$v)
+              },
+              expression: "service.cost"
+            }
+          })
         ],
         1
       ),
       _vm._v(" "),
       _c(
         "b-form-group",
+        {
+          attrs: { "label-cols": "12", "label-cols-sm": "2", label: "Comment" }
+        },
         [
-          _c(
-            "b-form",
-            { attrs: { inline: "" } },
-            [
-              _c("label", { staticClass: "col-3" }, [
-                _vm._v("Service Comments")
-              ]),
-              _vm._v(" "),
-              _c("b-input", {
-                staticClass: "col-3",
-                attrs: { placeholder: "..." },
-                model: {
-                  value: _vm.service.comments,
-                  callback: function($$v) {
-                    _vm.$set(_vm.service, "comments", $$v)
-                  },
-                  expression: "service.comments"
-                }
-              })
-            ],
-            1
-          )
+          _c("b-form-input", {
+            attrs: { placeholder: "Description of this service" },
+            model: {
+              value: _vm.service.comments,
+              callback: function($$v) {
+                _vm.$set(_vm.service, "comments", $$v)
+              },
+              expression: "service.comments"
+            }
+          })
         ],
         1
       ),
       _vm._v(" "),
       _c(
         "b-form-group",
+        { staticClass: "float-right" },
         [
           _c(
-            "b-form",
-            { attrs: { inline: "" } },
-            [
-              _c("label", { staticClass: "col-3" }),
-              _vm._v(" "),
-              _c(
-                "b-button",
-                {
-                  staticClass: "col-2 float-right",
-                  attrs: { variant: "primary" },
-                  on: { click: _vm.add }
-                },
-                [_vm._v("Add Service")]
-              )
-            ],
-            1
+            "b-button",
+            { attrs: { variant: "primary" }, on: { click: _vm.add } },
+            [_vm._v("Add Service")]
           )
         ],
         1
@@ -97381,7 +97332,9 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   actions: {
-    addService: function addService(context, service) {
+    addService: function addService(context, _ref) {
+      var vm = _ref.vm,
+          service = _ref.service;
       axios.post("http://127.0.0.1:8000/services/", {
         service: service
       }).then(function (response) {
@@ -97394,10 +97347,15 @@ __webpack_require__.r(__webpack_exports__);
 
           var newService = response['data']['service'];
           context.commit('ADD_SERVICE', newService);
+          vm.makeToast("Service added", 'The service ' + newService.name + ' has been added.', 'success');
         }
+      })["catch"](function (response) {
+        vm.makeToast("Service error", 'The service cannot be added.', 'danger');
       });
     },
-    editService: function editService(context, service) {
+    editService: function editService(context, _ref2) {
+      var vm = _ref2.vm,
+          service = _ref2.service;
       axios.post("http://127.0.0.1:8000/services/" + service.id, {
         service: service,
         _method: "put"
@@ -97407,9 +97365,12 @@ __webpack_require__.r(__webpack_exports__);
           // Agregamos una nueva conversacion si existe el objeto
           if (response['data'].length == 0) {
             return;
-          } // console.log('success');
+          }
 
+          vm.makeToast("Service updated", 'The service ' + service.name + ' has been updated.', 'success');
         }
+      })["catch"](function (response) {
+        vm.makeToast("Service error", 'The service cannot be updated.', 'danger');
       });
     }
   }
