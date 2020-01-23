@@ -20,7 +20,7 @@ class CreateInvoicesTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('guest_id');
             $table->decimal('total');
-            $table->enum('status', ['pending', 'success'])->default('pending');
+            $table->enum('status', ['pending', 'paid'])->default('pending');
             $table->enum('payment_method', ['', 'cash', 'credit_card'])->default('');
             $table->timestamp('generated_on');
             $table->foreign('guest_id')->references('id')->on('guests')->onDelete('CASCADE');

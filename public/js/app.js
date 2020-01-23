@@ -2657,8 +2657,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Billing",
@@ -2760,8 +2758,6 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-//
-//
 //
 //
 //
@@ -72553,7 +72549,7 @@ var render = function() {
                     {
                       attrs: {
                         variant:
-                          _vm.invoice.status == "success" ? "success" : "danger"
+                          _vm.invoice.status == "paid" ? "success" : "danger"
                       }
                     },
                     [_vm._v(_vm._s(_vm.invoice.status))]
@@ -73024,8 +73020,7 @@ var render = function() {
                   "b-badge",
                   {
                     attrs: {
-                      variant:
-                        row.item.status == "success" ? "success" : "danger"
+                      variant: row.item.status == "paid" ? "success" : "danger"
                     }
                   },
                   [_vm._v(_vm._s(row.item.status))]

@@ -13,9 +13,7 @@
         <b-col>
           <strong>Invoice #</strong>
           {{ invoice.id }}
-          <b-badge
-            :variant="invoice.status == 'success' ? 'success' : 'danger'"
-          >{{ invoice.status }}</b-badge>
+          <b-badge :variant="invoice.status == 'paid' ? 'success' : 'danger'">{{ invoice.status }}</b-badge>
         </b-col>
         <b-col>
           <strong>Date</strong>
@@ -189,7 +187,6 @@ export default {
       return this.getBilledServices(this.guest.id);
     }
   },
-  components: {},
   mounted() {}
 };
 </script>
