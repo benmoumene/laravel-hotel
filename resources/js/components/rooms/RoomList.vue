@@ -68,11 +68,28 @@
       :sort-direction="sortDirection"
       @filtered="onFiltered"
     >
+      <template v-slot:cell(name)="row">
+        <b-form-input v-model="row.item.name"></b-form-input>
+      </template>
+
+      <template v-slot:cell(type)="row">
+        <b-form-select
+          :value="null"
+          :options="{ 'single': 'Single', 'double': 'Double', 'suite': 'Suite'}"
+          v-model="row.item.type"
+        ></b-form-select>
+      </template>
+
+      <template v-slot:cell(floor)="row">
+        <b-form-select
+          :value="null"
+          :options="{'1F':'1 Floor', '2F': '2 Floor' , '3F': '3 Floor'}"
+          v-model="row.item.floor"
+        ></b-form-select>
+      </template>
+
       <template v-slot:cell(actions)="row">
-        <router-link :to="{path: row.item.id +'/edit'}" class="nav-link">
-          <i class="nav-icon fa fa-bed"></i>
-          Edit Room
-        </router-link>
+        <b-button variant="info" @click="updateRoom(row.item)">Update</b-button>
       </template>
     </b-table>
   </b-container>
@@ -118,6 +135,19 @@ export default {
     onFiltered() {
       // Trigger pagination to update the number of buttons/pages due to filtering
       this.currentPage = 1;
+    },
+    updateRoom(room) {
+      this.$store.dispatch("room/editRoom", { vm: this, room });
+    },
+    makeToast(title, message, variant = "info") {
+      this.$bvToast.toast(message, {
+        title,
+        autoHideDelay: 5000,
+        variant,
+        solid: true,
+        toaster: "b-toaster-bottom-right",
+        appendToast: true
+      });
     }
   },
   computed: {

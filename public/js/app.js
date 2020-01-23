@@ -5049,6 +5049,23 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "RoomList",
@@ -5087,6 +5104,23 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     onFiltered: function onFiltered() {
       // Trigger pagination to update the number of buttons/pages due to filtering
       this.currentPage = 1;
+    },
+    updateRoom: function updateRoom(room) {
+      this.$store.dispatch("room/editRoom", {
+        vm: this,
+        room: room
+      });
+    },
+    makeToast: function makeToast(title, message) {
+      var variant = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "info";
+      this.$bvToast.toast(message, {
+        title: title,
+        autoHideDelay: 5000,
+        variant: variant,
+        solid: true,
+        toaster: "b-toaster-bottom-right",
+        appendToast: true
+      });
     }
   },
   computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])({
@@ -76353,19 +76387,84 @@ var render = function() {
         },
         scopedSlots: _vm._u([
           {
+            key: "cell(name)",
+            fn: function(row) {
+              return [
+                _c("b-form-input", {
+                  model: {
+                    value: row.item.name,
+                    callback: function($$v) {
+                      _vm.$set(row.item, "name", $$v)
+                    },
+                    expression: "row.item.name"
+                  }
+                })
+              ]
+            }
+          },
+          {
+            key: "cell(type)",
+            fn: function(row) {
+              return [
+                _c("b-form-select", {
+                  attrs: {
+                    value: null,
+                    options: {
+                      single: "Single",
+                      double: "Double",
+                      suite: "Suite"
+                    }
+                  },
+                  model: {
+                    value: row.item.type,
+                    callback: function($$v) {
+                      _vm.$set(row.item, "type", $$v)
+                    },
+                    expression: "row.item.type"
+                  }
+                })
+              ]
+            }
+          },
+          {
+            key: "cell(floor)",
+            fn: function(row) {
+              return [
+                _c("b-form-select", {
+                  attrs: {
+                    value: null,
+                    options: {
+                      "1F": "1 Floor",
+                      "2F": "2 Floor",
+                      "3F": "3 Floor"
+                    }
+                  },
+                  model: {
+                    value: row.item.floor,
+                    callback: function($$v) {
+                      _vm.$set(row.item, "floor", $$v)
+                    },
+                    expression: "row.item.floor"
+                  }
+                })
+              ]
+            }
+          },
+          {
             key: "cell(actions)",
             fn: function(row) {
               return [
                 _c(
-                  "router-link",
+                  "b-button",
                   {
-                    staticClass: "nav-link",
-                    attrs: { to: { path: row.item.id + "/edit" } }
+                    attrs: { variant: "info" },
+                    on: {
+                      click: function($event) {
+                        return _vm.updateRoom(row.item)
+                      }
+                    }
                   },
-                  [
-                    _c("i", { staticClass: "nav-icon fa fa-bed" }),
-                    _vm._v("\n        Edit Room\n      ")
-                  ]
+                  [_vm._v("Update")]
                 )
               ]
             }
