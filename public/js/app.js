@@ -2837,6 +2837,27 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "CustomerList",
@@ -2863,18 +2884,28 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }],
       currentPage: 1,
       perPage: 5,
+      totalRows: 0,
       pageOptions: [5, 10, 15],
+      status: "pending",
+      statusOptions: ["all", "pending", "paid"],
       sortBy: "",
       sortDesc: false,
       sortDirection: "asc",
       filter: null,
-      filterOn: []
+      filterOn: ["status"]
     };
   },
   methods: {
+    countRows: function countRows() {
+      return this.filteredInvoices.length;
+    },
     onFiltered: function onFiltered(filteredItems) {
       // Trigger pagination to update the number of buttons/pages due to filtering
       this.totalRows = filteredItems.length;
+      this.currentPage = 1;
+    },
+    onFilter: function onFilter() {
+      this.totalRows = this.countRows();
       this.currentPage = 1;
     }
   },
@@ -2894,8 +2925,16 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         };
       });
     },
-    totalRows: function totalRows() {
-      return this.invoices.length;
+    filteredInvoices: function filteredInvoices() {
+      var _this = this;
+
+      if (this.status === "all") {
+        return this.invoices;
+      }
+
+      return this.invoices.filter(function (invoice) {
+        return invoice.status === _this.status;
+      });
     }
   }),
   mounted: function mounted() {},
@@ -72852,7 +72891,7 @@ var render = function() {
         [
           _c(
             "b-col",
-            { staticClass: "my-1", attrs: { lg: "6" } },
+            { staticClass: "my-1", attrs: { sm: "6" } },
             [
               _c(
                 "b-form-group",
@@ -72916,7 +72955,7 @@ var render = function() {
           _vm._v(" "),
           _c(
             "b-col",
-            { staticClass: "my-1", attrs: { sm: "5", md: "6" } },
+            { staticClass: "my-1", attrs: { sm: "3" } },
             [
               _c(
                 "b-form-group",
@@ -72945,6 +72984,47 @@ var render = function() {
                         _vm.perPage = $$v
                       },
                       expression: "perPage"
+                    }
+                  })
+                ],
+                1
+              )
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "b-col",
+            { staticClass: "my-1", attrs: { sm: "3" } },
+            [
+              _c(
+                "b-form-group",
+                {
+                  staticClass: "mb-0",
+                  attrs: {
+                    label: "Status",
+                    "label-cols-sm": "6",
+                    "label-cols-md": "4",
+                    "label-cols-lg": "3",
+                    "label-align-sm": "right",
+                    "label-size": "sm",
+                    "label-for": "perPageSelect"
+                  }
+                },
+                [
+                  _c("b-form-select", {
+                    attrs: {
+                      id: "perPageSelect",
+                      size: "sm",
+                      options: _vm.statusOptions
+                    },
+                    on: { change: _vm.onFilter },
+                    model: {
+                      value: _vm.status,
+                      callback: function($$v) {
+                        _vm.status = $$v
+                      },
+                      expression: "status"
                     }
                   })
                 ],
@@ -72986,7 +73066,7 @@ var render = function() {
           "show-empty": "",
           small: "",
           stacked: "md",
-          items: _vm.invoices,
+          items: _vm.filteredInvoices,
           fields: _vm.fields,
           "current-page": _vm.currentPage,
           "per-page": _vm.perPage,

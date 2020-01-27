@@ -2,7 +2,7 @@
   <b-container fluid>
     <!-- User Interface controls -->
     <b-row>
-      <b-col lg="6" class="my-1">
+      <b-col sm="6" class="my-1">
         <b-form-group
           label="Filter"
           label-cols-sm="3"
@@ -25,7 +25,7 @@
         </b-form-group>
       </b-col>
 
-      <b-col sm="5" md="6" class="my-1">
+      <b-col sm="3" class="my-1">
         <b-form-group
           label="Per page"
           label-cols-sm="6"
@@ -37,6 +37,27 @@
           class="mb-0"
         >
           <b-form-select v-model="perPage" id="perPageSelect" size="sm" :options="pageOptions"></b-form-select>
+        </b-form-group>
+      </b-col>
+
+      <b-col sm="3" class="my-1">
+        <b-form-group
+          label="Status"
+          label-cols-sm="6"
+          label-cols-md="4"
+          label-cols-lg="3"
+          label-align-sm="right"
+          label-size="sm"
+          label-for="perPageSelect"
+          class="mb-0"
+        >
+          <b-form-select
+            v-model="status"
+            @change="onFilter"
+            id="perPageSelect"
+            size="sm"
+            :options="statusOptions"
+          ></b-form-select>
         </b-form-group>
       </b-col>
 
@@ -57,7 +78,7 @@
       show-empty
       small
       stacked="md"
-      :items="invoices"
+      :items="filteredInvoices"
       :fields="fields"
       :current-page="currentPage"
       :per-page="perPage"
@@ -107,18 +128,28 @@ export default {
       ],
       currentPage: 1,
       perPage: 5,
+      totalRows: 0,
       pageOptions: [5, 10, 15],
+      status: "pending",
+      statusOptions: ["all", "pending", "paid"],
       sortBy: "",
       sortDesc: false,
       sortDirection: "asc",
       filter: null,
-      filterOn: []
+      filterOn: ["status"]
     };
   },
   methods: {
+    countRows() {
+      return this.filteredInvoices.length;
+    },
     onFiltered(filteredItems) {
       // Trigger pagination to update the number of buttons/pages due to filtering
       this.totalRows = filteredItems.length;
+      this.currentPage = 1;
+    },
+    onFilter() {
+      this.totalRows = this.countRows();
       this.currentPage = 1;
     }
   },
@@ -135,8 +166,11 @@ export default {
           return { text: f.label, value: f.key };
         });
     },
-    totalRows() {
-      return this.invoices.length;
+    filteredInvoices() {
+      if (this.status === "all") {
+        return this.invoices;
+      }
+      return this.invoices.filter(invoice => invoice.status === this.status);
     }
   },
   mounted() {},
