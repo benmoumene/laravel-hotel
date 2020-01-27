@@ -2725,16 +2725,45 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       return invoice;
     },
     guest: function guest() {
-      return this.getGuestById(this.invoice.guest_id);
+      var guest = this.getGuestById(this.invoice.guest_id);
+
+      if (typeof guest === "undefined") {
+        //return { id: 0, check_in: "", check_out: "" };
+        return "";
+      }
+
+      return guest;
     },
     customer: function customer() {
-      return this.getCustomerById(this.guest.customer_id);
+      var customer = this.getCustomerById(this.guest.customer_id);
+
+      if (typeof customer === "undefined") {
+        //return { id: 0, check_in: "", check_out: "" };
+        return "";
+      }
+
+      return customer;
     },
     reservation: function reservation() {
-      return this.getReservationById(this.guest.id);
+      var reservation = this.getReservationById(this.guest.id);
+
+      if (typeof reservation === "undefined") {
+        //return { id: 0, check_in: "", check_out: "" };
+        return {
+          room: {}
+        };
+      }
+
+      return reservation;
     },
     billedServices: function billedServices() {
-      return this.getBilledServices(this.guest.id);
+      var services = this.getBilledServices(this.guest.id);
+
+      if (typeof services === "undefined") {
+        return [];
+      }
+
+      return services;
     }
   }),
   mounted: function mounted() {}
