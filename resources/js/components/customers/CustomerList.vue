@@ -69,28 +69,41 @@
       @filtered="onFiltered"
     >
       <template v-slot:cell(actions)="row">
-        <router-link :to="{path: row.item.id +'/edit'}" class="nav-link">
-          <i class="nav-icon fa fa-bed"></i>
-          Edit Customer
+        <b-button variant="info" @click="showCustomerInfo(row.item)">+Info</b-button>
+        <router-link :to="{path: row.item.id +'/edit'}">
+          <b-button>Edit</b-button>
         </router-link>
-        <router-link
-          :to="{path: '/reservations/' + row.item.id +'/new'}"
-          class="nav-link"
-        >New Reservation</router-link>
-        <router-link
-          :to="{path: '/reservations/' + row.item.id +'/show'}"
-          class="nav-link"
-        >Show Reservations</router-link>
+        <router-link :to="{path: '/reservations/' + row.item.id +'/show'}">
+          <b-button>Reservations</b-button>
+        </router-link>
+        <router-link :to="{path: '/reservations/' + row.item.id +'/show'}">
+          <b-button>Invoices</b-button>
+        </router-link>
       </template>
     </b-table>
+
+    <b-modal id="modal-center" centered title="Customer Info">
+      <customer-info
+        :first_name="selectedCustomer.first_name"
+        :last_name="selectedCustomer.last_name"
+        :address="selectedCustomer.address"
+        :phone="selectedCustomer.phone"
+        :sex="selectedCustomer.sex"
+        :document_id="selectedCustomer.document_id"
+        :document_id_type="selectedCustomer.document_id_type"
+        :nationality="selectedCustomer.nationality"
+      ></customer-info>
+    </b-modal>
   </b-container>
 </template>
 <script>
 import { mapState } from "vuex";
+import CustomerInfo from "./CustomerInfo";
 export default {
   name: "CustomerList",
   data: function() {
     return {
+      selectedCustomer: {},
       fields: [
         {
           key: "first_name",
@@ -129,6 +142,10 @@ export default {
     };
   },
   methods: {
+    showCustomerInfo(customer) {
+      this.selectedCustomer = customer;
+      this.$bvModal.show("modal-center");
+    },
     onFiltered(filteredItems) {
       // Trigger pagination to update the number of buttons/pages due to filtering
       this.currentPage = 1;
@@ -151,7 +168,10 @@ export default {
     }
   },
   mounted() {},
-  updated() {}
+  updated() {},
+  components: {
+    "customer-info": CustomerInfo
+  }
 };
 </script>
 <style scoped>
