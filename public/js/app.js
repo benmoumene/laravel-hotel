@@ -1886,6 +1886,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
@@ -2189,11 +2196,44 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Dashboard",
   methods: {},
-  computed: {},
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])({
+    guests: function guests(state) {
+      return state.guest.guests;
+    },
+    rooms: function rooms(state) {
+      return state.room.rooms;
+    },
+    reservations: function reservations(state) {
+      return state.reservation.reservations;
+    },
+    invoices: function invoices(state) {
+      return state.billing.invoices;
+    }
+  }), {
+    countMaintenanceRooms: function countMaintenanceRooms() {
+      var maintenanceRooms = this.rooms.filter( //room => room.status === "maintenance"
+      function (room) {
+        return room.floor === "2F";
+      });
+      return maintenanceRooms.length;
+    },
+    countGuests: function countGuests() {
+      return this.guests.length;
+    },
+    countReservations: function countReservations() {
+      return this.reservations.length;
+    },
+    countPendingInvoices: function countPendingInvoices() {
+      var invoices = this.invoices.filter(function (invoice) {
+        return invoice.status === "pending";
+      });
+      return invoices.length;
+    }
+  }),
   mounted: function mounted() {}
 });
 
@@ -71803,7 +71843,7 @@ var render = function() {
         _c("div", { staticClass: "col-lg-3 col-6" }, [
           _c("div", { staticClass: "small-box bg-success" }, [
             _c("div", { staticClass: "inner" }, [
-              _c("h3", [_vm._v("111")]),
+              _c("h3", [_vm._v(_vm._s(_vm.countGuests))]),
               _vm._v(" "),
               _c("p", [_vm._v("Guests")])
             ]),
@@ -71820,28 +71860,40 @@ var render = function() {
         ]),
         _vm._v(" "),
         _c("div", { staticClass: "col-lg-3 col-6" }, [
-          _c("div", { staticClass: "small-box bg-danger" }, [
-            _c("div", { staticClass: "inner" }, [
-              _c("h3", [_vm._v("65")]),
+          _c(
+            "div",
+            { staticClass: "small-box bg-danger" },
+            [
+              _c("div", { staticClass: "inner" }, [
+                _c("h3", [_vm._v(_vm._s(_vm.countPendingInvoices))]),
+                _vm._v(" "),
+                _c("p", [_vm._v("Pending Invoices")])
+              ]),
               _vm._v(" "),
-              _c("p", [_vm._v("Pending Invoices")])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "icon" }, [
-              _c("i", { staticClass: "nav-icon fa fa-file-invoice-dollar" })
-            ]),
-            _vm._v(" "),
-            _c("a", { staticClass: "small-box-footer", attrs: { href: "#" } }, [
-              _vm._v("\n          More info\n          "),
-              _c("i", { staticClass: "fa fa-arrow-circle-right" })
-            ])
-          ])
+              _c("div", { staticClass: "icon" }, [
+                _c("i", { staticClass: "nav-icon fa fa-file-invoice-dollar" })
+              ]),
+              _vm._v(" "),
+              _c(
+                "router-link",
+                {
+                  staticClass: "small-box-footer",
+                  attrs: { to: { path: "/billing/list" } }
+                },
+                [
+                  _vm._v("\n          More info\n          "),
+                  _c("i", { staticClass: "fa fa-arrow-circle-right" })
+                ]
+              )
+            ],
+            1
+          )
         ]),
         _vm._v(" "),
         _c("div", { staticClass: "col-lg-3 col-6" }, [
           _c("div", { staticClass: "small-box bg-info" }, [
             _c("div", { staticClass: "inner" }, [
-              _c("h3", [_vm._v("150")]),
+              _c("h3", [_vm._v(_vm._s(_vm.countReservations))]),
               _vm._v(" "),
               _c("p", [_vm._v("Reservations")])
             ]),
@@ -71860,9 +71912,9 @@ var render = function() {
         _c("div", { staticClass: "col-lg-3 col-6" }, [
           _c("div", { staticClass: "small-box bg-warning" }, [
             _c("div", { staticClass: "inner" }, [
-              _c("h3", [_vm._v("44")]),
+              _c("h3", [_vm._v(_vm._s(_vm.countMaintenanceRooms))]),
               _vm._v(" "),
-              _c("p", [_vm._v("Avaliable Rooms")])
+              _c("p", [_vm._v("Rooms on Maintenance")])
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "icon" }, [

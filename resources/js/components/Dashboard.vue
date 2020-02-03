@@ -6,7 +6,7 @@
         <!-- small box -->
         <div class="small-box bg-success">
           <div class="inner">
-            <h3>111</h3>
+            <h3>{{ countGuests }}</h3>
 
             <p>Guests</p>
           </div>
@@ -25,17 +25,16 @@
         <!-- small box -->
         <div class="small-box bg-danger">
           <div class="inner">
-            <h3>65</h3>
-
+            <h3>{{ countPendingInvoices }}</h3>
             <p>Pending Invoices</p>
           </div>
           <div class="icon">
             <i class="nav-icon fa fa-file-invoice-dollar"></i>
           </div>
-          <a href="#" class="small-box-footer">
+          <router-link :to="{path: '/billing/list'}" class="small-box-footer">
             More info
             <i class="fa fa-arrow-circle-right"></i>
-          </a>
+          </router-link>
         </div>
       </div>
       <!-- ./col -->
@@ -44,7 +43,7 @@
         <!-- small box -->
         <div class="small-box bg-info">
           <div class="inner">
-            <h3>150</h3>
+            <h3>{{ countReservations }}</h3>
             <p>Reservations</p>
           </div>
           <div class="icon">
@@ -61,9 +60,9 @@
         <!-- small box -->
         <div class="small-box bg-warning">
           <div class="inner">
-            <h3>44</h3>
+            <h3>{{ countMaintenanceRooms }}</h3>
 
-            <p>Avaliable Rooms</p>
+            <p>Rooms on Maintenance</p>
           </div>
           <div class="icon">
             <i class="nav-icon fa fa-bed"></i>
@@ -303,10 +302,37 @@
   </b-container>
 </template>
 <script>
+import { mapState } from "vuex";
 export default {
   name: "Dashboard",
   methods: {},
-  computed: {},
+  computed: {
+    ...mapState({
+      guests: state => state.guest.guests,
+      rooms: state => state.room.rooms,
+      reservations: state => state.reservation.reservations,
+      invoices: state => state.billing.invoices
+    }),
+    countMaintenanceRooms() {
+      var maintenanceRooms = this.rooms.filter(
+        //room => room.status === "maintenance"
+        room => room.floor === "2F"
+      );
+      return maintenanceRooms.length;
+    },
+    countGuests() {
+      return this.guests.length;
+    },
+    countReservations() {
+      return this.reservations.length;
+    },
+    countPendingInvoices() {
+      var invoices = this.invoices.filter(
+        invoice => invoice.status === "pending"
+      );
+      return invoices.length;
+    }
+  },
   mounted() {}
 };
 </script>
