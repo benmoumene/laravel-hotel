@@ -85,7 +85,7 @@
       </template>
     </b-table>
 
-    <b-modal id="modal-center" centered title="Customer Info" hide-footer>
+    <b-modal id="customer-info-modal" centered title="Customer Info" hide-footer>
       <customer-info
         :id="selectedCustomer.id"
         :first_name="selectedCustomer.first_name"
@@ -174,7 +174,7 @@ export default {
   methods: {
     showCustomerInfo(customer) {
       this.selectedCustomer = customer;
-      this.$bvModal.show("modal-center");
+      this.$bvModal.show("customer-info-modal");
     },
     showGuestInfo(customer) {
       this.selectedCustomer = customer;
