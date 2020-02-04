@@ -50,7 +50,21 @@
           class="my-0"
         ></b-pagination>
       </b-col>
-      <b-col sm="7" md="6" class="my-1">ALL/ONLY GUESTS/PENDING BILLS</b-col>
+      <b-col sm="6" class="my-1">
+        <b-form-group
+          label="Filter On"
+          label-cols-sm="3"
+          label-align-sm="right"
+          label-size="sm"
+          description="Leave all unchecked to filter on all data"
+          class="mb-0"
+        >
+          <b-form-checkbox-group v-model="filterOn" class="mt-1">
+            <b-form-checkbox value="name">Only Guests</b-form-checkbox>
+            <b-form-checkbox value="age">Pending Invoices</b-form-checkbox>
+          </b-form-checkbox-group>
+        </b-form-group>
+      </b-col>
     </b-row>
 
     <!-- Main table element -->
@@ -103,12 +117,8 @@
       ></guest-info>
     </b-modal>
 
-    <b-modal id="reservations-modal" centered title="Reservations">
-      <guest-info
-        :room_name="selectedGuest.check_in"
-        :check_in="selectedGuest.check_in"
-        :check_out="selectedGuest.check_out"
-      ></guest-info>
+    <b-modal id="reservations-modal" size="xl" centered title="Reservations" hidden-footer>
+      <customer-reservations :reservations="customerReservations(selectedCustomer.id)"></customer-reservations>
     </b-modal>
 
     <b-modal id="invoices-modal" size="xl" centered title="Invoices" hidden-footer>
@@ -120,6 +130,7 @@
 import { mapState, mapGetters } from "vuex";
 import CustomerInfo from "./CustomerInfo";
 import CustomerInvoices from "./CustomerInvoices";
+import CustomerReservations from "./CustomerReservations";
 import GuestInfo from "../guests/GuestInfo";
 export default {
   name: "CustomerList",
@@ -194,7 +205,8 @@ export default {
     ...mapGetters({
       isCurrentGuest: "guest/isCurrentGuest",
       getGuest: "guest/getGuest",
-      customerInvoices: "billing/getCustomerInvoices"
+      customerInvoices: "billing/getCustomerInvoices",
+      customerReservations: "reservation/getCustomerReservations"
     }),
     sortOptions() {
       // Create an options list from our fields
@@ -213,6 +225,7 @@ export default {
   components: {
     "customer-info": CustomerInfo,
     "guest-info": GuestInfo,
+    "customer-reservations": CustomerReservations,
     "customer-invoices": CustomerInvoices
   }
 };

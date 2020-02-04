@@ -9,6 +9,11 @@ export default ({
                 reservation => reservation.id === reservationId
             );
         },
+        getCustomerReservations: (state, getters) => (customerId) => {
+            return state.reservations.filter(
+                reservation => reservation.customer_id === customerId
+            );
+        },
     },
     mutations: {
         SET_RESERVATION(state, reservation) {
