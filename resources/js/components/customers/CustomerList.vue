@@ -131,7 +131,7 @@ import { mapState, mapGetters } from "vuex";
 import CustomerInfo from "./CustomerInfo";
 import CustomerInvoices from "./CustomerInvoices";
 import CustomerReservations from "./CustomerReservations";
-import GuestInfo from "../guests/GuestInfo";
+import GuestInfo from "./CustomerGuestInfo";
 export default {
   name: "CustomerList",
   data: function() {
