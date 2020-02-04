@@ -7,6 +7,11 @@ export default ({
         getInvoiceById: (state, getters) => (invoiceId) => {
             return state.invoices.find(invoice => invoice.id === invoiceId);
         },
+        countPendingInvoices: (state, getters) => {
+            return state.invoices.filter(
+                invoice => invoice.status === 'pending'
+            ).length;
+        },
     },
     mutations: {
         SET_INVOICES(state, invoices) {

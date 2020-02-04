@@ -86,31 +86,6 @@
                 </li>
               </ul>
             </li>
-
-            <li class="nav-item has-treeview" v-if="isRecepcionist || isAdmin">
-              <a href="#" class="nav-link">
-                <i class="nav-icon fa fa-user"></i>
-                <p>
-                  Guest
-                  <i class="fa fa-angle-left right"></i>
-                </p>
-              </a>
-              <ul class="nav nav-treeview">
-                <li class="nav-item">
-                  <router-link to="/reservation/list" class="nav-link">
-                    <i class="nav-icon fa fa-list"></i>
-                    List Reservations
-                  </router-link>
-                </li>
-                <li class="nav-item">
-                  <router-link to="/guest/list" class="nav-link">
-                    <i class="nav-icon fa fa-list"></i>
-                    Guest List
-                  </router-link>
-                </li>
-              </ul>
-            </li>
-
             <li class="nav-item has-treeview" v-if="isRecepcionist || isAdmin">
               <a href="#" class="nav-link">
                 <i class="nav-icon fa fa-calendar-alt"></i>
@@ -183,26 +158,17 @@
                 </li>
               </ul>
             </li>
-
-            <li class="nav-item has-treeview" v-if="isManager || isAdmin">
-              <a href="#" class="nav-link">
-                <i class="nav-icon fa fa-wallet"></i>
-                <p>
-                  Billing
-                  <i class="fa fa-angle-left right"></i>
-                </p>
-              </a>
-              <ul class="nav nav-treeview">
-                <li class="nav-item">
-                  <router-link to="/billing/list" class="nav-link">
-                    <i class="nav-icon fa fa-file-invoice-dollar"></i>
-                    Invoices List
-                    <span class="right badge badge-danger">New</span>
-                  </router-link>
-                </li>
-              </ul>
+            <li class="nav-item">
+              <router-link to="/billing/list" class="nav-link">
+                <i class="nav-icon fa fa-file-invoice-dollar"></i>
+                Invoices
+                <span
+                  class="right badge badge-danger"
+                  v-b-tooltip.hover
+                  title="Invoices still without payment"
+                >{{ countPendingInvoices }}</span>
+              </router-link>
             </li>
-
             <li class="nav-item" v-if="isAdmin">
               <router-link to="/settings" class="nav-link">
                 <i class="nav-icon fa fa-wrench"></i>
@@ -247,6 +213,9 @@ export default {
   },
   computed: {
     ...mapGetters(["isAdmin", "isRecepcionist", "isManager"]),
+    ...mapGetters({
+      countPendingInvoices: "billing/countPendingInvoices"
+    }),
     ...mapState(["appUser"]),
     ...mapState({
       inventory: state => state.inventory.items
