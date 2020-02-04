@@ -85,7 +85,7 @@
       </template>
     </b-table>
 
-    <b-modal id="modal-center" centered title="Customer Info">
+    <b-modal id="modal-center" centered title="Customer Info" hide-footer>
       <customer-info
         :id="selectedCustomer.id"
         :first_name="selectedCustomer.first_name"

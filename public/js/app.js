@@ -3295,8 +3295,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "CustomerInfo",
@@ -74310,16 +74308,9 @@ var render = function() {
       ),
       _vm._v(" "),
       _c(
-        "b-form-group",
-        { attrs: { "label-cols": "12", label: "" } },
-        [
-          _c(
-            "router-link",
-            { attrs: { to: { path: _vm.id + "/edit" } } },
-            [_c("b-button", { attrs: { sm: "4" } }, [_vm._v("Edit customer")])],
-            1
-          )
-        ],
+        "router-link",
+        { attrs: { to: { path: _vm.id + "/edit" } } },
+        [_c("b-button", { attrs: { block: "" } }, [_vm._v("Edit customer")])],
         1
       )
     ],
@@ -74590,7 +74581,14 @@ var render = function() {
       _vm._v(" "),
       _c(
         "b-modal",
-        { attrs: { id: "modal-center", centered: "", title: "Customer Info" } },
+        {
+          attrs: {
+            id: "modal-center",
+            centered: "",
+            title: "Customer Info",
+            "hide-footer": ""
+          }
+        },
         [
           _c("customer-info", {
             attrs: {

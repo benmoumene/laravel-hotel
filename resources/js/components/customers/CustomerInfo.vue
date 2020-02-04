@@ -42,11 +42,9 @@
       <b-input cols="12" sm="2" placeholder="Spanish" :value="nationality" readonly></b-input>
     </b-form-group>
 
-    <b-form-group label-cols="12" label>
-      <router-link :to="{path: id +'/edit'}">
-        <b-button sm="4">Edit customer</b-button>
-      </router-link>
-    </b-form-group>
+    <router-link :to="{path: id +'/edit'}">
+      <b-button block>Edit customer</b-button>
+    </router-link>
   </b-container>
 </template>
 <script>
