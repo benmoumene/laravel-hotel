@@ -4,8 +4,8 @@ import BootstrapVue from 'bootstrap-vue'
 
 Vue.use(BootstrapVue)
 
-import routes from './routes'
-import store from './store'
+import routes from './routes/index'
+import store from './store/index'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
@@ -42,8 +42,6 @@ Vue.component('hotelapp', require('./components/HotelApp.vue').default);
 const app = new Vue({
     el: '#app',
     components: {},
-    store: store,
-    //roomstore: roomstore,
-    //gueststore:gueststore
+    store,
     router: routes
 });

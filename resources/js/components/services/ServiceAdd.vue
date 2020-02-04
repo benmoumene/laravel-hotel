@@ -1,31 +1,19 @@
 <template>
   <b-container fluid>
-    <b-form-group>
-      <b-form inline>
-        <label class="col-3">Service Name</label>
-        <b-input class="col-3" placeholder="001" v-model="service.name"></b-input>
-      </b-form>
+    <b-form-group label-cols="12" label-cols-sm="2" label="Name">
+      <b-form-input placeholder="Mini-Bar" v-model="service.name"></b-form-input>
     </b-form-group>
 
-    <b-form-group>
-      <b-form inline>
-        <label class="col-3">Service cost</label>
-        <b-input class="col-3" placeholder="10.01" v-model="service.cost"></b-input>
-      </b-form>
+    <b-form-group label-cols="12" label-cols-sm="2" label="Cost">
+      <b-form-input placeholder="10.00" v-model="service.cost"></b-form-input>
     </b-form-group>
 
-    <b-form-group>
-      <b-form inline>
-        <label class="col-3">Service Comments</label>
-        <b-input class="col-3" placeholder="..." v-model="service.comments"></b-input>
-      </b-form>
+    <b-form-group label-cols="12" label-cols-sm="2" label="Comment">
+      <b-form-input v-model="service.comments" placeholder="Description of this service"></b-form-input>
     </b-form-group>
 
-    <b-form-group>
-      <b-form inline>
-        <label class="col-3"></label>
-        <b-button class="col-2 float-right" variant="primary" @click="add">Add Service</b-button>
-      </b-form>
+    <b-form-group class="float-right">
+      <b-button variant="primary" @click="add">Add Service</b-button>
     </b-form-group>
   </b-container>
 </template>
@@ -43,15 +31,19 @@ export default {
   },
   methods: {
     add() {
-      this.$store.dispatch("addService", this.service);
-      this.makeToast(true);
+      this.$store.dispatch("service/addService", {
+        vm: this,
+        service: this.service
+      });
     },
-    makeToast(append = false) {
-      this.toastCount++;
-      this.$bvToast.toast("Service added", {
-        title: "BootstrapVue Toast",
+    makeToast(title, message, variant = "info") {
+      this.$bvToast.toast(message, {
+        title,
         autoHideDelay: 5000,
-        appendToast: append
+        variant,
+        solid: true,
+        toaster: "b-toaster-bottom-right",
+        appendToast: true
       });
     }
   },

@@ -1,25 +1,23 @@
 # laravel-hotel (Management)
-Esta aplicacion es un dashboard (Backend) que permite gestionar Clientes/Inventario/Facturacion/Servicios(mini-bar, desayuno...)/Reservas de un hotel/Habitaciones.
+Esta aplicacion es un dashboard que permite gestionar el Backend de un hotel. La gestion permite modificar Clientes/Inventario/Facturacion/Servicios/Habitaciones/Reservas.
 
 ## Tecnologias
 - Laravel
-- Custom Dashboard usando bootstrap-vue y vuerouter
-- VueJS/Vuex/VueRouter
-- Chart.js/D3 Charts
+- VueJS/Vuex
+- AdminLTE Dashboard Bootstrap-vue + VueRouter
+- Chart.js/D3 Charts ???
 
-## Funcionamiento 
-- Registramos un cliente
-- Cliente hace reserva
-- Cliente consume servicios (y aumenta la facturacion)
-- Cliente abandona el hotel y se genera una factura para cobrarle
-- La app pone la habitacion como pendiente (Pendiente de preparacion/limpieza etc...)
-- Despues de preparar poner libre
+## Funcionalidades
+- Informacion de clientes (Huespedes actualmente o no)
+- Seguimiento de las huespedes del hotel.
+- Sistema de reserva de habitaciones
+- Facturacion de gastos del huesped
+- Servicios ofrecidos por el hotel
+- Inventario de items usados en el hotel (Toallas, Comidas ...)
+- Sistema de roles (Recepcionista/Manager/Admin)
+- Perfil de usuario (Permite subir avatares al servidor)
 
 ## Pendiente
-================
-- Usar ServiceProvider de Laravel
-- Vuex/Vue Router/VueJS
-- Only Backend
-- Implementar Roles: Recepcion (Gestiona Reservas/Altas/Bajas), Gestion (Inventario), Sales (Billing)
-- Tablas: clients, habitaciones, rerservations, inventary, billing
-- Login > Dashboard (Eliminar barra de laravel)
+- Limpieza de codigo y separacion de la logica del backend en Services
+- Eliminar dependencia de jQuery del sidebar, hacer todo en js y vue
+- Validacion y Filtros de input (tambien para el avatar) Request.

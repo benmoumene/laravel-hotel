@@ -3,8 +3,6 @@
 </template>
 <script>
 export default {
-  name: "ReservationsRouter"
+  name: "GuestRouter"
 };
 </script>
-<style scoped>
-</style>

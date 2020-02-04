@@ -69,11 +69,13 @@ export default {
   },
   methods: {
     edit() {
-      this.$store.dispatch("editCustomer", this.getCustomer);
+      this.$store.dispatch("customer/editCustomer", this.getCustomer);
     }
   },
   computed: {
-    ...mapGetters(["getCustomerById"]),
+    ...mapGetters({
+      getCustomerById: "customer/getCustomerById"
+    }),
     getCustomer: function() {
       var customerId = parseInt(this.$route.params.id);
       var customer = this.getCustomerById(customerId);

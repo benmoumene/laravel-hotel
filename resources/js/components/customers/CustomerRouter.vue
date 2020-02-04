@@ -3,11 +3,7 @@
 </template>
 <script>
 export default {
-  name: "Guest",
-  methods: {},
-  computed: {},
-  components: {},
-  mounted() {}
+  name: "CustomerRouter"
 };
 </script>
 <style scoped>

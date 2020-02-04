@@ -17,13 +17,13 @@ class CreateBilledServicesTable extends Migration
     {
         Schema::create('billed_services', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('invoice_id');
+            $table->unsignedBigInteger('guest_id');
             $table->unsignedBigInteger('service_id');
-            // Determina si los gastos han sido incluidos ya en una factura
-            $table->foreign('invoice_id')->references('id')->on('invoices');
-            $table->foreign('service_id')->references('id')->on('services');
             // Fecha en la que se contrata el servicio
             $table->timestamp('billed_on');
+            // Determina si los gastos han sido incluidos ya en una factura
+            $table->foreign('guest_id')->references('id')->on('guests');
+            $table->foreign('service_id')->references('id')->on('services');
         });
     }
 

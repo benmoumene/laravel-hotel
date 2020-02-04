@@ -1,41 +1,26 @@
 <template>
   <b-container fluid>
-    <b-form-group>
-      <b-form inline>
-        <label class="col-3">Room Name</label>
-        <b-input class="col-3" placeholder="001" v-model="getRoom.name"></b-input>
-      </b-form>
+    <b-form-group label-cols="12" label-cols-sm="2" label="Name">
+      <b-form-input placeholder="001" v-model="getRoom.name"></b-form-input>
     </b-form-group>
 
-    <b-form-group>
-      <b-form inline>
-        <label class="col-3">Room type</label>
-        <b-form-select
-          class="col-3"
-          :value="null"
-          :options="{ 'single': 'Single', 'double': 'Double', 'suite': 'Suite'}"
-          v-model="getRoom.type"
-        ></b-form-select>
-      </b-form>
+    <b-form-group label-cols="12" label-cols-sm="2" label="Type">
+      <b-form-select
+        :value="null"
+        :options="{ 'single': 'Single', 'double': 'Double', 'suite': 'Suite'}"
+        v-model="getRoom.type"
+      ></b-form-select>
+    </b-form-group>
+    <b-form-group label-cols="12" label-cols-sm="2" label="Location">
+      <b-form-select
+        :value="null"
+        :options="{'1F':'1 Floor', '2F': '2 Floor' , '3F': '3 Floor'}"
+        v-model="getRoom.floor"
+      ></b-form-select>
     </b-form-group>
 
-    <b-form-group>
-      <b-form inline>
-        <label class="col-3">Location</label>
-        <b-form-select
-          class="col-3"
-          :value="null"
-          :options="{'1F':'1 Floor', '2F': '2 Floor' , '3F': '3 Floor'}"
-          v-model="getRoom.floor"
-        ></b-form-select>
-      </b-form>
-    </b-form-group>
-
-    <b-form-group>
-      <b-form inline>
-        <label class="col-3"></label>
-        <b-button class="col-2 float-right" variant="primary" @click="update">Update Room</b-button>
-      </b-form>
+    <b-form-group class="float-right">
+      <b-button variant="primary" @click="update">Update Room</b-button>
     </b-form-group>
   </b-container>
 </template>
@@ -50,11 +35,21 @@ export default {
   },
   methods: {
     update() {
-      this.$store.dispatch("editRoom", this.getRoom);
+      this.$store.dispatch("room/editRoom", { vm: this, room: this.getRoom });
+    },
+    makeToast(title, message, variant = "info") {
+      this.$bvToast.toast(message, {
+        title,
+        autoHideDelay: 5000,
+        variant,
+        solid: true,
+        toaster: "b-toaster-bottom-right",
+        appendToast: true
+      });
     }
   },
   computed: {
-    ...mapGetters(["getRoomById"]),
+    ...mapGetters({ getRoomById: "room/getRoomById" }),
     getRoom: function() {
       var roomId = parseInt(this.$route.params.id);
       var room = this.getRoomById(roomId);

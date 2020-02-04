@@ -10,6 +10,9 @@ use App\Room;
 use App\Reservation;
 use App\Setting;
 use App\Service;
+use App\InventoryItem;
+use App\Invoice;
+use App\BilledService;
 
 class HotelController extends Controller
 {
@@ -29,12 +32,19 @@ class HotelController extends Controller
         // ID del usuario logeado en la app
         $currentUserId = Auth::user()->id;
         $data['app_user'] = Auth::user();
-        $data['guests'] = Guest::all();
+        $data['guests'] = Guest::with([
+            'customer',
+            'room',
+            'billedServices.service'
+        ])->get();
         $data['customers'] = Customer::all();
-        $data['reservations'] = Reservation::all();
+        $data['reservations'] = Reservation::with(['customer','room'])->get();
         $data['services'] = Service::all();
+        $data['billed_services'] = BilledService::all();
         $data['rooms'] = Room::with('reservations')->get();
         $data['settings'] = Setting::all();
+        $data['inventory'] = InventoryItem::all();
+        $data['invoices'] = Invoice::with(['guest.customer'])->get();
         return response()->json($data, 200);
     }
 }

@@ -1,6 +1,6 @@
 <template>
-  <b-container fluid>
-    <b-row>
+  <b-container fluid class="p-0">
+    <b-row class="m-0">
       <b-col class="brand-link">
         <!-- Brand Logo -->
         <a href="#">
@@ -9,7 +9,7 @@
       </b-col>
     </b-row>
 
-    <b-row class="user-panel">
+    <b-row class="user-panel m-0">
       <b-col cols="4" class="pull-left image">
         <img :src="avatarPath" class="img-circle" alt="User Image" />
       </b-col>
@@ -24,8 +24,8 @@
     </b-row>
 
     <!-- Sidebar -->
-    <b-row class="sidebar">
-      <b-col>
+    <b-row class="sidebar m-0">
+      <b-col class="p-0">
         <!-- Sidebar Menu -->
         <nav class="mt-2">
           <ul
@@ -35,7 +35,7 @@
             data-accordion="false"
           >
             <li class="nav-item">
-              <router-link to="/" class="nav-link">
+              <router-link to="/" class="nav-link" exact>
                 <i class="nav-icon fa fa-tachometer-alt"></i>
                 Dashboard
               </router-link>
@@ -50,20 +50,25 @@
               </a>
               <ul class="nav nav-treeview">
                 <li class="nav-item">
-                  <router-link to="/customers/add" class="nav-link">
+                  <router-link to="/customer/add" class="nav-link">
                     <i class="nav-icon fa fa-user-plus"></i>
-                    New Customer
+                    Add Customer
                   </router-link>
                 </li>
                 <li class="nav-item">
-                  <router-link to="/customers/list" class="nav-link">
-                    <i class="nav-icon fa fa-user-plus"></i>
-                    Customers
+                  <router-link to="/customer/list" class="nav-link">
+                    <i class="nav-icon fa fa-list"></i>
+                    Customer List
                   </router-link>
                 </li>
               </ul>
             </li>
-
+            <li class="nav-item">
+              <router-link to="/guest/list" class="nav-link">
+                <i class="nav-icon fa fa-user"></i>
+                Guests
+              </router-link>
+            </li>
             <li class="nav-item has-treeview" v-if="isAdmin || isManager">
               <a href="#" class="nav-link">
                 <i class="nav-icon fa fa-bed"></i>
@@ -74,36 +79,22 @@
               </a>
               <ul class="nav nav-treeview">
                 <li class="nav-item">
-                  <router-link to="/rooms/list" class="nav-link">
-                    <i class="nav-icon fa fa-bed"></i>
-                    Manage Rooms
-                  </router-link>
-                </li>
-                <li class="nav-item">
-                  <router-link to="/rooms/add" class="nav-link">
-                    <i class="nav-icon fa fa-bed"></i>
+                  <router-link to="/room/add" class="nav-link">
+                    <i class="nav-icon fa fa-plus"></i>
                     Add Room
                   </router-link>
                 </li>
                 <li class="nav-item">
-                  <router-link to="/guest/list" class="nav-link">
-                    <i class="nav-icon fa fa-edit"></i>
-                    Guests
-                  </router-link>
-                </li>
-                <li class="nav-item">
-                  <router-link to="/rooms/availability" class="nav-link">
-                    <i class="nav-icon fa fa-bed"></i>
-                    Availability
-                    <span class="badge badge-info right">6</span>
+                  <router-link to="/room/list" class="nav-link">
+                    <i class="nav-icon fa fa-list"></i>
+                    Room List
                   </router-link>
                 </li>
               </ul>
             </li>
-
             <li class="nav-item has-treeview" v-if="isRecepcionist || isAdmin">
               <a href="#" class="nav-link">
-                <i class="nav-icon fa fa-bed"></i>
+                <i class="nav-icon fa fa-calendar-alt"></i>
                 <p>
                   Reservations
                   <i class="fa fa-angle-left right"></i>
@@ -111,95 +102,77 @@
               </a>
               <ul class="nav nav-treeview">
                 <li class="nav-item">
-                  <router-link to="/reservations" class="nav-link">
-                    <i class="nav-icon fa fa-bed"></i>
-                    Manage Reservations
+                  <router-link to="/reservation/wizard" class="nav-link">
+                    <i class="nav-icon fa fa-hat-wizard"></i>
+                    Reservation Wizard
                   </router-link>
                 </li>
                 <li class="nav-item">
-                  <router-link to="/reservations" class="nav-link">
-                    <i class="nav-icon fa fa-bed"></i>
-                    New Reservation
+                  <router-link to="/reservation/list" class="nav-link">
+                    <i class="nav-icon fa fa-list"></i>
+                    List Reservations
                   </router-link>
                 </li>
               </ul>
             </li>
-
             <li class="nav-item has-treeview">
               <a href="#" class="nav-link">
-                <i class="nav-icon fa fa-hand-holding-usd"></i>
+                <i class="nav-icon fa fa-coffee"></i>
                 <p>
-                  Manage Services
+                  Services
                   <i class="fa fa-angle-left right"></i>
                 </p>
               </a>
               <ul class="nav nav-treeview">
                 <li class="nav-item">
                   <router-link to="/services/add" class="nav-link">
-                    <i class="nav-icon fa fa-hand-holding-usd"></i>
+                    <i class="nav-icon fa fa-plus"></i>
                     Add Service
                   </router-link>
                 </li>
                 <li class="nav-item">
                   <router-link to="/services/list" class="nav-link">
-                    <i class="nav-icon fa fa-hand-holding-usd"></i>
-                    Show Services
+                    <i class="nav-icon fa fa-list"></i>
+                    Service List
                   </router-link>
                 </li>
               </ul>
             </li>
-
             <li class="nav-item has-treeview">
               <a href="#" class="nav-link">
-                <i class="nav-icon fa fa-shopping-cart"></i>
+                <i class="nav-icon fa fa-barcode"></i>
+                <span v-if="lowStock" class="badge badge-danger right">Low Stock!</span>
                 <p>
                   Inventory
                   <i class="fa fa-angle-left right"></i>
-                  <span class="badge badge-danger right">Low Stock!</span>
                 </p>
               </a>
               <ul class="nav nav-treeview">
                 <li class="nav-item">
-                  <router-link to="/inventory" class="nav-link">
+                  <router-link to="/inventory/add" class="nav-link">
+                    <i class="nav-icon fa fa-plus"></i>
+                    Add Item
+                  </router-link>
+                </li>
+                <li class="nav-item">
+                  <router-link to="/inventory/list" class="nav-link">
                     <i class="nav-icon fa fa-shopping-cart"></i>
                     Stock
                   </router-link>
                 </li>
-                <li class="nav-item">
-                  <router-link to="/inventory" class="nav-link">
-                    <i class="nav-icon fa fa-shopping-cart"></i>
-                    Inventory
-                  </router-link>
-                </li>
               </ul>
             </li>
-
-            <li class="nav-item has-treeview" v-if="isManager || isAdmin">
-              <a href="#" class="nav-link">
-                <i class="nav-icon fa fa-wallet"></i>
-                <p>
-                  Manage Payments
-                  <i class="fa fa-angle-left right"></i>
-                </p>
-              </a>
-              <ul class="nav nav-treeview">
-                <li class="nav-item">
-                  <router-link to="/billing" class="nav-link">
-                    <i class="nav-icon fa fa-file-invoice-dollar"></i>
-                    Billing
-                    <span class="right badge badge-danger">New</span>
-                  </router-link>
-                </li>
-                <li class="nav-item">
-                  <router-link to="/billing" class="nav-link">
-                    <i class="nav-icon fa fa-file-invoice-dollar"></i>
-                    Pending Invoices
-                    <span class="right badge badge-danger">6</span>
-                  </router-link>
-                </li>
-              </ul>
+            <li class="nav-item">
+              <router-link to="/billing/list" class="nav-link">
+                <i class="nav-icon fa fa-file-invoice-dollar"></i>
+                Invoices
+                <span
+                  class="right badge badge-danger"
+                  v-b-tooltip.hover
+                  title="Invoices still without payment"
+                >{{ countPendingInvoices }}</span>
+              </router-link>
             </li>
-
             <li class="nav-item" v-if="isAdmin">
               <router-link to="/settings" class="nav-link">
                 <i class="nav-icon fa fa-wrench"></i>
@@ -244,9 +217,23 @@ export default {
   },
   computed: {
     ...mapGetters(["isAdmin", "isRecepcionist", "isManager"]),
+    ...mapGetters({
+      countPendingInvoices: "billing/countPendingInvoices"
+    }),
     ...mapState(["appUser"]),
+    ...mapState({
+      inventory: state => state.inventory.items
+    }),
     avatarPath() {
       return "/storage/" + this.appUser.avatar_filename;
+    },
+    lowStock() {
+      for (var item of this.inventory) {
+        if (item.quantity < item.min_stock) {
+          return true;
+        }
+      }
+      return false;
     }
   },
   components: {},
@@ -255,10 +242,16 @@ export default {
 </script>
 <style scoped>
 .nav-treeview li {
-  padding-left: 20px;
+  padding-left: 10px;
 }
 .user-panel img {
   padding: 0.4rem;
   width: 100%;
+}
+
+nav .nav-link.router-link-exact-active {
+  background-color: rgba(255, 255, 255, 0.1);
+  cursor: pointer;
+  color: #fff;
 }
 </style>

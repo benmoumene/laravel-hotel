@@ -124,8 +124,18 @@ export default {
     };
   },
   methods: {
+    makeToast(title, message, variant = "info") {
+      this.$bvToast.toast(message, {
+        title,
+        autoHideDelay: 5000,
+        variant,
+        solid: true,
+        toaster: "b-toaster-bottom-right",
+        appendToast: true
+      });
+    },
     updateService(service) {
-      this.$store.dispatch("editService", service);
+      this.$store.dispatch("service/editService", { vm: this, service });
     },
     onFiltered(filteredItems) {
       // Trigger pagination to update the number of buttons/pages due to filtering
@@ -134,7 +144,9 @@ export default {
     }
   },
   computed: {
-    ...mapState(["services"]),
+    ...mapState({
+      services: state => state.service.services
+    }),
     sortOptions() {
       // Create an options list from our fields
       return this.fields

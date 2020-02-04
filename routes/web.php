@@ -38,8 +38,8 @@ Route::post('/room', 'RoomController@store');
 // Actualizar Habitacion
 Route::put('/room/{room_id}', 'RoomController@update');
 
-// Actualizar setting
-Route::put('/settings/{setting_id}', 'SettingController@update');
+// Actualizar setting (middleware admin)
+Route::put('/settings/{setting_id}', 'SettingController@update')->middleware('role:admin');
 
 // Actualizar Avatar
 Route::put('/users/{user_id}', 'ProfileController@update');
@@ -48,3 +48,18 @@ Route::put('/users/{user_id}', 'ProfileController@update');
 Route::post('/services', 'ServiceController@store');
 // Actualizar servicio
 Route::put('/services/{service_id}', 'ServiceController@update');
+
+// Nuevo Item de inventario
+Route::post('/inventory', 'InventoryController@store');
+// Actualizar item
+Route::put('/inventory/{item_id}', 'InventoryController@update');
+
+// Generar factura
+Route::post('/invoice', 'InvoiceController@store');
+// Actualizar factura
+Route::put('/invoice/{invoice_id}', 'InvoiceController@update');
+// Borrar factura
+Route::delete('/invoice/{invoice_id}', 'InvoiceController@destroy');
+
+// Borrar Billed Service
+Route::delete('/billed_service/{billed_service_id}', 'BilledServiceController@destroy');
