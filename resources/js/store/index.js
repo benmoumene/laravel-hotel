@@ -77,12 +77,12 @@ export default new Vuex.Store({
 
                     // Userdata
                     context.commit('SET_USER', data['app_user']);
+                    // Settings
+                    context.commit('SET_SETTINGS', data['settings']);
                     // Guests
                     context.commit('guest/SET_GUESTS', data['guests']);
                     // Customers
                     context.commit('customer/SET_CUSTOMERS', data['customers']);
-                    // Settings
-                    context.commit('SET_SETTINGS', data['settings']);
                     // Services
                     context.commit('service/SET_SERVICES', data['services']);
                     // Billed Services
@@ -101,37 +101,6 @@ export default new Vuex.Store({
         logout(context) {
             axios.post("http://127.0.0.1:8000/logout").catch(error => {
                 window.location.href = '/login';
-            });
-        },
-        addGuest(context, guest) {
-            axios.post("http://127.0.0.1:8000/guest/", {
-                guest
-            }).then(function (response) {
-                // Si el request tuvo exito (codigo 200)
-                if (response.status == 200) {
-                    // Agregamos una nueva conversacion si existe el objeto
-                    if (response['data'].length == 0) {
-                        return;
-                    }
-
-                    var newGuest = response['data']['guest'];
-                    context.commit('ADD_GUEST', newGuest);
-                }
-            });
-        },
-        editGuest(context, guest) {
-            axios.post("http://127.0.0.1:8000/guest/", {
-                guest,
-                _method: "put"
-            }).then(function (response) {
-                // Si el request tuvo exito (codigo 200)
-                if (response.status == 200) {
-                    // Agregamos una nueva conversacion si existe el objeto
-                    if (response['data'].length == 0) {
-                        return;
-                    }
-                    // console.log('success');
-                }
             });
         },
         editSetting(context, setting) {
