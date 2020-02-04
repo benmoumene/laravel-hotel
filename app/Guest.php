@@ -17,6 +17,16 @@ class Guest extends Model
         );
     }
 
+    // Servicios facturados a este huesped
+    public function billedServices()
+    {
+        return $this->hasMany(
+            'App\BilledService',
+            'guest_id',
+            'id'
+        );
+    }
+
     // Reservas de este huesped
     public function reservation()
     {
@@ -30,8 +40,11 @@ class Guest extends Model
     // Habitacion en la que se hospeada
     public function room()
     {
-        return $this->hasOne(
-            'App\Room'
+        return $this->hasOneThrough(
+            'App\Reservation',
+            'App\Room',
+            'id',
+            'room_id',
         );
     }
 
