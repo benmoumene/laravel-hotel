@@ -34,11 +34,11 @@ class HotelController extends Controller
         $data['app_user'] = Auth::user();
         $data['guests'] = Guest::with([
             'customer',
-            'reservation.room',
+            'room',
             'billedServices.service'
         ])->get();
         $data['customers'] = Customer::all();
-        $data['reservations'] = Reservation::with(['customer', 'room'])->get();
+        $data['reservations'] = Reservation::with(['customer','room'])->get();
         $data['services'] = Service::all();
         $data['billed_services'] = BilledService::all();
         $data['rooms'] = Room::with('reservations')->get();

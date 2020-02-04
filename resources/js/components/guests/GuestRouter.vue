@@ -3,12 +3,6 @@
 </template>
 <script>
 export default {
-  name: "Guest",
-  methods: {},
-  computed: {},
-  components: {},
-  mounted() {}
+  name: "GuestRouter"
 };
 </script>
-<style scoped>
-</style>
