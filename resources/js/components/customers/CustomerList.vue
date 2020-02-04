@@ -71,12 +71,8 @@
     >
       <template v-slot:cell(actions)="row">
         <b-button variant="info" @click="showCustomerInfo(row.item)">+Info</b-button>
-        <router-link :to="{path: '/reservations/' + row.item.id +'/show'}">
-          <b-button variant="info">Reservations</b-button>
-        </router-link>
-        <router-link :to="{path: '/reservations/' + row.item.id +'/show'}">
-          <b-button variant="info">Invoices</b-button>
-        </router-link>
+        <b-button variant="info" @click="showReservations(row.item)">Reservations</b-button>
+        <b-button variant="info" @click="showInvoices(row.item)">Invoices</b-button>
         <b-button
           v-if="isCurrentGuest(row.item.id)"
           variant="info"
@@ -107,7 +103,7 @@
       ></guest-info>
     </b-modal>
 
-    <b-modal id="reservation-info-modal" centered title="Guest Info">
+    <b-modal id="reservations-modal" centered title="Reservations">
       <guest-info
         :room_name="selectedGuest.check_in"
         :check_in="selectedGuest.check_in"
@@ -115,18 +111,15 @@
       ></guest-info>
     </b-modal>
 
-    <b-modal id="invoice-info-modal" centered title="Guest Info">
-      <guest-info
-        :room_name="selectedGuest.check_in"
-        :check_in="selectedGuest.check_in"
-        :check_out="selectedGuest.check_out"
-      ></guest-info>
+    <b-modal id="invoices-modal" size="xl" centered title="Invoices" hidden-footer>
+      <customer-invoices :invoices="customerInvoices(selectedCustomer.id)"></customer-invoices>
     </b-modal>
   </b-container>
 </template>
 <script>
 import { mapState, mapGetters } from "vuex";
 import CustomerInfo from "./CustomerInfo";
+import CustomerInvoices from "./CustomerInvoices";
 import GuestInfo from "../guests/GuestInfo";
 export default {
   name: "CustomerList",
@@ -181,6 +174,14 @@ export default {
       this.selectedGuest = this.getGuest(customer.id);
       this.$bvModal.show("guest-info-modal");
     },
+    showReservations(customer) {
+      this.selectedCustomer = customer;
+      this.$bvModal.show("reservations-modal");
+    },
+    showInvoices(customer) {
+      this.selectedCustomer = customer;
+      this.$bvModal.show("invoices-modal");
+    },
     onFiltered(filteredItems) {
       // Trigger pagination to update the number of buttons/pages due to filtering
       this.currentPage = 1;
@@ -192,7 +193,8 @@ export default {
     }),
     ...mapGetters({
       isCurrentGuest: "guest/isCurrentGuest",
-      getGuest: "guest/getGuest"
+      getGuest: "guest/getGuest",
+      customerInvoices: "billing/getCustomerInvoices"
     }),
     sortOptions() {
       // Create an options list from our fields
@@ -210,7 +212,8 @@ export default {
   updated() {},
   components: {
     "customer-info": CustomerInfo,
-    "guest-info": GuestInfo
+    "guest-info": GuestInfo,
+    "customer-invoices": CustomerInvoices
   }
 };
 </script>
