@@ -40,7 +40,7 @@
         </b-form-group>
       </b-col>
 
-      <b-col sm="7" md="6" class="my-1">
+      <b-col sm="6" class="my-1">
         <b-pagination
           v-model="currentPage"
           :total-rows="totalRows"
@@ -50,6 +50,7 @@
           class="my-0"
         ></b-pagination>
       </b-col>
+      <b-col sm="7" md="6" class="my-1">ALL/ONLY GUESTS/PENDING BILLS</b-col>
     </b-row>
 
     <!-- Main table element -->
@@ -70,20 +71,23 @@
     >
       <template v-slot:cell(actions)="row">
         <b-button variant="info" @click="showCustomerInfo(row.item)">+Info</b-button>
-        <router-link :to="{path: row.item.id +'/edit'}">
-          <b-button>Edit</b-button>
+        <router-link :to="{path: '/reservations/' + row.item.id +'/show'}">
+          <b-button variant="info">Reservations</b-button>
         </router-link>
         <router-link :to="{path: '/reservations/' + row.item.id +'/show'}">
-          <b-button>Reservations</b-button>
+          <b-button variant="info">Invoices</b-button>
         </router-link>
-        <router-link :to="{path: '/reservations/' + row.item.id +'/show'}">
-          <b-button>Invoices</b-button>
-        </router-link>
+        <b-button
+          v-if="isCurrentGuest(row.item.id)"
+          variant="info"
+          @click="showGuestInfo(row.item)"
+        >Guest</b-button>
       </template>
     </b-table>
 
     <b-modal id="modal-center" centered title="Customer Info">
       <customer-info
+        :id="selectedCustomer.id"
         :first_name="selectedCustomer.first_name"
         :last_name="selectedCustomer.last_name"
         :address="selectedCustomer.address"
@@ -94,16 +98,42 @@
         :nationality="selectedCustomer.nationality"
       ></customer-info>
     </b-modal>
+
+    <b-modal id="guest-info-modal" centered title="Guest Info">
+      <guest-info
+        :room_name="selectedGuest.check_in"
+        :check_in="selectedGuest.check_in"
+        :check_out="selectedGuest.check_out"
+      ></guest-info>
+    </b-modal>
+
+    <b-modal id="reservation-info-modal" centered title="Guest Info">
+      <guest-info
+        :room_name="selectedGuest.check_in"
+        :check_in="selectedGuest.check_in"
+        :check_out="selectedGuest.check_out"
+      ></guest-info>
+    </b-modal>
+
+    <b-modal id="invoice-info-modal" centered title="Guest Info">
+      <guest-info
+        :room_name="selectedGuest.check_in"
+        :check_in="selectedGuest.check_in"
+        :check_out="selectedGuest.check_out"
+      ></guest-info>
+    </b-modal>
   </b-container>
 </template>
 <script>
-import { mapState } from "vuex";
+import { mapState, mapGetters } from "vuex";
 import CustomerInfo from "./CustomerInfo";
+import GuestInfo from "../guests/GuestInfo";
 export default {
   name: "CustomerList",
   data: function() {
     return {
       selectedCustomer: {},
+      selectedGuest: {},
       fields: [
         {
           key: "first_name",
@@ -146,6 +176,11 @@ export default {
       this.selectedCustomer = customer;
       this.$bvModal.show("modal-center");
     },
+    showGuestInfo(customer) {
+      this.selectedCustomer = customer;
+      this.selectedGuest = this.getGuest(customer.id);
+      this.$bvModal.show("guest-info-modal");
+    },
     onFiltered(filteredItems) {
       // Trigger pagination to update the number of buttons/pages due to filtering
       this.currentPage = 1;
@@ -154,6 +189,10 @@ export default {
   computed: {
     ...mapState({
       customers: state => state.customer.customers
+    }),
+    ...mapGetters({
+      isCurrentGuest: "guest/isCurrentGuest",
+      getGuest: "guest/getGuest"
     }),
     sortOptions() {
       // Create an options list from our fields
@@ -170,7 +209,8 @@ export default {
   mounted() {},
   updated() {},
   components: {
-    "customer-info": CustomerInfo
+    "customer-info": CustomerInfo,
+    "guest-info": GuestInfo
   }
 };
 </script>

@@ -41,6 +41,12 @@
     <b-form-group label-cols="12" label-cols-sm="4" label="Nationality">
       <b-input cols="12" sm="2" placeholder="Spanish" :value="nationality" readonly></b-input>
     </b-form-group>
+
+    <b-form-group label-cols="12" label>
+      <router-link :to="{path: id +'/edit'}">
+        <b-button sm="4">Edit customer</b-button>
+      </router-link>
+    </b-form-group>
   </b-container>
 </template>
 <script>
@@ -48,6 +54,7 @@ import { mapState } from "vuex";
 export default {
   name: "CustomerInfo",
   props: {
+    id: { type: Number, required: true },
     first_name: { type: String, required: true },
     last_name: { type: String, required: true },
     document_id: { type: String, required: true },
