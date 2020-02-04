@@ -75,7 +75,7 @@
       </div>
     </b-row>
 
-    <div class="row">
+    <b-row>
       <div class="col-md-12">
         <div class="card bg-gradient-success">
           <div class="card-header">
@@ -224,8 +224,7 @@
         <!-- /.card -->
       </div>
       <!-- /.col -->
-    </div>
-    <!-- /.row -->
+    </b-row>
 
     <b-row>
       <!-- Calendar -->

@@ -67,33 +67,35 @@
       </b-col>
     </b-row>
 
-    <!-- Main table element -->
-    <b-table
-      show-empty
-      small
-      stacked="md"
-      :items="customers"
-      :fields="fields"
-      :current-page="currentPage"
-      :per-page="perPage"
-      :filter="filter"
-      :filterIncludedFields="filterOn"
-      :sort-by.sync="sortBy"
-      :sort-desc.sync="sortDesc"
-      :sort-direction="sortDirection"
-      @filtered="onFiltered"
-    >
-      <template v-slot:cell(actions)="row">
-        <b-button variant="info" @click="showCustomerInfo(row.item)">+Info</b-button>
-        <b-button variant="info" @click="showReservations(row.item)">Reservations</b-button>
-        <b-button variant="info" @click="showInvoices(row.item)">Invoices</b-button>
-        <b-button
-          v-if="isCurrentGuest(row.item.id)"
-          variant="info"
-          @click="showGuestInfo(row.item)"
-        >Guest</b-button>
-      </template>
-    </b-table>
+    <b-row>
+      <!-- Main table element -->
+      <b-table
+        show-empty
+        small
+        stacked="md"
+        :items="customers"
+        :fields="fields"
+        :current-page="currentPage"
+        :per-page="perPage"
+        :filter="filter"
+        :filterIncludedFields="filterOn"
+        :sort-by.sync="sortBy"
+        :sort-desc.sync="sortDesc"
+        :sort-direction="sortDirection"
+        @filtered="onFiltered"
+      >
+        <template v-slot:cell(actions)="row">
+          <b-button variant="info" @click="showCustomerInfo(row.item)">+Info</b-button>
+          <b-button variant="info" @click="showReservations(row.item)">Reservations</b-button>
+          <b-button variant="info" @click="showInvoices(row.item)">Invoices</b-button>
+          <b-button
+            v-if="isCurrentGuest(row.item.id)"
+            variant="info"
+            @click="showGuestInfo(row.item)"
+          >Guest</b-button>
+        </template>
+      </b-table>
+    </b-row>
 
     <b-modal id="customer-info-modal" centered title="Customer Info" hide-footer>
       <customer-info

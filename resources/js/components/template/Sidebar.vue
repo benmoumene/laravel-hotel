@@ -63,6 +63,12 @@
                 </li>
               </ul>
             </li>
+            <li class="nav-item">
+              <router-link to="/guest/list" class="nav-link">
+                <i class="nav-icon fa fa-user"></i>
+                Guests
+              </router-link>
+            </li>
             <li class="nav-item has-treeview" v-if="isAdmin || isManager">
               <a href="#" class="nav-link">
                 <i class="nav-icon fa fa-bed"></i>
@@ -109,7 +115,6 @@
                 </li>
               </ul>
             </li>
-
             <li class="nav-item has-treeview">
               <a href="#" class="nav-link">
                 <i class="nav-icon fa fa-coffee"></i>
@@ -133,7 +138,6 @@
                 </li>
               </ul>
             </li>
-
             <li class="nav-item has-treeview">
               <a href="#" class="nav-link">
                 <i class="nav-icon fa fa-barcode"></i>
