@@ -97,7 +97,7 @@
       </b-table>
     </b-row>
 
-    <b-modal id="customer-info-modal" centered title="Customer Info" hide-footer>
+    <b-modal id="customer-info-modal" size="xl" centered title="Customer Info" hide-footer>
       <customer-info
         :id="selectedCustomer.id"
         :first_name="selectedCustomer.first_name"
@@ -111,7 +111,7 @@
       ></customer-info>
     </b-modal>
 
-    <b-modal id="guest-info-modal" centered title="Guest Info">
+    <b-modal id="guest-info-modal" size="xl" centered title="Guest Info">
       <guest-info
         :room_name="selectedGuest.check_in"
         :check_in="selectedGuest.check_in"
@@ -119,11 +119,22 @@
       ></guest-info>
     </b-modal>
 
-    <b-modal id="reservations-modal" size="xl" centered title="Reservations" hidden-footer>
-      <customer-reservations :reservations="customerReservations(selectedCustomer.id)"></customer-reservations>
+    <b-modal
+      id="reservations-modal"
+      size="xl"
+      centered
+      :title="'Reservations from ' 
+      + selectedCustomer.first_name + ' '
+      + selectedCustomer.last_name"
+      hide-footer
+    >
+      <customer-reservations
+        :customer_id="selectedCustomer.id"
+        :reservations="customerReservations(selectedCustomer.id)"
+      ></customer-reservations>
     </b-modal>
 
-    <b-modal id="invoices-modal" size="xl" centered title="Invoices" hidden-footer>
+    <b-modal id="invoices-modal" size="xl" centered title="Invoices" hide-footer>
       <customer-invoices :invoices="customerInvoices(selectedCustomer.id)"></customer-invoices>
     </b-modal>
   </b-container>
