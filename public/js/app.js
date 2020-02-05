@@ -3617,6 +3617,17 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -3762,43 +3773,43 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: "CustomerInvoices",
+  name: "CustomerReservations",
+  props: {
+    reservations: {
+      type: Array,
+      required: true
+    },
+    customer_id: {
+      type: Number,
+      required: true
+    }
+  },
   data: function data() {
     return {
       fields: [{
-        key: "customer.first_name",
-        label: "First Name",
-        sortable: true,
-        sortDirection: "desc"
-      }, {
-        key: "customer.last_name",
-        label: "Last Name",
-        sortable: true,
-        sortDirection: "desc"
-      }, {
-        key: "customer.phone",
-        label: "phone",
-        sortable: true,
-        "class": "text-center"
-      }, {
-        key: "customer.document_id",
-        label: "Document Id",
-        sortable: true,
-        "class": "text-center"
-      }, {
         key: "room.name",
         label: "Room Name",
         sortable: true,
         "class": "text-center"
       }, {
         key: "check_in",
-        label: "Check in",
+        label: "Check In",
         sortable: true,
         "class": "text-center"
       }, {
         key: "check_out",
-        label: "Check in",
+        label: "Check Out",
         sortable: true,
         "class": "text-center"
       }, {
@@ -3808,12 +3819,6 @@ __webpack_require__.r(__webpack_exports__);
       currentPage: 1,
       perPage: 10
     };
-  },
-  props: {
-    reservations: {
-      type: Array,
-      required: true
-    }
   },
   computed: {
     totalRows: function totalRows() {
@@ -75014,6 +75019,7 @@ var render = function() {
         {
           attrs: {
             id: "customer-info-modal",
+            size: "xl",
             centered: "",
             title: "Customer Info",
             "hide-footer": ""
@@ -75040,7 +75046,12 @@ var render = function() {
       _c(
         "b-modal",
         {
-          attrs: { id: "guest-info-modal", centered: "", title: "Guest Info" }
+          attrs: {
+            id: "guest-info-modal",
+            size: "xl",
+            centered: "",
+            title: "Guest Info"
+          }
         },
         [
           _c("guest-info", {
@@ -75061,13 +75072,18 @@ var render = function() {
             id: "reservations-modal",
             size: "xl",
             centered: "",
-            title: "Reservations",
-            "hidden-footer": ""
+            title:
+              "Reservations from " +
+              _vm.selectedCustomer.first_name +
+              " " +
+              _vm.selectedCustomer.last_name,
+            "hide-footer": ""
           }
         },
         [
           _c("customer-reservations", {
             attrs: {
+              customer_id: _vm.selectedCustomer.id,
               reservations: _vm.customerReservations(_vm.selectedCustomer.id)
             }
           })
@@ -75083,7 +75099,7 @@ var render = function() {
             size: "xl",
             centered: "",
             title: "Invoices",
-            "hidden-footer": ""
+            "hide-footer": ""
           }
         },
         [
@@ -75123,85 +75139,118 @@ var render = function() {
     "b-container",
     { attrs: { fluid: "" } },
     [
-      _c("b-pagination", {
-        staticClass: "my-0",
-        attrs: {
-          "total-rows": _vm.totalRows,
-          "per-page": _vm.perPage,
-          align: "fill"
-        },
-        model: {
-          value: _vm.currentPage,
-          callback: function($$v) {
-            _vm.currentPage = $$v
-          },
-          expression: "currentPage"
-        }
-      }),
+      _c(
+        "b-row",
+        { staticClass: "mb-3" },
+        [
+          _c(
+            "b-col",
+            { attrs: { cols: "6" } },
+            [
+              _c("b-pagination", {
+                staticClass: "my-0",
+                attrs: {
+                  "total-rows": _vm.totalRows,
+                  "per-page": _vm.perPage,
+                  align: "fill"
+                },
+                model: {
+                  value: _vm.currentPage,
+                  callback: function($$v) {
+                    _vm.currentPage = $$v
+                  },
+                  expression: "currentPage"
+                }
+              })
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "b-col",
+            { attrs: { cols: "6" } },
+            [
+              _c(
+                "router-link",
+                {
+                  attrs: {
+                    to: { path: "/reservation/" + _vm.customer_id + "/new" }
+                  }
+                },
+                [
+                  _c("b-button", { staticClass: "float-right" }, [
+                    _vm._v("New reservation")
+                  ])
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ],
+        1
+      ),
       _vm._v(" "),
-      _c("b-table", {
-        attrs: {
-          "show-empty": "",
-          stacked: "md",
-          items: _vm.reservations,
-          fields: _vm.fields,
-          "current-page": _vm.currentPage,
-          "per-page": _vm.perPage
-        },
-        scopedSlots: _vm._u([
-          {
-            key: "cell(room.name)",
-            fn: function(row) {
-              return [
-                _c(
-                  "b-link",
-                  {
-                    directives: [
-                      {
-                        name: "b-modal",
-                        rawName: "v-b-modal.modal-center",
-                        modifiers: { "modal-center": true }
-                      }
-                    ]
-                  },
-                  [_vm._v(_vm._s(row.item.room.name))]
-                )
-              ]
-            }
-          },
-          {
-            key: "cell(actions)",
-            fn: function(row) {
-              return [
-                _c(
-                  "router-link",
-                  {
-                    staticClass: "nav-link",
-                    attrs: { to: { path: row.item.id + "/cancel" } }
-                  },
-                  [
-                    _c("i", { staticClass: "nav-icon fa fa-bed" }),
-                    _vm._v("\n        Show\n      ")
+      _c(
+        "b-row",
+        [
+          _c("b-table", {
+            attrs: {
+              "show-empty": "",
+              stacked: "md",
+              items: _vm.reservations,
+              fields: _vm.fields,
+              "current-page": _vm.currentPage,
+              "per-page": _vm.perPage
+            },
+            scopedSlots: _vm._u([
+              {
+                key: "cell(room.name)",
+                fn: function(row) {
+                  return [
+                    _c(
+                      "router-link",
+                      { attrs: { to: { path: "/room/" + row.item.room_id } } },
+                      [_vm._v(_vm._s(row.item.room.name))]
+                    )
                   ]
-                ),
-                _vm._v(" "),
-                _c(
-                  "b-button",
-                  {
-                    attrs: { variant: "primary" },
-                    on: {
-                      click: function($event) {
-                        return _vm.cancelReservation(row.item)
-                      }
-                    }
-                  },
-                  [_vm._v("CANCEL")]
-                )
-              ]
-            }
-          }
-        ])
-      })
+                }
+              },
+              {
+                key: "cell(actions)",
+                fn: function(row) {
+                  return [
+                    _c(
+                      "router-link",
+                      { attrs: { to: { path: row.item.id + "/cancel" } } },
+                      [
+                        _c("b-button", { attrs: { variant: "info" } }, [
+                          _vm._v("Show")
+                        ])
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "b-button",
+                      {
+                        attrs: { variant: "danger" },
+                        on: {
+                          click: function($event) {
+                            return _vm.cancelReservation(row.item)
+                          }
+                        }
+                      },
+                      [_vm._v("Cancel")]
+                    )
+                  ]
+                }
+              }
+            ])
+          })
+        ],
+        1
+      )
     ],
     1
   )

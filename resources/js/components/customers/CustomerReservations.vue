@@ -1,64 +1,54 @@
 <template>
   <b-container fluid>
-    <b-pagination
-      v-model="currentPage"
-      :total-rows="totalRows"
-      :per-page="perPage"
-      align="fill"
-      class="my-0"
-    ></b-pagination>
-    <b-table
-      show-empty
-      stacked="md"
-      :items="reservations"
-      :fields="fields"
-      :current-page="currentPage"
-      :per-page="perPage"
-    >
-      <!-- Al hacer click en room mostrar info de esta -->
-      <template v-slot:cell(room.name)="row">
-        <b-link v-b-modal.modal-center>{{ row.item.room.name }}</b-link>
-      </template>
-      <template v-slot:cell(actions)="row">
-        <router-link :to="{path: row.item.id +'/cancel'}" class="nav-link">
-          <i class="nav-icon fa fa-bed"></i>
-          Show
+    <b-row class="mb-3">
+      <b-col cols="6">
+        <b-pagination
+          v-model="currentPage"
+          :total-rows="totalRows"
+          :per-page="perPage"
+          align="fill"
+          class="my-0"
+        ></b-pagination>
+      </b-col>
+      <b-col cols="6">
+        <router-link :to="{path: '/reservation/' + customer_id +'/new'}">
+          <b-button class="float-right">New reservation</b-button>
         </router-link>
-        <b-button @click="cancelReservation(row.item)" variant="primary">CANCEL</b-button>
-      </template>
-    </b-table>
+      </b-col>
+    </b-row>
+    <b-row>
+      <b-table
+        show-empty
+        stacked="md"
+        :items="reservations"
+        :fields="fields"
+        :current-page="currentPage"
+        :per-page="perPage"
+      >
+        <!-- Al hacer click en room mostrar info de esta -->
+        <template v-slot:cell(room.name)="row">
+          <router-link :to="{path: '/room/' + row.item.room_id }">{{ row.item.room.name }}</router-link>
+        </template>
+        <template v-slot:cell(actions)="row">
+          <router-link :to="{path: row.item.id +'/cancel'}">
+            <b-button variant="info">Show</b-button>
+          </router-link>
+          <b-button @click="cancelReservation(row.item)" variant="danger">Cancel</b-button>
+        </template>
+      </b-table>
+    </b-row>
   </b-container>
 </template>
 <script>
 export default {
-  name: "CustomerInvoices",
+  name: "CustomerReservations",
+  props: {
+    reservations: { type: Array, required: true },
+    customer_id: { type: Number, required: true }
+  },
   data: function() {
     return {
       fields: [
-        {
-          key: "customer.first_name",
-          label: "First Name",
-          sortable: true,
-          sortDirection: "desc"
-        },
-        {
-          key: "customer.last_name",
-          label: "Last Name",
-          sortable: true,
-          sortDirection: "desc"
-        },
-        {
-          key: "customer.phone",
-          label: "phone",
-          sortable: true,
-          class: "text-center"
-        },
-        {
-          key: "customer.document_id",
-          label: "Document Id",
-          sortable: true,
-          class: "text-center"
-        },
         {
           key: "room.name",
           label: "Room Name",
@@ -67,13 +57,13 @@ export default {
         },
         {
           key: "check_in",
-          label: "Check in",
+          label: "Check In",
           sortable: true,
           class: "text-center"
         },
         {
           key: "check_out",
-          label: "Check in",
+          label: "Check Out",
           sortable: true,
           class: "text-center"
         },
@@ -82,9 +72,6 @@ export default {
       currentPage: 1,
       perPage: 10
     };
-  },
-  props: {
-    reservations: { type: Array, required: true }
   },
   computed: {
     totalRows() {
