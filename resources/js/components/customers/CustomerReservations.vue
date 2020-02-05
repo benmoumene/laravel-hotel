@@ -40,6 +40,7 @@
   </b-container>
 </template>
 <script>
+import { mapActions } from "vuex";
 export default {
   name: "CustomerReservations",
   props: {
@@ -72,6 +73,24 @@ export default {
       currentPage: 1,
       perPage: 10
     };
+  },
+  methods: {
+    cancelReservation(reservation) {
+      this.deleteReservation({ vm: this, reservation });
+    },
+    makeToast(title, message, variant = "info") {
+      this.$bvToast.toast(message, {
+        title,
+        autoHideDelay: 5000,
+        variant,
+        solid: true,
+        toaster: "b-toaster-bottom-right",
+        appendToast: true
+      });
+    },
+    ...mapActions({
+      deleteReservation: "reservation/deleteReservation"
+    })
   },
   computed: {
     totalRows() {
