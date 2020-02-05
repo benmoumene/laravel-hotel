@@ -2195,7 +2195,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Dashboard",
@@ -3488,6 +3487,8 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+//
+//
 //
 //
 //
@@ -6255,6 +6256,10 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+//
+//
+//
+//
 //
 //
 //
@@ -72356,7 +72361,7 @@ var render = function() {
         ])
       ]),
       _vm._v(" "),
-      _c("div", { staticClass: "row" }, [
+      _c("b-row", [
         _c("div", { staticClass: "col-md-12" }, [
           _c("div", { staticClass: "card bg-gradient-success" }, [
             _c("div", { staticClass: "card-header" }, [
@@ -74904,99 +74909,105 @@ var render = function() {
         1
       ),
       _vm._v(" "),
-      _c("b-table", {
-        attrs: {
-          "show-empty": "",
-          small: "",
-          stacked: "md",
-          items: _vm.customers,
-          fields: _vm.fields,
-          "current-page": _vm.currentPage,
-          "per-page": _vm.perPage,
-          filter: _vm.filter,
-          filterIncludedFields: _vm.filterOn,
-          "sort-by": _vm.sortBy,
-          "sort-desc": _vm.sortDesc,
-          "sort-direction": _vm.sortDirection
-        },
-        on: {
-          "update:sortBy": function($event) {
-            _vm.sortBy = $event
-          },
-          "update:sort-by": function($event) {
-            _vm.sortBy = $event
-          },
-          "update:sortDesc": function($event) {
-            _vm.sortDesc = $event
-          },
-          "update:sort-desc": function($event) {
-            _vm.sortDesc = $event
-          },
-          filtered: _vm.onFiltered
-        },
-        scopedSlots: _vm._u([
-          {
-            key: "cell(actions)",
-            fn: function(row) {
-              return [
-                _c(
-                  "b-button",
-                  {
-                    attrs: { variant: "info" },
-                    on: {
-                      click: function($event) {
-                        return _vm.showCustomerInfo(row.item)
-                      }
-                    }
-                  },
-                  [_vm._v("+Info")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "b-button",
-                  {
-                    attrs: { variant: "info" },
-                    on: {
-                      click: function($event) {
-                        return _vm.showReservations(row.item)
-                      }
-                    }
-                  },
-                  [_vm._v("Reservations")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "b-button",
-                  {
-                    attrs: { variant: "info" },
-                    on: {
-                      click: function($event) {
-                        return _vm.showInvoices(row.item)
-                      }
-                    }
-                  },
-                  [_vm._v("Invoices")]
-                ),
-                _vm._v(" "),
-                _vm.isCurrentGuest(row.item.id)
-                  ? _c(
+      _c(
+        "b-row",
+        [
+          _c("b-table", {
+            attrs: {
+              "show-empty": "",
+              small: "",
+              stacked: "md",
+              items: _vm.customers,
+              fields: _vm.fields,
+              "current-page": _vm.currentPage,
+              "per-page": _vm.perPage,
+              filter: _vm.filter,
+              filterIncludedFields: _vm.filterOn,
+              "sort-by": _vm.sortBy,
+              "sort-desc": _vm.sortDesc,
+              "sort-direction": _vm.sortDirection
+            },
+            on: {
+              "update:sortBy": function($event) {
+                _vm.sortBy = $event
+              },
+              "update:sort-by": function($event) {
+                _vm.sortBy = $event
+              },
+              "update:sortDesc": function($event) {
+                _vm.sortDesc = $event
+              },
+              "update:sort-desc": function($event) {
+                _vm.sortDesc = $event
+              },
+              filtered: _vm.onFiltered
+            },
+            scopedSlots: _vm._u([
+              {
+                key: "cell(actions)",
+                fn: function(row) {
+                  return [
+                    _c(
                       "b-button",
                       {
                         attrs: { variant: "info" },
                         on: {
                           click: function($event) {
-                            return _vm.showGuestInfo(row.item)
+                            return _vm.showCustomerInfo(row.item)
                           }
                         }
                       },
-                      [_vm._v("Guest")]
-                    )
-                  : _vm._e()
-              ]
-            }
-          }
-        ])
-      }),
+                      [_vm._v("+Info")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "b-button",
+                      {
+                        attrs: { variant: "info" },
+                        on: {
+                          click: function($event) {
+                            return _vm.showReservations(row.item)
+                          }
+                        }
+                      },
+                      [_vm._v("Reservations")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "b-button",
+                      {
+                        attrs: { variant: "info" },
+                        on: {
+                          click: function($event) {
+                            return _vm.showInvoices(row.item)
+                          }
+                        }
+                      },
+                      [_vm._v("Invoices")]
+                    ),
+                    _vm._v(" "),
+                    _vm.isCurrentGuest(row.item.id)
+                      ? _c(
+                          "b-button",
+                          {
+                            attrs: { variant: "info" },
+                            on: {
+                              click: function($event) {
+                                return _vm.showGuestInfo(row.item)
+                              }
+                            }
+                          },
+                          [_vm._v("Guest")]
+                        )
+                      : _vm._e()
+                  ]
+                }
+              }
+            ])
+          })
+        ],
+        1
+      ),
       _vm._v(" "),
       _c(
         "b-modal",
@@ -78945,6 +78956,25 @@ var render = function() {
                       )
                     ])
                   ]),
+                  _vm._v(" "),
+                  _c(
+                    "li",
+                    { staticClass: "nav-item" },
+                    [
+                      _c(
+                        "router-link",
+                        {
+                          staticClass: "nav-link",
+                          attrs: { to: "/guest/list" }
+                        },
+                        [
+                          _c("i", { staticClass: "nav-icon fa fa-user" }),
+                          _vm._v("\n              Guests\n            ")
+                        ]
+                      )
+                    ],
+                    1
+                  ),
                   _vm._v(" "),
                   _vm.isAdmin || _vm.isManager
                     ? _c("li", { staticClass: "nav-item has-treeview" }, [
