@@ -98508,8 +98508,8 @@ var customerRoutes = {
       name: 'ReservationsList',
       component: _components_reservations_ReservationList_vue__WEBPACK_IMPORTED_MODULE_22__["default"]
     }, {
-      path: 'wizard',
-      name: 'ReservationsWizard',
+      path: ':customer_id/new',
+      name: 'ReservationWizard',
       component: _components_reservations_wizard_ReservationWizard_vue__WEBPACK_IMPORTED_MODULE_21__["default"]
     }]
   }, {
