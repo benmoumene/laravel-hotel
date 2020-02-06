@@ -64,7 +64,7 @@
         sm="1"
         v-for="room in rooms"
         :key="room.id"
-        :class="['room', isAvailabe(room.id) ? 'available' : 'occupied']"
+        :class="['room', isAvailabe(room.id) ? 'bg-success' : 'bg-danger']"
         @click="selectRoom(room)"
       >{{room.name}}</b-col>
     </b-row>

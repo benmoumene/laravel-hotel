@@ -5,7 +5,9 @@ export default ({
     },
     getters: {
         getCustomerById: (state, getters) => (customerId) => {
-            return state.customers.find(customer => customer.id === customerId);
+            return state.customers.find(
+                customer => customer.id === customerId
+            );
         },
     },
     mutations: {
