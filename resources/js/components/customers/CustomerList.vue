@@ -60,8 +60,8 @@
           class="mb-0"
         >
           <b-form-checkbox-group v-model="filterOn" class="mt-1">
-            <b-form-checkbox value="name">Only Guests</b-form-checkbox>
-            <b-form-checkbox value="age">Pending Invoices</b-form-checkbox>
+            <b-form-checkbox value="current_guests">Current Guests</b-form-checkbox>
+            <b-form-checkbox value="pending_invoices">Pending Invoices</b-form-checkbox>
           </b-form-checkbox-group>
         </b-form-group>
       </b-col>
@@ -73,7 +73,7 @@
         show-empty
         small
         stacked="md"
-        :items="customers"
+        :items="filteredCustomers"
         :fields="fields"
         :current-page="currentPage"
         :per-page="perPage"
@@ -185,7 +185,7 @@ export default {
       sortDesc: false,
       sortDirection: "asc",
       filter: null,
-      filterOn: []
+      filterOn: ["lalala"]
     };
   },
   methods: {
@@ -219,8 +219,25 @@ export default {
       isCurrentGuest: "guest/isCurrentGuest",
       getGuest: "guest/getGuest",
       customerInvoices: "billing/getCustomerInvoices",
+      hasPendingInvoices: "billing/hasPendingInvoices",
       customerReservations: "reservation/getCustomerReservations"
     }),
+    filteredCustomers() {
+      var filteredCustomers = this.customers;
+      if (this.filterOn.indexOf("current_guests") > -1) {
+        filteredCustomers = filteredCustomers.filter(customer =>
+          this.isCurrentGuest(customer.id)
+        );
+      }
+
+      if (this.filterOn.indexOf("pending_invoices") > -1) {
+        filteredCustomers = filteredCustomers.filter(customer =>
+          this.hasPendingInvoices(customer.id)
+        );
+      }
+
+      return filteredCustomers;
+    },
     sortOptions() {
       // Create an options list from our fields
       return this.fields

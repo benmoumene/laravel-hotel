@@ -3670,7 +3670,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       sortDesc: false,
       sortDirection: "asc",
       filter: null,
-      filterOn: []
+      filterOn: ["lalala"]
     };
   },
   methods: {
@@ -3704,8 +3704,28 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     isCurrentGuest: "guest/isCurrentGuest",
     getGuest: "guest/getGuest",
     customerInvoices: "billing/getCustomerInvoices",
+    hasPendingInvoices: "billing/hasPendingInvoices",
     customerReservations: "reservation/getCustomerReservations"
   }), {
+    filteredCustomers: function filteredCustomers() {
+      var _this = this;
+
+      var filteredCustomers = this.customers;
+
+      if (this.filterOn.indexOf("current_guests") > -1) {
+        filteredCustomers = filteredCustomers.filter(function (customer) {
+          return _this.isCurrentGuest(customer.id);
+        });
+      }
+
+      if (this.filterOn.indexOf("pending_invoices") > -1) {
+        filteredCustomers = filteredCustomers.filter(function (customer) {
+          return _this.hasPendingInvoices(customer.id);
+        });
+      }
+
+      return filteredCustomers;
+    },
     sortOptions: function sortOptions() {
       // Create an options list from our fields
       return this.fields.filter(function (f) {
@@ -3742,6 +3762,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
@@ -3783,6 +3810,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "CustomerReservations",
   props: {
@@ -3820,6 +3848,27 @@ __webpack_require__.r(__webpack_exports__);
       perPage: 10
     };
   },
+  methods: _objectSpread({
+    cancelReservation: function cancelReservation(reservation) {
+      this.deleteReservation({
+        vm: this,
+        reservation: reservation
+      });
+    },
+    makeToast: function makeToast(title, message) {
+      var variant = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "info";
+      this.$bvToast.toast(message, {
+        title: title,
+        autoHideDelay: 5000,
+        variant: variant,
+        solid: true,
+        toaster: "b-toaster-bottom-right",
+        appendToast: true
+      });
+    }
+  }, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])({
+    deleteReservation: "reservation/deleteReservation"
+  })),
   computed: {
     totalRows: function totalRows() {
       return this.reservations.length;
@@ -5191,6 +5240,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 /* harmony import */ var _RoomFinder__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./RoomFinder */ "./resources/js/components/reservations/wizard/RoomFinder.vue");
 /* harmony import */ var _CustomerFinder__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./CustomerFinder */ "./resources/js/components/reservations/wizard/CustomerFinder.vue");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+//
 //
 //
 //
@@ -5252,6 +5308,10 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     nextStep: function nextStep(step) {
+      var customer_id = parseInt(this.$route.params.customer_id);
+      var customer = this.getCustomerById(customer_id);
+      console.log(customer.first_name);
+      this.reservation.customer = customer;
       var actualDiv = document.getElementsByClassName("step" + this.wizardStep)[0].style.display = "none";
 
       if (step === "1") {
@@ -5280,7 +5340,9 @@ __webpack_require__.r(__webpack_exports__);
       });
     }
   },
-  computed: {},
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])({
+    getCustomerById: "customer/getCustomerById"
+  })),
   components: {
     "room-finder": _RoomFinder__WEBPACK_IMPORTED_MODULE_1__["default"],
     "customer-finder": _CustomerFinder__WEBPACK_IMPORTED_MODULE_2__["default"]
@@ -5306,6 +5368,7 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+//
 //
 //
 //
@@ -39897,7 +39960,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../../node_modules/c
 
 
 // module
-exports.push([module.i, "\n.roomList[data-v-251bc670] {\n  max-width: 400px;\n}\n.room[data-v-251bc670] {\n  padding: 5px;\n  text-align: center;\n  border: 1px solid black;\n  width: 40px;\n  max-width: 60px;\n  height: 60px;\n  cursor: pointer;\n  background-color: beige;\n}\n.available[data-v-251bc670] {\n  background-color: greenyellow;\n}\n.occupied[data-v-251bc670] {\n  background-color: red;\n}\n", ""]);
+exports.push([module.i, "\n.roomList[data-v-251bc670] {\n  /*max-width: 400px;*/\n}\n.room[data-v-251bc670] {\n  padding: 5px;\n  text-align: center;\n  border: 1px solid black;\n  /*width: 40px;\n  max-width: 60px;*/\n  height: 60px;\n  cursor: pointer;\n  background-color: beige;\n}\n.available[data-v-251bc670] {\n  background-color: greenyellow;\n}\n.occupied[data-v-251bc670] {\n  background-color: red;\n}\n", ""]);
 
 // exports
 
@@ -74894,13 +74957,17 @@ var render = function() {
                       }
                     },
                     [
-                      _c("b-form-checkbox", { attrs: { value: "name" } }, [
-                        _vm._v("Only Guests")
-                      ]),
+                      _c(
+                        "b-form-checkbox",
+                        { attrs: { value: "current_guests" } },
+                        [_vm._v("Current Guests")]
+                      ),
                       _vm._v(" "),
-                      _c("b-form-checkbox", { attrs: { value: "age" } }, [
-                        _vm._v("Pending Invoices")
-                      ])
+                      _c(
+                        "b-form-checkbox",
+                        { attrs: { value: "pending_invoices" } },
+                        [_vm._v("Pending Invoices")]
+                      )
                     ],
                     1
                   )
@@ -74922,7 +74989,7 @@ var render = function() {
               "show-empty": "",
               small: "",
               stacked: "md",
-              items: _vm.customers,
+              items: _vm.filteredCustomers,
               fields: _vm.fields,
               "current-page": _vm.currentPage,
               "per-page": _vm.perPage,
@@ -77403,14 +77470,9 @@ var render = function() {
         attrs: { reservation: _vm.reservation }
       }),
       _vm._v(" "),
-      _c("customer-finder", {
-        staticClass: "step2",
-        attrs: { reservation: _vm.reservation }
-      }),
-      _vm._v(" "),
       _c(
         "div",
-        { staticClass: "step3" },
+        { staticClass: "step2" },
         [
           _vm._v(
             "\n    RESUMEN DE LA RESERVA\n    DATOS CUSTOMER, DATOS RESERVA, FACTURA\n    "
@@ -77463,40 +77525,59 @@ var render = function() {
               _c("b-col", [_vm._v(_vm._s(_vm.reservation.check_out))])
             ],
             1
-          ),
-          _vm._v(" "),
-          _c("b-button", { on: { click: _vm.confirmReservation } }, [
-            _vm._v("CONFIRM")
-          ])
+          )
         ],
         1
       ),
       _vm._v(" "),
       _c(
         "b-row",
+        { staticClass: "mt-3 float-right" },
         [
           _c(
-            "b-button",
-            {
-              on: {
-                click: function($event) {
-                  return _vm.nextStep("-1")
-                }
-              }
-            },
-            [_vm._v("BACK")]
-          ),
-          _vm._v(" "),
-          _c(
-            "b-button",
-            {
-              on: {
-                click: function($event) {
-                  return _vm.nextStep("1")
-                }
-              }
-            },
-            [_vm._v("NEXT")]
+            "b-col",
+            { attrs: { cols: "12" } },
+            [
+              _vm.wizardStep === 2
+                ? _c(
+                    "b-button",
+                    {
+                      on: {
+                        click: function($event) {
+                          return _vm.nextStep("-1")
+                        }
+                      }
+                    },
+                    [_vm._v("BACK")]
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.wizardStep === 1
+                ? _c(
+                    "b-button",
+                    {
+                      on: {
+                        click: function($event) {
+                          return _vm.nextStep("1")
+                        }
+                      }
+                    },
+                    [_vm._v("NEXT")]
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.wizardStep === 2
+                ? _c(
+                    "b-button",
+                    {
+                      attrs: { variant: "success" },
+                      on: { click: _vm.confirmReservation }
+                    },
+                    [_vm._v("CONFIRM")]
+                  )
+                : _vm._e()
+            ],
+            1
           )
         ],
         1
@@ -77684,7 +77765,7 @@ var render = function() {
       _vm._v(" "),
       _c(
         "b-row",
-        { staticClass: "roomList" },
+        { staticClass: "roomList mb-3" },
         _vm._l(_vm.rooms, function(room) {
           return _c(
             "b-col",
@@ -77692,9 +77773,9 @@ var render = function() {
               key: room.id,
               class: [
                 "room",
-                _vm.isAvailabe(room.id) ? "available" : "occupied"
+                _vm.isAvailabe(room.id) ? "bg-success" : "bg-danger"
               ],
-              attrs: { cols: "1" },
+              attrs: { cols: "12", sm: "1" },
               on: {
                 click: function($event) {
                   return _vm.selectRoom(room)
@@ -98826,6 +98907,19 @@ __webpack_require__.r(__webpack_exports__);
         });
       };
     },
+    hasPendingInvoices: function hasPendingInvoices(state, getters) {
+      return function (customerId) {
+        var invoices = state.invoices.filter(function (invoice) {
+          return invoice.guest.customer.id === customerId && invoice.status === 'pending';
+        });
+
+        if (invoices.length >= 1) {
+          return true;
+        }
+
+        return false;
+      };
+    },
     countPendingInvoices: function countPendingInvoices(state, getters) {
       return state.invoices.filter(function (invoice) {
         return invoice.status === 'pending';
@@ -99202,7 +99296,8 @@ __webpack_require__.r(__webpack_exports__);
         reservation: reservation,
         _method: "delete"
       }).then(function (response) {
-        vm.makeToast("Error", 'Reservation cancelled!!!', 'success');
+        vm.makeToast("Success", 'Reservation cancelled!!!', 'success'); // Borrar reserva
+
         context.dispatch('deleteReservationById', reservation.id);
       })["catch"](function (response) {
         vm.makeToast("Error", 'Cancellation failed!!!', 'danger');
