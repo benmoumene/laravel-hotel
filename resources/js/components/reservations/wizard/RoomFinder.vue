@@ -58,12 +58,13 @@
         </b-form-group>
       </b-col>
     </b-row>
-    <b-row class="roomList">
+    <b-row class="roomList mb-3">
       <b-col
-        cols="1"
+        cols="12"
+        sm="1"
         v-for="room in rooms"
         :key="room.id"
-        :class="['room', isAvailabe(room.id) ? 'available' : 'occupied']"
+        :class="['room', isAvailabe(room.id) ? 'bg-success' : 'bg-danger']"
         @click="selectRoom(room)"
       >{{room.name}}</b-col>
     </b-row>
@@ -152,14 +153,14 @@ export default {
 </script>
 <style scoped>
 .roomList {
-  max-width: 400px;
+  /*max-width: 400px;*/
 }
 .room {
   padding: 5px;
   text-align: center;
   border: 1px solid black;
-  width: 40px;
-  max-width: 60px;
+  /*width: 40px;
+  max-width: 60px;*/
   height: 60px;
   cursor: pointer;
   background-color: beige;

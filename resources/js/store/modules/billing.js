@@ -12,6 +12,17 @@ export default ({
                 invoice => invoice.guest.customer.id === customerId
             );
         },
+        hasPendingInvoices: (state, getters) => (customerId) => {
+            var invoices = state.invoices.filter(
+                invoice => invoice.guest.customer.id === customerId
+                    && invoice.status === 'pending'
+            );
+
+            if (invoices.length >= 1) {
+                return true;
+            }
+            return false;
+        },
         countPendingInvoices: (state, getters) => {
             return state.invoices.filter(
                 invoice => invoice.status === 'pending'

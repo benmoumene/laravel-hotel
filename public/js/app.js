@@ -2195,7 +2195,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Dashboard",
@@ -3616,6 +3615,19 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -3658,7 +3670,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       sortDesc: false,
       sortDirection: "asc",
       filter: null,
-      filterOn: []
+      filterOn: ["lalala"]
     };
   },
   methods: {
@@ -3692,8 +3704,28 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     isCurrentGuest: "guest/isCurrentGuest",
     getGuest: "guest/getGuest",
     customerInvoices: "billing/getCustomerInvoices",
+    hasPendingInvoices: "billing/hasPendingInvoices",
     customerReservations: "reservation/getCustomerReservations"
   }), {
+    filteredCustomers: function filteredCustomers() {
+      var _this = this;
+
+      var filteredCustomers = this.customers;
+
+      if (this.filterOn.indexOf("current_guests") > -1) {
+        filteredCustomers = filteredCustomers.filter(function (customer) {
+          return _this.isCurrentGuest(customer.id);
+        });
+      }
+
+      if (this.filterOn.indexOf("pending_invoices") > -1) {
+        filteredCustomers = filteredCustomers.filter(function (customer) {
+          return _this.hasPendingInvoices(customer.id);
+        });
+      }
+
+      return filteredCustomers;
+    },
     sortOptions: function sortOptions() {
       // Create an options list from our fields
       return this.fields.filter(function (f) {
@@ -3730,6 +3762,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
@@ -3761,43 +3800,44 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: "CustomerInvoices",
+  name: "CustomerReservations",
+  props: {
+    reservations: {
+      type: Array,
+      required: true
+    },
+    customer_id: {
+      type: Number,
+      required: true
+    }
+  },
   data: function data() {
     return {
       fields: [{
-        key: "customer.first_name",
-        label: "First Name",
-        sortable: true,
-        sortDirection: "desc"
-      }, {
-        key: "customer.last_name",
-        label: "Last Name",
-        sortable: true,
-        sortDirection: "desc"
-      }, {
-        key: "customer.phone",
-        label: "phone",
-        sortable: true,
-        "class": "text-center"
-      }, {
-        key: "customer.document_id",
-        label: "Document Id",
-        sortable: true,
-        "class": "text-center"
-      }, {
         key: "room.name",
         label: "Room Name",
         sortable: true,
         "class": "text-center"
       }, {
         key: "check_in",
-        label: "Check in",
+        label: "Check In",
         sortable: true,
         "class": "text-center"
       }, {
         key: "check_out",
-        label: "Check in",
+        label: "Check Out",
         sortable: true,
         "class": "text-center"
       }, {
@@ -3808,12 +3848,27 @@ __webpack_require__.r(__webpack_exports__);
       perPage: 10
     };
   },
-  props: {
-    reservations: {
-      type: Array,
-      required: true
+  methods: _objectSpread({
+    cancelReservation: function cancelReservation(reservation) {
+      this.deleteReservation({
+        vm: this,
+        reservation: reservation
+      });
+    },
+    makeToast: function makeToast(title, message) {
+      var variant = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "info";
+      this.$bvToast.toast(message, {
+        title: title,
+        autoHideDelay: 5000,
+        variant: variant,
+        solid: true,
+        toaster: "b-toaster-bottom-right",
+        appendToast: true
+      });
     }
-  },
+  }, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])({
+    deleteReservation: "reservation/deleteReservation"
+  })),
   computed: {
     totalRows: function totalRows() {
       return this.reservations.length;
@@ -5185,6 +5240,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 /* harmony import */ var _RoomFinder__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./RoomFinder */ "./resources/js/components/reservations/wizard/RoomFinder.vue");
 /* harmony import */ var _CustomerFinder__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./CustomerFinder */ "./resources/js/components/reservations/wizard/CustomerFinder.vue");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+//
 //
 //
 //
@@ -5246,6 +5308,10 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     nextStep: function nextStep(step) {
+      var customer_id = parseInt(this.$route.params.customer_id);
+      var customer = this.getCustomerById(customer_id);
+      console.log(customer.first_name);
+      this.reservation.customer = customer;
       var actualDiv = document.getElementsByClassName("step" + this.wizardStep)[0].style.display = "none";
 
       if (step === "1") {
@@ -5274,7 +5340,9 @@ __webpack_require__.r(__webpack_exports__);
       });
     }
   },
-  computed: {},
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])({
+    getCustomerById: "customer/getCustomerById"
+  })),
   components: {
     "room-finder": _RoomFinder__WEBPACK_IMPORTED_MODULE_1__["default"],
     "customer-finder": _CustomerFinder__WEBPACK_IMPORTED_MODULE_2__["default"]
@@ -5300,6 +5368,7 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+//
 //
 //
 //
@@ -6255,6 +6324,10 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+//
+//
+//
+//
 //
 //
 //
@@ -39887,7 +39960,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../../node_modules/c
 
 
 // module
-exports.push([module.i, "\n.roomList[data-v-251bc670] {\n  max-width: 400px;\n}\n.room[data-v-251bc670] {\n  padding: 5px;\n  text-align: center;\n  border: 1px solid black;\n  width: 40px;\n  max-width: 60px;\n  height: 60px;\n  cursor: pointer;\n  background-color: beige;\n}\n.available[data-v-251bc670] {\n  background-color: greenyellow;\n}\n.occupied[data-v-251bc670] {\n  background-color: red;\n}\n", ""]);
+exports.push([module.i, "\n.roomList[data-v-251bc670] {\n  /*max-width: 400px;*/\n}\n.room[data-v-251bc670] {\n  padding: 5px;\n  text-align: center;\n  border: 1px solid black;\n  /*width: 40px;\n  max-width: 60px;*/\n  height: 60px;\n  cursor: pointer;\n  background-color: beige;\n}\n.available[data-v-251bc670] {\n  background-color: greenyellow;\n}\n.occupied[data-v-251bc670] {\n  background-color: red;\n}\n", ""]);
 
 // exports
 
@@ -72356,7 +72429,7 @@ var render = function() {
         ])
       ]),
       _vm._v(" "),
-      _c("div", { staticClass: "row" }, [
+      _c("b-row", [
         _c("div", { staticClass: "col-md-12" }, [
           _c("div", { staticClass: "card bg-gradient-success" }, [
             _c("div", { staticClass: "card-header" }, [
@@ -74884,13 +74957,17 @@ var render = function() {
                       }
                     },
                     [
-                      _c("b-form-checkbox", { attrs: { value: "name" } }, [
-                        _vm._v("Only Guests")
-                      ]),
+                      _c(
+                        "b-form-checkbox",
+                        { attrs: { value: "current_guests" } },
+                        [_vm._v("Current Guests")]
+                      ),
                       _vm._v(" "),
-                      _c("b-form-checkbox", { attrs: { value: "age" } }, [
-                        _vm._v("Pending Invoices")
-                      ])
+                      _c(
+                        "b-form-checkbox",
+                        { attrs: { value: "pending_invoices" } },
+                        [_vm._v("Pending Invoices")]
+                      )
                     ],
                     1
                   )
@@ -74904,105 +74981,112 @@ var render = function() {
         1
       ),
       _vm._v(" "),
-      _c("b-table", {
-        attrs: {
-          "show-empty": "",
-          small: "",
-          stacked: "md",
-          items: _vm.customers,
-          fields: _vm.fields,
-          "current-page": _vm.currentPage,
-          "per-page": _vm.perPage,
-          filter: _vm.filter,
-          filterIncludedFields: _vm.filterOn,
-          "sort-by": _vm.sortBy,
-          "sort-desc": _vm.sortDesc,
-          "sort-direction": _vm.sortDirection
-        },
-        on: {
-          "update:sortBy": function($event) {
-            _vm.sortBy = $event
-          },
-          "update:sort-by": function($event) {
-            _vm.sortBy = $event
-          },
-          "update:sortDesc": function($event) {
-            _vm.sortDesc = $event
-          },
-          "update:sort-desc": function($event) {
-            _vm.sortDesc = $event
-          },
-          filtered: _vm.onFiltered
-        },
-        scopedSlots: _vm._u([
-          {
-            key: "cell(actions)",
-            fn: function(row) {
-              return [
-                _c(
-                  "b-button",
-                  {
-                    attrs: { variant: "info" },
-                    on: {
-                      click: function($event) {
-                        return _vm.showCustomerInfo(row.item)
-                      }
-                    }
-                  },
-                  [_vm._v("+Info")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "b-button",
-                  {
-                    attrs: { variant: "info" },
-                    on: {
-                      click: function($event) {
-                        return _vm.showReservations(row.item)
-                      }
-                    }
-                  },
-                  [_vm._v("Reservations")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "b-button",
-                  {
-                    attrs: { variant: "info" },
-                    on: {
-                      click: function($event) {
-                        return _vm.showInvoices(row.item)
-                      }
-                    }
-                  },
-                  [_vm._v("Invoices")]
-                ),
-                _vm._v(" "),
-                _vm.isCurrentGuest(row.item.id)
-                  ? _c(
+      _c(
+        "b-row",
+        [
+          _c("b-table", {
+            attrs: {
+              "show-empty": "",
+              small: "",
+              stacked: "md",
+              items: _vm.filteredCustomers,
+              fields: _vm.fields,
+              "current-page": _vm.currentPage,
+              "per-page": _vm.perPage,
+              filter: _vm.filter,
+              filterIncludedFields: _vm.filterOn,
+              "sort-by": _vm.sortBy,
+              "sort-desc": _vm.sortDesc,
+              "sort-direction": _vm.sortDirection
+            },
+            on: {
+              "update:sortBy": function($event) {
+                _vm.sortBy = $event
+              },
+              "update:sort-by": function($event) {
+                _vm.sortBy = $event
+              },
+              "update:sortDesc": function($event) {
+                _vm.sortDesc = $event
+              },
+              "update:sort-desc": function($event) {
+                _vm.sortDesc = $event
+              },
+              filtered: _vm.onFiltered
+            },
+            scopedSlots: _vm._u([
+              {
+                key: "cell(actions)",
+                fn: function(row) {
+                  return [
+                    _c(
                       "b-button",
                       {
                         attrs: { variant: "info" },
                         on: {
                           click: function($event) {
-                            return _vm.showGuestInfo(row.item)
+                            return _vm.showCustomerInfo(row.item)
                           }
                         }
                       },
-                      [_vm._v("Guest")]
-                    )
-                  : _vm._e()
-              ]
-            }
-          }
-        ])
-      }),
+                      [_vm._v("+Info")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "b-button",
+                      {
+                        attrs: { variant: "info" },
+                        on: {
+                          click: function($event) {
+                            return _vm.showReservations(row.item)
+                          }
+                        }
+                      },
+                      [_vm._v("Reservations")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "b-button",
+                      {
+                        attrs: { variant: "info" },
+                        on: {
+                          click: function($event) {
+                            return _vm.showInvoices(row.item)
+                          }
+                        }
+                      },
+                      [_vm._v("Invoices")]
+                    ),
+                    _vm._v(" "),
+                    _vm.isCurrentGuest(row.item.id)
+                      ? _c(
+                          "b-button",
+                          {
+                            attrs: { variant: "info" },
+                            on: {
+                              click: function($event) {
+                                return _vm.showGuestInfo(row.item)
+                              }
+                            }
+                          },
+                          [_vm._v("Guest")]
+                        )
+                      : _vm._e()
+                  ]
+                }
+              }
+            ])
+          })
+        ],
+        1
+      ),
       _vm._v(" "),
       _c(
         "b-modal",
         {
           attrs: {
             id: "customer-info-modal",
+            size: "xl",
             centered: "",
             title: "Customer Info",
             "hide-footer": ""
@@ -75029,7 +75113,12 @@ var render = function() {
       _c(
         "b-modal",
         {
-          attrs: { id: "guest-info-modal", centered: "", title: "Guest Info" }
+          attrs: {
+            id: "guest-info-modal",
+            size: "xl",
+            centered: "",
+            title: "Guest Info"
+          }
         },
         [
           _c("guest-info", {
@@ -75050,13 +75139,18 @@ var render = function() {
             id: "reservations-modal",
             size: "xl",
             centered: "",
-            title: "Reservations",
-            "hidden-footer": ""
+            title:
+              "Reservations from " +
+              _vm.selectedCustomer.first_name +
+              " " +
+              _vm.selectedCustomer.last_name,
+            "hide-footer": ""
           }
         },
         [
           _c("customer-reservations", {
             attrs: {
+              customer_id: _vm.selectedCustomer.id,
               reservations: _vm.customerReservations(_vm.selectedCustomer.id)
             }
           })
@@ -75072,7 +75166,7 @@ var render = function() {
             size: "xl",
             centered: "",
             title: "Invoices",
-            "hidden-footer": ""
+            "hide-footer": ""
           }
         },
         [
@@ -75112,85 +75206,118 @@ var render = function() {
     "b-container",
     { attrs: { fluid: "" } },
     [
-      _c("b-pagination", {
-        staticClass: "my-0",
-        attrs: {
-          "total-rows": _vm.totalRows,
-          "per-page": _vm.perPage,
-          align: "fill"
-        },
-        model: {
-          value: _vm.currentPage,
-          callback: function($$v) {
-            _vm.currentPage = $$v
-          },
-          expression: "currentPage"
-        }
-      }),
+      _c(
+        "b-row",
+        { staticClass: "mb-3" },
+        [
+          _c(
+            "b-col",
+            { attrs: { cols: "6" } },
+            [
+              _c("b-pagination", {
+                staticClass: "my-0",
+                attrs: {
+                  "total-rows": _vm.totalRows,
+                  "per-page": _vm.perPage,
+                  align: "fill"
+                },
+                model: {
+                  value: _vm.currentPage,
+                  callback: function($$v) {
+                    _vm.currentPage = $$v
+                  },
+                  expression: "currentPage"
+                }
+              })
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "b-col",
+            { attrs: { cols: "6" } },
+            [
+              _c(
+                "router-link",
+                {
+                  attrs: {
+                    to: { path: "/reservation/" + _vm.customer_id + "/new" }
+                  }
+                },
+                [
+                  _c("b-button", { staticClass: "float-right" }, [
+                    _vm._v("New reservation")
+                  ])
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ],
+        1
+      ),
       _vm._v(" "),
-      _c("b-table", {
-        attrs: {
-          "show-empty": "",
-          stacked: "md",
-          items: _vm.reservations,
-          fields: _vm.fields,
-          "current-page": _vm.currentPage,
-          "per-page": _vm.perPage
-        },
-        scopedSlots: _vm._u([
-          {
-            key: "cell(room.name)",
-            fn: function(row) {
-              return [
-                _c(
-                  "b-link",
-                  {
-                    directives: [
-                      {
-                        name: "b-modal",
-                        rawName: "v-b-modal.modal-center",
-                        modifiers: { "modal-center": true }
-                      }
-                    ]
-                  },
-                  [_vm._v(_vm._s(row.item.room.name))]
-                )
-              ]
-            }
-          },
-          {
-            key: "cell(actions)",
-            fn: function(row) {
-              return [
-                _c(
-                  "router-link",
-                  {
-                    staticClass: "nav-link",
-                    attrs: { to: { path: row.item.id + "/cancel" } }
-                  },
-                  [
-                    _c("i", { staticClass: "nav-icon fa fa-bed" }),
-                    _vm._v("\n        Show\n      ")
+      _c(
+        "b-row",
+        [
+          _c("b-table", {
+            attrs: {
+              "show-empty": "",
+              stacked: "md",
+              items: _vm.reservations,
+              fields: _vm.fields,
+              "current-page": _vm.currentPage,
+              "per-page": _vm.perPage
+            },
+            scopedSlots: _vm._u([
+              {
+                key: "cell(room.name)",
+                fn: function(row) {
+                  return [
+                    _c(
+                      "router-link",
+                      { attrs: { to: { path: "/room/" + row.item.room_id } } },
+                      [_vm._v(_vm._s(row.item.room.name))]
+                    )
                   ]
-                ),
-                _vm._v(" "),
-                _c(
-                  "b-button",
-                  {
-                    attrs: { variant: "primary" },
-                    on: {
-                      click: function($event) {
-                        return _vm.cancelReservation(row.item)
-                      }
-                    }
-                  },
-                  [_vm._v("CANCEL")]
-                )
-              ]
-            }
-          }
-        ])
-      })
+                }
+              },
+              {
+                key: "cell(actions)",
+                fn: function(row) {
+                  return [
+                    _c(
+                      "router-link",
+                      { attrs: { to: { path: row.item.id + "/cancel" } } },
+                      [
+                        _c("b-button", { attrs: { variant: "info" } }, [
+                          _vm._v("Show")
+                        ])
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "b-button",
+                      {
+                        attrs: { variant: "danger" },
+                        on: {
+                          click: function($event) {
+                            return _vm.cancelReservation(row.item)
+                          }
+                        }
+                      },
+                      [_vm._v("Cancel")]
+                    )
+                  ]
+                }
+              }
+            ])
+          })
+        ],
+        1
+      )
     ],
     1
   )
@@ -77343,14 +77470,9 @@ var render = function() {
         attrs: { reservation: _vm.reservation }
       }),
       _vm._v(" "),
-      _c("customer-finder", {
-        staticClass: "step2",
-        attrs: { reservation: _vm.reservation }
-      }),
-      _vm._v(" "),
       _c(
         "div",
-        { staticClass: "step3" },
+        { staticClass: "step2" },
         [
           _vm._v(
             "\n    RESUMEN DE LA RESERVA\n    DATOS CUSTOMER, DATOS RESERVA, FACTURA\n    "
@@ -77403,40 +77525,59 @@ var render = function() {
               _c("b-col", [_vm._v(_vm._s(_vm.reservation.check_out))])
             ],
             1
-          ),
-          _vm._v(" "),
-          _c("b-button", { on: { click: _vm.confirmReservation } }, [
-            _vm._v("CONFIRM")
-          ])
+          )
         ],
         1
       ),
       _vm._v(" "),
       _c(
         "b-row",
+        { staticClass: "mt-3 float-right" },
         [
           _c(
-            "b-button",
-            {
-              on: {
-                click: function($event) {
-                  return _vm.nextStep("-1")
-                }
-              }
-            },
-            [_vm._v("BACK")]
-          ),
-          _vm._v(" "),
-          _c(
-            "b-button",
-            {
-              on: {
-                click: function($event) {
-                  return _vm.nextStep("1")
-                }
-              }
-            },
-            [_vm._v("NEXT")]
+            "b-col",
+            { attrs: { cols: "12" } },
+            [
+              _vm.wizardStep === 2
+                ? _c(
+                    "b-button",
+                    {
+                      on: {
+                        click: function($event) {
+                          return _vm.nextStep("-1")
+                        }
+                      }
+                    },
+                    [_vm._v("BACK")]
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.wizardStep === 1
+                ? _c(
+                    "b-button",
+                    {
+                      on: {
+                        click: function($event) {
+                          return _vm.nextStep("1")
+                        }
+                      }
+                    },
+                    [_vm._v("NEXT")]
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.wizardStep === 2
+                ? _c(
+                    "b-button",
+                    {
+                      attrs: { variant: "success" },
+                      on: { click: _vm.confirmReservation }
+                    },
+                    [_vm._v("CONFIRM")]
+                  )
+                : _vm._e()
+            ],
+            1
           )
         ],
         1
@@ -77624,7 +77765,7 @@ var render = function() {
       _vm._v(" "),
       _c(
         "b-row",
-        { staticClass: "roomList" },
+        { staticClass: "roomList mb-3" },
         _vm._l(_vm.rooms, function(room) {
           return _c(
             "b-col",
@@ -77632,9 +77773,9 @@ var render = function() {
               key: room.id,
               class: [
                 "room",
-                _vm.isAvailabe(room.id) ? "available" : "occupied"
+                _vm.isAvailabe(room.id) ? "bg-success" : "bg-danger"
               ],
-              attrs: { cols: "1" },
+              attrs: { cols: "12", sm: "1" },
               on: {
                 click: function($event) {
                   return _vm.selectRoom(room)
@@ -78945,6 +79086,25 @@ var render = function() {
                       )
                     ])
                   ]),
+                  _vm._v(" "),
+                  _c(
+                    "li",
+                    { staticClass: "nav-item" },
+                    [
+                      _c(
+                        "router-link",
+                        {
+                          staticClass: "nav-link",
+                          attrs: { to: "/guest/list" }
+                        },
+                        [
+                          _c("i", { staticClass: "nav-icon fa fa-user" }),
+                          _vm._v("\n              Guests\n            ")
+                        ]
+                      )
+                    ],
+                    1
+                  ),
                   _vm._v(" "),
                   _vm.isAdmin || _vm.isManager
                     ? _c("li", { staticClass: "nav-item has-treeview" }, [
@@ -98429,8 +98589,8 @@ var customerRoutes = {
       name: 'ReservationsList',
       component: _components_reservations_ReservationList_vue__WEBPACK_IMPORTED_MODULE_22__["default"]
     }, {
-      path: 'wizard',
-      name: 'ReservationsWizard',
+      path: ':customer_id/new',
+      name: 'ReservationWizard',
       component: _components_reservations_wizard_ReservationWizard_vue__WEBPACK_IMPORTED_MODULE_21__["default"]
     }]
   }, {
@@ -98745,6 +98905,19 @@ __webpack_require__.r(__webpack_exports__);
         return state.invoices.filter(function (invoice) {
           return invoice.guest.customer.id === customerId;
         });
+      };
+    },
+    hasPendingInvoices: function hasPendingInvoices(state, getters) {
+      return function (customerId) {
+        var invoices = state.invoices.filter(function (invoice) {
+          return invoice.guest.customer.id === customerId && invoice.status === 'pending';
+        });
+
+        if (invoices.length >= 1) {
+          return true;
+        }
+
+        return false;
       };
     },
     countPendingInvoices: function countPendingInvoices(state, getters) {
@@ -99123,7 +99296,8 @@ __webpack_require__.r(__webpack_exports__);
         reservation: reservation,
         _method: "delete"
       }).then(function (response) {
-        vm.makeToast("Error", 'Reservation cancelled!!!', 'success');
+        vm.makeToast("Success", 'Reservation cancelled!!!', 'success'); // Borrar reserva
+
         context.dispatch('deleteReservationById', reservation.id);
       })["catch"](function (response) {
         vm.makeToast("Error", 'Cancellation failed!!!', 'danger');

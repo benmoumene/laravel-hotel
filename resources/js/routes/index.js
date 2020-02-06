@@ -128,8 +128,8 @@ export default new VueRouter({
           component: ReservationList
         },
         {
-          path: 'wizard',
-          name: 'ReservationsWizard',
+          path: ':customer_id/new',
+          name: 'ReservationWizard',
           component: ReservationWizard
         }
       ]

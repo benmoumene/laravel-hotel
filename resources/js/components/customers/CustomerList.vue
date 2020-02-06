@@ -60,8 +60,8 @@
           class="mb-0"
         >
           <b-form-checkbox-group v-model="filterOn" class="mt-1">
-            <b-form-checkbox value="name">Only Guests</b-form-checkbox>
-            <b-form-checkbox value="age">Pending Invoices</b-form-checkbox>
+            <b-form-checkbox value="current_guests">Current Guests</b-form-checkbox>
+            <b-form-checkbox value="pending_invoices">Pending Invoices</b-form-checkbox>
           </b-form-checkbox-group>
         </b-form-group>
       </b-col>
@@ -73,7 +73,7 @@
         show-empty
         small
         stacked="md"
-        :items="customers"
+        :items="filteredCustomers"
         :fields="fields"
         :current-page="currentPage"
         :per-page="perPage"
@@ -97,7 +97,7 @@
       </b-table>
     </b-row>
 
-    <b-modal id="customer-info-modal" centered title="Customer Info" hide-footer>
+    <b-modal id="customer-info-modal" size="xl" centered title="Customer Info" hide-footer>
       <customer-info
         :id="selectedCustomer.id"
         :first_name="selectedCustomer.first_name"
@@ -111,7 +111,7 @@
       ></customer-info>
     </b-modal>
 
-    <b-modal id="guest-info-modal" centered title="Guest Info">
+    <b-modal id="guest-info-modal" size="xl" centered title="Guest Info">
       <guest-info
         :room_name="selectedGuest.check_in"
         :check_in="selectedGuest.check_in"
@@ -119,11 +119,22 @@
       ></guest-info>
     </b-modal>
 
-    <b-modal id="reservations-modal" size="xl" centered title="Reservations" hidden-footer>
-      <customer-reservations :reservations="customerReservations(selectedCustomer.id)"></customer-reservations>
+    <b-modal
+      id="reservations-modal"
+      size="xl"
+      centered
+      :title="'Reservations from ' 
+      + selectedCustomer.first_name + ' '
+      + selectedCustomer.last_name"
+      hide-footer
+    >
+      <customer-reservations
+        :customer_id="selectedCustomer.id"
+        :reservations="customerReservations(selectedCustomer.id)"
+      ></customer-reservations>
     </b-modal>
 
-    <b-modal id="invoices-modal" size="xl" centered title="Invoices" hidden-footer>
+    <b-modal id="invoices-modal" size="xl" centered title="Invoices" hide-footer>
       <customer-invoices :invoices="customerInvoices(selectedCustomer.id)"></customer-invoices>
     </b-modal>
   </b-container>
@@ -174,7 +185,7 @@ export default {
       sortDesc: false,
       sortDirection: "asc",
       filter: null,
-      filterOn: []
+      filterOn: ["lalala"]
     };
   },
   methods: {
@@ -208,8 +219,25 @@ export default {
       isCurrentGuest: "guest/isCurrentGuest",
       getGuest: "guest/getGuest",
       customerInvoices: "billing/getCustomerInvoices",
+      hasPendingInvoices: "billing/hasPendingInvoices",
       customerReservations: "reservation/getCustomerReservations"
     }),
+    filteredCustomers() {
+      var filteredCustomers = this.customers;
+      if (this.filterOn.indexOf("current_guests") > -1) {
+        filteredCustomers = filteredCustomers.filter(customer =>
+          this.isCurrentGuest(customer.id)
+        );
+      }
+
+      if (this.filterOn.indexOf("pending_invoices") > -1) {
+        filteredCustomers = filteredCustomers.filter(customer =>
+          this.hasPendingInvoices(customer.id)
+        );
+      }
+
+      return filteredCustomers;
+    },
     sortOptions() {
       // Create an options list from our fields
       return this.fields
