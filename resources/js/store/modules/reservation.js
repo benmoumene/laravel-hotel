@@ -60,7 +60,8 @@ export default ({
                 reservation,
                 _method: "delete"
             }).then(function (response) {
-                vm.makeToast("Error", 'Reservation cancelled!!!', 'success');
+                vm.makeToast("Success", 'Reservation cancelled!!!', 'success');
+                // Borrar reserva
                 context.dispatch('deleteReservationById', reservation.id);
             }).catch(function (response) {
                 vm.makeToast("Error", 'Cancellation failed!!!', 'danger');

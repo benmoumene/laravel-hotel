@@ -1,9 +1,8 @@
 <template>
   <b-container fluid>
     <room-finder :reservation="reservation" class="step1"></room-finder>
-    <customer-finder :reservation="reservation" class="step2"></customer-finder>
 
-    <div class="step3">
+    <div class="step2">
       RESUMEN DE LA RESERVA
       DATOS CUSTOMER, DATOS RESERVA, FACTURA
       <b-row>
@@ -26,16 +25,18 @@
         <b-col>To:</b-col>
         <b-col>{{ reservation.check_out }}</b-col>
       </b-row>
-      <b-button @click="confirmReservation">CONFIRM</b-button>
     </div>
-    <b-row>
-      <b-button @click="nextStep('-1')">BACK</b-button>
-      <b-button @click="nextStep('1')">NEXT</b-button>
+    <b-row class="mt-3 float-right">
+      <b-col cols="12">
+        <b-button v-if="wizardStep === 2" @click="nextStep('-1')">BACK</b-button>
+        <b-button v-if="wizardStep === 1" @click="nextStep('1')">NEXT</b-button>
+        <b-button v-if="wizardStep === 2" @click="confirmReservation" variant="success">CONFIRM</b-button>
+      </b-col>
     </b-row>
   </b-container>
 </template>
 <script>
-import { mapState } from "vuex";
+import { mapState, mapGetters } from "vuex";
 import RoomFinder from "./RoomFinder";
 import CustomerFinder from "./CustomerFinder";
 // RoomAvailability.data (leer datos del componente)
@@ -60,6 +61,11 @@ export default {
       });
     },
     nextStep(step) {
+      var customer_id = parseInt(this.$route.params.customer_id);
+      var customer = this.getCustomerById(customer_id);
+      console.log(customer.first_name);
+      this.reservation.customer = customer;
+
       var actualDiv = (document.getElementsByClassName(
         "step" + this.wizardStep
       )[0].style.display = "none");
@@ -91,8 +97,15 @@ export default {
       });
     }
   },
-  computed: {},
-  components: { "room-finder": RoomFinder, "customer-finder": CustomerFinder },
+  computed: {
+    ...mapGetters({
+      getCustomerById: "customer/getCustomerById"
+    })
+  },
+  components: {
+    "room-finder": RoomFinder,
+    "customer-finder": CustomerFinder
+  },
   mounted() {}
 };
 </script>
