@@ -68,9 +68,14 @@
       :sort-direction="sortDirection"
       @filtered="onFiltered"
     >
-      <!-- Al hacer click en room mostrar info de esta -->
+      <template v-slot:cell(first_name)="row">
+        <b-link v-b-modal.modal-center>{{ customer(row.item.customer.id).first_name }}</b-link>
+      </template>
+      <template v-slot:cell(last_name)="row">
+        <b-link v-b-modal.modal-center>{{ customer(row.item.customer.id).last_name }}</b-link>
+      </template>
       <template v-slot:cell(room.name)="row">
-        <b-link v-b-modal.modal-center>{{ row.item.room.name }}</b-link>
+        <b-link v-b-modal.modal-center>{{ room(row.item.room.id).name }}</b-link>
       </template>
       <template v-slot:cell(actions)="row">
         <b-button variant="info" @click="showCustomerInfo(row.item)">Customer</b-button>
@@ -100,20 +105,20 @@
   </b-container>
 </template>
 <script>
-import { mapState } from "vuex";
+import { mapState, mapGetters } from "vuex";
 export default {
   name: "GuestList",
   data: function() {
     return {
       fields: [
         {
-          key: "customer.first_name",
+          key: "first_name",
           label: "First Name",
           sortable: true,
           sortDirection: "desc"
         },
         {
-          key: "customer.last_name",
+          key: "last_name",
           label: "Last Name",
           sortable: true,
           sortDirection: "desc"
@@ -152,11 +157,21 @@ export default {
     onFiltered(filteredItems) {
       // Trigger pagination to update the number of buttons/pages due to filtering
       this.currentPage = 1;
+    },
+    customer(id) {
+      return this.getCustomer(id);
+    },
+    room(id) {
+      return this.getRoom(id);
     }
   },
   computed: {
     ...mapState({
       guests: state => state.guest.guests
+    }),
+    ...mapGetters({
+      getCustomer: "customer/getCustomer",
+      getRoom: "room/getRoom"
     }),
     sortOptions() {
       // Create an options list from our fields

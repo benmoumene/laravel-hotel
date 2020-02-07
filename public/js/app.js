@@ -4491,18 +4491,23 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "GuestList",
   data: function data() {
     return {
       fields: [{
-        key: "customer.first_name",
+        key: "first_name",
         label: "First Name",
         sortable: true,
         sortDirection: "desc"
       }, {
-        key: "customer.last_name",
+        key: "last_name",
         label: "Last Name",
         sortable: true,
         sortDirection: "desc"
@@ -4539,12 +4544,21 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     onFiltered: function onFiltered(filteredItems) {
       // Trigger pagination to update the number of buttons/pages due to filtering
       this.currentPage = 1;
+    },
+    customer: function customer(id) {
+      return this.getCustomer(id);
+    },
+    room: function room(id) {
+      return this.getRoom(id);
     }
   },
   computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])({
     guests: function guests(state) {
       return state.guest.guests;
     }
+  }), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])({
+    getCustomer: "customer/getCustomer",
+    getRoom: "room/getRoom"
   }), {
     sortOptions: function sortOptions() {
       // Create an options list from our fields
@@ -76285,6 +76299,50 @@ var render = function() {
         },
         scopedSlots: _vm._u([
           {
+            key: "cell(first_name)",
+            fn: function(row) {
+              return [
+                _c(
+                  "b-link",
+                  {
+                    directives: [
+                      {
+                        name: "b-modal",
+                        rawName: "v-b-modal.modal-center",
+                        modifiers: { "modal-center": true }
+                      }
+                    ]
+                  },
+                  [
+                    _vm._v(
+                      _vm._s(_vm.customer(row.item.customer.id).first_name)
+                    )
+                  ]
+                )
+              ]
+            }
+          },
+          {
+            key: "cell(last_name)",
+            fn: function(row) {
+              return [
+                _c(
+                  "b-link",
+                  {
+                    directives: [
+                      {
+                        name: "b-modal",
+                        rawName: "v-b-modal.modal-center",
+                        modifiers: { "modal-center": true }
+                      }
+                    ]
+                  },
+                  [_vm._v(_vm._s(_vm.customer(row.item.customer.id).last_name))]
+                )
+              ]
+            }
+          },
+          {
             key: "cell(room.name)",
             fn: function(row) {
               return [
@@ -76299,7 +76357,7 @@ var render = function() {
                       }
                     ]
                   },
-                  [_vm._v(_vm._s(row.item.room.name))]
+                  [_vm._v(_vm._s(_vm.room(row.item.room.id).name))]
                 )
               ]
             }
