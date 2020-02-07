@@ -31,20 +31,29 @@ class HotelController extends Controller
     {
         // ID del usuario logeado en la app
         $currentUserId = Auth::user()->id;
+        
+        // Datos de usuario
         $data['app_user'] = Auth::user();
-        $data['guests'] = Guest::with([
-            'customer',
-            'room',
-            'billedServices.service'
-        ])->get();
-        $data['customers'] = Customer::all();
-        $data['reservations'] = Reservation::with(['customer','room'])->get();
+
+        // Datos de los clientes del hotel
+        $data['customers'] = Customer::with(['invoices:invoices.id', 'reservations:reservations.id'])->get();
+        
+        // Huespedes
+        $data['guests'] = Guest::with(['customer:customers.id', 'room:rooms.id'])->get();
+
+        // Reservas
+        $data['reservations'] = Reservation::with('guest:guests.id')->get();
+
+        // Servicios
         $data['services'] = Service::all();
-        $data['billed_services'] = BilledService::all();
-        $data['rooms'] = Room::with('reservations')->get();
+        $data['rooms'] = Room::all();
         $data['settings'] = Setting::all();
         $data['inventory'] = InventoryItem::all();
-        $data['invoices'] = Invoice::with(['guest.customer'])->get();
+        // Facturas con el cliente asociado.
+        $data['invoices'] = Invoice::with(['customer:customers.id'])->get();
+
+        // Servicios facturados
+        $data['billed_services'] = BilledService::all();
         return response()->json($data, 200);
     }
 }

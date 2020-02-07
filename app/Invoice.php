@@ -8,20 +8,23 @@ class Invoice extends Model
 {
     public $timestamps = false;
 
+    protected $hidden = [
+        'laravel_through_key'
+    ];
+
     public function total()
     {
         // Select SUM billed_services where guest_id = id
     }
 
-    public function guest()
-    {
-        return $this->belongsTo(
-            'App\Guest'
-        );
-    }
-
     public function customer()
     {
+        return $this->hasOneThrough(
+            'App\Reservation',
+            'App\Customer',
+            'id',
+            'customer_id',
+        );
     }
 
     public function billedServices()

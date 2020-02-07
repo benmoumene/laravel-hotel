@@ -9,21 +9,24 @@ class Guest extends Model
     public $timestamps = false;
     protected $table = "guests";
 
+    protected $hidden = [
+        'laravel_through_key'
+    ];
+
     // Guest es un cliente
     public function customer()
     {
-        return $this->belongsTo(
-            'App\Customer'
-        );
-    }
-
-    // Servicios facturados a este huesped
-    public function billedServices()
-    {
-        return $this->hasMany(
-            'App\BilledService',
-            'guest_id',
-            'id'
+        return $this->hasOneThrough(
+            'App\Customer',
+            'App\Reservation',
+            //'customer_id',
+            //'id',
+            //'id',
+            //'customer_id',
+            'id',
+            'id',
+            'reservation_id',
+            'customer_id',
         );
     }
 
@@ -32,8 +35,7 @@ class Guest extends Model
     {
         return $this->hasOne(
             'App\Reservation',
-            'id',
-            'reservation_id'
+            'customer_id'
         );
     }
 
@@ -41,24 +43,12 @@ class Guest extends Model
     public function room()
     {
         return $this->hasOneThrough(
-            'App\Reservation',
             'App\Room',
+            'App\Reservation',
             'id',
+            'id',
+            'reservation_id',
             'room_id',
-        );
-    }
-
-    public function invoices()
-    {
-        return $this->hasMany(
-            'App\Reservation'
-        );
-    }
-
-    public function dueInvoices()
-    {
-        return $this->hasMany(
-            'App\Reservation'
         );
     }
 }
