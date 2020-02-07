@@ -19,7 +19,7 @@ export default ({
         },
     },
     actions: {
-        addCustomer(context, customer) {
+        addCustomer(context, { vm, customer }) {
             axios.post("http://127.0.0.1:8000/customers/", {
                 customer
             }).then(function (response) {
@@ -32,10 +32,18 @@ export default ({
 
                     var newCustomer = response['data']['customer'];
                     context.commit('ADD_CUSTOMER', newCustomer);
+
+                    vm.makeToast(
+                        'Customer added',
+                        'The customer ' + newCustomer.first_name + ' has been added.',
+                        'success'
+                    );
                 }
+            }).catch(function (response) {
+                vm.makeToast("Error", 'The customer cannot be created!', 'danger');
             });
         },
-        editCustomer(context, customer) {
+        editCustomer(context, { vm, customer }) {
             axios.post("http://127.0.0.1:8000/customers/" + customer.id, {
                 customer,
                 _method: "put"
@@ -46,8 +54,14 @@ export default ({
                     if (response['data'].length == 0) {
                         return;
                     }
-                    // console.log('success');
+                    vm.makeToast(
+                        'Customer updated',
+                        'The customer ' + customer.first_name + ' has been updated.',
+                        'success'
+                    );
                 }
+            }).catch(function (response) {
+                vm.makeToast("Error", 'The customer cannot be updated!', 'danger');
             });
         },
     }

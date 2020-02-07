@@ -79,7 +79,20 @@ export default {
   },
   methods: {
     add() {
-      this.$store.dispatch("addCustomer", this.customer);
+      this.$store.dispatch("customer/addCustomer", {
+        vm: this,
+        customer: this.customer
+      });
+    },
+    makeToast(title, message, variant = "info") {
+      this.$bvToast.toast(message, {
+        title,
+        autoHideDelay: 5000,
+        variant,
+        solid: true,
+        toaster: "b-toaster-bottom-right",
+        appendToast: true
+      });
     }
   },
   computed: {},
