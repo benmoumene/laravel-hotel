@@ -7,8 +7,15 @@
     <b-form-group label-cols="12" label-cols-sm="2" label="Type">
       <b-form-select
         :value="null"
-        :options="{ 'single': 'Single', 'double': 'Double', 'suite': 'Suite'}"
+        :options="{ 'common': 'Common', 'suite': 'Suite'}"
         v-model="getRoom.type"
+      ></b-form-select>
+    </b-form-group>
+    <b-form-group label-cols="12" label-cols-sm="2" label="size">
+      <b-form-select
+        :value="null"
+        :options="{ 'single': 'Single', 'double': 'Double'}"
+        v-model="getRoom.size"
       ></b-form-select>
     </b-form-group>
     <b-form-group label-cols="12" label-cols-sm="2" label="Location">

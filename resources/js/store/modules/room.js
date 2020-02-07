@@ -8,6 +8,12 @@ export default ({
         getRoomById: (state, getters) => (roomId) => {
             return state.rooms.find(room => room.id === roomId);
         },
+        getRoom: (state, getters) => (roomId) => {
+            return state.rooms.find(room => room.id === roomId);
+        },
+        getRoomName: (state, getters) => (roomId) => {
+            return state.rooms.find(room => room.id === roomId).name;
+        },
     },
     mutations: {
         SET_ROOMS(state, rooms) {
