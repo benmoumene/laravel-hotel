@@ -137,14 +137,14 @@ export default {
           class: "text-center"
         },
         {
-          key: "check_in",
-          label: "Check in",
+          key: "from_date",
+          label: "From",
           sortable: true,
           class: "text-center"
         },
         {
-          key: "check_out",
-          label: "Check in",
+          key: "to_date",
+          label: "To",
           sortable: true,
           class: "text-center"
         },

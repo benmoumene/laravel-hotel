@@ -46,11 +46,11 @@
 
         <b-col cols="6">
           <strong>From</strong>
-          {{ reservation.check_in }}
+          {{ reservation.from_date }}
         </b-col>
         <b-col cols="6">
           <strong>To</strong>
-          {{ reservation.check_out }}
+          {{ reservation.to_date }}
         </b-col>
         <b-col cols="6">
           <strong>Arrival</strong>
@@ -162,7 +162,7 @@ export default {
       getCustomerById: "customer/getCustomerById",
       getBilledServices: "billed_services/getBilledServices",
       getReservationById: "reservation/getReservationById",
-      getGuestById: "guest/getGuestById",
+      getGuestByReservationId: "guest/getGuestById",
       getSettingValue: "getSettingValue",
       getInvoiceById: "billing/getInvoiceById"
     }),
@@ -175,31 +175,34 @@ export default {
       return invoice;
     },
     guest() {
-      var guest = this.getGuestById(this.invoice.guest_id);
+      var guest = this.getGuestByReservationId(this.invoice.reservation_id);
+      console.log("Reserv Id " + guest.check_in);
       if (typeof guest === "undefined") {
-        //return { id: 0, check_in: "", check_out: "" };
+        //return { id: 0, from_date: "", to_date: "" };
         return "";
       }
       return guest;
     },
     customer() {
-      var customer = this.getCustomerById(this.guest.customer_id);
+      var customer = this.getCustomerById(this.reservation.customer_id);
+      console.log("Customer Id" + this.reservation.customer_id);
       if (typeof customer === "undefined") {
-        //return { id: 0, check_in: "", check_out: "" };
+        //return { id: 0, from_date: "", to_date: "" };
         return "";
       }
       return customer;
     },
     reservation() {
-      var reservation = this.getReservationById(this.guest.id);
+      var reservation = this.getReservationById(this.guest.reservation_id);
+      console.log("Reservation Id" + this.guest.reservation_id);
       if (typeof reservation === "undefined") {
-        //return { id: 0, check_in: "", check_out: "" };
+        //return { id: 0, from_date: "", to_date: "" };
         return { room: {} };
       }
       return reservation;
     },
     billedServices() {
-      var services = this.getBilledServices(this.guest.id);
+      var services = this.getBilledServices(this.reservation.id);
       if (typeof services === "undefined") {
         return [];
       }

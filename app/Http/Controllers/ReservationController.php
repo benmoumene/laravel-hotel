@@ -26,8 +26,8 @@ class ReservationController extends Controller
         $reservation = new Reservation;
         $reservation->customer_id = $request->input('reservation.customer.id');
         $reservation->room_id = $request->input('reservation.room.id');
-        $reservation->check_in = $request['reservation']['check_in'];
-        $reservation->check_out = $request['reservation']['check_out'];
+        $reservation->from_date = $request['reservation']['from_date'];
+        $reservation->to_date = $request['reservation']['to_date'];
         $reservation->save();
 
         return response()->json(['reservation' => $reservation], 200);
@@ -44,8 +44,8 @@ class ReservationController extends Controller
     {
         $currentUserId = Auth::user()->id;
         $reservation = Reservation::where('id', $id)->first(); // firstOrFail???
-        $reservation->check_in = $request['reservation']['check_in'];
-        $reservation->check_out = $request['reservation']['check_out'];
+        $reservation->from_date = $request['reservation']['from_date'];
+        $reservation->to_date = $request['reservation']['to_date'];
         $reservation->save();
 
         return response()->json(['reservation' => $reservation], 200);
