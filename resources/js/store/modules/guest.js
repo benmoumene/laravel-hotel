@@ -10,6 +10,11 @@ export default ({
                 guest => guest.customer_id === customerId
             );
         },
+        getGuestWithReservationId: (state, getters) => (reservationId) => {
+            return state.guests.find(
+                guest => guest.reservation_id === reservationId
+            );
+        },
         getGuestById: (state, getters) => (guestId) => {
             return state.guests.find(guest => guest.id === guestId);
         },
@@ -29,18 +34,16 @@ export default ({
 
             var rows = state.guests.filter(
                 function (guest) {
-                    if (guest.customer_id !== customerId) {
+                    if (guest.customer.id !== customerId) {
                         return false;
                     }
 
                     if (guest.check_out === null) {
-                        if (guest.customer_id === customerId &&
-                            datetime >= guest.check_in) {
+                        if (datetime >= guest.check_in) {
                             return true;
                         }
                     } else {
-                        if (guest.customer_id === customerId &&
-                            datetime >= guest.check_in &&
+                        if (datetime >= guest.check_in &&
                             datetime <= guest.check_out) {
                             return true;
                         }

@@ -7,9 +7,14 @@ export default ({
         getInvoiceById: (state, getters) => (invoiceId) => {
             return state.invoices.find(invoice => invoice.id === invoiceId);
         },
+        getInvoice: (state, getters) => (invoiceId) => {
+            return state.invoices.find(
+                invoice => invoice.id === invoiceId
+            );
+        },
         getCustomerInvoices: (state, getters) => (customerId) => {
             return state.invoices.filter(
-                invoice => invoice.guest.customer.id === customerId
+                invoice => invoice.customer.id === customerId
             );
         },
         hasPendingInvoices: (state, getters) => (customerId) => {

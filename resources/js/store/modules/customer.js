@@ -9,6 +9,11 @@ export default ({
                 customer => customer.id === customerId
             );
         },
+        getCustomer: (state, getters) => (customerId) => {
+            return state.customers.find(
+                customer => customer.id === customerId
+            );
+        },
     },
     mutations: {
         SET_CUSTOMERS(state, customers) {

@@ -5,9 +5,9 @@ export default ({
         billedServices: [],
     },
     getters: {
-        getBilledServices: (state, getters) => (guestId) => {
+        getBilledServices: (state, getters) => (reservationId) => {
             return state.billedServices.filter(service =>
-                service.guest_id === guestId
+                service.reservation_id === reservationId
             );
         },
         getBilledServiceIndex: (state, getters) => (serviceId) => {

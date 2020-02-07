@@ -62,7 +62,7 @@
         </b-col>
         <b-col cols="6">
           <strong>Room</strong>
-          {{ reservation.room.name }}
+          {{ room.name }}
         </b-col>
       </b-row>
 
@@ -116,14 +116,10 @@
 <script>
 import { mapState, mapGetters } from "vuex";
 export default {
-  name: "Billing",
+  name: "BillingEdit",
   methods: {
     print() {
       window.print();
-    },
-    getService(id) {
-      //return {};
-      return this.getServiceById(id);
     },
     deleteBilledService(id) {
       this.$store.dispatch("billed_services/deleteBilledService", {
@@ -133,7 +129,7 @@ export default {
     },
     markAsPaid() {
       var invoiceId = parseInt(this.$route.params.id);
-      var invoice = this.getInvoiceById(invoiceId);
+      var invoice = this.getInvoice(invoiceId);
       invoice.status = "success";
       invoice.payment_method = "cash";
       this.$store.dispatch("billing/updateInvoice", { vm: this, invoice });
@@ -141,7 +137,7 @@ export default {
     regenerate() {
       // invoice id
       var invoiceId = parseInt(this.$route.params.id);
-      var invoice = this.getInvoiceById(invoiceId);
+      var invoice = this.getInvoice(invoiceId);
       this.$store.dispatch("billing/updateInvoice", { vm: this, invoice });
     },
     makeToast(title, message, variant = "info") {
@@ -158,25 +154,26 @@ export default {
   computed: {
     ...mapState(["settings"]),
     ...mapGetters({
-      getServiceById: "service/getServiceById",
-      getCustomerById: "customer/getCustomerById",
+      getService: "service/getService",
+      getCustomer: "customer/getCustomer",
       getBilledServices: "billed_services/getBilledServices",
-      getReservationById: "reservation/getReservationById",
-      getGuestByReservationId: "guest/getGuestById",
+      getReservation: "reservation/getReservation",
+      getGuestWithReservationId: "guest/getGuestWithReservationId",
       getSettingValue: "getSettingValue",
-      getInvoiceById: "billing/getInvoiceById"
+      getInvoice: "billing/getInvoice",
+      getRoom: "room/getRoom"
     }),
     invoice() {
       var invoiceId = parseInt(this.$route.params.id);
-      var invoice = this.getInvoiceById(invoiceId);
+      var invoice = this.getInvoice(invoiceId);
       if (typeof invoice === "undefined") {
         return "";
       }
       return invoice;
     },
     guest() {
-      var guest = this.getGuestByReservationId(this.invoice.reservation_id);
-      console.log("Reserv Id " + guest.check_in);
+      var guest = this.getGuestWithReservationId(this.invoice.reservation_id);
+
       if (typeof guest === "undefined") {
         //return { id: 0, from_date: "", to_date: "" };
         return "";
@@ -184,8 +181,7 @@ export default {
       return guest;
     },
     customer() {
-      var customer = this.getCustomerById(this.reservation.customer_id);
-      console.log("Customer Id" + this.reservation.customer_id);
+      var customer = this.getCustomer(this.reservation.customer_id);
       if (typeof customer === "undefined") {
         //return { id: 0, from_date: "", to_date: "" };
         return "";
@@ -193,13 +189,17 @@ export default {
       return customer;
     },
     reservation() {
-      var reservation = this.getReservationById(this.guest.reservation_id);
-      console.log("Reservation Id" + this.guest.reservation_id);
+      var reservation = this.getReservation(this.guest.reservation_id);
+
       if (typeof reservation === "undefined") {
         //return { id: 0, from_date: "", to_date: "" };
         return { room: {} };
       }
       return reservation;
+    },
+    room() {
+      var room = this.getRoom(this.invoice.reservation_id);
+      return room;
     },
     billedServices() {
       var services = this.getBilledServices(this.reservation.id);
