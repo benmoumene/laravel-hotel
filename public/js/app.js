@@ -5019,27 +5019,27 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   data: function data() {
     return {
       fields: [{
-        key: "customer.first_name",
+        key: "customer_first_name",
         label: "First Name",
         sortable: true,
         sortDirection: "desc"
       }, {
-        key: "customer.last_name",
+        key: "customer_last_name",
         label: "Last Name",
         sortable: true,
         sortDirection: "desc"
       }, {
-        key: "customer.phone",
+        key: "customer_phone",
         label: "phone",
         sortable: true,
         "class": "text-center"
       }, {
-        key: "customer.document_id",
+        key: "customer_document_id",
         label: "Document Id",
         sortable: true,
         "class": "text-center"
       }, {
-        key: "room.name",
+        key: "room_name",
         label: "Room Name",
         sortable: true,
         "class": "text-center"
@@ -5068,6 +5068,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     };
   },
   methods: {
+    customer: function customer(id) {
+      return this.getCustomer(id);
+    },
+    room: function room(id) {
+      return this.getRoom(id);
+    },
     cancelReservation: function cancelReservation(reservation) {
       this.$store.dispatch("reservation/deleteReservation", {
         vm: this,
@@ -5094,6 +5100,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     reservations: function reservations(state) {
       return state.reservation.reservations;
     }
+  }), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])({
+    getCustomer: "customer/getCustomer",
+    getRoom: "room/getRoom"
   }), {
     sortOptions: function sortOptions() {
       // Create an options list from our fields
@@ -77154,7 +77163,7 @@ var render = function() {
         },
         scopedSlots: _vm._u([
           {
-            key: "cell(room.name)",
+            key: "cell(room_name)",
             fn: function(row) {
               return [
                 _c(
@@ -77168,7 +77177,7 @@ var render = function() {
                       }
                     ]
                   },
-                  [_vm._v(_vm._s(row.item.room.name))]
+                  [_vm._v(_vm._s(_vm.room(row.item.room_id).name))]
                 )
               ]
             }
