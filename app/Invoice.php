@@ -20,10 +20,12 @@ class Invoice extends Model
     public function customer()
     {
         return $this->hasOneThrough(
-            'App\Reservation',
             'App\Customer',
+            'App\Reservation',
             'id',
-            'customer_id',
+            'id',
+            'id',
+            'customer_id'
         );
     }
 
