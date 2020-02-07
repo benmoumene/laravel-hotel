@@ -2698,14 +2698,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: "Billing",
+  name: "BillingEdit",
   methods: {
     print: function print() {
       window.print();
-    },
-    getService: function getService(id) {
-      //return {};
-      return this.getServiceById(id);
     },
     deleteBilledService: function deleteBilledService(id) {
       this.$store.dispatch("billed_services/deleteBilledService", {
@@ -2715,7 +2711,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     markAsPaid: function markAsPaid() {
       var invoiceId = parseInt(this.$route.params.id);
-      var invoice = this.getInvoiceById(invoiceId);
+      var invoice = this.getInvoice(invoiceId);
       invoice.status = "success";
       invoice.payment_method = "cash";
       this.$store.dispatch("billing/updateInvoice", {
@@ -2726,7 +2722,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     regenerate: function regenerate() {
       // invoice id
       var invoiceId = parseInt(this.$route.params.id);
-      var invoice = this.getInvoiceById(invoiceId);
+      var invoice = this.getInvoice(invoiceId);
       this.$store.dispatch("billing/updateInvoice", {
         vm: this,
         invoice: invoice
@@ -2745,17 +2741,18 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     }
   },
   computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])(["settings"]), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])({
-    getServiceById: "service/getServiceById",
-    getCustomerById: "customer/getCustomerById",
+    getService: "service/getService",
+    getCustomer: "customer/getCustomer",
     getBilledServices: "billed_services/getBilledServices",
-    getReservationById: "reservation/getReservationById",
-    getGuestById: "guest/getGuestById",
+    getReservation: "reservation/getReservation",
+    getGuestWithReservationId: "guest/getGuestWithReservationId",
     getSettingValue: "getSettingValue",
-    getInvoiceById: "billing/getInvoiceById"
+    getInvoice: "billing/getInvoice",
+    getRoom: "room/getRoom"
   }), {
     invoice: function invoice() {
       var invoiceId = parseInt(this.$route.params.id);
-      var invoice = this.getInvoiceById(invoiceId);
+      var invoice = this.getInvoice(invoiceId);
 
       if (typeof invoice === "undefined") {
         return "";
@@ -2764,30 +2761,30 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       return invoice;
     },
     guest: function guest() {
-      var guest = this.getGuestById(this.invoice.guest_id);
+      var guest = this.getGuestWithReservationId(this.invoice.reservation_id);
 
       if (typeof guest === "undefined") {
-        //return { id: 0, check_in: "", check_out: "" };
+        //return { id: 0, from_date: "", to_date: "" };
         return "";
       }
 
       return guest;
     },
     customer: function customer() {
-      var customer = this.getCustomerById(this.guest.customer_id);
+      var customer = this.getCustomer(this.reservation.customer_id);
 
       if (typeof customer === "undefined") {
-        //return { id: 0, check_in: "", check_out: "" };
+        //return { id: 0, from_date: "", to_date: "" };
         return "";
       }
 
       return customer;
     },
     reservation: function reservation() {
-      var reservation = this.getReservationById(this.guest.id);
+      var reservation = this.getReservation(this.guest.reservation_id);
 
       if (typeof reservation === "undefined") {
-        //return { id: 0, check_in: "", check_out: "" };
+        //return { id: 0, from_date: "", to_date: "" };
         return {
           room: {}
         };
@@ -2795,8 +2792,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
       return reservation;
     },
+    room: function room() {
+      var room = this.getRoom(this.invoice.reservation_id);
+      return room;
+    },
     billedServices: function billedServices() {
-      var services = this.getBilledServices(this.guest.id);
+      var services = this.getBilledServices(this.reservation.id);
 
       if (typeof services === "undefined") {
         return [];
@@ -3118,7 +3119,21 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     add: function add() {
-      this.$store.dispatch("addCustomer", this.customer);
+      this.$store.dispatch("customer/addCustomer", {
+        vm: this,
+        customer: this.customer
+      });
+    },
+    makeToast: function makeToast(title, message) {
+      var variant = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "info";
+      this.$bvToast.toast(message, {
+        title: title,
+        autoHideDelay: 5000,
+        variant: variant,
+        solid: true,
+        toaster: "b-toaster-bottom-right",
+        appendToast: true
+      });
     }
   },
   computed: {},
@@ -3213,7 +3228,21 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   },
   methods: {
     edit: function edit() {
-      this.$store.dispatch("customer/editCustomer", this.getCustomer);
+      this.$store.dispatch("customer/editCustomer", {
+        vm: this,
+        customer: this.getCustomer
+      });
+    },
+    makeToast: function makeToast(title, message) {
+      var variant = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "info";
+      this.$bvToast.toast(message, {
+        title: title,
+        autoHideDelay: 5000,
+        variant: variant,
+        solid: true,
+        toaster: "b-toaster-bottom-right",
+        appendToast: true
+      });
     }
   },
   computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])({
@@ -3810,6 +3839,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "CustomerReservations",
@@ -3826,18 +3857,18 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   data: function data() {
     return {
       fields: [{
-        key: "room.name",
+        key: "room_name",
         label: "Room Name",
         sortable: true,
         "class": "text-center"
       }, {
-        key: "check_in",
-        label: "Check In",
+        key: "from_date",
+        label: "From",
         sortable: true,
         "class": "text-center"
       }, {
-        key: "check_out",
-        label: "Check Out",
+        key: "to_date",
+        label: "To",
         sortable: true,
         "class": "text-center"
       }, {
@@ -3869,11 +3900,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   }, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])({
     deleteReservation: "reservation/deleteReservation"
   })),
-  computed: {
+  computed: _objectSpread({
     totalRows: function totalRows() {
       return this.reservations.length;
     }
-  }
+  }, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])({
+    getRoomName: "room/getRoomName"
+  }))
 });
 
 /***/ }),
@@ -4458,18 +4491,23 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "GuestList",
   data: function data() {
     return {
       fields: [{
-        key: "customer.first_name",
+        key: "first_name",
         label: "First Name",
         sortable: true,
         sortDirection: "desc"
       }, {
-        key: "customer.last_name",
+        key: "last_name",
         label: "Last Name",
         sortable: true,
         sortDirection: "desc"
@@ -4506,12 +4544,21 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     onFiltered: function onFiltered(filteredItems) {
       // Trigger pagination to update the number of buttons/pages due to filtering
       this.currentPage = 1;
+    },
+    customer: function customer(id) {
+      return this.getCustomer(id);
+    },
+    room: function room(id) {
+      return this.getRoom(id);
     }
   },
   computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])({
     guests: function guests(state) {
       return state.guest.guests;
     }
+  }), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])({
+    getCustomer: "customer/getCustomer",
+    getRoom: "room/getRoom"
   }), {
     sortOptions: function sortOptions() {
       // Create an options list from our fields
@@ -4972,38 +5019,38 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   data: function data() {
     return {
       fields: [{
-        key: "customer.first_name",
+        key: "customer_first_name",
         label: "First Name",
         sortable: true,
         sortDirection: "desc"
       }, {
-        key: "customer.last_name",
+        key: "customer_last_name",
         label: "Last Name",
         sortable: true,
         sortDirection: "desc"
       }, {
-        key: "customer.phone",
+        key: "customer_phone",
         label: "phone",
         sortable: true,
         "class": "text-center"
       }, {
-        key: "customer.document_id",
+        key: "customer_document_id",
         label: "Document Id",
         sortable: true,
         "class": "text-center"
       }, {
-        key: "room.name",
+        key: "room_name",
         label: "Room Name",
         sortable: true,
         "class": "text-center"
       }, {
-        key: "check_in",
-        label: "Check in",
+        key: "from_date",
+        label: "From",
         sortable: true,
         "class": "text-center"
       }, {
-        key: "check_out",
-        label: "Check in",
+        key: "to_date",
+        label: "To",
         sortable: true,
         "class": "text-center"
       }, {
@@ -5021,6 +5068,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     };
   },
   methods: {
+    customer: function customer(id) {
+      return this.getCustomer(id);
+    },
+    room: function room(id) {
+      return this.getRoom(id);
+    },
     cancelReservation: function cancelReservation(reservation) {
       this.$store.dispatch("reservation/deleteReservation", {
         vm: this,
@@ -5047,6 +5100,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     reservations: function reservations(state) {
       return state.reservation.reservations;
     }
+  }), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])({
+    getCustomer: "customer/getCustomer",
+    getRoom: "room/getRoom"
   }), {
     sortOptions: function sortOptions() {
       // Create an options list from our fields
@@ -5295,8 +5351,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       reservation: {
         room: {},
         customer: {},
-        check_in: null,
-        check_out: null
+        from_date: null,
+        to_date: null
       }
     };
   },
@@ -5451,8 +5507,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       filter: {
         roomType: "single",
         hotelFloor: "1F",
-        check_in: this.getTodayDate(),
-        check_out: this.getTodayDate()
+        from_date: this.getTodayDate(),
+        to_date: this.getTodayDate()
       },
       roomTypes: ["single", "double", "suite"],
       hotelFloors: ["1F", "2F", "3F"],
@@ -5471,8 +5527,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     selectRoom: function selectRoom(room) {
       this.reservation.room = room;
-      this.reservation.check_in = this.filter.check_in;
-      this.reservation.check_out = this.filter.check_out;
+      this.reservation.from_date = this.filter.from_date;
+      this.reservation.to_date = this.filter.to_date;
       console.log(this.reservation); //this.$emit("updateReservation", this.reservation);
       //this.$store.commit("reservation/SET_RESERVATION", reservation);
       //this.$store.dispatch("reservation/addReservation", reservation);
@@ -5497,9 +5553,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         try {
           for (var _iterator = room.reservations[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
             /*
-            if (this.fromDate > reservation.check_in) {
-              if (reservation.check_out !== null && this.toDate !== null) {
-                if (this.toDate < reservation.check_out) {
+            if (this.fromDate > reservation.from_date) {
+              if (reservation.to_date !== null && this.toDate !== null) {
+                if (this.toDate < reservation.to_date) {
                   return false;
                 }
               }
@@ -5583,13 +5639,21 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "RoomAdd",
   data: function data() {
     return {
       room: {
         name: "",
-        type: "single",
+        size: "single",
+        type: "common",
         floor: "1F"
       }
     };
@@ -5635,6 +5699,13 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -5819,6 +5890,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "RoomList",
@@ -5832,6 +5911,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }, {
         key: "type",
         label: "Room type",
+        sortable: true,
+        "class": "text-center"
+      }, {
+        key: "size",
+        label: "Room size",
         sortable: true,
         "class": "text-center"
       }, {
@@ -73352,14 +73436,14 @@ var render = function() {
               _c("b-col", { attrs: { cols: "6" } }, [
                 _c("strong", [_vm._v("From")]),
                 _vm._v(
-                  "\n        " + _vm._s(_vm.reservation.check_in) + "\n      "
+                  "\n        " + _vm._s(_vm.reservation.from_date) + "\n      "
                 )
               ]),
               _vm._v(" "),
               _c("b-col", { attrs: { cols: "6" } }, [
                 _c("strong", [_vm._v("To")]),
                 _vm._v(
-                  "\n        " + _vm._s(_vm.reservation.check_out) + "\n      "
+                  "\n        " + _vm._s(_vm.reservation.to_date) + "\n      "
                 )
               ]),
               _vm._v(" "),
@@ -73375,9 +73459,7 @@ var render = function() {
               _vm._v(" "),
               _c("b-col", { attrs: { cols: "6" } }, [
                 _c("strong", [_vm._v("Room")]),
-                _vm._v(
-                  "\n        " + _vm._s(_vm.reservation.room.name) + "\n      "
-                )
+                _vm._v("\n        " + _vm._s(_vm.room.name) + "\n      ")
               ])
             ],
             1
@@ -75272,13 +75354,13 @@ var render = function() {
             },
             scopedSlots: _vm._u([
               {
-                key: "cell(room.name)",
+                key: "cell(room_name)",
                 fn: function(row) {
                   return [
                     _c(
                       "router-link",
                       { attrs: { to: { path: "/room/" + row.item.room_id } } },
-                      [_vm._v(_vm._s(row.item.room.name))]
+                      [_vm._v(_vm._s(_vm.getRoomName(row.item.room_id)))]
                     )
                   ]
                 }
@@ -75289,7 +75371,11 @@ var render = function() {
                   return [
                     _c(
                       "router-link",
-                      { attrs: { to: { path: row.item.id + "/cancel" } } },
+                      {
+                        attrs: {
+                          to: { path: "/reservation/" + row.item.id + "/show" }
+                        }
+                      },
                       [
                         _c("b-button", { attrs: { variant: "info" } }, [
                           _vm._v("Show")
@@ -76222,6 +76308,50 @@ var render = function() {
         },
         scopedSlots: _vm._u([
           {
+            key: "cell(first_name)",
+            fn: function(row) {
+              return [
+                _c(
+                  "b-link",
+                  {
+                    directives: [
+                      {
+                        name: "b-modal",
+                        rawName: "v-b-modal.modal-center",
+                        modifiers: { "modal-center": true }
+                      }
+                    ]
+                  },
+                  [
+                    _vm._v(
+                      _vm._s(_vm.customer(row.item.customer.id).first_name)
+                    )
+                  ]
+                )
+              ]
+            }
+          },
+          {
+            key: "cell(last_name)",
+            fn: function(row) {
+              return [
+                _c(
+                  "b-link",
+                  {
+                    directives: [
+                      {
+                        name: "b-modal",
+                        rawName: "v-b-modal.modal-center",
+                        modifiers: { "modal-center": true }
+                      }
+                    ]
+                  },
+                  [_vm._v(_vm._s(_vm.customer(row.item.customer.id).last_name))]
+                )
+              ]
+            }
+          },
+          {
             key: "cell(room.name)",
             fn: function(row) {
               return [
@@ -76236,7 +76366,7 @@ var render = function() {
                       }
                     ]
                   },
-                  [_vm._v(_vm._s(row.item.room.name))]
+                  [_vm._v(_vm._s(_vm.room(row.item.room.id).name))]
                 )
               ]
             }
@@ -77033,7 +77163,7 @@ var render = function() {
         },
         scopedSlots: _vm._u([
           {
-            key: "cell(room.name)",
+            key: "cell(room_name)",
             fn: function(row) {
               return [
                 _c(
@@ -77047,7 +77177,7 @@ var render = function() {
                       }
                     ]
                   },
-                  [_vm._v(_vm._s(row.item.room.name))]
+                  [_vm._v(_vm._s(_vm.room(row.item.room_id).name))]
                 )
               ]
             }
@@ -77512,7 +77642,7 @@ var render = function() {
             [
               _c("b-col", [_vm._v("From:")]),
               _vm._v(" "),
-              _c("b-col", [_vm._v(_vm._s(_vm.reservation.check_in))])
+              _c("b-col", [_vm._v(_vm._s(_vm.reservation.from_date))])
             ],
             1
           ),
@@ -77522,7 +77652,7 @@ var render = function() {
             [
               _c("b-col", [_vm._v("To:")]),
               _vm._v(" "),
-              _c("b-col", [_vm._v(_vm._s(_vm.reservation.check_out))])
+              _c("b-col", [_vm._v(_vm._s(_vm.reservation.to_date))])
             ],
             1
           )
@@ -77710,11 +77840,11 @@ var render = function() {
                   _c("b-form-input", {
                     attrs: { id: "from_date", type: "date" },
                     model: {
-                      value: _vm.filter.check_in,
+                      value: _vm.filter.from_date,
                       callback: function($$v) {
-                        _vm.$set(_vm.filter, "check_in", $$v)
+                        _vm.$set(_vm.filter, "from_date", $$v)
                       },
-                      expression: "filter.check_in"
+                      expression: "filter.from_date"
                     }
                   })
                 ],
@@ -77746,11 +77876,11 @@ var render = function() {
                   _c("b-form-input", {
                     attrs: { id: "to_date", type: "date" },
                     model: {
-                      value: _vm.filter.check_out,
+                      value: _vm.filter.to_date,
                       callback: function($$v) {
-                        _vm.$set(_vm.filter, "check_out", $$v)
+                        _vm.$set(_vm.filter, "to_date", $$v)
                       },
-                      expression: "filter.check_out"
+                      expression: "filter.to_date"
                     }
                   })
                 ],
@@ -77837,12 +77967,33 @@ var render = function() {
       _vm._v(" "),
       _c(
         "b-form-group",
+        { attrs: { "label-cols": "12", "label-cols-sm": "2", label: "size" } },
+        [
+          _c("b-form-select", {
+            attrs: {
+              value: null,
+              options: { single: "Single", double: "Double" }
+            },
+            model: {
+              value: _vm.room.size,
+              callback: function($$v) {
+                _vm.$set(_vm.room, "size", $$v)
+              },
+              expression: "room.size"
+            }
+          })
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "b-form-group",
         { attrs: { "label-cols": "12", "label-cols-sm": "2", label: "Type" } },
         [
           _c("b-form-select", {
             attrs: {
               value: null,
-              options: { single: "Single", double: "Double", suite: "Suite" }
+              options: { common: "Common", suite: "Suite" }
             },
             model: {
               value: _vm.room.type,
@@ -77946,7 +78097,7 @@ var render = function() {
           _c("b-form-select", {
             attrs: {
               value: null,
-              options: { single: "Single", double: "Double", suite: "Suite" }
+              options: { common: "Common", suite: "Suite" }
             },
             model: {
               value: _vm.getRoom.type,
@@ -77954,6 +78105,27 @@ var render = function() {
                 _vm.$set(_vm.getRoom, "type", $$v)
               },
               expression: "getRoom.type"
+            }
+          })
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "b-form-group",
+        { attrs: { "label-cols": "12", "label-cols-sm": "2", label: "size" } },
+        [
+          _c("b-form-select", {
+            attrs: {
+              value: null,
+              options: { single: "Single", double: "Double" }
+            },
+            model: {
+              value: _vm.getRoom.size,
+              callback: function($$v) {
+                _vm.$set(_vm.getRoom, "size", $$v)
+              },
+              expression: "getRoom.size"
             }
           })
         ],
@@ -78207,17 +78379,33 @@ var render = function() {
             }
           },
           {
+            key: "cell(size)",
+            fn: function(row) {
+              return [
+                _c("b-form-select", {
+                  attrs: {
+                    value: null,
+                    options: { single: "Single", double: "Double" }
+                  },
+                  model: {
+                    value: row.item.size,
+                    callback: function($$v) {
+                      _vm.$set(row.item, "size", $$v)
+                    },
+                    expression: "row.item.size"
+                  }
+                })
+              ]
+            }
+          },
+          {
             key: "cell(type)",
             fn: function(row) {
               return [
                 _c("b-form-select", {
                   attrs: {
                     value: null,
-                    options: {
-                      single: "Single",
-                      double: "Double",
-                      suite: "Suite"
-                    }
+                    options: { common: "Common", suite: "Suite" }
                   },
                   model: {
                     value: row.item.type,
@@ -98837,9 +99025,9 @@ __webpack_require__.r(__webpack_exports__);
   },
   getters: {
     getBilledServices: function getBilledServices(state, getters) {
-      return function (guestId) {
+      return function (reservationId) {
         return state.billedServices.filter(function (service) {
-          return service.guest_id === guestId;
+          return service.reservation_id === reservationId;
         });
       };
     },
@@ -98900,10 +99088,17 @@ __webpack_require__.r(__webpack_exports__);
         });
       };
     },
+    getInvoice: function getInvoice(state, getters) {
+      return function (invoiceId) {
+        return state.invoices.find(function (invoice) {
+          return invoice.id === invoiceId;
+        });
+      };
+    },
     getCustomerInvoices: function getCustomerInvoices(state, getters) {
       return function (customerId) {
         return state.invoices.filter(function (invoice) {
-          return invoice.guest.customer.id === customerId;
+          return invoice.customer.id === customerId;
         });
       };
     },
@@ -98981,6 +99176,13 @@ __webpack_require__.r(__webpack_exports__);
           return customer.id === customerId;
         });
       };
+    },
+    getCustomer: function getCustomer(state, getters) {
+      return function (customerId) {
+        return state.customers.find(function (customer) {
+          return customer.id === customerId;
+        });
+      };
     }
   },
   mutations: {
@@ -98992,7 +99194,9 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   actions: {
-    addCustomer: function addCustomer(context, customer) {
+    addCustomer: function addCustomer(context, _ref) {
+      var vm = _ref.vm,
+          customer = _ref.customer;
       axios.post("http://127.0.0.1:8000/customers/", {
         customer: customer
       }).then(function (response) {
@@ -99005,10 +99209,15 @@ __webpack_require__.r(__webpack_exports__);
 
           var newCustomer = response['data']['customer'];
           context.commit('ADD_CUSTOMER', newCustomer);
+          vm.makeToast('Customer added', 'The customer ' + newCustomer.first_name + ' has been added.', 'success');
         }
+      })["catch"](function (response) {
+        vm.makeToast("Error", 'The customer cannot be created!', 'danger');
       });
     },
-    editCustomer: function editCustomer(context, customer) {
+    editCustomer: function editCustomer(context, _ref2) {
+      var vm = _ref2.vm,
+          customer = _ref2.customer;
       axios.post("http://127.0.0.1:8000/customers/" + customer.id, {
         customer: customer,
         _method: "put"
@@ -99018,9 +99227,12 @@ __webpack_require__.r(__webpack_exports__);
           // Agregamos una nueva conversacion si existe el objeto
           if (response['data'].length == 0) {
             return;
-          } // console.log('success');
+          }
 
+          vm.makeToast('Customer updated', 'The customer ' + customer.first_name + ' has been updated.', 'success');
         }
+      })["catch"](function (response) {
+        vm.makeToast("Error", 'The customer cannot be updated!', 'danger');
       });
     }
   }
@@ -99050,6 +99262,13 @@ __webpack_require__.r(__webpack_exports__);
         });
       };
     },
+    getGuestWithReservationId: function getGuestWithReservationId(state, getters) {
+      return function (reservationId) {
+        return state.guests.find(function (guest) {
+          return guest.reservation_id === reservationId;
+        });
+      };
+    },
     getGuestById: function getGuestById(state, getters) {
       return function (guestId) {
         return state.guests.find(function (guest) {
@@ -99071,16 +99290,16 @@ __webpack_require__.r(__webpack_exports__);
 
         var datetime = date + ' ' + time;
         var rows = state.guests.filter(function (guest) {
-          if (guest.customer_id !== customerId) {
+          if (guest.customer.id !== customerId) {
             return false;
           }
 
           if (guest.check_out === null) {
-            if (guest.customer_id === customerId && datetime >= guest.check_in) {
+            if (datetime >= guest.check_in) {
               return true;
             }
           } else {
-            if (guest.customer_id === customerId && datetime >= guest.check_in && datetime <= guest.check_out) {
+            if (datetime >= guest.check_in && datetime <= guest.check_out) {
               return true;
             }
           }
@@ -99238,6 +99457,13 @@ __webpack_require__.r(__webpack_exports__);
         });
       };
     },
+    getReservation: function getReservation(state, getters) {
+      return function (reservationId) {
+        return state.reservations.find(function (reservation) {
+          return reservation.id === reservationId;
+        });
+      };
+    },
     getCustomerReservations: function getCustomerReservations(state, getters) {
       return function (customerId) {
         return state.reservations.filter(function (reservation) {
@@ -99329,6 +99555,20 @@ __webpack_require__.r(__webpack_exports__);
           return room.id === roomId;
         });
       };
+    },
+    getRoom: function getRoom(state, getters) {
+      return function (roomId) {
+        return state.rooms.find(function (room) {
+          return room.id === roomId;
+        });
+      };
+    },
+    getRoomName: function getRoomName(state, getters) {
+      return function (roomId) {
+        return state.rooms.find(function (room) {
+          return room.id === roomId;
+        }).name;
+      };
     }
   },
   mutations: {
@@ -99402,6 +99642,13 @@ __webpack_require__.r(__webpack_exports__);
   },
   getters: {
     getServiceById: function getServiceById(state, getters) {
+      return function (serviceId) {
+        return state.services.find(function (service) {
+          return service.id === serviceId;
+        });
+      };
+    },
+    getService: function getService(state, getters) {
       return function (serviceId) {
         return state.services.find(function (service) {
           return service.id === serviceId;

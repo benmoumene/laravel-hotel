@@ -27,6 +27,7 @@ class RoomController extends Controller
         $room = new Room;
         $room->name = $request['room']['name'];
         $room->type = $request['room']['type'];
+        $room->size = $request['room']['size'];
         $room->floor = $request['room']['floor'];
         $room->save();
 
@@ -47,6 +48,7 @@ class RoomController extends Controller
         $currentUserId = Auth::user()->id;
         $room = Room::where('id', $roomId)->first();
         $room->name = $request['room']['name'];
+        $room->size = $request['room']['size'];
         $room->type = $request['room']['type'];
         $room->floor = $request['room']['floor'];
         $room->save();

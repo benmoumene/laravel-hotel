@@ -40,7 +40,7 @@
           label-for="perPageSelect"
           class="mb-0"
         >
-          <b-form-input v-model="filter.check_in" id="from_date" type="date"></b-form-input>
+          <b-form-input v-model="filter.from_date" id="from_date" type="date"></b-form-input>
         </b-form-group>
       </b-col>
       <b-col sm="5" md="6" class="my-1">
@@ -54,7 +54,7 @@
           label-for="perPageSelect"
           class="mb-0"
         >
-          <b-form-input v-model="filter.check_out" id="to_date" type="date"></b-form-input>
+          <b-form-input v-model="filter.to_date" id="to_date" type="date"></b-form-input>
         </b-form-group>
       </b-col>
     </b-row>
@@ -82,8 +82,8 @@ export default {
       filter: {
         roomType: "single",
         hotelFloor: "1F",
-        check_in: this.getTodayDate(),
-        check_out: this.getTodayDate()
+        from_date: this.getTodayDate(),
+        to_date: this.getTodayDate()
       },
       roomTypes: ["single", "double", "suite"],
       hotelFloors: ["1F", "2F", "3F"],
@@ -101,8 +101,8 @@ export default {
     },
     selectRoom(room) {
       this.reservation.room = room;
-      this.reservation.check_in = this.filter.check_in;
-      this.reservation.check_out = this.filter.check_out;
+      this.reservation.from_date = this.filter.from_date;
+      this.reservation.to_date = this.filter.to_date;
 
       console.log(this.reservation);
       //this.$emit("updateReservation", this.reservation);
@@ -124,9 +124,9 @@ export default {
       ) {
         for (var reservation of room.reservations) {
           /*
-          if (this.fromDate > reservation.check_in) {
-            if (reservation.check_out !== null && this.toDate !== null) {
-              if (this.toDate < reservation.check_out) {
+          if (this.fromDate > reservation.from_date) {
+            if (reservation.to_date !== null && this.toDate !== null) {
+              if (this.toDate < reservation.to_date) {
                 return false;
               }
             }

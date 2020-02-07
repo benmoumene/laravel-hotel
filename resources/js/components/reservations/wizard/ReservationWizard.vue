@@ -19,11 +19,11 @@
       </b-row>
       <b-row>
         <b-col>From:</b-col>
-        <b-col>{{ reservation.check_in }}</b-col>
+        <b-col>{{ reservation.from_date }}</b-col>
       </b-row>
       <b-row>
         <b-col>To:</b-col>
-        <b-col>{{ reservation.check_out }}</b-col>
+        <b-col>{{ reservation.to_date }}</b-col>
       </b-row>
     </div>
     <b-row class="mt-3 float-right">
@@ -48,8 +48,8 @@ export default {
       reservation: {
         room: {},
         customer: {},
-        check_in: null,
-        check_out: null
+        from_date: null,
+        to_date: null
       }
     };
   },

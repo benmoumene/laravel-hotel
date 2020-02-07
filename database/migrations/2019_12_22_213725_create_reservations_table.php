@@ -17,8 +17,11 @@ class CreateReservationsTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('customer_id');
             $table->unsignedBigInteger('room_id');
-            $table->timestamp('check_in'); // Fecha de entrada
-            $table->timestamp('check_out')->nullable(); // Fecha de salida
+            $table->enum('status', ['active', 'expired', 'cancelled'])->default('active');
+            // Fecha de inicio de la reserva
+            $table->timestamp('from_date');
+            // Fin de la reserva
+            $table->timestamp('to_date')->nullable();
             $table->foreign('customer_id')->references('id')->on('customers')->onDelete('CASCADE');
             $table->foreign('room_id')->references('id')->on('rooms')->onDelete('CASCADE');
         });

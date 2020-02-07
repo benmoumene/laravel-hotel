@@ -9,6 +9,10 @@ class Room extends Model
     public $timestamps = false;
     protected $table = "rooms";
 
+    protected $hidden = [
+        'laravel_through_key'
+    ];
+
     // Guests hospeados actualmente en la habitacion
     public function guest()
     {

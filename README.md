@@ -25,14 +25,7 @@ Esta aplicacion es un dashboard que permite gestionar el Backend de un hotel. La
 + en la store que corresponde. Al realizar modificaciones o borrado
 + las realizamos sobre las stores. En caso de no existir una primary
 + key simplemente devolvemos un string vacio o false para evitar errores.
-+ Por ejemplo CUSTOMER(CUSTOMER.*, INVOICES.id, RESERVATIONS.id)
-+ quedando { first_name, last_name, invoices {[id,id,id]}, reservations {[id,id,id]} }
--- IMPLEMENTAR DB hotel-demo.dia
-- SERVICES, ROOMS, INVOICES, CUSTOMERS, GUESTS, STOCK, RESERVATIONS,
-GUEST_BILLED_SERVICES
-- CUSTOMER > RESERVATION > GUEST > CONSUMED_SERVICES
-- Implementar reservation/Invoicing/Guest 
-- Cambiar la tabla Invoices e incorporar customer_id??? Reorganizar relaciones de las tablas???
+- IMPLEMENTAR KEYS como INDEX en VUE para buscar mas facil y rapido.
 - Terminar de implmentar las relaciones de Eloquent en los modelos
 - Terminar de implementar los roles en la app
 - Mejorar y Terminar el sistema de invoices

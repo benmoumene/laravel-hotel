@@ -17,7 +17,8 @@ class CreateRoomsTable extends Migration
             $table->bigIncrements('id');
             $table->string('name');
             $table->enum('floor', ['1F', '2F', '3F']);
-            $table->enum('type', ['single', 'double', 'suite'])->default('single');
+            $table->enum('size', ['single', 'double'])->default('single');
+            $table->enum('type', ['common', 'suite'])->default('common');
         });
     }
 

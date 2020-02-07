@@ -21,7 +21,7 @@ class CreateCustomersTable extends Migration
             $table->string('document_id');
             $table->string('address');
             $table->string('phone');
-            $table->string('sex');
+            $table->enum('sex', ['male', 'female']);
             $table->string('nationality');
             $table->timestamps();
             $table->unique(['first_name', 'last_name', 'document_id']);

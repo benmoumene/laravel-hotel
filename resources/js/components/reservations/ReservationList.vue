@@ -69,8 +69,8 @@
       @filtered="onFiltered"
     >
       <!-- Al hacer click en room mostrar info de esta -->
-      <template v-slot:cell(room.name)="row">
-        <b-link v-b-modal.modal-center>{{ row.item.room.name }}</b-link>
+      <template v-slot:cell(room_name)="row">
+        <b-link v-b-modal.modal-center>{{ room(row.item.room_id).name }}</b-link>
       </template>
       <template v-slot:cell(actions)="row">
         <router-link :to="{path: row.item.id +'/cancel'}" class="nav-link">
@@ -100,51 +100,51 @@
 </template>
 <script>
 // Implementar filtro de fechas por defecto en RESERVATION LIST.
-import { mapState } from "vuex";
+import { mapState, mapGetters } from "vuex";
 export default {
   name: "ReservationList",
   data: function() {
     return {
       fields: [
         {
-          key: "customer.first_name",
+          key: "customer_first_name",
           label: "First Name",
           sortable: true,
           sortDirection: "desc"
         },
         {
-          key: "customer.last_name",
+          key: "customer_last_name",
           label: "Last Name",
           sortable: true,
           sortDirection: "desc"
         },
         {
-          key: "customer.phone",
+          key: "customer_phone",
           label: "phone",
           sortable: true,
           class: "text-center"
         },
         {
-          key: "customer.document_id",
+          key: "customer_document_id",
           label: "Document Id",
           sortable: true,
           class: "text-center"
         },
         {
-          key: "room.name",
+          key: "room_name",
           label: "Room Name",
           sortable: true,
           class: "text-center"
         },
         {
-          key: "check_in",
-          label: "Check in",
+          key: "from_date",
+          label: "From",
           sortable: true,
           class: "text-center"
         },
         {
-          key: "check_out",
-          label: "Check in",
+          key: "to_date",
+          label: "To",
           sortable: true,
           class: "text-center"
         },
@@ -161,6 +161,12 @@ export default {
     };
   },
   methods: {
+    customer(id) {
+      return this.getCustomer(id);
+    },
+    room(id) {
+      return this.getRoom(id);
+    },
     cancelReservation(reservation) {
       this.$store.dispatch("reservation/deleteReservation", {
         vm: this,
@@ -185,6 +191,10 @@ export default {
   computed: {
     ...mapState({
       reservations: state => state.reservation.reservations
+    }),
+    ...mapGetters({
+      getCustomer: "customer/getCustomer",
+      getRoom: "room/getRoom"
     }),
     sortOptions() {
       // Create an options list from our fields

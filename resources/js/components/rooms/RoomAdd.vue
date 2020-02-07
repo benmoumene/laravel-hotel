@@ -4,17 +4,24 @@
       <b-form-input placeholder="001" v-model="room.name"></b-form-input>
     </b-form-group>
 
+    <b-form-group label-cols="12" label-cols-sm="2" label="size">
+      <b-form-select
+        :value="null"
+        :options="{ 'single': 'Single', 'double': 'Double'}"
+        v-model="room.size"
+      ></b-form-select>
+    </b-form-group>
     <b-form-group label-cols="12" label-cols-sm="2" label="Type">
       <b-form-select
         :value="null"
-        :options="{ 'single': 'Single', 'double': 'Double', 'suite': 'Suite'}"
+        :options="{ 'common': 'Common', 'suite': 'Suite'}"
         v-model="room.type"
       ></b-form-select>
     </b-form-group>
     <b-form-group label-cols="12" label-cols-sm="2" label="Location">
       <b-form-select
         :value="null"
-        :options="{'1F':'1 Floor', '2F': '2 Floor' , '3F': '3 Floor'}"
+        :options="{'1F':'1 Floor', '2F': '2 Floor', '3F': '3 Floor'}"
         v-model="room.floor"
       ></b-form-select>
     </b-form-group>
@@ -31,7 +38,8 @@ export default {
     return {
       room: {
         name: "",
-        type: "single",
+        size: "single",
+        type: "common",
         floor: "1F"
       }
     };

@@ -26,11 +26,13 @@
         :per-page="perPage"
       >
         <!-- Al hacer click en room mostrar info de esta -->
-        <template v-slot:cell(room.name)="row">
-          <router-link :to="{path: '/room/' + row.item.room_id }">{{ row.item.room.name }}</router-link>
+        <template v-slot:cell(room_name)="row">
+          <router-link
+            :to="{path: '/room/' + row.item.room_id }"
+          >{{ getRoomName(row.item.room_id) }}</router-link>
         </template>
         <template v-slot:cell(actions)="row">
-          <router-link :to="{path: row.item.id +'/cancel'}">
+          <router-link :to="{path: '/reservation/' + row.item.id +'/show'}">
             <b-button variant="info">Show</b-button>
           </router-link>
           <b-button @click="cancelReservation(row.item)" variant="danger">Cancel</b-button>
@@ -40,7 +42,7 @@
   </b-container>
 </template>
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 export default {
   name: "CustomerReservations",
   props: {
@@ -51,20 +53,20 @@ export default {
     return {
       fields: [
         {
-          key: "room.name",
+          key: "room_name",
           label: "Room Name",
           sortable: true,
           class: "text-center"
         },
         {
-          key: "check_in",
-          label: "Check In",
+          key: "from_date",
+          label: "From",
           sortable: true,
           class: "text-center"
         },
         {
-          key: "check_out",
-          label: "Check Out",
+          key: "to_date",
+          label: "To",
           sortable: true,
           class: "text-center"
         },
@@ -95,7 +97,10 @@ export default {
   computed: {
     totalRows() {
       return this.reservations.length;
-    }
+    },
+    ...mapGetters({
+      getRoomName: "room/getRoomName"
+    })
   }
 };
 </script>

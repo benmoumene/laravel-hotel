@@ -9,6 +9,11 @@ export default ({
                 service => service.id === serviceId
             );
         },
+        getService: (state, getters) => (serviceId) => {
+            return state.services.find(
+                service => service.id === serviceId
+            );
+        },
     },
     mutations: {
         SET_SERVICES(state, services) {

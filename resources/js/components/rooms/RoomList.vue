@@ -72,10 +72,18 @@
         <b-form-input v-model="row.item.name"></b-form-input>
       </template>
 
+      <template v-slot:cell(size)="row">
+        <b-form-select
+          :value="null"
+          :options="{ 'single': 'Single', 'double': 'Double'}"
+          v-model="row.item.size"
+        ></b-form-select>
+      </template>
+
       <template v-slot:cell(type)="row">
         <b-form-select
           :value="null"
-          :options="{ 'single': 'Single', 'double': 'Double', 'suite': 'Suite'}"
+          :options="{ 'common': 'Common', 'suite': 'Suite'}"
           v-model="row.item.type"
         ></b-form-select>
       </template>
@@ -110,6 +118,12 @@ export default {
         {
           key: "type",
           label: "Room type",
+          sortable: true,
+          class: "text-center"
+        },
+        {
+          key: "size",
+          label: "Room size",
           sortable: true,
           class: "text-center"
         },
