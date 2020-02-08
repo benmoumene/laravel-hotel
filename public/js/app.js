@@ -2726,9 +2726,16 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "BillingEdit",
+  data: function data() {
+    return {
+      payment_method: null
+    };
+  },
   methods: {
     print: function print() {
       window.print();
@@ -2740,13 +2747,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       });
     },
     markAsPaid: function markAsPaid() {
-      var invoiceId = parseInt(this.$route.params.id);
-      var invoice = this.getInvoice(invoiceId);
-      invoice.status = "success";
-      invoice.payment_method = "cash";
-      this.$store.dispatch("billing/updateInvoice", {
+      this.invoice.status = "success";
+      this.$store.dispatch("billing/payInvoice", {
         vm: this,
-        invoice: invoice
+        invoice: this.invoice
       });
     },
     regenerate: function regenerate() {
@@ -5705,8 +5709,6 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-//
-//
 //
 //
 //
@@ -73575,8 +73577,8 @@ var render = function() {
                       directives: [
                         {
                           name: "b-modal",
-                          rawName: "v-b-modal.modal-center",
-                          modifiers: { "modal-center": true }
+                          rawName: "v-b-modal.invoice-pay-modal",
+                          modifiers: { "invoice-pay-modal": true }
                         }
                       ],
                       attrs: { variant: "success" }
@@ -73623,39 +73625,60 @@ var render = function() {
       _c(
         "b-modal",
         {
-          attrs: { id: "modal-center", centered: "", title: "Reservation Info" }
-        },
-        [
-          _c(
-            "b-row",
-            [
-              _c(
-                "b-col",
-                { staticClass: "avatar-menu-inner", attrs: { sm: "3" } },
-                [_vm._v("Payment Method:")]
-              )
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "b-row",
-            [
-              _c(
-                "b-col",
-                { staticClass: "avatar-menu-inner", attrs: { sm: "3" } },
-                [
+          attrs: {
+            id: "invoice-pay-modal",
+            size: "md",
+            centered: "",
+            title: "Payment Info"
+          },
+          scopedSlots: _vm._u([
+            {
+              key: "modal-footer",
+              fn: function() {
+                return [
                   _c(
                     "b-button",
                     {
+                      staticClass: "float-right",
                       attrs: { variant: "success" },
                       on: { click: _vm.markAsPaid }
                     },
-                    [_vm._v("DONE")]
+                    [_vm._v("Mark as paid")]
                   )
-                ],
-                1
-              )
+                ]
+              },
+              proxy: true
+            }
+          ])
+        },
+        [
+          _c(
+            "b-form-group",
+            {
+              attrs: {
+                "label-cols": "12",
+                "label-cols-sm": "4",
+                label: "Payment Method"
+              }
+            },
+            [
+              _c("b-form-select", {
+                attrs: {
+                  cols: "12",
+                  options: {
+                    "": "Please select an option",
+                    cash: "Cash",
+                    credit_card: "Credit Card"
+                  }
+                },
+                model: {
+                  value: _vm.invoice.payment_method,
+                  callback: function($$v) {
+                    _vm.$set(_vm.invoice, "payment_method", $$v)
+                  },
+                  expression: "invoice.payment_method"
+                }
+              })
             ],
             1
           )
@@ -99097,16 +99120,29 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function (response) {})["catch"](function (response) {});
     },
     // Marca una factura como pagada. (Status/Payment Method)
-    updateInvoice: function updateInvoice(context, _ref2) {
+    payInvoice: function payInvoice(context, _ref2) {
       var vm = _ref2.vm,
           invoice = _ref2.invoice;
+      axios.post("http://127.0.0.1:8000/invoice/" + invoice.id + "/pay", {
+        invoice: invoice,
+        _method: "put"
+      }).then(function (response) {
+        vm.makeToast("Invoice updated", 'The invoice has been paid.', 'success');
+      })["catch"](function (response) {
+        vm.makeToast("Invoice update error", ' The invoice cannot be paid', 'danger');
+      });
+    },
+    // Marca una factura como pagada. (Status/Payment Method)
+    updateInvoice: function updateInvoice(context, _ref3) {
+      var vm = _ref3.vm,
+          invoice = _ref3.invoice;
       axios.post("http://127.0.0.1:8000/invoice/" + invoice.id, {
         invoice: invoice,
         _method: "put"
       }).then(function (response) {
-        vm.makeToast("Invoice ", invoice.id + ' has been updated.', 'success');
+        vm.makeToast("Invoice updated", 'The invoice has been updated.', 'success');
       })["catch"](function (response) {
-        vm.makeToast("Invoice ", invoice.id + ' cannot be updated', 'danger');
+        vm.makeToast("Invoice update error", ' The invoice cannot be updated', 'danger');
       });
     }
   }

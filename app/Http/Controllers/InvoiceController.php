@@ -31,6 +31,14 @@ class InvoiceController extends Controller
         return response()->json(['invoice' => $invoice], 200);
     }
 
+    public function setAsPaid(Request $request, $id)
+    {
+        $invoice = Invoice::where('id', $id)->first();
+        $invoice->status = 'paid';
+        $invoice->payment_method = $request['invoice']['payment_method'];
+        $invoice->save();
+    }
+
     /**
      * Update the specified resource in storage.
      *

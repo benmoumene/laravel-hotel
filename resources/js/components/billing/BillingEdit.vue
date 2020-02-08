@@ -93,7 +93,7 @@
 
       <b-row class="mb-3 pull-right">
         <b-col>
-          <b-button v-b-modal.modal-center variant="success">Mark as paid</b-button>
+          <b-button v-b-modal.invoice-pay-modal variant="success">Mark as paid</b-button>
           <b-button @click="regenerate" variant="success">Regenerate</b-button>
           <b-button @click="print" variant="secondary">PRINT</b-button>
           <b-button @click="regenerate" variant="info">Download as PDF</b-button>
@@ -101,15 +101,17 @@
       </b-row>
     </div>
 
-    <b-modal id="modal-center" centered title="Reservation Info">
-      <b-row>
-        <b-col sm="3" class="avatar-menu-inner">Payment Method:</b-col>
-      </b-row>
-      <b-row>
-        <b-col sm="3" class="avatar-menu-inner">
-          <b-button @click="markAsPaid" variant="success">DONE</b-button>
-        </b-col>
-      </b-row>
+    <b-modal id="invoice-pay-modal" size="md" centered title="Payment Info">
+      <b-form-group label-cols="12" label-cols-sm="4" label="Payment Method">
+        <b-form-select
+          cols="12"
+          v-model="invoice.payment_method"
+          :options="{ '': 'Please select an option', 'cash': 'Cash', 'credit_card': 'Credit Card'}"
+        ></b-form-select>
+      </b-form-group>
+      <template v-slot:modal-footer>
+        <b-button @click="markAsPaid" variant="success" class="float-right">Mark as paid</b-button>
+      </template>
     </b-modal>
   </b-container>
 </template>
@@ -117,6 +119,11 @@
 import { mapState, mapGetters } from "vuex";
 export default {
   name: "BillingEdit",
+  data: function() {
+    return {
+      payment_method: null
+    };
+  },
   methods: {
     print() {
       window.print();
@@ -128,11 +135,11 @@ export default {
       });
     },
     markAsPaid() {
-      var invoiceId = parseInt(this.$route.params.id);
-      var invoice = this.getInvoice(invoiceId);
-      invoice.status = "success";
-      invoice.payment_method = "cash";
-      this.$store.dispatch("billing/updateInvoice", { vm: this, invoice });
+      this.invoice.status = "success";
+      this.$store.dispatch("billing/payInvoice", {
+        vm: this,
+        invoice: this.invoice
+      });
     },
     regenerate() {
       // invoice id

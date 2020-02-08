@@ -56,8 +56,13 @@ Route::put('/inventory/{item_id}', 'InventoryController@update');
 
 // Generar factura
 Route::post('/invoice', 'InvoiceController@store');
+
+// Pagar
+Route::put('/invoice/{invoice_id}/pay', 'InvoiceController@setAsPaid');
+
 // Actualizar factura
 Route::put('/invoice/{invoice_id}', 'InvoiceController@update');
+
 // Borrar factura
 Route::delete('/invoice/{invoice_id}', 'InvoiceController@destroy');
 
