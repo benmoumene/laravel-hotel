@@ -2931,32 +2931,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "CustomerList",
@@ -73721,81 +73695,15 @@ var render = function() {
         [
           _c(
             "b-col",
-            { staticClass: "my-1", attrs: { sm: "6" } },
+            { staticClass: "my-1", attrs: { sm: "4" } },
             [
               _c(
                 "b-form-group",
                 {
                   staticClass: "mb-0",
                   attrs: {
-                    label: "Filter",
+                    label: "Rows",
                     "label-cols-sm": "3",
-                    "label-align-sm": "right",
-                    "label-size": "sm",
-                    "label-for": "filterInput"
-                  }
-                },
-                [
-                  _c(
-                    "b-input-group",
-                    { attrs: { size: "sm" } },
-                    [
-                      _c("b-form-input", {
-                        attrs: {
-                          type: "search",
-                          id: "filterInput",
-                          placeholder: "Type to Search"
-                        },
-                        model: {
-                          value: _vm.filter,
-                          callback: function($$v) {
-                            _vm.filter = $$v
-                          },
-                          expression: "filter"
-                        }
-                      }),
-                      _vm._v(" "),
-                      _c(
-                        "b-input-group-append",
-                        [
-                          _c(
-                            "b-button",
-                            {
-                              attrs: { disabled: !_vm.filter },
-                              on: {
-                                click: function($event) {
-                                  _vm.filter = ""
-                                }
-                              }
-                            },
-                            [_vm._v("Clear")]
-                          )
-                        ],
-                        1
-                      )
-                    ],
-                    1
-                  )
-                ],
-                1
-              )
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "b-col",
-            { staticClass: "my-1", attrs: { sm: "3" } },
-            [
-              _c(
-                "b-form-group",
-                {
-                  staticClass: "mb-0",
-                  attrs: {
-                    label: "Per page",
-                    "label-cols-sm": "6",
-                    "label-cols-md": "4",
-                    "label-cols-lg": "3",
                     "label-align-sm": "right",
                     "label-size": "sm",
                     "label-for": "perPageSelect"
@@ -73825,7 +73733,7 @@ var render = function() {
           _vm._v(" "),
           _c(
             "b-col",
-            { staticClass: "my-1", attrs: { sm: "3" } },
+            { staticClass: "my-1", attrs: { sm: "4" } },
             [
               _c(
                 "b-form-group",
@@ -73833,9 +73741,7 @@ var render = function() {
                   staticClass: "mb-0",
                   attrs: {
                     label: "Status",
-                    "label-cols-sm": "6",
-                    "label-cols-md": "4",
-                    "label-cols-lg": "3",
+                    "label-cols-sm": "3",
                     "label-align-sm": "right",
                     "label-size": "sm",
                     "label-for": "perPageSelect"
@@ -73866,7 +73772,7 @@ var render = function() {
           _vm._v(" "),
           _c(
             "b-col",
-            { staticClass: "my-1", attrs: { sm: "7", md: "6" } },
+            { staticClass: "my-1", attrs: { sm: "4" } },
             [
               _c("b-pagination", {
                 staticClass: "my-0",
@@ -73945,10 +73851,14 @@ var render = function() {
                 _c(
                   "router-link",
                   {
-                    staticClass: "nav-link",
                     attrs: { to: { path: "/billing/" + row.item.id + "/edit" } }
                   },
-                  [_vm._v("View Invoice")]
+                  [
+                    _c("b-button", { attrs: { variant: "info", size: "sm" } }, [
+                      _vm._v("Show")
+                    ])
+                  ],
+                  1
                 )
               ]
             }
