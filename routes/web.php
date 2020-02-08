@@ -60,8 +60,11 @@ Route::post('/invoice', 'InvoiceController@store');
 // Pagar
 Route::put('/invoice/{invoice_id}/pay', 'InvoiceController@setAsPaid');
 
+// Recalcular
+Route::post('/invoice/{invoice_id}/recalc', 'InvoiceController@recalculate');
+
 // Actualizar factura
-Route::put('/invoice/{invoice_id}', 'InvoiceController@update');
+//Route::put('/invoice/{invoice_id}', 'InvoiceController@update');
 
 // Borrar factura
 Route::delete('/invoice/{invoice_id}', 'InvoiceController@destroy');

@@ -2726,19 +2726,24 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "BillingEdit",
   data: function data() {
     return {
-      payment_method: null
+      invoicex: {
+        billed_services: []
+      }
     };
   },
   methods: {
     print: function print() {
-      window.print();
+      var printWindow = window.open("", "PRINT", "height=400,width=600");
+      var printDiv = document.getElementById("invoice").innerHTML;
+      printWindow.document.head.innerHTML = document.head.innerHTML;
+      printWindow.document.body.innerHTML = printDiv;
+      printWindow.print();
+      printWindow.close();
     },
     deleteBilledService: function deleteBilledService(id) {
       this.$store.dispatch("billed_services/deleteBilledService", {
@@ -2753,13 +2758,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         invoice: this.invoice
       });
     },
-    regenerate: function regenerate() {
-      // invoice id
-      var invoiceId = parseInt(this.$route.params.id);
-      var invoice = this.getInvoice(invoiceId);
-      this.$store.dispatch("billing/updateInvoice", {
+    recalculate: function recalculate() {
+      this.$store.dispatch("billing/recalculateInvoice", {
         vm: this,
-        invoice: invoice
+        invoice: this.invoice
       });
     },
     makeToast: function makeToast(title, message) {
@@ -73361,7 +73363,7 @@ var render = function() {
     [
       _c(
         "div",
-        { staticClass: "invoice" },
+        { staticClass: "invoice", attrs: { id: "invoice" } },
         [
           _c(
             "b-row",
@@ -73562,58 +73564,46 @@ var render = function() {
               ])
             ],
             1
-          ),
-          _vm._v(" "),
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "b-row",
+        { staticClass: "mt-3 pull-right" },
+        [
           _c(
-            "b-row",
-            { staticClass: "mb-3 pull-right" },
+            "b-col",
             [
               _c(
-                "b-col",
-                [
-                  _c(
-                    "b-button",
+                "b-button",
+                {
+                  directives: [
                     {
-                      directives: [
-                        {
-                          name: "b-modal",
-                          rawName: "v-b-modal.invoice-pay-modal",
-                          modifiers: { "invoice-pay-modal": true }
-                        }
-                      ],
-                      attrs: { variant: "success" }
-                    },
-                    [_vm._v("Mark as paid")]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "b-button",
-                    {
-                      attrs: { variant: "success" },
-                      on: { click: _vm.regenerate }
-                    },
-                    [_vm._v("Regenerate")]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "b-button",
-                    {
-                      attrs: { variant: "secondary" },
-                      on: { click: _vm.print }
-                    },
-                    [_vm._v("PRINT")]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "b-button",
-                    {
-                      attrs: { variant: "info" },
-                      on: { click: _vm.regenerate }
-                    },
-                    [_vm._v("Download as PDF")]
-                  )
-                ],
-                1
+                      name: "b-modal",
+                      rawName: "v-b-modal.invoice-pay-modal",
+                      modifiers: { "invoice-pay-modal": true }
+                    }
+                  ],
+                  attrs: { variant: "success" }
+                },
+                [_vm._v("Mark as paid")]
+              ),
+              _vm._v(" "),
+              _c(
+                "b-button",
+                {
+                  attrs: { variant: "success" },
+                  on: { click: _vm.recalculate }
+                },
+                [_vm._v("Recalculate")]
+              ),
+              _vm._v(" "),
+              _c(
+                "b-button",
+                { attrs: { variant: "secondary" }, on: { click: _vm.print } },
+                [_vm._v("PRINT")]
               )
             ],
             1
@@ -99114,7 +99104,7 @@ __webpack_require__.r(__webpack_exports__);
     generateInvoice: function generateInvoice(context, _ref) {
       var vm = _ref.vm,
           reservation = _ref.reservation;
-      axios.post("http://127.0.0.1:8000/reservations/" + reservation.id, {
+      axios.post("/reservations/" + reservation.id, {
         reservation: reservation,
         _method: "put"
       }).then(function (response) {})["catch"](function (response) {});
@@ -99123,7 +99113,7 @@ __webpack_require__.r(__webpack_exports__);
     payInvoice: function payInvoice(context, _ref2) {
       var vm = _ref2.vm,
           invoice = _ref2.invoice;
-      axios.post("http://127.0.0.1:8000/invoice/" + invoice.id + "/pay", {
+      axios.post("/invoice/" + invoice.id + "/pay", {
         invoice: invoice,
         _method: "put"
       }).then(function (response) {
@@ -99133,12 +99123,12 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     // Marca una factura como pagada. (Status/Payment Method)
-    updateInvoice: function updateInvoice(context, _ref3) {
+    recalculateInvoice: function recalculateInvoice(context, _ref3) {
       var vm = _ref3.vm,
           invoice = _ref3.invoice;
-      axios.post("http://127.0.0.1:8000/invoice/" + invoice.id, {
+      axios.post("/invoice/" + invoice.id + '/recalc', {
         invoice: invoice,
-        _method: "put"
+        _method: "post"
       }).then(function (response) {
         vm.makeToast("Invoice updated", 'The invoice has been updated.', 'success');
       })["catch"](function (response) {

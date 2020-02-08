@@ -1,6 +1,6 @@
 <template>
   <b-container fluid>
-    <div class="invoice">
+    <div id="invoice" class="invoice">
       <b-row class="header mb-3">
         <b-col cols="12">
           <strong>{{ getSettingValue('hotel_name') }}</strong>
@@ -90,16 +90,14 @@
         </b-col>
         <b-col cols="12">Due amount: {{ invoice.total }}</b-col>
       </b-row>
-
-      <b-row class="mb-3 pull-right">
-        <b-col>
-          <b-button v-b-modal.invoice-pay-modal variant="success">Mark as paid</b-button>
-          <b-button @click="regenerate" variant="success">Regenerate</b-button>
-          <b-button @click="print" variant="secondary">PRINT</b-button>
-          <b-button @click="regenerate" variant="info">Download as PDF</b-button>
-        </b-col>
-      </b-row>
     </div>
+    <b-row class="mt-3 pull-right">
+      <b-col>
+        <b-button v-b-modal.invoice-pay-modal variant="success">Mark as paid</b-button>
+        <b-button @click="recalculate" variant="success">Recalculate</b-button>
+        <b-button @click="print" variant="secondary">PRINT</b-button>
+      </b-col>
+    </b-row>
 
     <b-modal id="invoice-pay-modal" size="md" centered title="Payment Info">
       <b-form-group label-cols="12" label-cols-sm="4" label="Payment Method">
@@ -121,12 +119,17 @@ export default {
   name: "BillingEdit",
   data: function() {
     return {
-      payment_method: null
+      invoicex: { billed_services: [] }
     };
   },
   methods: {
     print() {
-      window.print();
+      let printWindow = window.open("", "PRINT", "height=400,width=600");
+      let printDiv = document.getElementById("invoice").innerHTML;
+      printWindow.document.head.innerHTML = document.head.innerHTML;
+      printWindow.document.body.innerHTML = printDiv;
+      printWindow.print();
+      printWindow.close();
     },
     deleteBilledService(id) {
       this.$store.dispatch("billed_services/deleteBilledService", {
@@ -141,11 +144,11 @@ export default {
         invoice: this.invoice
       });
     },
-    regenerate() {
-      // invoice id
-      var invoiceId = parseInt(this.$route.params.id);
-      var invoice = this.getInvoice(invoiceId);
-      this.$store.dispatch("billing/updateInvoice", { vm: this, invoice });
+    recalculate() {
+      this.$store.dispatch("billing/recalculateInvoice", {
+        vm: this,
+        invoice: this.invoice
+      });
     },
     makeToast(title, message, variant = "info") {
       this.$bvToast.toast(message, {

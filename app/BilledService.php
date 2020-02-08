@@ -7,12 +7,16 @@ use Illuminate\Database\Eloquent\Model;
 class BilledService extends Model
 {
     public $timestamps = false;
-    protected $table = "billed_services";
+    protected $hidden = [
+        'laravel_through_key'
+    ];
 
     public function service()
     {
-        return $this->belongsTo(
-            'App\Service'
+        return $this->hasOne(
+            'App\Service',
+            'id',
+            'service_id'
         );
     }
 }

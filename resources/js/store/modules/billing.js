@@ -47,7 +47,7 @@ export default ({
     },
     actions: {
         generateInvoice(context, { vm, reservation }) {
-            axios.post("http://127.0.0.1:8000/reservations/" + reservation.id, {
+            axios.post("/reservations/" + reservation.id, {
                 reservation,
                 _method: "put"
             }).then(function (response) {
@@ -56,7 +56,7 @@ export default ({
         },
         // Marca una factura como pagada. (Status/Payment Method)
         payInvoice(context, { vm, invoice }) {
-            axios.post("http://127.0.0.1:8000/invoice/" + invoice.id + "/pay", {
+            axios.post("/invoice/" + invoice.id + "/pay", {
                 invoice,
                 _method: "put"
             }).then(function (response) {
@@ -66,10 +66,10 @@ export default ({
             });
         },
         // Marca una factura como pagada. (Status/Payment Method)
-        updateInvoice(context, { vm, invoice }) {
-            axios.post("http://127.0.0.1:8000/invoice/" + invoice.id, {
+        recalculateInvoice(context, { vm, invoice }) {
+            axios.post("/invoice/" + invoice.id + '/recalc', {
                 invoice,
-                _method: "put"
+                _method: "post"
             }).then(function (response) {
                 vm.makeToast("Invoice updated", 'The invoice has been updated.', 'success');
             }).catch(function (response) {
