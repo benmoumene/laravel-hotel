@@ -4535,7 +4535,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         "class": "text-center"
       }, {
         key: "check_out",
-        label: "Check in",
+        label: "Check Out",
         sortable: true,
         "class": "text-center"
       }, {
@@ -76349,7 +76349,7 @@ var render = function() {
                 _c(
                   "b-button",
                   {
-                    attrs: { variant: "info" },
+                    attrs: { size: "sm", variant: "info" },
                     on: {
                       click: function($event) {
                         return _vm.showCustomerInfo(row.item)
@@ -76363,22 +76363,28 @@ var render = function() {
                   "router-link",
                   { attrs: { to: { path: row.item.id + "/cancel" } } },
                   [
-                    _c("i", { staticClass: "nav-icon fa fa-bed" }),
-                    _vm._v("\n        Show\n      ")
-                  ]
+                    _c("b-button", { attrs: { size: "sm", variant: "info" } }, [
+                      _vm._v("Reservation")
+                    ])
+                  ],
+                  1
                 ),
+                _vm._v(" "),
+                _c("b-button", { attrs: { size: "sm", variant: "info" } }, [
+                  _vm._v("Room")
+                ]),
                 _vm._v(" "),
                 _c(
                   "b-button",
                   {
-                    attrs: { variant: "primary" },
+                    attrs: { size: "sm", variant: "primary" },
                     on: {
                       click: function($event) {
                         return _vm.cancelReservation(row.item)
                       }
                     }
                   },
-                  [_vm._v("CANCEL")]
+                  [_vm._v("Guest Left")]
                 )
               ]
             }
