@@ -31,8 +31,6 @@
     </b-form-group>
   </b-container>
 </template>
-    
-</template>
 <script>
 import { mapGetters } from "vuex";
 export default {
