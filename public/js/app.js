@@ -2382,13 +2382,27 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     };
   },
   methods: {
+    makeToast: function makeToast(title, message) {
+      var variant = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "info";
+      this.$bvToast.toast(message, {
+        title: title,
+        autoHideDelay: 5000,
+        variant: variant,
+        solid: true,
+        toaster: "b-toaster-bottom-right",
+        appendToast: true
+      });
+    },
     chooseAvatar: function chooseAvatar() {
       var chooser = document.getElementById("fileChooser");
       chooser.click();
     },
     uploadAvatar: function uploadAvatar() {
       if (this.image !== null) {
-        this.$store.dispatch("uploadAvatar", this.image);
+        this.$store.dispatch("uploadAvatar", {
+          vm: this,
+          avatar: this.image
+        });
       }
     }
   },
@@ -2396,9 +2410,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     avatarPath: function avatarPath() {
       return "/storage/" + this.appUser.avatar_filename;
     }
-  }),
-  components: {},
-  mounted: function mounted() {}
+  })
 });
 
 /***/ }),
@@ -2535,12 +2547,26 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   },
   methods: {
     updateSetting: function updateSetting(setting) {
-      this.$store.dispatch("editSetting", setting);
+      this.$store.dispatch("editSetting", {
+        vm: this,
+        setting: setting
+      });
     },
     onFiltered: function onFiltered(filteredItems) {
       // Trigger pagination to update the number of buttons/pages due to filtering
       this.totalRows = filteredItems.length;
       this.currentPage = 1;
+    },
+    makeToast: function makeToast(title, message) {
+      var variant = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "info";
+      this.$bvToast.toast(message, {
+        title: title,
+        autoHideDelay: 5000,
+        variant: variant,
+        solid: true,
+        toaster: "b-toaster-bottom-right",
+        appendToast: true
+      });
     }
   },
   computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])(["settings"]), {
@@ -98968,8 +98994,10 @@ vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_0__
         window.location.href = '/login';
       });
     },
-    editSetting: function editSetting(context, setting) {
-      axios.post("http://127.0.0.1:8000/settings/" + setting.id, {
+    editSetting: function editSetting(context, _ref) {
+      var vm = _ref.vm,
+          setting = _ref.setting;
+      axios.post("/settings/" + setting.id, {
         setting: setting,
         _method: "put"
       }).then(function (response) {
@@ -98980,28 +99008,27 @@ vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_0__
             return;
           }
 
-          console.log('success');
+          vm.makeToast("Setting updated", 'The setting ' + setting.name + ' has been updated.', 'success');
         }
+      })["catch"](function (response) {
+        vm.makeToast("Error", 'The setting cannot be updated!', 'danger');
       });
     },
-    uploadAvatar: function uploadAvatar(context, avatar) {
-      //return console.log("uploading");
-      //return console.log(context.state.appUser.id);
+    uploadAvatar: function uploadAvatar(context, _ref2) {
+      var vm = _ref2.vm,
+          avatar = _ref2.avatar;
       var userId = context.state.appUser.id;
-      console.log(avatar);
       var fd = new FormData();
       fd.append('image', avatar);
       fd.append('_method', 'put');
       axios.post("http://127.0.0.1:8000/users/" + userId, fd).then(function (response) {
         // Si el request tuvo exito (codigo 200)
         if (response.status == 200) {
-          // Agregamos una nueva conversacion si existe el objeto
-          if (response['data'].length == 0) {
-            return;
-          }
-
           context.state.appUser.avatar_filename = response['data']['avatar'];
+          vm.makeToast("Avatar updated", 'The avatar has been updated.', 'success');
         }
+      })["catch"](function (response) {
+        vm.makeToast("Error", 'The avatar cannot be updated!', 'danger');
       });
     }
   }

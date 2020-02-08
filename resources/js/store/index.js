@@ -103,8 +103,8 @@ export default new Vuex.Store({
                 window.location.href = '/login';
             });
         },
-        editSetting(context, setting) {
-            axios.post("http://127.0.0.1:8000/settings/" + setting.id, {
+        editSetting(context, { vm, setting }) {
+            axios.post("/settings/" + setting.id, {
                 setting,
                 _method: "put"
             }).then(function (response) {
@@ -114,28 +114,26 @@ export default new Vuex.Store({
                     if (response['data'].length == 0) {
                         return;
                     }
-                    console.log('success');
+                    vm.makeToast("Setting updated", 'The setting ' + setting.name
+                        + ' has been updated.', 'success');
                 }
+            }).catch(function (response) {
+                vm.makeToast("Error", 'The setting cannot be updated!', 'danger');
             });
         },
-        uploadAvatar(context, avatar) {
-            //return console.log("uploading");
-            //return console.log(context.state.appUser.id);
+        uploadAvatar(context, { vm, avatar }) {
             var userId = context.state.appUser.id;
-            console.log(avatar);
             var fd = new FormData();
             fd.append('image', avatar);
             fd.append('_method', 'put');
             axios.post("http://127.0.0.1:8000/users/" + userId, fd).then(function (response) {
                 // Si el request tuvo exito (codigo 200)
                 if (response.status == 200) {
-                    // Agregamos una nueva conversacion si existe el objeto
-                    if (response['data'].length == 0) {
-                        return;
-                    }
-
                     context.state.appUser.avatar_filename = response['data']['avatar'];
+                    vm.makeToast("Avatar updated", 'The avatar has been updated.', 'success');
                 }
+            }).catch(function (response) {
+                vm.makeToast("Error", 'The avatar cannot be updated!', 'danger');
             });
         },
     }

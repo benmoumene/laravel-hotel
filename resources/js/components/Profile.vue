@@ -45,13 +45,23 @@ export default {
     };
   },
   methods: {
+    makeToast(title, message, variant = "info") {
+      this.$bvToast.toast(message, {
+        title,
+        autoHideDelay: 5000,
+        variant,
+        solid: true,
+        toaster: "b-toaster-bottom-right",
+        appendToast: true
+      });
+    },
     chooseAvatar() {
       var chooser = document.getElementById("fileChooser");
       chooser.click();
     },
     uploadAvatar() {
       if (this.image !== null) {
-        this.$store.dispatch("uploadAvatar", this.image);
+        this.$store.dispatch("uploadAvatar", { vm: this, avatar: this.image });
       }
     }
   },
@@ -60,9 +70,7 @@ export default {
     avatarPath() {
       return "/storage/" + this.appUser.avatar_filename;
     }
-  },
-  components: {},
-  mounted() {}
+  }
 };
 </script>
 <style scoped>
