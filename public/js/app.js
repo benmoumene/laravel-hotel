@@ -2382,13 +2382,27 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     };
   },
   methods: {
+    makeToast: function makeToast(title, message) {
+      var variant = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "info";
+      this.$bvToast.toast(message, {
+        title: title,
+        autoHideDelay: 5000,
+        variant: variant,
+        solid: true,
+        toaster: "b-toaster-bottom-right",
+        appendToast: true
+      });
+    },
     chooseAvatar: function chooseAvatar() {
       var chooser = document.getElementById("fileChooser");
       chooser.click();
     },
     uploadAvatar: function uploadAvatar() {
       if (this.image !== null) {
-        this.$store.dispatch("uploadAvatar", this.image);
+        this.$store.dispatch("uploadAvatar", {
+          vm: this,
+          avatar: this.image
+        });
       }
     }
   },
@@ -2396,9 +2410,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     avatarPath: function avatarPath() {
       return "/storage/" + this.appUser.avatar_filename;
     }
-  }),
-  components: {},
-  mounted: function mounted() {}
+  })
 });
 
 /***/ }),
@@ -2419,6 +2431,10 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+//
+//
+//
+//
 //
 //
 //
@@ -2535,12 +2551,26 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   },
   methods: {
     updateSetting: function updateSetting(setting) {
-      this.$store.dispatch("editSetting", setting);
+      this.$store.dispatch("editSetting", {
+        vm: this,
+        setting: setting
+      });
     },
     onFiltered: function onFiltered(filteredItems) {
       // Trigger pagination to update the number of buttons/pages due to filtering
       this.totalRows = filteredItems.length;
       this.currentPage = 1;
+    },
+    makeToast: function makeToast(title, message) {
+      var variant = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "info";
+      this.$bvToast.toast(message, {
+        title: title,
+        autoHideDelay: 5000,
+        variant: variant,
+        solid: true,
+        toaster: "b-toaster-bottom-right",
+        appendToast: true
+      });
     }
   },
   computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])(["settings"]), {
@@ -2699,9 +2729,21 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "BillingEdit",
+  data: function data() {
+    return {
+      invoicex: {
+        billed_services: []
+      }
+    };
+  },
   methods: {
     print: function print() {
-      window.print();
+      var printWindow = window.open("", "PRINT", "height=400,width=600");
+      var printDiv = document.getElementById("invoice").innerHTML;
+      printWindow.document.head.innerHTML = document.head.innerHTML;
+      printWindow.document.body.innerHTML = printDiv;
+      printWindow.print();
+      printWindow.close();
     },
     deleteBilledService: function deleteBilledService(id) {
       this.$store.dispatch("billed_services/deleteBilledService", {
@@ -2710,22 +2752,16 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       });
     },
     markAsPaid: function markAsPaid() {
-      var invoiceId = parseInt(this.$route.params.id);
-      var invoice = this.getInvoice(invoiceId);
-      invoice.status = "success";
-      invoice.payment_method = "cash";
-      this.$store.dispatch("billing/updateInvoice", {
+      this.invoice.status = "success";
+      this.$store.dispatch("billing/payInvoice", {
         vm: this,
-        invoice: invoice
+        invoice: this.invoice
       });
     },
-    regenerate: function regenerate() {
-      // invoice id
-      var invoiceId = parseInt(this.$route.params.id);
-      var invoice = this.getInvoice(invoiceId);
-      this.$store.dispatch("billing/updateInvoice", {
+    recalculate: function recalculate() {
+      this.$store.dispatch("billing/recalculateInvoice", {
         vm: this,
-        invoice: invoice
+        invoice: this.invoice
       });
     },
     makeToast: function makeToast(title, message) {
@@ -2760,6 +2796,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
       return invoice;
     },
+    reservation: function reservation() {
+      var reservation = this.getReservation(this.invoice.reservation_id);
+
+      if (typeof reservation === "undefined") {
+        return "";
+      }
+
+      return reservation;
+    },
     guest: function guest() {
       var guest = this.getGuestWithReservationId(this.invoice.reservation_id);
 
@@ -2780,20 +2825,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
       return customer;
     },
-    reservation: function reservation() {
-      var reservation = this.getReservation(this.guest.reservation_id);
+    room: function room() {
+      var room = this.getRoom(this.reservation.room_id);
 
-      if (typeof reservation === "undefined") {
-        //return { id: 0, from_date: "", to_date: "" };
-        return {
-          room: {}
-        };
+      if (typeof room === "undefined") {
+        return "";
       }
 
-      return reservation;
-    },
-    room: function room() {
-      var room = this.getRoom(this.invoice.reservation_id);
       return room;
     },
     billedServices: function billedServices() {
@@ -2827,32 +2865,6 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -4523,7 +4535,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         "class": "text-center"
       }, {
         key: "check_out",
-        label: "Check in",
+        label: "Check Out",
         sortable: true,
         "class": "text-center"
       }, {
@@ -5699,8 +5711,6 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-//
-//
 //
 //
 //
@@ -73285,6 +73295,22 @@ var render = function() {
             }
           },
           {
+            key: "cell(description)",
+            fn: function(row) {
+              return [
+                _c("b-form-input", {
+                  model: {
+                    value: row.item.description,
+                    callback: function($$v) {
+                      _vm.$set(row.item, "description", $$v)
+                    },
+                    expression: "row.item.description"
+                  }
+                })
+              ]
+            }
+          },
+          {
             key: "cell(actions)",
             fn: function(row) {
               return [
@@ -73337,7 +73363,7 @@ var render = function() {
     [
       _c(
         "div",
-        { staticClass: "invoice" },
+        { staticClass: "invoice", attrs: { id: "invoice" } },
         [
           _c(
             "b-row",
@@ -73538,58 +73564,46 @@ var render = function() {
               ])
             ],
             1
-          ),
-          _vm._v(" "),
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "b-row",
+        { staticClass: "mt-3 pull-right" },
+        [
           _c(
-            "b-row",
-            { staticClass: "mb-3 pull-right" },
+            "b-col",
             [
               _c(
-                "b-col",
-                [
-                  _c(
-                    "b-button",
+                "b-button",
+                {
+                  directives: [
                     {
-                      directives: [
-                        {
-                          name: "b-modal",
-                          rawName: "v-b-modal.modal-center",
-                          modifiers: { "modal-center": true }
-                        }
-                      ],
-                      attrs: { variant: "success" }
-                    },
-                    [_vm._v("Mark as paid")]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "b-button",
-                    {
-                      attrs: { variant: "success" },
-                      on: { click: _vm.regenerate }
-                    },
-                    [_vm._v("Regenerate")]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "b-button",
-                    {
-                      attrs: { variant: "secondary" },
-                      on: { click: _vm.print }
-                    },
-                    [_vm._v("PRINT")]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "b-button",
-                    {
-                      attrs: { variant: "info" },
-                      on: { click: _vm.regenerate }
-                    },
-                    [_vm._v("Download as PDF")]
-                  )
-                ],
-                1
+                      name: "b-modal",
+                      rawName: "v-b-modal.invoice-pay-modal",
+                      modifiers: { "invoice-pay-modal": true }
+                    }
+                  ],
+                  attrs: { variant: "success" }
+                },
+                [_vm._v("Mark as paid")]
+              ),
+              _vm._v(" "),
+              _c(
+                "b-button",
+                {
+                  attrs: { variant: "success" },
+                  on: { click: _vm.recalculate }
+                },
+                [_vm._v("Recalculate")]
+              ),
+              _vm._v(" "),
+              _c(
+                "b-button",
+                { attrs: { variant: "secondary" }, on: { click: _vm.print } },
+                [_vm._v("PRINT")]
               )
             ],
             1
@@ -73601,39 +73615,60 @@ var render = function() {
       _c(
         "b-modal",
         {
-          attrs: { id: "modal-center", centered: "", title: "Reservation Info" }
-        },
-        [
-          _c(
-            "b-row",
-            [
-              _c(
-                "b-col",
-                { staticClass: "avatar-menu-inner", attrs: { sm: "3" } },
-                [_vm._v("Payment Method:")]
-              )
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "b-row",
-            [
-              _c(
-                "b-col",
-                { staticClass: "avatar-menu-inner", attrs: { sm: "3" } },
-                [
+          attrs: {
+            id: "invoice-pay-modal",
+            size: "md",
+            centered: "",
+            title: "Payment Info"
+          },
+          scopedSlots: _vm._u([
+            {
+              key: "modal-footer",
+              fn: function() {
+                return [
                   _c(
                     "b-button",
                     {
+                      staticClass: "float-right",
                       attrs: { variant: "success" },
                       on: { click: _vm.markAsPaid }
                     },
-                    [_vm._v("DONE")]
+                    [_vm._v("Mark as paid")]
                   )
-                ],
-                1
-              )
+                ]
+              },
+              proxy: true
+            }
+          ])
+        },
+        [
+          _c(
+            "b-form-group",
+            {
+              attrs: {
+                "label-cols": "12",
+                "label-cols-sm": "4",
+                label: "Payment Method"
+              }
+            },
+            [
+              _c("b-form-select", {
+                attrs: {
+                  cols: "12",
+                  options: {
+                    "": "Please select an option",
+                    cash: "Cash",
+                    credit_card: "Credit Card"
+                  }
+                },
+                model: {
+                  value: _vm.invoice.payment_method,
+                  callback: function($$v) {
+                    _vm.$set(_vm.invoice, "payment_method", $$v)
+                  },
+                  expression: "invoice.payment_method"
+                }
+              })
             ],
             1
           )
@@ -73675,81 +73710,15 @@ var render = function() {
         [
           _c(
             "b-col",
-            { staticClass: "my-1", attrs: { sm: "6" } },
+            { staticClass: "my-1", attrs: { sm: "4" } },
             [
               _c(
                 "b-form-group",
                 {
                   staticClass: "mb-0",
                   attrs: {
-                    label: "Filter",
+                    label: "Rows",
                     "label-cols-sm": "3",
-                    "label-align-sm": "right",
-                    "label-size": "sm",
-                    "label-for": "filterInput"
-                  }
-                },
-                [
-                  _c(
-                    "b-input-group",
-                    { attrs: { size: "sm" } },
-                    [
-                      _c("b-form-input", {
-                        attrs: {
-                          type: "search",
-                          id: "filterInput",
-                          placeholder: "Type to Search"
-                        },
-                        model: {
-                          value: _vm.filter,
-                          callback: function($$v) {
-                            _vm.filter = $$v
-                          },
-                          expression: "filter"
-                        }
-                      }),
-                      _vm._v(" "),
-                      _c(
-                        "b-input-group-append",
-                        [
-                          _c(
-                            "b-button",
-                            {
-                              attrs: { disabled: !_vm.filter },
-                              on: {
-                                click: function($event) {
-                                  _vm.filter = ""
-                                }
-                              }
-                            },
-                            [_vm._v("Clear")]
-                          )
-                        ],
-                        1
-                      )
-                    ],
-                    1
-                  )
-                ],
-                1
-              )
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "b-col",
-            { staticClass: "my-1", attrs: { sm: "3" } },
-            [
-              _c(
-                "b-form-group",
-                {
-                  staticClass: "mb-0",
-                  attrs: {
-                    label: "Per page",
-                    "label-cols-sm": "6",
-                    "label-cols-md": "4",
-                    "label-cols-lg": "3",
                     "label-align-sm": "right",
                     "label-size": "sm",
                     "label-for": "perPageSelect"
@@ -73779,7 +73748,7 @@ var render = function() {
           _vm._v(" "),
           _c(
             "b-col",
-            { staticClass: "my-1", attrs: { sm: "3" } },
+            { staticClass: "my-1", attrs: { sm: "4" } },
             [
               _c(
                 "b-form-group",
@@ -73787,9 +73756,7 @@ var render = function() {
                   staticClass: "mb-0",
                   attrs: {
                     label: "Status",
-                    "label-cols-sm": "6",
-                    "label-cols-md": "4",
-                    "label-cols-lg": "3",
+                    "label-cols-sm": "3",
                     "label-align-sm": "right",
                     "label-size": "sm",
                     "label-for": "perPageSelect"
@@ -73820,7 +73787,7 @@ var render = function() {
           _vm._v(" "),
           _c(
             "b-col",
-            { staticClass: "my-1", attrs: { sm: "7", md: "6" } },
+            { staticClass: "my-1", attrs: { sm: "4" } },
             [
               _c("b-pagination", {
                 staticClass: "my-0",
@@ -73899,10 +73866,14 @@ var render = function() {
                 _c(
                   "router-link",
                   {
-                    staticClass: "nav-link",
                     attrs: { to: { path: "/billing/" + row.item.id + "/edit" } }
                   },
-                  [_vm._v("View Invoice")]
+                  [
+                    _c("b-button", { attrs: { variant: "info", size: "sm" } }, [
+                      _vm._v("Show")
+                    ])
+                  ],
+                  1
                 )
               ]
             }
@@ -76378,7 +76349,7 @@ var render = function() {
                 _c(
                   "b-button",
                   {
-                    attrs: { variant: "info" },
+                    attrs: { size: "sm", variant: "info" },
                     on: {
                       click: function($event) {
                         return _vm.showCustomerInfo(row.item)
@@ -76392,22 +76363,28 @@ var render = function() {
                   "router-link",
                   { attrs: { to: { path: row.item.id + "/cancel" } } },
                   [
-                    _c("i", { staticClass: "nav-icon fa fa-bed" }),
-                    _vm._v("\n        Show\n      ")
-                  ]
+                    _c("b-button", { attrs: { size: "sm", variant: "info" } }, [
+                      _vm._v("Reservation")
+                    ])
+                  ],
+                  1
                 ),
+                _vm._v(" "),
+                _c("b-button", { attrs: { size: "sm", variant: "info" } }, [
+                  _vm._v("Room")
+                ]),
                 _vm._v(" "),
                 _c(
                   "b-button",
                   {
-                    attrs: { variant: "primary" },
+                    attrs: { size: "sm", variant: "primary" },
                     on: {
                       click: function($event) {
                         return _vm.cancelReservation(row.item)
                       }
                     }
                   },
-                  [_vm._v("CANCEL")]
+                  [_vm._v("Guest Left")]
                 )
               ]
             }
@@ -98968,8 +98945,10 @@ vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_0__
         window.location.href = '/login';
       });
     },
-    editSetting: function editSetting(context, setting) {
-      axios.post("http://127.0.0.1:8000/settings/" + setting.id, {
+    editSetting: function editSetting(context, _ref) {
+      var vm = _ref.vm,
+          setting = _ref.setting;
+      axios.post("/settings/" + setting.id, {
         setting: setting,
         _method: "put"
       }).then(function (response) {
@@ -98980,28 +98959,27 @@ vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_0__
             return;
           }
 
-          console.log('success');
+          vm.makeToast("Setting updated", 'The setting ' + setting.name + ' has been updated.', 'success');
         }
+      })["catch"](function (response) {
+        vm.makeToast("Error", 'The setting cannot be updated!', 'danger');
       });
     },
-    uploadAvatar: function uploadAvatar(context, avatar) {
-      //return console.log("uploading");
-      //return console.log(context.state.appUser.id);
+    uploadAvatar: function uploadAvatar(context, _ref2) {
+      var vm = _ref2.vm,
+          avatar = _ref2.avatar;
       var userId = context.state.appUser.id;
-      console.log(avatar);
       var fd = new FormData();
       fd.append('image', avatar);
       fd.append('_method', 'put');
       axios.post("http://127.0.0.1:8000/users/" + userId, fd).then(function (response) {
         // Si el request tuvo exito (codigo 200)
         if (response.status == 200) {
-          // Agregamos una nueva conversacion si existe el objeto
-          if (response['data'].length == 0) {
-            return;
-          }
-
           context.state.appUser.avatar_filename = response['data']['avatar'];
+          vm.makeToast("Avatar updated", 'The avatar has been updated.', 'success');
         }
+      })["catch"](function (response) {
+        vm.makeToast("Error", 'The avatar cannot be updated!', 'danger');
       });
     }
   }
@@ -99132,22 +99110,35 @@ __webpack_require__.r(__webpack_exports__);
     generateInvoice: function generateInvoice(context, _ref) {
       var vm = _ref.vm,
           reservation = _ref.reservation;
-      axios.post("http://127.0.0.1:8000/reservations/" + reservation.id, {
+      axios.post("/reservations/" + reservation.id, {
         reservation: reservation,
         _method: "put"
       }).then(function (response) {})["catch"](function (response) {});
     },
     // Marca una factura como pagada. (Status/Payment Method)
-    updateInvoice: function updateInvoice(context, _ref2) {
+    payInvoice: function payInvoice(context, _ref2) {
       var vm = _ref2.vm,
           invoice = _ref2.invoice;
-      axios.post("http://127.0.0.1:8000/invoice/" + invoice.id, {
+      axios.post("/invoice/" + invoice.id + "/pay", {
         invoice: invoice,
         _method: "put"
       }).then(function (response) {
-        vm.makeToast("Invoice ", invoice.id + ' has been updated.', 'success');
+        vm.makeToast("Invoice updated", 'The invoice has been paid.', 'success');
       })["catch"](function (response) {
-        vm.makeToast("Invoice ", invoice.id + ' cannot be updated', 'danger');
+        vm.makeToast("Invoice update error", ' The invoice cannot be paid', 'danger');
+      });
+    },
+    // Marca una factura como pagada. (Status/Payment Method)
+    recalculateInvoice: function recalculateInvoice(context, _ref3) {
+      var vm = _ref3.vm,
+          invoice = _ref3.invoice;
+      axios.post("/invoice/" + invoice.id + '/recalc', {
+        invoice: invoice,
+        _method: "post"
+      }).then(function (response) {
+        vm.makeToast("Invoice updated", 'The invoice has been updated.', 'success');
+      })["catch"](function (response) {
+        vm.makeToast("Invoice update error", ' The invoice cannot be updated', 'danger');
       });
     }
   }

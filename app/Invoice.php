@@ -12,9 +12,9 @@ class Invoice extends Model
         'laravel_through_key'
     ];
 
-    public function total()
+    public function totalDue()
     {
-        // Select SUM billed_services where guest_id = id
+        return $this->billedServices->sum('service.cost');
     }
 
     public function customer()
@@ -31,10 +31,13 @@ class Invoice extends Model
 
     public function billedServices()
     {
-        return $this->hasMany(
+        return $this->hasManyThrough(
             'App\BilledService',
-            'guest_id',
-            'id'
+            'App\Reservation',
+            'id', // reservations.id where
+            'reservation_id', // reservation_id
+            'reservation_id', // invoice_id where
+            'id',
         );
     }
 }

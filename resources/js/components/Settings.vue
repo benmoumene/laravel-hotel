@@ -72,6 +72,10 @@
         <b-form-input v-model="row.item.value"></b-form-input>
       </template>
 
+      <template v-slot:cell(description)="row">
+        <b-form-input v-model="row.item.description"></b-form-input>
+      </template>
+
       <template v-slot:cell(actions)="row">
         <b-button variant="info" @click="updateSetting(row.item)">Update</b-button>
       </template>
@@ -117,12 +121,22 @@ export default {
   },
   methods: {
     updateSetting(setting) {
-      this.$store.dispatch("editSetting", setting);
+      this.$store.dispatch("editSetting", { vm: this, setting });
     },
     onFiltered(filteredItems) {
       // Trigger pagination to update the number of buttons/pages due to filtering
       this.totalRows = filteredItems.length;
       this.currentPage = 1;
+    },
+    makeToast(title, message, variant = "info") {
+      this.$bvToast.toast(message, {
+        title,
+        autoHideDelay: 5000,
+        variant,
+        solid: true,
+        toaster: "b-toaster-bottom-right",
+        appendToast: true
+      });
     }
   },
   computed: {

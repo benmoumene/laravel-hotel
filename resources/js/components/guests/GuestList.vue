@@ -78,12 +78,12 @@
         <b-link v-b-modal.modal-center>{{ room(row.item.room.id).name }}</b-link>
       </template>
       <template v-slot:cell(actions)="row">
-        <b-button variant="info" @click="showCustomerInfo(row.item)">Customer</b-button>
+        <b-button size="sm" variant="info" @click="showCustomerInfo(row.item)">Customer</b-button>
         <router-link :to="{path: row.item.id +'/cancel'}">
-          <i class="nav-icon fa fa-bed"></i>
-          Show
+          <b-button size="sm" variant="info">Reservation</b-button>
         </router-link>
-        <b-button @click="cancelReservation(row.item)" variant="primary">CANCEL</b-button>
+        <b-button size="sm" variant="info">Room</b-button>
+        <b-button size="sm" @click="cancelReservation(row.item)" variant="primary">Guest Left</b-button>
       </template>
     </b-table>
 
@@ -137,7 +137,7 @@ export default {
         },
         {
           key: "check_out",
-          label: "Check in",
+          label: "Check Out",
           sortable: true,
           class: "text-center"
         },

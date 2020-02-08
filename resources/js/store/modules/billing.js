@@ -47,7 +47,7 @@ export default ({
     },
     actions: {
         generateInvoice(context, { vm, reservation }) {
-            axios.post("http://127.0.0.1:8000/reservations/" + reservation.id, {
+            axios.post("/reservations/" + reservation.id, {
                 reservation,
                 _method: "put"
             }).then(function (response) {
@@ -55,14 +55,25 @@ export default ({
             });
         },
         // Marca una factura como pagada. (Status/Payment Method)
-        updateInvoice(context, { vm, invoice }) {
-            axios.post("http://127.0.0.1:8000/invoice/" + invoice.id, {
+        payInvoice(context, { vm, invoice }) {
+            axios.post("/invoice/" + invoice.id + "/pay", {
                 invoice,
                 _method: "put"
             }).then(function (response) {
-                vm.makeToast("Invoice ", invoice.id + ' has been updated.', 'success');
+                vm.makeToast("Invoice updated", 'The invoice has been paid.', 'success');
             }).catch(function (response) {
-                vm.makeToast("Invoice ", invoice.id + ' cannot be updated', 'danger');
+                vm.makeToast("Invoice update error", ' The invoice cannot be paid', 'danger');
+            });
+        },
+        // Marca una factura como pagada. (Status/Payment Method)
+        recalculateInvoice(context, { vm, invoice }) {
+            axios.post("/invoice/" + invoice.id + '/recalc', {
+                invoice,
+                _method: "post"
+            }).then(function (response) {
+                vm.makeToast("Invoice updated", 'The invoice has been updated.', 'success');
+            }).catch(function (response) {
+                vm.makeToast("Invoice update error", ' The invoice cannot be updated', 'danger');
             });
         },
     }
