@@ -171,6 +171,14 @@ export default {
       }
       return invoice;
     },
+    reservation() {
+      var reservation = this.getReservation(this.invoice.reservation_id);
+
+      if (typeof reservation === "undefined") {
+        return "";
+      }
+      return reservation;
+    },
     guest() {
       var guest = this.getGuestWithReservationId(this.invoice.reservation_id);
 
@@ -188,17 +196,11 @@ export default {
       }
       return customer;
     },
-    reservation() {
-      var reservation = this.getReservation(this.guest.reservation_id);
-
-      if (typeof reservation === "undefined") {
-        //return { id: 0, from_date: "", to_date: "" };
-        return { room: {} };
-      }
-      return reservation;
-    },
     room() {
-      var room = this.getRoom(this.invoice.reservation_id);
+      var room = this.getRoom(this.reservation.room_id);
+      if (typeof room === "undefined") {
+        return "";
+      }
       return room;
     },
     billedServices() {

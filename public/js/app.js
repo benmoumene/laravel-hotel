@@ -2790,6 +2790,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
       return invoice;
     },
+    reservation: function reservation() {
+      var reservation = this.getReservation(this.invoice.reservation_id);
+
+      if (typeof reservation === "undefined") {
+        return "";
+      }
+
+      return reservation;
+    },
     guest: function guest() {
       var guest = this.getGuestWithReservationId(this.invoice.reservation_id);
 
@@ -2810,20 +2819,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
       return customer;
     },
-    reservation: function reservation() {
-      var reservation = this.getReservation(this.guest.reservation_id);
+    room: function room() {
+      var room = this.getRoom(this.reservation.room_id);
 
-      if (typeof reservation === "undefined") {
-        //return { id: 0, from_date: "", to_date: "" };
-        return {
-          room: {}
-        };
+      if (typeof room === "undefined") {
+        return "";
       }
 
-      return reservation;
-    },
-    room: function room() {
-      var room = this.getRoom(this.invoice.reservation_id);
       return room;
     },
     billedServices: function billedServices() {
