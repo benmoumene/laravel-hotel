@@ -31,6 +31,7 @@ class SettingController extends Controller
         $currentUserId = Auth::user()->id;
         $setting = Setting::where('id', $id)->first();
         $setting->value = $request['setting']['value'];
+        $setting->description = $request['setting']['description'];
         $setting->save();
                 
         // Devolvemos el json con el perfil y codigo 200

@@ -72,6 +72,10 @@
         <b-form-input v-model="row.item.value"></b-form-input>
       </template>
 
+      <template v-slot:cell(description)="row">
+        <b-form-input v-model="row.item.description"></b-form-input>
+      </template>
+
       <template v-slot:cell(actions)="row">
         <b-button variant="info" @click="updateSetting(row.item)">Update</b-button>
       </template>

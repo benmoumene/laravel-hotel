@@ -2511,6 +2511,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Settings",
@@ -73305,6 +73309,22 @@ var render = function() {
                       _vm.$set(row.item, "value", $$v)
                     },
                     expression: "row.item.value"
+                  }
+                })
+              ]
+            }
+          },
+          {
+            key: "cell(description)",
+            fn: function(row) {
+              return [
+                _c("b-form-input", {
+                  model: {
+                    value: row.item.description,
+                    callback: function($$v) {
+                      _vm.$set(row.item, "description", $$v)
+                    },
+                    expression: "row.item.description"
                   }
                 })
               ]
