@@ -68,22 +68,29 @@
       :sort-direction="sortDirection"
       @filtered="onFiltered"
     >
-      <!-- Al hacer click en room mostrar info de esta -->
+      <template
+        v-slot:cell(customer.first_name)="row"
+      >{{ customer(row.item.customer_id).first_name }}</template>
+
+      <template v-slot:cell(customer_last_name)="row">{{ customer(row.item.customer_id).last_name }}</template>
+
       <template v-slot:cell(room_name)="row">
-        <b-link v-b-modal.modal-center>{{ room(row.item.room_id).name }}</b-link>
+        <router-link
+          :to="{path: '/room/' + row.item.room_id +'/edit'}"
+          class="nav-link"
+        >{{ room(row.item.room_id).name }}</router-link>
       </template>
       <template v-slot:cell(actions)="row">
-        <router-link :to="{path: row.item.id +'/cancel'}" class="nav-link">
-          <i class="nav-icon fa fa-bed"></i>
-          Show
+        <router-link :to="{path: row.item.id +'/show'}">
+          <b-button size="sm" variant="primary">Show</b-button>
         </router-link>
-        <b-button @click="cancelReservation(row.item)" variant="primary">CANCEL</b-button>
+        <b-button size="sm" @click="cancelReservation(row.item)" variant="danger">Cancel</b-button>
       </template>
     </b-table>
 
     <b-modal id="modal-center" centered title="Reservation Info">
       <b-row>
-        <b-col sm="3" class="avatar-menu-inner">Room Name:</b-col>
+        <b-col sm="3" class="avatar-menu-inner">Room</b-col>
       </b-row>
       <b-row>
         <b-col sm="3" class="avatar-menu-inner">Type:</b-col>
@@ -107,7 +114,7 @@ export default {
     return {
       fields: [
         {
-          key: "customer_first_name",
+          key: "customer.first_name",
           label: "First Name",
           sortable: true,
           sortDirection: "desc"
@@ -119,20 +126,14 @@ export default {
           sortDirection: "desc"
         },
         {
-          key: "customer_phone",
-          label: "phone",
-          sortable: true,
-          class: "text-center"
-        },
-        {
-          key: "customer_document_id",
-          label: "Document Id",
-          sortable: true,
-          class: "text-center"
-        },
-        {
           key: "room_name",
-          label: "Room Name",
+          label: "Room",
+          sortable: true,
+          class: "text-center"
+        },
+        {
+          key: "status",
+          label: "status",
           sortable: true,
           class: "text-center"
         },
@@ -157,7 +158,7 @@ export default {
       sortDesc: false,
       sortDirection: "asc",
       filter: null,
-      filterOn: []
+      filterOn: ["first_name"]
     };
   },
   methods: {
@@ -196,6 +197,11 @@ export default {
       getCustomer: "customer/getCustomer",
       getRoom: "room/getRoom"
     }),
+    filteredReservations() {
+      return this.reservations.filter(
+        reservation => reservation.status === "active"
+      );
+    },
     sortOptions() {
       // Create an options list from our fields
       return this.fields
@@ -207,10 +213,6 @@ export default {
     totalRows() {
       return this.reservations.length;
     }
-  },
-  mounted() {},
-  updated() {}
+  }
 };
 </script>
-<style scoped>
-</style>
