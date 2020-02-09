@@ -25,11 +25,18 @@ Route::put('/customers/{customer_id}', 'CustomerController@update');
 Route::post('/reservations', 'ReservationController@store');
 // Actualiza reserva
 Route::put('/reservations/{reservation_id}', 'ReservationController@update');
-// Cancelar reserva
+// Borrar reserva
 Route::delete('/reservations/{reservation_id}', 'ReservationController@destroy');
+// Cancelar reserva
+Route::get('/reservation/{reservation_id}/cancel', 'ReservationController@cancel');
 
 // Nuevo guest
 Route::post('/guest', 'GuestController@store');
+// Llegada de guest
+Route::post('/guest/{reservation_id}/checkin', 'GuestController@checkIn');
+// Salid de guest
+Route::post('/guest/{reservation_id}/checkout', 'GuestController@checkOut');
+
 // Actualizar datos guest
 Route::put('/guest/{guest_id}', 'GuestController@update');
 
