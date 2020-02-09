@@ -61,9 +61,6 @@
 import { mapState, mapGetters } from "vuex";
 export default {
   name: "ReservationShow",
-  data: function() {
-    return {};
-  },
   methods: {
     makeToast(title, message, variant = "info") {
       this.$bvToast.toast(message, {

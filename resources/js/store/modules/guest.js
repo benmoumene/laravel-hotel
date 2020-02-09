@@ -114,12 +114,17 @@ export default ({
                         return;
                     }
                     var newGuest = response['data']['guest'];
+                    var newReservation = response['data']['reservation'];
 
                     // Nuevo guest
                     if (reservation.guest !== null) {
                         // Edit guest
                         let guestIndex = context.getters.getGuestIndex(reservation.guest.id);
                         context.commit('REPLACE_GUEST', { guestIndex, newGuest });
+                        vm.$store.dispatch('reservation/updateReservation', {
+                            reservation: newReservation,
+                            reservationId: newReservation.id
+                        });
                         // Agregar ids a reservations
                     }
 

@@ -5232,9 +5232,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "ReservationShow",
-  data: function data() {
-    return {};
-  },
   methods: {
     makeToast: function makeToast(title, message) {
       var variant = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "info";
@@ -99767,7 +99764,8 @@ __webpack_require__.r(__webpack_exports__);
             return;
           }
 
-          var newGuest = response['data']['guest']; // Nuevo guest
+          var newGuest = response['data']['guest'];
+          var newReservation = response['data']['reservation']; // Nuevo guest
 
           if (reservation.guest !== null) {
             // Edit guest
@@ -99775,6 +99773,10 @@ __webpack_require__.r(__webpack_exports__);
             context.commit('REPLACE_GUEST', {
               guestIndex: guestIndex,
               newGuest: newGuest
+            });
+            vm.$store.dispatch('reservation/updateReservation', {
+              reservation: newReservation,
+              reservationId: newReservation.id
             }); // Agregar ids a reservations
           }
 
@@ -99898,6 +99900,13 @@ __webpack_require__.r(__webpack_exports__);
         });
       };
     },
+    getReservationIndex: function getReservationIndex(state, getters) {
+      return function (reservationId) {
+        return state.reservations.findIndex(function (reservation) {
+          return reservation.id === reservationId;
+        });
+      };
+    },
     getReservation: function getReservation(state, getters) {
       return function (reservationId) {
         return state.reservations.find(function (reservation) {
@@ -99929,18 +99938,34 @@ __webpack_require__.r(__webpack_exports__);
     },
     DELETE_RESERVATION: function DELETE_RESERVATION(state, index) {
       Vue["delete"](state.reservations, index);
+    },
+    REPLACE_RESERVATION: function REPLACE_RESERVATION(state, _ref) {
+      var reservationIndex = _ref.reservationIndex,
+          newReservation = _ref.newReservation;
+      Vue.set(state.reservations, reservationIndex, newReservation);
     }
   },
   actions: {
+    updateReservation: function updateReservation(context, _ref2) {
+      var reservation = _ref2.reservation,
+          reservationId = _ref2.reservationId;
+      var index = context.state.reservations.findIndex(function (reservation) {
+        return reservation.id === reservationId;
+      });
+      context.commit('REPLACE_RESERVATION', {
+        reservationIndex: index,
+        newReservation: reservation
+      });
+    },
     deleteReservationById: function deleteReservationById(context, reservationId) {
       var index = context.state.reservations.findIndex(function (reservation) {
         return reservation.id === reservationId;
       });
       context.commit('DELETE_RESERVATION', index);
     },
-    addReservation: function addReservation(context, _ref) {
-      var vm = _ref.vm,
-          reservation = _ref.reservation;
+    addReservation: function addReservation(context, _ref3) {
+      var vm = _ref3.vm,
+          reservation = _ref3.reservation;
       axios.post("http://127.0.0.1:8000/reservations/", {
         reservation: reservation
       }).then(function (response) {
@@ -99960,21 +99985,27 @@ __webpack_require__.r(__webpack_exports__);
         vm.makeToast("Error", 'Reservation failed!!!', 'danger');
       });
     },
-    cancelReservation: function cancelReservation(context, _ref2) {
-      var vm = _ref2.vm,
-          reservation = _ref2.reservation;
+    cancelReservation: function cancelReservation(context, _ref4) {
+      var vm = _ref4.vm,
+          reservation = _ref4.reservation;
       axios.get("/reservation/" + reservation.id + '/cancel', {
         reservation: reservation
       }).then(function (response) {
-        reservation.status = response['data']['reservation'].status;
+        //reservation.status = response['data']['reservation'].status;
+        var newReservation = response['data']['reservation'];
+        var reservationIndex = context.getters.getReservationIndex(reservation.id);
+        context.commit('REPLACE_RESERVATION', {
+          reservationIndex: reservationIndex,
+          newReservation: newReservation
+        });
         vm.makeToast("Success", 'Reservation cancelled!!!', 'success');
       })["catch"](function (response) {
         vm.makeToast("Error", 'Cancellation failed!!!', 'danger');
       });
     },
-    deleteReservation: function deleteReservation(context, _ref3) {
-      var vm = _ref3.vm,
-          reservation = _ref3.reservation;
+    deleteReservation: function deleteReservation(context, _ref5) {
+      var vm = _ref5.vm,
+          reservation = _ref5.reservation;
       axios.post("/reservations/" + reservation.id, {
         reservation: reservation,
         _method: "delete"

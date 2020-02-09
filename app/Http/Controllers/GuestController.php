@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Auth;
 use App\Guest;
+use App\Reservation;
 
 class GuestController extends Controller
 {
@@ -83,7 +84,15 @@ class GuestController extends Controller
         $guest->check_out = date('Y-m-d H:i:s');
         $guest->save();
         // $service_container_reservation_expired!!!
-        return response()->json(['guest' => $guest], 200);
+        $reservation = Reservation::where('id', $reservationId)->first();
+        $reservation->status = 'expired';
+        $reservation->save();
+
+        return response()->json(
+            ['guest' => $guest,
+            'reservation' => $reservation],
+            200
+        );
     }
 
     /**

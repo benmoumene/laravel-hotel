@@ -10,6 +10,10 @@ export default ({
                 reservation => reservation.id === reservationId
             );
         },
+        getReservationIndex: (state, getters) => (reservationId) => {
+            return state.reservations.findIndex(
+                reservation => reservation.id === reservationId);
+        },
         getReservation: (state, getters) => (reservationId) => {
             return state.reservations.find(
                 reservation => reservation.id === reservationId
@@ -37,9 +41,20 @@ export default ({
         },
         DELETE_RESERVATION(state, index) {
             Vue.delete(state.reservations, index);
-        }
+        },
+        REPLACE_RESERVATION(state, { reservationIndex, newReservation }) {
+            Vue.set(state.reservations, reservationIndex, newReservation);
+        },
     },
     actions: {
+        updateReservation(context, { reservation, reservationId }) {
+            var index = context.state.reservations.findIndex(
+                reservation => reservation.id === reservationId);
+            context.commit('REPLACE_RESERVATION', {
+                reservationIndex: index,
+                newReservation: reservation
+            });
+        },
         deleteReservationById(context, reservationId) {
             var index = context.state.reservations.findIndex(
                 reservation => reservation.id === reservationId);
@@ -69,7 +84,10 @@ export default ({
             axios.get("/reservation/" + reservation.id + '/cancel', {
                 reservation,
             }).then(function (response) {
-                reservation.status = response['data']['reservation'].status;
+                //reservation.status = response['data']['reservation'].status;
+                let newReservation = response['data']['reservation'];
+                let reservationIndex = context.getters.getReservationIndex(reservation.id);
+                context.commit('REPLACE_RESERVATION', { reservationIndex, newReservation });
                 vm.makeToast("Success", 'Reservation cancelled!!!', 'success');
             }).catch(function (response) {
                 vm.makeToast("Error", 'Cancellation failed!!!', 'danger');
