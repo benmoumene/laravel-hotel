@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Auth;
+use App\Http\Requests\ReservationRequest;
 use App\Reservation;
 use App\Guest;
 
@@ -15,23 +16,19 @@ class ReservationController extends Controller
         $this->middleware('auth');
     }
     
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    // Metodo para crear reservas
+    public function store(ReservationRequest $request)
     {
-        $currentUserId = Auth::user()->id;
+        // Creamos la reserva
         $reservation = new Reservation;
         $reservation->customer_id = $request->input('reservation.customer.id');
         $reservation->status = 'active';
         $reservation->room_id = $request->input('reservation.room.id');
-        $reservation->from_date = $request['reservation']['from_date'];
-        $reservation->to_date = $request['reservation']['to_date'];
+        $reservation->from_date = $request->input('reservation.from_date');
+        $reservation->to_date = $request->input('reservation.to_date');
         $reservation->save();
 
+        // Creamos el guest asociado a la reserva
         $guest = new Guest;
         $guest->reservation_id = $reservation->id;
         $guest->check_in = null;
@@ -45,44 +42,12 @@ class ReservationController extends Controller
         ], 200);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        $currentUserId = Auth::user()->id;
-        $reservation = Reservation::where('id', $id)->first(); // firstOrFail???
-        $reservation->from_date = $request['reservation']['from_date'];
-        $reservation->to_date = $request['reservation']['to_date'];
-        $reservation->save();
-
-        return response()->json(['reservation' => $reservation], 200);
-    }
-
+    // Metodo para cancelar reservas
     public function cancel(Request $request, $id)
     {
-        $reservation = Reservation::where('id', $id)->first(); // firstOrFail???
+        $reservation = Reservation::where('id', $id)->first();
         $reservation->status = 'cancelled';
         $reservation->save();
         return response()->json(['reservation' => $reservation], 200);
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        $currentUserId = Auth::user()->id;
-        $reservation = Reservation::where('id', $id)->first(); // firstOrFail???
-        $reservation->delete();
-
-        return response()->json(['reservation' => $reservation], 204);
     }
 }
