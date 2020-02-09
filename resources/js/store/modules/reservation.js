@@ -2,6 +2,7 @@ export default ({
     namespaced: true,
     state: {
         reservations: [],
+        ready: false
     },
     getters: {
         getReservationById: (state, getters) => (reservationId) => {
@@ -21,11 +22,15 @@ export default ({
         },
     },
     mutations: {
+        SET_READY(state, ready) {
+            state.ready = true;
+        },
         SET_RESERVATION(state, reservation) {
             state.reservation = reservation;
         },
         SET_RESERVATIONS(state, reservations) {
             state.reservations = reservations;
+            state.ready = true;
         },
         ADD_RESERVATION(state, reservation) {
             state.reservations.push(reservation);
@@ -60,8 +65,18 @@ export default ({
                 vm.makeToast("Error", 'Reservation failed!!!', 'danger');
             });
         },
+        cancelReservation(context, { vm, reservation }) {
+            axios.get("/reservation/" + reservation.id + '/cancel', {
+                reservation,
+            }).then(function (response) {
+                reservation.status = response['data']['reservation'].status;
+                vm.makeToast("Success", 'Reservation cancelled!!!', 'success');
+            }).catch(function (response) {
+                vm.makeToast("Error", 'Cancellation failed!!!', 'danger');
+            });
+        },
         deleteReservation(context, { vm, reservation }) {
-            axios.post("http://127.0.0.1:8000/reservations/" + reservation.id, {
+            axios.post("/reservations/" + reservation.id, {
                 reservation,
                 _method: "delete"
             }).then(function (response) {

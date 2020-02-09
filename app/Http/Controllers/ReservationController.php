@@ -51,6 +51,14 @@ class ReservationController extends Controller
         return response()->json(['reservation' => $reservation], 200);
     }
 
+    public function cancel(Request $request, $id)
+    {
+        $reservation = Reservation::where('id', $id)->first(); // firstOrFail???
+        $reservation->status = 'cancelled';
+        $reservation->save();
+        return response()->json(['reservation' => $reservation], 200);
+    }
+
     /**
      * Remove the specified resource from storage.
      *
