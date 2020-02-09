@@ -169,7 +169,7 @@ export default {
       return this.getRoom(id);
     },
     cancelReservation(reservation) {
-      this.$store.dispatch("reservation/deleteReservation", {
+      this.$store.dispatch("reservation/cancelReservation", {
         vm: this,
         reservation
       });
