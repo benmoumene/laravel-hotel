@@ -73,7 +73,7 @@
 <script>
 import { mapState } from "vuex";
 export default {
-  name: "RoomFinder",
+  name: "ReservationRoomFinder",
   props: {
     reservation: Object
   },
@@ -104,7 +104,6 @@ export default {
       this.reservation.from_date = this.filter.from_date;
       this.reservation.to_date = this.filter.to_date;
 
-      console.log(this.reservation);
       //this.$emit("updateReservation", this.reservation);
       //this.$store.commit("reservation/SET_RESERVATION", reservation);
       //this.$store.dispatch("reservation/addReservation", reservation);
