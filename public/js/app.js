@@ -5083,7 +5083,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       return this.getRoom(id);
     },
     cancelReservation: function cancelReservation(reservation) {
-      this.$store.dispatch("reservation/deleteReservation", {
+      this.$store.dispatch("reservation/cancelReservation", {
         vm: this,
         reservation: reservation
       });
@@ -5220,15 +5220,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "ReservationShow",
@@ -5245,19 +5236,19 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       });
     },
     cancelReservation: function cancelReservation() {
-      this.$store.dispatch("reservation/cancelReservation", {
+      this.$store.dispatch("reservation/cancel", {
         vm: this,
         reservation: this.reservation
       });
     },
     checkIn: function checkIn() {
-      this.$store.dispatch("guest/guestCheckIn", {
+      this.$store.dispatch("guest/checkIn", {
         vm: this,
         reservation: this.reservation
       });
     },
     checkOut: function checkOut() {
-      this.$store.dispatch("guest/guestCheckOut", {
+      this.$store.dispatch("guest/checkOut", {
         vm: this,
         reservation: this.reservation
       });
@@ -99669,16 +99660,16 @@ __webpack_require__.r(__webpack_exports__);
     isCurrentGuest: function isCurrentGuest(state, getters) {
       return function (customerId) {
         var now = new Date();
-        var dd = String(now.getDate()).padStart(2, '0');
-        var mm = String(now.getMonth() + 1).padStart(2, '0');
+        var dd = String(now.getDate()).padStart(2, "0");
+        var mm = String(now.getMonth() + 1).padStart(2, "0");
         var yyyy = now.getFullYear();
         var hour = now.getHours();
         var minutes = now.getMinutes();
         var seconds = now.getSeconds();
-        var date = yyyy + '-' + mm + '-' + dd;
-        var time = hour + ':' + minutes + ':' + seconds; //2020-01-13 19:59:12
+        var date = yyyy + "-" + mm + "-" + dd;
+        var time = hour + ":" + minutes + ":" + seconds; //2020-01-13 19:59:12
 
-        var datetime = date + ' ' + time;
+        var datetime = date + " " + time;
         var rows = state.guests.filter(function (guest) {
           if (guest.customer.id !== customerId) {
             return false;
@@ -99719,7 +99710,7 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   actions: {
-    guestCheckIn: function guestCheckIn(context, _ref2) {
+    checkIn: function checkIn(context, _ref2) {
       var vm = _ref2.vm,
           reservation = _ref2.reservation;
       axios.post("/guest/" + reservation.id + "/checkin", {
@@ -99727,31 +99718,28 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function (response) {
         // Si el request tuvo exito (codigo 200)
         if (response.status == 200) {
-          // Agregamos una nueva conversacion si existe el objeto
-          if (response['data'].length == 0) {
+          // Comprobamos que json en el objeto
+          if (response["data"].length == 0) {
             return;
-          }
+          } // Nuevos datos del guest
 
-          var newGuest = response['data']['guest']; // Nuevo guest
 
-          if (reservation.guest === null) {
-            context.commit('ADD_GUEST', newGuest);
-          } else {
-            // Edit guest
-            var guestIndex = context.getters.getGuestIndex(reservation.guest.id);
-            context.commit('REPLACE_GUEST', {
-              guestIndex: guestIndex,
-              newGuest: newGuest
-            }); // Agregar ids a reservations
-          }
+          var newGuest = response["data"]["guest"]; // Buscamos el index del guest
 
-          vm.makeToast("Arrival", 'Guest arrival set at ' + newGuest.check_in, 'success');
+          var guestIndex = context.getters.getGuestIndex(reservation.guest.id); // Llevamos a cabo la modificacion
+
+          context.commit("REPLACE_GUEST", {
+            guestIndex: guestIndex,
+            newGuest: newGuest
+          }); // Mostramos un mensaje
+
+          vm.makeToast("Check In", "Guest check in " + newGuest.check_in, "success");
         }
       })["catch"](function (response) {
-        vm.makeToast("Error", 'Guest cannot be added', 'danger');
+        vm.makeToast("Check In", "Something went wrong.", "danger");
       });
     },
-    guestCheckOut: function guestCheckOut(context, _ref3) {
+    checkOut: function checkOut(context, _ref3) {
       var vm = _ref3.vm,
           reservation = _ref3.reservation;
       axios.post("/guest/" + reservation.id + "/checkout", {
@@ -99759,46 +99747,30 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function (response) {
         // Si el request tuvo exito (codigo 200)
         if (response.status == 200) {
-          // Agregamos una nueva conversacion si existe el objeto
-          if (response['data'].length == 0) {
+          // Comprobamos que json en el objeto
+          if (response["data"].length == 0) {
             return;
-          }
+          } // Nuevos datos del guest
 
-          var newGuest = response['data']['guest'];
-          var newReservation = response['data']['reservation']; // Nuevo guest
 
-          if (reservation.guest !== null) {
-            // Edit guest
-            var guestIndex = context.getters.getGuestIndex(reservation.guest.id);
-            context.commit('REPLACE_GUEST', {
-              guestIndex: guestIndex,
-              newGuest: newGuest
-            });
-            vm.$store.dispatch('reservation/updateReservation', {
-              reservation: newReservation,
-              reservationId: newReservation.id
-            }); // Agregar ids a reservations
-          }
+          var newGuest = response["data"]["guest"];
+          var newReservation = response["data"]["reservation"]; // Buscamos el index del guest
 
-          vm.makeToast("Check out", 'Guest left at ' + newGuest.check_in, 'success');
+          var guestIndex = context.getters.getGuestIndex(reservation.guest.id); // Llevamos a cabo la modificacion
+
+          context.commit("REPLACE_GUEST", {
+            guestIndex: guestIndex,
+            newGuest: newGuest
+          });
+          vm.$store.dispatch("reservation/updateReservation", {
+            reservation: newReservation,
+            reservationId: newReservation.id
+          }); // Mostramos un mensaje
+
+          vm.makeToast("Check Out", "Guest check out " + newGuest.check_out, "success");
         }
       })["catch"](function (response) {
-        vm.makeToast("Check out", 'Check out cannot be changed.', 'danger');
-      });
-    },
-    editGuest: function editGuest(context, guest) {
-      axios.post("http://127.0.0.1:8000/guest/", {
-        guest: guest,
-        _method: "put"
-      }).then(function (response) {
-        // Si el request tuvo exito (codigo 200)
-        if (response.status == 200) {
-          // Agregamos una nueva conversacion si existe el objeto
-          if (response['data'].length == 0) {
-            return;
-          } // console.log('success');
-
-        }
+        vm.makeToast("Check Out", "Something went wrong.", "danger");
       });
     }
   }
@@ -99976,8 +99948,10 @@ __webpack_require__.r(__webpack_exports__);
             return;
           }
 
+          var newGuest = response['data']['guest'];
           var newReservation = response['data']['reservation'];
           context.commit('ADD_RESERVATION', newReservation);
+          vm.$store.commit('guest/ADD_GUEST', newGuest);
           vm.makeToast("Reservation created.", 'success');
         }
       })["catch"](function (response) {
@@ -99985,7 +99959,7 @@ __webpack_require__.r(__webpack_exports__);
         vm.makeToast("Error", 'Reservation failed!!!', 'danger');
       });
     },
-    cancelReservation: function cancelReservation(context, _ref4) {
+    cancel: function cancel(context, _ref4) {
       var vm = _ref4.vm,
           reservation = _ref4.reservation;
       axios.get("/reservation/" + reservation.id + '/cancel', {

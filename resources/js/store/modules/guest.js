@@ -24,17 +24,17 @@ export default ({
         },
         isCurrentGuest: (state, getters) => (customerId) => {
             var now = new Date();
-            var dd = String(now.getDate()).padStart(2, '0');
-            var mm = String(now.getMonth() + 1).padStart(2, '0');
+            var dd = String(now.getDate()).padStart(2, "0");
+            var mm = String(now.getMonth() + 1).padStart(2, "0");
             var yyyy = now.getFullYear();
             var hour = now.getHours();
             var minutes = now.getMinutes();
             var seconds = now.getSeconds();
 
-            var date = yyyy + '-' + mm + '-' + dd;
-            var time = hour + ':' + minutes + ':' + seconds;
+            var date = yyyy + "-" + mm + "-" + dd;
+            var time = hour + ":" + minutes + ":" + seconds;
             //2020-01-13 19:59:12
-            var datetime = date + ' ' + time;
+            var datetime = date + " " + time;
 
             var rows = state.guests.filter(
                 function (guest) {
@@ -75,78 +75,62 @@ export default ({
         },
     },
     actions: {
-        guestCheckIn(context, { vm, reservation }) {
+        checkIn(context, { vm, reservation }) {
             axios.post("/guest/" + reservation.id + "/checkin", {
                 reservation,
             }).then(function (response) {
                 // Si el request tuvo exito (codigo 200)
                 if (response.status == 200) {
-                    // Agregamos una nueva conversacion si existe el objeto
-                    if (response['data'].length == 0) {
+                    // Comprobamos que json en el objeto
+                    if (response["data"].length == 0) {
                         return;
                     }
-                    var newGuest = response['data']['guest'];
 
-                    // Nuevo guest
-                    if (reservation.guest === null) {
-                        context.commit('ADD_GUEST', newGuest);
-                    } else {
-                        // Edit guest
-                        let guestIndex = context.getters.getGuestIndex(reservation.guest.id);
-                        context.commit('REPLACE_GUEST', { guestIndex, newGuest });
-                        // Agregar ids a reservations
-                    }
+                    // Nuevos datos del guest
+                    var newGuest = response["data"]["guest"];
 
-                    vm.makeToast("Arrival", 'Guest arrival set at ' + newGuest.check_in, 'success');
+                    // Buscamos el index del guest
+                    let guestIndex = context.getters.getGuestIndex(reservation.guest.id);
+
+                    // Llevamos a cabo la modificacion
+                    context.commit("REPLACE_GUEST", { guestIndex, newGuest });
+
+                    // Mostramos un mensaje
+                    vm.makeToast("Check In", "Guest check in " + newGuest.check_in, "success");
                 }
             }).catch(function (response) {
-                vm.makeToast("Error", 'Guest cannot be added', 'danger');
+                vm.makeToast("Check In", "Something went wrong.", "danger");
             });
         },
-        guestCheckOut(context, { vm, reservation }) {
+        checkOut(context, { vm, reservation }) {
             axios.post("/guest/" + reservation.id + "/checkout", {
                 reservation,
             }).then(function (response) {
                 // Si el request tuvo exito (codigo 200)
                 if (response.status == 200) {
-                    // Agregamos una nueva conversacion si existe el objeto
-                    if (response['data'].length == 0) {
+                    // Comprobamos que json en el objeto
+                    if (response["data"].length == 0) {
                         return;
                     }
-                    var newGuest = response['data']['guest'];
-                    var newReservation = response['data']['reservation'];
 
-                    // Nuevo guest
-                    if (reservation.guest !== null) {
-                        // Edit guest
-                        let guestIndex = context.getters.getGuestIndex(reservation.guest.id);
-                        context.commit('REPLACE_GUEST', { guestIndex, newGuest });
-                        vm.$store.dispatch('reservation/updateReservation', {
-                            reservation: newReservation,
-                            reservationId: newReservation.id
-                        });
-                        // Agregar ids a reservations
-                    }
+                    // Nuevos datos del guest
+                    var newGuest = response["data"]["guest"];
+                    var newReservation = response["data"]["reservation"];
 
-                    vm.makeToast("Check out", 'Guest left at ' + newGuest.check_in, 'success');
+                    // Buscamos el index del guest
+                    let guestIndex = context.getters.getGuestIndex(reservation.guest.id);
+                    // Llevamos a cabo la modificacion
+                    context.commit("REPLACE_GUEST", { guestIndex, newGuest });
+                    vm.$store.dispatch("reservation/updateReservation", {
+                        reservation: newReservation,
+                        reservationId: newReservation.id
+                    });
+
+                    // Mostramos un mensaje
+                    vm.makeToast("Check Out", "Guest check out " + newGuest.check_out, "success");
                 }
             }).catch(function (response) {
-                vm.makeToast("Check out", 'Check out cannot be changed.', 'danger');
-            });
-        },
-        editGuest(context, guest) {
-            axios.post("http://127.0.0.1:8000/guest/", {
-                guest,
-                _method: "put"
-            }).then(function (response) {
-                // Si el request tuvo exito (codigo 200)
-                if (response.status == 200) {
-                    // Agregamos una nueva conversacion si existe el objeto
-                    if (response['data'].length == 0) {
-                        return;
-                    }
-                    // console.log('success');
-                }
+                vm.makeToast("Check Out", "Something went wrong.", "danger");
             });
         },
     }
