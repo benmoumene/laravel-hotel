@@ -76,8 +76,8 @@ export default ({
     },
     actions: {
         checkIn(context, { vm, reservation }) {
-            axios.post("/guest/" + reservation.id + "/checkin", {
-                reservation,
+            axios.post("/guest/" + reservation.guest.id + "/checkin", {
+                guest: reservation.guest,
             }).then(function (response) {
                 // Si el request tuvo exito (codigo 200)
                 if (response.status == 200) {
@@ -103,8 +103,8 @@ export default ({
             });
         },
         checkOut(context, { vm, reservation }) {
-            axios.post("/guest/" + reservation.id + "/checkout", {
-                reservation,
+            axios.post("/guest/" + reservation.guest.id + "/checkout", {
+                guest: reservation.guest,
             }).then(function (response) {
                 // Si el request tuvo exito (codigo 200)
                 if (response.status == 200) {
