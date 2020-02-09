@@ -18,9 +18,8 @@ Esta aplicacion es un dashboard que permite gestionar el Backend de un hotel. La
 - Perfil de usuario (Permite subir avatares al servidor)
 
 ## Pendiente
+- Implementar el resto de la aplicacion  (Guest)
 - Cuando un usuario realiza un pago y se marca como pagado, ejecutar un service container que ponga la factura como pagada y ademas elimine los bille services???
-- Implementar Guest Left, Reservation Cancel
-- Implementar el resto de la aplicacion  (Guest/Reservations)
 - Terminar de implmentar las relaciones de Eloquent en los modelos
 - Mejorar y Terminar el sistema de invoices
 =========================

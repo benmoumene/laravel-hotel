@@ -64,6 +64,12 @@
               </ul>
             </li>
             <li class="nav-item">
+              <router-link to="/reservation/list" class="nav-link">
+                <i class="nav-icon fa fa-calendar-alt"></i>
+                Reservations
+              </router-link>
+            </li>
+            <li class="nav-item">
               <router-link to="/guest/list" class="nav-link">
                 <i class="nav-icon fa fa-user"></i>
                 Guests
@@ -88,29 +94,6 @@
                   <router-link to="/room/list" class="nav-link">
                     <i class="nav-icon fa fa-list"></i>
                     Room List
-                  </router-link>
-                </li>
-              </ul>
-            </li>
-            <li class="nav-item has-treeview" v-if="isRecepcionist || isAdmin">
-              <a href="#" class="nav-link">
-                <i class="nav-icon fa fa-calendar-alt"></i>
-                <p>
-                  Reservations
-                  <i class="fa fa-angle-left right"></i>
-                </p>
-              </a>
-              <ul class="nav nav-treeview">
-                <li class="nav-item">
-                  <router-link to="/reservation/wizard" class="nav-link">
-                    <i class="nav-icon fa fa-hat-wizard"></i>
-                    Reservation Wizard
-                  </router-link>
-                </li>
-                <li class="nav-item">
-                  <router-link to="/reservation/list" class="nav-link">
-                    <i class="nav-icon fa fa-list"></i>
-                    List Reservations
                   </router-link>
                 </li>
               </ul>
