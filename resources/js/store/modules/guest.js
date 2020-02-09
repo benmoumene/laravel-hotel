@@ -71,8 +71,8 @@ export default ({
             state.guests.push(guest);
         },
         REPLACE_GUEST(state, { guestIndex, newGuest }) {
-            state.guests[guestIndex] = newGuest;
-        }
+            Vue.set(state.guests, guestIndex, newGuest);
+        },
     },
     actions: {
         guestCheckIn(context, { vm, reservation }) {

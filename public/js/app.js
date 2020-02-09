@@ -99718,7 +99718,7 @@ __webpack_require__.r(__webpack_exports__);
     REPLACE_GUEST: function REPLACE_GUEST(state, _ref) {
       var guestIndex = _ref.guestIndex,
           newGuest = _ref.newGuest;
-      state.guests[guestIndex] = newGuest;
+      Vue.set(state.guests, guestIndex, newGuest);
     }
   },
   actions: {
