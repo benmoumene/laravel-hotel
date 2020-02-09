@@ -38,7 +38,7 @@
 <script>
 import { mapState, mapGetters } from "vuex";
 import RoomFinder from "./RoomFinder";
-import CustomerFinder from "./CustomerFinder";
+
 // RoomAvailability.data (leer datos del componente)
 export default {
   name: "ReservationWizard",
@@ -103,8 +103,7 @@ export default {
     })
   },
   components: {
-    "room-finder": RoomFinder,
-    "customer-finder": CustomerFinder
+    "room-finder": RoomFinder
   },
   mounted() {}
 };
