@@ -13,6 +13,10 @@ class Guest extends Model
         'laravel_through_key'
     ];
 
+    protected $fillable = [
+        'reservation_id'
+    ];
+
     // Guest es un cliente
     public function customer()
     {

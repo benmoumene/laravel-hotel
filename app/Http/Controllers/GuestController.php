@@ -14,25 +14,6 @@ class GuestController extends Controller
         $this->middleware('auth');
     }
     
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -58,28 +39,6 @@ class GuestController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -100,6 +59,30 @@ class GuestController extends Controller
         $guest->document_id = $request['guest']['document_id'];
         $guest->save();
 
+        return response()->json(['guest' => $guest], 200);
+    }
+
+    public function checkIn(Request $request, $reservationId)
+    {
+        // Buscamos el guest en caso de que exista.
+        $guest = Guest::firstOrCreate(['reservation_id' => intval($reservationId)]);
+        $guest->check_in = date('Y-m-d H:i:s');
+        
+        if ($guest->check_out === null) {
+            $guest->check_out = null;
+        }
+        $guest->save();
+
+        return response()->json(['guest' => $guest], 200);
+    }
+
+    public function checkOut(Request $request, $reservationId)
+    {
+        // Buscamos el guest en caso de que exista.
+        $guest = Guest::where('reservation_id', intval($reservationId))->first();
+        $guest->check_out = date('Y-m-d H:i:s');
+        $guest->save();
+        // $service_container_reservation_expired!!!
         return response()->json(['guest' => $guest], 200);
     }
 

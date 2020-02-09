@@ -10,6 +10,10 @@ export default ({
                 guest => guest.customer_id === customerId
             );
         },
+        getGuestIndex: (state, getters) => (guestId) => {
+            return state.guests.findIndex(
+                guest => guest.id === guestId);
+        },
         getGuestWithReservationId: (state, getters) => (reservationId) => {
             return state.guests.find(
                 guest => guest.reservation_id === reservationId
@@ -66,11 +70,14 @@ export default ({
         ADD_GUEST(state, guest) {
             state.guests.push(guest);
         },
+        REPLACE_GUEST(state, { guestIndex, newGuest }) {
+            state.guests[guestIndex] = newGuest;
+        }
     },
     actions: {
-        addGuest(context, { vm, room }) {
-            axios.post("http://127.0.0.1:8000/room/", {
-                room
+        guestCheckIn(context, { vm, reservation }) {
+            axios.post("/guest/" + reservation.id + "/checkin", {
+                reservation,
             }).then(function (response) {
                 // Si el request tuvo exito (codigo 200)
                 if (response.status == 200) {
@@ -78,13 +85,48 @@ export default ({
                     if (response['data'].length == 0) {
                         return;
                     }
-
                     var newGuest = response['data']['guest'];
-                    context.commit('ADD_GUEST', newGuest);
-                    //vm.makeToast("Room added", newGuest.name + ' added.', 'success');
+
+                    // Nuevo guest
+                    if (reservation.guest === null) {
+                        context.commit('ADD_GUEST', newGuest);
+                    } else {
+                        // Edit guest
+                        let guestIndex = context.getters.getGuestIndex(reservation.guest.id);
+                        context.commit('REPLACE_GUEST', { guestIndex, newGuest });
+                        // Agregar ids a reservations
+                    }
+
+                    vm.makeToast("Arrival", 'Guest arrival set at ' + newGuest.check_in, 'success');
                 }
             }).catch(function (response) {
-                vm.makeToast("Error", 'The room cannot be added!!!', 'danger');
+                vm.makeToast("Error", 'Guest cannot be added', 'danger');
+            });
+        },
+        guestCheckOut(context, { vm, reservation }) {
+            axios.post("/guest/" + reservation.id + "/checkout", {
+                reservation,
+            }).then(function (response) {
+                // Si el request tuvo exito (codigo 200)
+                if (response.status == 200) {
+                    // Agregamos una nueva conversacion si existe el objeto
+                    if (response['data'].length == 0) {
+                        return;
+                    }
+                    var newGuest = response['data']['guest'];
+
+                    // Nuevo guest
+                    if (reservation.guest !== null) {
+                        // Edit guest
+                        let guestIndex = context.getters.getGuestIndex(reservation.guest.id);
+                        context.commit('REPLACE_GUEST', { guestIndex, newGuest });
+                        // Agregar ids a reservations
+                    }
+
+                    vm.makeToast("Check out", 'Guest left at ' + newGuest.check_in, 'success');
+                }
+            }).catch(function (response) {
+                vm.makeToast("Check out", 'Check out cannot be changed.', 'danger');
             });
         },
         editGuest(context, guest) {
