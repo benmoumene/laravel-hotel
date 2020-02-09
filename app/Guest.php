@@ -23,10 +23,6 @@ class Guest extends Model
         return $this->hasOneThrough(
             'App\Customer',
             'App\Reservation',
-            //'customer_id',
-            //'id',
-            //'id',
-            //'customer_id',
             'id',
             'id',
             'reservation_id',
