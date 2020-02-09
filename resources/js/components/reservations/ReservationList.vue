@@ -2,45 +2,19 @@
   <b-container fluid>
     <!-- User Interface controls -->
     <b-row>
-      <b-col lg="6" class="my-1">
+      <b-col sm="6" class="my-1">
         <b-form-group
-          label="Filter"
+          label="Status"
           label-cols-sm="3"
           label-align-sm="right"
           label-size="sm"
-          label-for="filterInput"
           class="mb-0"
         >
-          <b-input-group size="sm">
-            <b-form-input
-              v-model="filter"
-              type="search"
-              id="filterInput"
-              placeholder="Type to Search"
-            ></b-form-input>
-            <b-input-group-append>
-              <b-button :disabled="!filter" @click="filter = ''">Clear</b-button>
-            </b-input-group-append>
-          </b-input-group>
+          <b-form-select v-model="onStatus" id="perPageSelect" size="sm" :options="statusOptions"></b-form-select>
         </b-form-group>
       </b-col>
 
-      <b-col sm="5" md="6" class="my-1">
-        <b-form-group
-          label="Per page"
-          label-cols-sm="6"
-          label-cols-md="4"
-          label-cols-lg="3"
-          label-align-sm="right"
-          label-size="sm"
-          label-for="perPageSelect"
-          class="mb-0"
-        >
-          <b-form-select v-model="perPage" id="perPageSelect" size="sm" :options="pageOptions"></b-form-select>
-        </b-form-group>
-      </b-col>
-
-      <b-col sm="7" md="6" class="my-1">
+      <b-col sm="6" class="my-1">
         <b-pagination
           v-model="currentPage"
           :total-rows="totalRows"
@@ -57,7 +31,7 @@
       show-empty
       small
       stacked="md"
-      :items="reservations"
+      :items="filteredReservations"
       :fields="fields"
       :current-page="currentPage"
       :per-page="perPage"
@@ -68,12 +42,8 @@
       :sort-direction="sortDirection"
       @filtered="onFiltered"
     >
-      <template
-        v-slot:cell(customer.first_name)="row"
-      >{{ customer(row.item.customer_id).first_name }}</template>
-
-      <template v-slot:cell(customer_last_name)="row">{{ customer(row.item.customer_id).last_name }}</template>
-
+      <template v-slot:cell(first_name)="row">{{ customer(row.item.customer_id).first_name }}</template>
+      <template v-slot:cell(last_name)="row">{{ customer(row.item.customer_id).last_name }}</template>
       <template v-slot:cell(room_name)="row">
         <router-link
           :to="{path: '/room/' + row.item.room_id +'/edit'}"
@@ -97,51 +67,43 @@ export default {
     return {
       fields: [
         {
-          key: "customer.first_name",
-          label: "First Name",
-          sortable: true,
-          sortDirection: "desc"
+          key: "first_name",
+          label: "First Name"
         },
         {
-          key: "customer_last_name",
-          label: "Last Name",
-          sortable: true,
-          sortDirection: "desc"
+          key: "last_name",
+          label: "Last Name"
         },
         {
           key: "room_name",
-          label: "Room",
-          sortable: true,
-          class: "text-center"
+          label: "Room"
         },
         {
           key: "status",
           label: "status",
-          sortable: true,
-          class: "text-center"
+          sortable: true
         },
         {
           key: "from_date",
           label: "From",
-          sortable: true,
-          class: "text-center"
+          sortable: true
         },
         {
           key: "to_date",
           label: "To",
-          sortable: true,
-          class: "text-center"
+          sortable: true
         },
         { key: "actions", label: "Actions" }
       ],
       currentPage: 1,
-      perPage: 5,
-      pageOptions: [5, 10, 15],
+      perPage: 20,
+      statusOptions: ["all", "active", "cancelled", "expired"],
       sortBy: "",
       sortDesc: false,
       sortDirection: "asc",
       filter: null,
-      filterOn: ["first_name"]
+      onStatus: "active",
+      filterOn: []
     };
   },
   methods: {
@@ -181,8 +143,12 @@ export default {
       getRoom: "room/getRoom"
     }),
     filteredReservations() {
+      if (this.onStatus === "all") {
+        return this.reservations;
+      }
+
       return this.reservations.filter(
-        reservation => reservation.status === "active"
+        reservation => reservation.status === this.onStatus
       );
     },
     sortOptions() {
@@ -194,7 +160,7 @@ export default {
         });
     },
     totalRows() {
-      return this.reservations.length;
+      return this.filteredReservations.length;
     }
   }
 };
