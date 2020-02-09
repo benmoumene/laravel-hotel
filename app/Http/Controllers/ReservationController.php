@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Auth;
 use App\Reservation;
+use App\Guest;
 
 class ReservationController extends Controller
 {
@@ -25,12 +26,23 @@ class ReservationController extends Controller
         $currentUserId = Auth::user()->id;
         $reservation = new Reservation;
         $reservation->customer_id = $request->input('reservation.customer.id');
+        $reservation->status = 'active';
         $reservation->room_id = $request->input('reservation.room.id');
         $reservation->from_date = $request['reservation']['from_date'];
         $reservation->to_date = $request['reservation']['to_date'];
         $reservation->save();
 
-        return response()->json(['reservation' => $reservation], 200);
+        $guest = new Guest;
+        $guest->reservation_id = $reservation->id;
+        $guest->check_in = null;
+        $guest->check_out = null;
+        $guest->save();
+
+        $reservation['guest']['id'] = $guest->id;
+        return response()->json([
+            'reservation' => $reservation,
+            'guest' => $guest
+        ], 200);
     }
 
     /**
