@@ -20,6 +20,7 @@ class CreateGuestsTable extends Migration
             $table->timestamp('check_in')->nullable();
             $table->timestamp('check_out')->nullable();
             $table->foreign('reservation_id')->references('id')->on('reservations')->onDelete('CASCADE');
+            $table->unique('reservation_id');
         });
     }
 
