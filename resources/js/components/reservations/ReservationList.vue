@@ -77,7 +77,6 @@
       <template v-slot:cell(room_name)="row">
         <router-link
           :to="{path: '/room/' + row.item.room_id +'/edit'}"
-          class="nav-link"
         >{{ room(row.item.room_id).name }}</router-link>
       </template>
       <template v-slot:cell(actions)="row">
@@ -87,22 +86,6 @@
         <b-button size="sm" @click="cancelReservation(row.item)" variant="danger">Cancel</b-button>
       </template>
     </b-table>
-
-    <b-modal id="modal-center" centered title="Reservation Info">
-      <b-row>
-        <b-col sm="3" class="avatar-menu-inner">Room</b-col>
-      </b-row>
-      <b-row>
-        <b-col sm="3" class="avatar-menu-inner">Type:</b-col>
-      </b-row>
-      <b-row>
-        <b-col sm="3" class="avatar-menu-inner">Floor:</b-col>
-      </b-row>
-      <b-row>
-        <b-col sm="3" class="avatar-menu-inner">From:</b-col>
-        <b-col sm="3" class="avatar-menu-inner">To:</b-col>
-      </b-row>
-    </b-modal>
   </b-container>
 </template>
 <script>
