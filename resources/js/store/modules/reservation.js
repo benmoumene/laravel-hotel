@@ -53,14 +53,6 @@ export default ({
                 status: newStatus
             });
         },
-        /*updateReservation(context, { reservation, reservationId }) {
-            var index = context.state.reservations.findIndex(
-                reservation => reservation.id === reservationId);
-            context.commit("REPLACE_RESERVATION", {
-                reservationIndex: index,
-                newReservation: reservation
-            });
-        },*/
         addReservation(context, { vm, reservation }) {
             axios.post("/reservations/", {
                 reservation
@@ -88,7 +80,11 @@ export default ({
             }).then(function (response) {
                 let newReservation = response["data"]["reservation"];
                 let reservationIndex = context.getters.getReservationIndex(reservation.id);
-                context.commit("REPLACE_RESERVATION", { reservationIndex, newReservation });
+
+                context.commit("SET_RESERVATION_STATUS", {
+                    reservationIndex,
+                    status: newReservation.status
+                });
                 vm.makeToast("Reservation", "Reservation cancelled.", "success");
             }).catch(function (response) {
                 vm.makeToast("Reservation", "Something went wrong.", "danger");

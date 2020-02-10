@@ -5028,7 +5028,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       return this.getRoom(id);
     },
     cancelReservation: function cancelReservation(reservation) {
-      this.$store.dispatch("reservation/cancelReservation", {
+      this.$store.dispatch("reservation/cancel", {
         vm: this,
         reservation: reservation
       });
@@ -99393,15 +99393,6 @@ __webpack_require__.r(__webpack_exports__);
         status: newStatus
       });
     },
-
-    /*updateReservation(context, { reservation, reservationId }) {
-        var index = context.state.reservations.findIndex(
-            reservation => reservation.id === reservationId);
-        context.commit("REPLACE_RESERVATION", {
-            reservationIndex: index,
-            newReservation: reservation
-        });
-    },*/
     addReservation: function addReservation(context, _ref4) {
       var vm = _ref4.vm,
           reservation = _ref4.reservation;
@@ -99434,9 +99425,9 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function (response) {
         var newReservation = response["data"]["reservation"];
         var reservationIndex = context.getters.getReservationIndex(reservation.id);
-        context.commit("REPLACE_RESERVATION", {
+        context.commit("SET_RESERVATION_STATUS", {
           reservationIndex: reservationIndex,
-          newReservation: newReservation
+          status: newReservation.status
         });
         vm.makeToast("Reservation", "Reservation cancelled.", "success");
       })["catch"](function (response) {
