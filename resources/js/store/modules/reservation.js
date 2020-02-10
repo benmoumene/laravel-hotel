@@ -5,6 +5,9 @@ export default ({
         ready: false
     },
     getters: {
+        getReservation: (state, getters) => (reservationId) => {
+            return getters.getReservationById(reservationId);
+        },
         getReservationById: (state, getters) => (reservationId) => {
             return state.reservations.find(
                 reservation => reservation.id === reservationId
@@ -14,11 +17,6 @@ export default ({
             return state.reservations.findIndex(
                 reservation => reservation.id === reservationId);
         },
-        getReservation: (state, getters) => (reservationId) => {
-            return state.reservations.find(
-                reservation => reservation.id === reservationId
-            );
-        },
         getCustomerReservations: (state, getters) => (customerId) => {
             return state.reservations.filter(
                 reservation => reservation.customer_id === customerId
@@ -26,9 +24,6 @@ export default ({
         },
     },
     mutations: {
-        SET_READY(state, ready) {
-            state.ready = true;
-        },
         SET_RESERVATION(state, reservation) {
             state.reservation = reservation;
         },
@@ -50,60 +45,42 @@ export default ({
         updateReservation(context, { reservation, reservationId }) {
             var index = context.state.reservations.findIndex(
                 reservation => reservation.id === reservationId);
-            context.commit('REPLACE_RESERVATION', {
+            context.commit("REPLACE_RESERVATION", {
                 reservationIndex: index,
                 newReservation: reservation
             });
         },
-        deleteReservationById(context, reservationId) {
-            var index = context.state.reservations.findIndex(
-                reservation => reservation.id === reservationId);
-            context.commit('DELETE_RESERVATION', index);
-        },
         addReservation(context, { vm, reservation }) {
-            axios.post("http://127.0.0.1:8000/reservations/", {
+            axios.post("/reservations/", {
                 reservation
             }).then(function (response) {
                 // Si el request tuvo exito (codigo 200)
                 if (response.status == 200) {
                     // Agregamos una nueva conversacion si existe el objeto
-                    if (response['data'].length == 0) {
+                    if (response["data"].length == 0) {
                         return;
                     }
-                    var newGuest = response['data']['guest'];
-                    var newReservation = response['data']['reservation'];
-                    context.commit('ADD_RESERVATION', newReservation);
-                    vm.$store.commit('guest/ADD_GUEST', newGuest)
-                    vm.makeToast("Reservation created.", 'success');
+                    let newGuest = response["data"]["guest"];
+                    let newReservation = response["data"]["reservation"];
+                    // Comprobar si reservation lleva reservation.guest
+                    context.commit("ADD_RESERVATION", newReservation);
+                    vm.$store.commit("guest/ADD_GUEST", newGuest)
+                    vm.makeToast("Reservation", "Reservation created.", "success");
                 }
             }).catch(function (response) {
-                console.log(response);
-                vm.makeToast("Error", 'Reservation failed!!!', 'danger');
+                vm.makeToast("Reservation", "Something went wrong.", "danger");
             });
         },
         cancel(context, { vm, reservation }) {
-            axios.get("/reservation/" + reservation.id + '/cancel', {
+            axios.get("/reservation/" + reservation.id + "/cancel", {
                 reservation,
             }).then(function (response) {
-                //reservation.status = response['data']['reservation'].status;
-                let newReservation = response['data']['reservation'];
+                let newReservation = response["data"]["reservation"];
                 let reservationIndex = context.getters.getReservationIndex(reservation.id);
-                context.commit('REPLACE_RESERVATION', { reservationIndex, newReservation });
-                vm.makeToast("Success", 'Reservation cancelled!!!', 'success');
+                context.commit("REPLACE_RESERVATION", { reservationIndex, newReservation });
+                vm.makeToast("Reservation", "Reservation cancelled.", "success");
             }).catch(function (response) {
-                vm.makeToast("Error", 'Cancellation failed!!!', 'danger');
-            });
-        },
-        deleteReservation(context, { vm, reservation }) {
-            axios.post("/reservations/" + reservation.id, {
-                reservation,
-                _method: "delete"
-            }).then(function (response) {
-                vm.makeToast("Success", 'Reservation cancelled!!!', 'success');
-                // Borrar reserva
-                context.dispatch('deleteReservationById', reservation.id);
-            }).catch(function (response) {
-                vm.makeToast("Error", 'Cancellation failed!!!', 'danger');
+                vm.makeToast("Reservation", "Something went wrong.", "danger");
             });
         },
     }
