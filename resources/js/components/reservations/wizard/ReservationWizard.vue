@@ -1,45 +1,50 @@
 <template>
   <b-container fluid>
-    <room-finder :reservation="reservation" class="step1"></room-finder>
-
-    <div class="step2">
-      RESUMEN DE LA RESERVA
-      DATOS CUSTOMER, DATOS RESERVA, FACTURA
-      <b-row>
-        <b-col>First name:</b-col>
-        <b-col>{{ reservation.customer.first_name }}</b-col>
-      </b-row>
-      <b-row>
-        <b-col>Last name:</b-col>
-        <b-col>{{ reservation.customer.last_name }}</b-col>
-      </b-row>
-      <b-row>
-        <b-col>Room name:</b-col>
-        <b-col>{{ reservation.room.name }}</b-col>
-      </b-row>
-      <b-row>
-        <b-col>From:</b-col>
-        <b-col>{{ reservation.from_date }}</b-col>
-      </b-row>
-      <b-row>
-        <b-col>To:</b-col>
-        <b-col>{{ reservation.to_date }}</b-col>
-      </b-row>
-    </div>
+    <room-finder :reservation="reservation" v-if="wizardStep == 1"></room-finder>
     <b-row class="mt-3 float-right">
-      <b-col cols="12">
-        <b-button v-if="wizardStep === 2" @click="nextStep('-1')">BACK</b-button>
-        <b-button v-if="wizardStep === 1" @click="nextStep('1')">NEXT</b-button>
-        <b-button v-if="wizardStep === 2" @click="confirmReservation" variant="success">CONFIRM</b-button>
+      <b-col>
+        <b-button v-if="wizardStep === 1" @click="nextStep('+1')">Next</b-button>
       </b-col>
     </b-row>
+
+    <div v-if="wizardStep == 2">
+      <b-row class="mb-3">
+        <h3>Reservation Info</h3>
+      </b-row>
+      <b-form-group label-cols="12" label-cols-sm="4" label="From">
+        <b-form-input :value="reservation.from_date" readonly></b-form-input>
+      </b-form-group>
+      <b-form-group label-cols="12" label-cols-sm="4" label="To">
+        <b-form-input :value="reservation.to_date" readonly></b-form-input>
+      </b-form-group>
+
+      <b-row class="mb-3">
+        <h5>Customer</h5>
+      </b-row>
+      <b-form-group label-cols="12" label-cols-sm="4" label="First Name">
+        <b-form-input v-if="customer" :value="customer.first_name" readonly></b-form-input>
+      </b-form-group>
+      <b-form-group label-cols="12" label-cols-sm="4" label="Last Name">
+        <b-form-input v-if="customer" :value="customer.last_name" readonly></b-form-input>
+      </b-form-group>
+      <b-row class="mb-3">
+        <h5>Room</h5>
+      </b-row>
+      <b-form-group label-cols="12" label-cols-sm="4" label="Room">
+        <b-form-input :value="reservation.room.name" readonly></b-form-input>
+      </b-form-group>
+      <b-row class="mt-3 float-right">
+        <b-col>
+          <b-button @click="nextStep('-1')">Back</b-button>
+          <b-button @click="confirmReservation" variant="primary">Confirm</b-button>
+        </b-col>
+      </b-row>
+    </div>
   </b-container>
 </template>
 <script>
 import { mapState, mapGetters } from "vuex";
-import RoomFinder from "./RoomFinder";
-
-// RoomAvailability.data (leer datos del componente)
+import ReservationRoomFinder from "./ReservationRoomFinder";
 export default {
   name: "ReservationWizard",
   data: function() {
@@ -47,44 +52,18 @@ export default {
       wizardStep: 1,
       reservation: {
         room: {},
-        customer: {},
-        from_date: null,
-        to_date: null
+        from_date: this.getTodayDate(),
+        to_date: this.getTodayDate()
       }
     };
   },
   methods: {
-    confirmReservation() {
-      this.$store.dispatch("reservation/addReservation", {
-        vm: this,
-        reservation: this.reservation
-      });
-    },
-    nextStep(step) {
-      var customer_id = parseInt(this.$route.params.customer_id);
-      var customer = this.getCustomerById(customer_id);
-      console.log(customer.first_name);
-      this.reservation.customer = customer;
-
-      var actualDiv = (document.getElementsByClassName(
-        "step" + this.wizardStep
-      )[0].style.display = "none");
-
-      if (step === "1") {
-        if (this.wizardStep < 3) {
-          this.wizardStep += 1;
-        }
-      }
-
-      if (step === "-1") {
-        if (this.wizardStep > 1) {
-          this.wizardStep -= 1;
-        }
-      }
-
-      var nextDiv = (document.getElementsByClassName(
-        "step" + this.wizardStep
-      )[0].style.display = "inline");
+    getTodayDate() {
+      var date = new Date();
+      var dd = String(date.getDate()).padStart(2, "0");
+      var mm = String(date.getMonth() + 1).padStart(2, "0"); //January is 0!
+      var yyyy = date.getFullYear();
+      return yyyy + "-" + mm + "-" + dd;
     },
     makeToast(title, message, variant = "info") {
       this.$bvToast.toast(message, {
@@ -95,23 +74,39 @@ export default {
         toaster: "b-toaster-bottom-right",
         appendToast: true
       });
+    },
+    confirmReservation() {
+      this.reservation.customer = this.customer;
+
+      this.$store.dispatch("reservation/addReservation", {
+        vm: this,
+        reservation: this.reservation
+      });
+    },
+    nextStep(step) {
+      if (step === "+1" && this.wizardStep === 1) {
+        this.wizardStep = 2;
+      }
+      if (step === "-1" && this.wizardStep === 2) {
+        this.wizardStep = 1;
+      }
     }
   },
   computed: {
+    ...mapState({
+      isReady: state => state.ready
+    }),
     ...mapGetters({
-      getCustomerById: "customer/getCustomerById"
-    })
+      getCustomerById: "customer/getCustomerById",
+      getRoom: "room/getRoom"
+    }),
+    customer() {
+      var customerId = parseInt(this.$route.params.customer_id);
+      return this.getCustomerById(customerId);
+    }
   },
   components: {
-    "room-finder": RoomFinder
-  },
-  mounted() {}
+    "room-finder": ReservationRoomFinder
+  }
 };
 </script>
-<style scoped>
-.step2,
-.step3,
-.step4 {
-  display: none;
-}
-</style>
