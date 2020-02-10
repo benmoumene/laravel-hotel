@@ -61,3 +61,8 @@ export default {
   }
 };
 </script>
+<style scoped>
+.content-wrapper {
+  padding-bottom: 1px;
+}
+</style>

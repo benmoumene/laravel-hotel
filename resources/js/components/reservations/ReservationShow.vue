@@ -2,14 +2,18 @@
   <b-container fluid v-if="!onReady">Loading ...</b-container>
   <b-container fluid v-else>
     <b-row class="mb-3">
-      <h3>Reservation #{{ reservation.id }} Info</h3>
+      <b-col>
+        <h3>Reservation #{{ reservation.id }} Info</h3>
+      </b-col>
     </b-row>
+
     <b-form-group label-cols="12" label-cols-sm="4" label="From">
       <b-form-input :value="reservation.from_date" readonly></b-form-input>
     </b-form-group>
     <b-form-group label-cols="12" label-cols-sm="4" label="To">
       <b-form-input :value="reservation.to_date" readonly></b-form-input>
     </b-form-group>
+
     <b-form-group label-cols="12" label-cols-sm="4" label="Status">
       <b-form-input :value="reservation.status" readonly></b-form-input>
     </b-form-group>
@@ -36,11 +40,17 @@
     <b-row class="mb-3">
       <h5>Room</h5>
     </b-row>
-    <b-form-group label-cols="12" label-cols-sm="4" label="Room">
+    <b-form-group label-cols="12" label-cols-sm="4" label="Name">
       <b-form-input :value="room.name" readonly></b-form-input>
     </b-form-group>
-    <b-row class="mt-3 float-right">
-      <b-col>
+    <b-form-group label-cols="12" label-cols-sm="4" label="Size">
+      <b-form-input :value="room.size" readonly></b-form-input>
+    </b-form-group>
+    <b-form-group label-cols="12" label-cols-sm="4" label="Floor">
+      <b-form-input :value="room.floor" readonly></b-form-input>
+    </b-form-group>
+    <b-row class="mt-3 mb-3">
+      <b-col class="text-right">
         <b-button @click="checkOut" variant="warning">Check Out</b-button>
         <b-button @click="checkIn" variant="success">Check In</b-button>
         <b-button @click="cancelReservation" variant="danger">Cancel</b-button>
@@ -105,14 +115,6 @@ export default {
     },
     guest() {
       return this.getGuest(this.reservation.id);
-    }
-  },
-  watch: {
-    onReady: function(rdy) {
-      if (rdy) {
-        // Esto se ejecuta cuando el state.reservation.reservations ha sido cargado
-        // con el contenido de la api
-      }
     }
   }
 };
