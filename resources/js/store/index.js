@@ -22,6 +22,7 @@ export default new Vuex.Store({
         // Datos de usuario y perfil
         appUser: { name: '' },
         settings: [],
+        ready: false
     },
     getters: {
         getSettingValue: (state, getters) => (name) => {
@@ -58,7 +59,9 @@ export default new Vuex.Store({
         SET_SETTINGS(state, settings) {
             state.settings = settings;
         },
-
+        SET_READY(state, ready) {
+            state.ready = ready;
+        },
     },
     actions: {
         // Selecciona el usuario con el id indicado
@@ -95,6 +98,7 @@ export default new Vuex.Store({
                     context.commit('inventory/SET_ITEMS', data['inventory']);
                     // Rooms
                     context.commit('room/SET_ROOMS', data['rooms']);
+                    context.commit('SET_READY', true);
                 }
             });
         },
