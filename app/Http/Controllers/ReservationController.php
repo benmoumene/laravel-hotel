@@ -7,6 +7,7 @@ use Auth;
 use App\Http\Requests\ReservationRequest;
 use App\Reservation;
 use App\Guest;
+use App\Services\ReservationService;
 
 class ReservationController extends Controller
 {
@@ -19,6 +20,21 @@ class ReservationController extends Controller
     // Metodo para crear reservas
     public function store(ReservationRequest $request)
     {
+        //$rs = new ReservationService
+        //$reservation = new Reservation;
+        //$rs->registerReservation($reservation);
+        //$guest = new Guest;
+        //$rs->registerGuest($guest);
+        //$rs->registerInvoice;
+        //$rs->registerBilledServices
+        //if($rs->sucess)
+        //return response()->json([
+        //    'reservation' => $reservation,
+        //    'guest' => $guest
+        //], 200);
+        //else
+        //return response()->json('Reservation cannot be handle', 501);
+
         // Creamos la reserva
         $reservation = new Reservation;
         $reservation->customer_id = $request->input('reservation.customer.id');
@@ -35,11 +51,11 @@ class ReservationController extends Controller
         $guest->check_out = null;
         $guest->save();
 
-        $reservation['guest']['id'] = $guest->id;
-        return response()->json([
-            'reservation' => $reservation,
-            'guest' => $guest
-        ], 200);
+        $guest['customer'] = ['id' => $guest->customer()->first()->id];
+        $guest['room'] = ['id' => $guest->room()->first()->id];
+        $reservation['guest'] = ['id' => $guest->id];
+        $response = ['guest' => $guest , 'reservation' => $reservation];
+        return response()->json($response, 200);
     }
 
     // Metodo para cancelar reservas
