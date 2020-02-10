@@ -67,6 +67,14 @@ export default ({
         SET_GUESTS(state, guests) {
             state.guests = guests;
         },
+        SET_CHECK_IN(state, { guestIndex, checkIn }) {
+            //state.guests[guestIndex].check_in = checkIn;
+            Vue.set(state.guests[guestIndex], 'check_in', checkIn);
+        },
+        SET_CHECK_OUT(state, { guestIndex, checkOut }) {
+            //state.guests[guestIndex].check_out = checkOut;
+            Vue.set(state.guests[guestIndex], 'check_out', checkOut);
+        },
         ADD_GUEST(state, guest) {
             state.guests.push(guest);
         },
@@ -85,18 +93,17 @@ export default ({
                     if (response["data"].length == 0) {
                         return;
                     }
-
                     // Nuevos datos del guest
-                    var newGuest = response["data"]["guest"];
+                    let checkIn = response["data"]["guest"]['check_in'];
 
                     // Buscamos el index del guest
                     let guestIndex = context.getters.getGuestIndex(reservation.guest.id);
 
                     // Llevamos a cabo la modificacion
-                    context.commit("REPLACE_GUEST", { guestIndex, newGuest });
+                    context.commit("SET_CHECK_IN", { guestIndex, checkIn });
 
                     // Mostramos un mensaje
-                    vm.makeToast("Check In", "Guest check in " + newGuest.check_in, "success");
+                    vm.makeToast("Check In", "Guest check in " + checkIn, "success");
                 }
             }).catch(function (response) {
                 vm.makeToast("Check In", "Something went wrong.", "danger");
@@ -114,20 +121,21 @@ export default ({
                     }
 
                     // Nuevos datos del guest
-                    var newGuest = response["data"]["guest"];
-                    var newReservation = response["data"]["reservation"];
+                    let checkOut = response["data"]["guest"]['check_out'];
+                    let newReservation = response["data"]["reservation"];
 
                     // Buscamos el index del guest
                     let guestIndex = context.getters.getGuestIndex(reservation.guest.id);
                     // Llevamos a cabo la modificacion
-                    context.commit("REPLACE_GUEST", { guestIndex, newGuest });
-                    vm.$store.dispatch("reservation/updateReservation", {
-                        reservation: newReservation,
-                        reservationId: newReservation.id
+                    context.commit("SET_CHECK_OUT", { guestIndex, checkOut });
+
+                    vm.$store.dispatch("reservation/updateStatus", {
+                        reservationId: newReservation.id,
+                        newStatus: newReservation.status
                     });
 
                     // Mostramos un mensaje
-                    vm.makeToast("Check Out", "Guest check out " + newGuest.check_out, "success");
+                    vm.makeToast("Check Out", "Guest check out " + checkOut, "success");
                 }
             }).catch(function (response) {
                 vm.makeToast("Check Out", "Something went wrong.", "danger");

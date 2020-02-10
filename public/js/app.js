@@ -99152,19 +99152,31 @@ __webpack_require__.r(__webpack_exports__);
     SET_GUESTS: function SET_GUESTS(state, guests) {
       state.guests = guests;
     },
+    SET_CHECK_IN: function SET_CHECK_IN(state, _ref) {
+      var guestIndex = _ref.guestIndex,
+          checkIn = _ref.checkIn;
+      //state.guests[guestIndex].check_in = checkIn;
+      Vue.set(state.guests[guestIndex], 'check_in', checkIn);
+    },
+    SET_CHECK_OUT: function SET_CHECK_OUT(state, _ref2) {
+      var guestIndex = _ref2.guestIndex,
+          checkOut = _ref2.checkOut;
+      //state.guests[guestIndex].check_out = checkOut;
+      Vue.set(state.guests[guestIndex], 'check_out', checkOut);
+    },
     ADD_GUEST: function ADD_GUEST(state, guest) {
       state.guests.push(guest);
     },
-    REPLACE_GUEST: function REPLACE_GUEST(state, _ref) {
-      var guestIndex = _ref.guestIndex,
-          newGuest = _ref.newGuest;
+    REPLACE_GUEST: function REPLACE_GUEST(state, _ref3) {
+      var guestIndex = _ref3.guestIndex,
+          newGuest = _ref3.newGuest;
       Vue.set(state.guests, guestIndex, newGuest);
     }
   },
   actions: {
-    checkIn: function checkIn(context, _ref2) {
-      var vm = _ref2.vm,
-          reservation = _ref2.reservation;
+    checkIn: function checkIn(context, _ref4) {
+      var vm = _ref4.vm,
+          reservation = _ref4.reservation;
       axios.post("/guest/" + reservation.guest.id + "/checkin", {
         guest: reservation.guest
       }).then(function (response) {
@@ -99176,24 +99188,24 @@ __webpack_require__.r(__webpack_exports__);
           } // Nuevos datos del guest
 
 
-          var newGuest = response["data"]["guest"]; // Buscamos el index del guest
+          var checkIn = response["data"]["guest"]['check_in']; // Buscamos el index del guest
 
           var guestIndex = context.getters.getGuestIndex(reservation.guest.id); // Llevamos a cabo la modificacion
 
-          context.commit("REPLACE_GUEST", {
+          context.commit("SET_CHECK_IN", {
             guestIndex: guestIndex,
-            newGuest: newGuest
+            checkIn: checkIn
           }); // Mostramos un mensaje
 
-          vm.makeToast("Check In", "Guest check in " + newGuest.check_in, "success");
+          vm.makeToast("Check In", "Guest check in " + checkIn, "success");
         }
       })["catch"](function (response) {
         vm.makeToast("Check In", "Something went wrong.", "danger");
       });
     },
-    checkOut: function checkOut(context, _ref3) {
-      var vm = _ref3.vm,
-          reservation = _ref3.reservation;
+    checkOut: function checkOut(context, _ref5) {
+      var vm = _ref5.vm,
+          reservation = _ref5.reservation;
       axios.post("/guest/" + reservation.guest.id + "/checkout", {
         guest: reservation.guest
       }).then(function (response) {
@@ -99205,21 +99217,21 @@ __webpack_require__.r(__webpack_exports__);
           } // Nuevos datos del guest
 
 
-          var newGuest = response["data"]["guest"];
+          var checkOut = response["data"]["guest"]['check_out'];
           var newReservation = response["data"]["reservation"]; // Buscamos el index del guest
 
           var guestIndex = context.getters.getGuestIndex(reservation.guest.id); // Llevamos a cabo la modificacion
 
-          context.commit("REPLACE_GUEST", {
+          context.commit("SET_CHECK_OUT", {
             guestIndex: guestIndex,
-            newGuest: newGuest
+            checkOut: checkOut
           });
-          vm.$store.dispatch("reservation/updateReservation", {
-            reservation: newReservation,
-            reservationId: newReservation.id
+          vm.$store.dispatch("reservation/updateStatus", {
+            reservationId: newReservation.id,
+            newStatus: newReservation.status
           }); // Mostramos un mensaje
 
-          vm.makeToast("Check Out", "Guest check out " + newGuest.check_out, "success");
+          vm.makeToast("Check Out", "Guest check out " + checkOut, "success");
         }
       })["catch"](function (response) {
         vm.makeToast("Check Out", "Something went wrong.", "danger");
@@ -99358,27 +99370,41 @@ __webpack_require__.r(__webpack_exports__);
     DELETE_RESERVATION: function DELETE_RESERVATION(state, index) {
       Vue["delete"](state.reservations, index);
     },
-    REPLACE_RESERVATION: function REPLACE_RESERVATION(state, _ref) {
+    SET_RESERVATION_STATUS: function SET_RESERVATION_STATUS(state, _ref) {
       var reservationIndex = _ref.reservationIndex,
-          newReservation = _ref.newReservation;
+          status = _ref.status;
+      Vue.set(state.reservations[reservationIndex], 'status', status);
+    },
+    REPLACE_RESERVATION: function REPLACE_RESERVATION(state, _ref2) {
+      var reservationIndex = _ref2.reservationIndex,
+          newReservation = _ref2.newReservation;
       Vue.set(state.reservations, reservationIndex, newReservation);
     }
   },
   actions: {
-    updateReservation: function updateReservation(context, _ref2) {
-      var reservation = _ref2.reservation,
-          reservationId = _ref2.reservationId;
+    updateStatus: function updateStatus(context, _ref3) {
+      var reservationId = _ref3.reservationId,
+          newStatus = _ref3.newStatus;
       var index = context.state.reservations.findIndex(function (reservation) {
         return reservation.id === reservationId;
       });
-      context.commit("REPLACE_RESERVATION", {
+      context.commit("SET_RESERVATION_STATUS", {
         reservationIndex: index,
-        newReservation: reservation
+        status: newStatus
       });
     },
-    addReservation: function addReservation(context, _ref3) {
-      var vm = _ref3.vm,
-          reservation = _ref3.reservation;
+
+    /*updateReservation(context, { reservation, reservationId }) {
+        var index = context.state.reservations.findIndex(
+            reservation => reservation.id === reservationId);
+        context.commit("REPLACE_RESERVATION", {
+            reservationIndex: index,
+            newReservation: reservation
+        });
+    },*/
+    addReservation: function addReservation(context, _ref4) {
+      var vm = _ref4.vm,
+          reservation = _ref4.reservation;
       axios.post("/reservations/", {
         reservation: reservation
       }).then(function (response) {
@@ -99400,9 +99426,9 @@ __webpack_require__.r(__webpack_exports__);
         vm.makeToast("Reservation", "Something went wrong.", "danger");
       });
     },
-    cancel: function cancel(context, _ref4) {
-      var vm = _ref4.vm,
-          reservation = _ref4.reservation;
+    cancel: function cancel(context, _ref5) {
+      var vm = _ref5.vm,
+          reservation = _ref5.reservation;
       axios.get("/reservation/" + reservation.id + "/cancel", {
         reservation: reservation
       }).then(function (response) {

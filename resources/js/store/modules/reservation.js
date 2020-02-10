@@ -37,19 +37,30 @@ export default ({
         DELETE_RESERVATION(state, index) {
             Vue.delete(state.reservations, index);
         },
+        SET_RESERVATION_STATUS(state, { reservationIndex, status }) {
+            Vue.set(state.reservations[reservationIndex], 'status', status);
+        },
         REPLACE_RESERVATION(state, { reservationIndex, newReservation }) {
             Vue.set(state.reservations, reservationIndex, newReservation);
         },
     },
     actions: {
-        updateReservation(context, { reservation, reservationId }) {
+        updateStatus(context, { reservationId, newStatus }) {
+            var index = context.state.reservations.findIndex(
+                reservation => reservation.id === reservationId);
+            context.commit("SET_RESERVATION_STATUS", {
+                reservationIndex: index,
+                status: newStatus
+            });
+        },
+        /*updateReservation(context, { reservation, reservationId }) {
             var index = context.state.reservations.findIndex(
                 reservation => reservation.id === reservationId);
             context.commit("REPLACE_RESERVATION", {
                 reservationIndex: index,
                 newReservation: reservation
             });
-        },
+        },*/
         addReservation(context, { vm, reservation }) {
             axios.post("/reservations/", {
                 reservation
