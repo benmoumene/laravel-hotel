@@ -13,16 +13,16 @@ class Guest extends Model
         'laravel_through_key'
     ];
 
+    protected $fillable = [
+        'reservation_id'
+    ];
+
     // Guest es un cliente
     public function customer()
     {
         return $this->hasOneThrough(
             'App\Customer',
             'App\Reservation',
-            //'customer_id',
-            //'id',
-            //'id',
-            //'customer_id',
             'id',
             'id',
             'reservation_id',

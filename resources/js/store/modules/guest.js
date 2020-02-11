@@ -10,6 +10,10 @@ export default ({
                 guest => guest.customer_id === customerId
             );
         },
+        getGuestIndex: (state, getters) => (guestId) => {
+            return state.guests.findIndex(
+                guest => guest.id === guestId);
+        },
         getGuestWithReservationId: (state, getters) => (reservationId) => {
             return state.guests.find(
                 guest => guest.reservation_id === reservationId
@@ -20,17 +24,17 @@ export default ({
         },
         isCurrentGuest: (state, getters) => (customerId) => {
             var now = new Date();
-            var dd = String(now.getDate()).padStart(2, '0');
-            var mm = String(now.getMonth() + 1).padStart(2, '0');
+            var dd = String(now.getDate()).padStart(2, "0");
+            var mm = String(now.getMonth() + 1).padStart(2, "0");
             var yyyy = now.getFullYear();
             var hour = now.getHours();
             var minutes = now.getMinutes();
             var seconds = now.getSeconds();
 
-            var date = yyyy + '-' + mm + '-' + dd;
-            var time = hour + ':' + minutes + ':' + seconds;
+            var date = yyyy + "-" + mm + "-" + dd;
+            var time = hour + ":" + minutes + ":" + seconds;
             //2020-01-13 19:59:12
-            var datetime = date + ' ' + time;
+            var datetime = date + " " + time;
 
             var rows = state.guests.filter(
                 function (guest) {
@@ -63,43 +67,78 @@ export default ({
         SET_GUESTS(state, guests) {
             state.guests = guests;
         },
+        SET_CHECK_IN(state, { guestIndex, checkIn }) {
+            //state.guests[guestIndex].check_in = checkIn;
+            Vue.set(state.guests[guestIndex], 'check_in', checkIn);
+        },
+        SET_CHECK_OUT(state, { guestIndex, checkOut }) {
+            //state.guests[guestIndex].check_out = checkOut;
+            Vue.set(state.guests[guestIndex], 'check_out', checkOut);
+        },
         ADD_GUEST(state, guest) {
             state.guests.push(guest);
         },
+        REPLACE_GUEST(state, { guestIndex, newGuest }) {
+            Vue.set(state.guests, guestIndex, newGuest);
+        },
     },
     actions: {
-        addGuest(context, { vm, room }) {
-            axios.post("http://127.0.0.1:8000/room/", {
-                room
+        checkIn(context, { vm, reservation }) {
+            axios.post("/guest/" + reservation.guest.id + "/checkin", {
+                guest: reservation.guest,
             }).then(function (response) {
                 // Si el request tuvo exito (codigo 200)
                 if (response.status == 200) {
-                    // Agregamos una nueva conversacion si existe el objeto
-                    if (response['data'].length == 0) {
+                    // Comprobamos que json en el objeto
+                    if (response["data"].length == 0) {
+                        return;
+                    }
+                    // Nuevos datos del guest
+                    let checkIn = response["data"]["guest"]['check_in'];
+
+                    // Buscamos el index del guest
+                    let guestIndex = context.getters.getGuestIndex(reservation.guest.id);
+
+                    // Llevamos a cabo la modificacion
+                    context.commit("SET_CHECK_IN", { guestIndex, checkIn });
+
+                    // Mostramos un mensaje
+                    vm.makeToast("Check In", "Guest check in " + checkIn, "success");
+                }
+            }).catch(function (response) {
+                vm.makeToast("Check In", "Something went wrong.", "danger");
+            });
+        },
+        checkOut(context, { vm, reservation }) {
+            axios.post("/guest/" + reservation.guest.id + "/checkout", {
+                guest: reservation.guest,
+            }).then(function (response) {
+                // Si el request tuvo exito (codigo 200)
+                if (response.status == 200) {
+                    // Comprobamos que json en el objeto
+                    if (response["data"].length == 0) {
                         return;
                     }
 
-                    var newGuest = response['data']['guest'];
-                    context.commit('ADD_GUEST', newGuest);
-                    //vm.makeToast("Room added", newGuest.name + ' added.', 'success');
+                    // Nuevos datos del guest
+                    let checkOut = response["data"]["guest"]['check_out'];
+                    let newReservation = response["data"]["reservation"];
+
+                    // Buscamos el index del guest
+                    let guestIndex = context.getters.getGuestIndex(reservation.guest.id);
+                    // Llevamos a cabo la modificacion
+                    context.commit("SET_CHECK_OUT", { guestIndex, checkOut });
+
+                    vm.$store.dispatch("reservation/updateStatus", {
+                        reservationId: newReservation.id,
+                        newStatus: newReservation.status
+                    });
+
+                    // Mostramos un mensaje
+                    vm.makeToast("Check Out", "Guest check out " + checkOut, "success");
                 }
             }).catch(function (response) {
-                vm.makeToast("Error", 'The room cannot be added!!!', 'danger');
-            });
-        },
-        editGuest(context, guest) {
-            axios.post("http://127.0.0.1:8000/guest/", {
-                guest,
-                _method: "put"
-            }).then(function (response) {
-                // Si el request tuvo exito (codigo 200)
-                if (response.status == 200) {
-                    // Agregamos una nueva conversacion si existe el objeto
-                    if (response['data'].length == 0) {
-                        return;
-                    }
-                    // console.log('success');
-                }
+                vm.makeToast("Check Out", "Something went wrong.", "danger");
             });
         },
     }

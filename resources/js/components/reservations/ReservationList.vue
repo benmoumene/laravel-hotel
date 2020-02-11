@@ -2,45 +2,19 @@
   <b-container fluid>
     <!-- User Interface controls -->
     <b-row>
-      <b-col lg="6" class="my-1">
+      <b-col sm="6" class="my-1">
         <b-form-group
-          label="Filter"
+          label="Status"
           label-cols-sm="3"
           label-align-sm="right"
           label-size="sm"
-          label-for="filterInput"
           class="mb-0"
         >
-          <b-input-group size="sm">
-            <b-form-input
-              v-model="filter"
-              type="search"
-              id="filterInput"
-              placeholder="Type to Search"
-            ></b-form-input>
-            <b-input-group-append>
-              <b-button :disabled="!filter" @click="filter = ''">Clear</b-button>
-            </b-input-group-append>
-          </b-input-group>
+          <b-form-select v-model="onStatus" id="perPageSelect" size="sm" :options="statusOptions"></b-form-select>
         </b-form-group>
       </b-col>
 
-      <b-col sm="5" md="6" class="my-1">
-        <b-form-group
-          label="Per page"
-          label-cols-sm="6"
-          label-cols-md="4"
-          label-cols-lg="3"
-          label-align-sm="right"
-          label-size="sm"
-          label-for="perPageSelect"
-          class="mb-0"
-        >
-          <b-form-select v-model="perPage" id="perPageSelect" size="sm" :options="pageOptions"></b-form-select>
-        </b-form-group>
-      </b-col>
-
-      <b-col sm="7" md="6" class="my-1">
+      <b-col sm="6" class="my-1">
         <b-pagination
           v-model="currentPage"
           :total-rows="totalRows"
@@ -57,7 +31,7 @@
       show-empty
       small
       stacked="md"
-      :items="reservations"
+      :items="filteredReservations"
       :fields="fields"
       :current-page="currentPage"
       :per-page="perPage"
@@ -68,34 +42,20 @@
       :sort-direction="sortDirection"
       @filtered="onFiltered"
     >
-      <!-- Al hacer click en room mostrar info de esta -->
+      <template v-slot:cell(first_name)="row">{{ customer(row.item.customer_id).first_name }}</template>
+      <template v-slot:cell(last_name)="row">{{ customer(row.item.customer_id).last_name }}</template>
       <template v-slot:cell(room_name)="row">
-        <b-link v-b-modal.modal-center>{{ room(row.item.room_id).name }}</b-link>
+        <router-link
+          :to="{path: '/room/' + row.item.room_id +'/edit'}"
+        >{{ room(row.item.room_id).name }}</router-link>
       </template>
       <template v-slot:cell(actions)="row">
-        <router-link :to="{path: row.item.id +'/cancel'}" class="nav-link">
-          <i class="nav-icon fa fa-bed"></i>
-          Show
+        <router-link :to="{path: row.item.id +'/show'}">
+          <b-button size="sm" variant="primary">Show</b-button>
         </router-link>
-        <b-button @click="cancelReservation(row.item)" variant="primary">CANCEL</b-button>
+        <b-button size="sm" @click="cancelReservation(row.item)" variant="danger">Cancel</b-button>
       </template>
     </b-table>
-
-    <b-modal id="modal-center" centered title="Reservation Info">
-      <b-row>
-        <b-col sm="3" class="avatar-menu-inner">Room Name:</b-col>
-      </b-row>
-      <b-row>
-        <b-col sm="3" class="avatar-menu-inner">Type:</b-col>
-      </b-row>
-      <b-row>
-        <b-col sm="3" class="avatar-menu-inner">Floor:</b-col>
-      </b-row>
-      <b-row>
-        <b-col sm="3" class="avatar-menu-inner">From:</b-col>
-        <b-col sm="3" class="avatar-menu-inner">To:</b-col>
-      </b-row>
-    </b-modal>
   </b-container>
 </template>
 <script>
@@ -107,56 +67,42 @@ export default {
     return {
       fields: [
         {
-          key: "customer_first_name",
-          label: "First Name",
-          sortable: true,
-          sortDirection: "desc"
+          key: "first_name",
+          label: "First Name"
         },
         {
-          key: "customer_last_name",
-          label: "Last Name",
-          sortable: true,
-          sortDirection: "desc"
-        },
-        {
-          key: "customer_phone",
-          label: "phone",
-          sortable: true,
-          class: "text-center"
-        },
-        {
-          key: "customer_document_id",
-          label: "Document Id",
-          sortable: true,
-          class: "text-center"
+          key: "last_name",
+          label: "Last Name"
         },
         {
           key: "room_name",
-          label: "Room Name",
-          sortable: true,
-          class: "text-center"
+          label: "Room"
+        },
+        {
+          key: "status",
+          label: "status",
+          sortable: true
         },
         {
           key: "from_date",
           label: "From",
-          sortable: true,
-          class: "text-center"
+          sortable: true
         },
         {
           key: "to_date",
           label: "To",
-          sortable: true,
-          class: "text-center"
+          sortable: true
         },
         { key: "actions", label: "Actions" }
       ],
       currentPage: 1,
-      perPage: 5,
-      pageOptions: [5, 10, 15],
+      perPage: 20,
+      statusOptions: ["all", "active", "cancelled", "expired"],
       sortBy: "",
       sortDesc: false,
       sortDirection: "asc",
       filter: null,
+      onStatus: "active",
       filterOn: []
     };
   },
@@ -168,7 +114,7 @@ export default {
       return this.getRoom(id);
     },
     cancelReservation(reservation) {
-      this.$store.dispatch("reservation/deleteReservation", {
+      this.$store.dispatch("reservation/cancel", {
         vm: this,
         reservation
       });
@@ -196,6 +142,15 @@ export default {
       getCustomer: "customer/getCustomer",
       getRoom: "room/getRoom"
     }),
+    filteredReservations() {
+      if (this.onStatus === "all") {
+        return this.reservations;
+      }
+
+      return this.reservations.filter(
+        reservation => reservation.status === this.onStatus
+      );
+    },
     sortOptions() {
       // Create an options list from our fields
       return this.fields
@@ -205,12 +160,8 @@ export default {
         });
     },
     totalRows() {
-      return this.reservations.length;
+      return this.filteredReservations.length;
     }
-  },
-  mounted() {},
-  updated() {}
+  }
 };
 </script>
-<style scoped>
-</style>

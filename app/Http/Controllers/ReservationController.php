@@ -4,7 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Auth;
+use App\Http\Requests\ReservationRequest;
 use App\Reservation;
+use App\Guest;
+use App\Services\ReservationService;
+use App\Services\GuestService;
 
 class ReservationController extends Controller
 {
@@ -14,55 +18,58 @@ class ReservationController extends Controller
         $this->middleware('auth');
     }
     
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    // Metodo para crear reservas
+    public function store(ReservationRequest $request)
     {
-        $currentUserId = Auth::user()->id;
-        $reservation = new Reservation;
-        $reservation->customer_id = $request->input('reservation.customer.id');
-        $reservation->room_id = $request->input('reservation.room.id');
-        $reservation->from_date = $request['reservation']['from_date'];
-        $reservation->to_date = $request['reservation']['to_date'];
-        $reservation->save();
+        // Servicios
+        $rs = new ReservationService;
+        $gs = new GuestService;
 
-        return response()->json(['reservation' => $reservation], 200);
+        // Creamos la reserva
+        $reservation = $rs->create(
+            $request->input('reservation.customer.id'),
+            $request->input('reservation.room.id'),
+            $request->input('reservation.from_date'),
+            $request->input('reservation.to_date')
+        );
+
+        // Si no se puede hacer la reserva ...
+        if (!$reservation) {
+            return response()->json(['message' =>
+                $rs->getError()], 500);
+        }
+
+        // Creamos el guest asociado a la reserva
+        $guest = $gs->create($reservation);
+
+        // Si no se puede registrar el huespued ...
+        if (!$guest) {
+            $reservation->delete();
+            $reservation->save();
+            return response()->json(['message' =>
+                $gs->getError()], 500);
+        }
+
+        $guest['customer'] = ['id' => $guest->customer()->first()->id];
+        $guest['room'] = ['id' => $guest->room()->first()->id];
+        $reservation['guest'] = ['id' => $guest->id];
+        $response = ['guest' => $guest , 'reservation' => $reservation];
+        return response()->json($response, 200);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    // Metodo para cancelar reservas
+    public function cancel(Request $request, $reservationId)
     {
-        $currentUserId = Auth::user()->id;
-        $reservation = Reservation::where('id', $id)->first(); // firstOrFail???
-        $reservation->from_date = $request['reservation']['from_date'];
-        $reservation->to_date = $request['reservation']['to_date'];
-        $reservation->save();
+        // Servicios
+        $rs = new ReservationService;
+        $reservation = $rs->cancel($reservationId);
+
+        // En caso de fallo enviamos un error al cliente
+        if (!$reservation) {
+            return response()->json(['message' =>
+                $rs->getError()], 500);
+        }
 
         return response()->json(['reservation' => $reservation], 200);
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        $currentUserId = Auth::user()->id;
-        $reservation = Reservation::where('id', $id)->first(); // firstOrFail???
-        $reservation->delete();
-
-        return response()->json(['reservation' => $reservation], 204);
     }
 }

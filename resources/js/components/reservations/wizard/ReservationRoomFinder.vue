@@ -40,7 +40,7 @@
           label-for="perPageSelect"
           class="mb-0"
         >
-          <b-form-input v-model="filter.from_date" id="from_date" type="date"></b-form-input>
+          <b-form-input v-model="reservation.from_date" id="from_date" type="date"></b-form-input>
         </b-form-group>
       </b-col>
       <b-col sm="5" md="6" class="my-1">
@@ -54,7 +54,7 @@
           label-for="perPageSelect"
           class="mb-0"
         >
-          <b-form-input v-model="filter.to_date" id="to_date" type="date"></b-form-input>
+          <b-form-input v-model="reservation.to_date" id="to_date" type="date"></b-form-input>
         </b-form-group>
       </b-col>
     </b-row>
@@ -73,7 +73,7 @@
 <script>
 import { mapState } from "vuex";
 export default {
-  name: "RoomFinder",
+  name: "ReservationRoomFinder",
   props: {
     reservation: Object
   },
@@ -81,9 +81,7 @@ export default {
     return {
       filter: {
         roomType: "single",
-        hotelFloor: "1F",
-        from_date: this.getTodayDate(),
-        to_date: this.getTodayDate()
+        hotelFloor: "1F"
       },
       roomTypes: ["single", "double", "suite"],
       hotelFloors: ["1F", "2F", "3F"],
@@ -101,10 +99,9 @@ export default {
     },
     selectRoom(room) {
       this.reservation.room = room;
-      this.reservation.from_date = this.filter.from_date;
-      this.reservation.to_date = this.filter.to_date;
+      //this.reservation.from_date = this.filter.from_date;
+      //this.reservation.to_date = this.filter.to_date;
 
-      console.log(this.reservation);
       //this.$emit("updateReservation", this.reservation);
       //this.$store.commit("reservation/SET_RESERVATION", reservation);
       //this.$store.dispatch("reservation/addReservation", reservation);
@@ -146,9 +143,7 @@ export default {
     filteredRooms: function() {
       return this.rooms.filter(room => this.applyFilters(room));
     }
-  },
-  components: {},
-  mounted() {}
+  }
 };
 </script>
 <style scoped>

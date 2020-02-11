@@ -28,6 +28,7 @@ import RoomList from '../components/rooms/RoomList.vue'
 
 import ReservationWizard from '../components/reservations/wizard/ReservationWizard.vue'
 import ReservationList from '../components/reservations/ReservationList.vue'
+import ReservationShow from '../components/reservations/ReservationShow.vue'
 import ReservationRouter from '../components/reservations/ReservationRouter.vue'
 
 import ServiceAdd from '../components/services/ServiceAdd.vue'
@@ -126,6 +127,11 @@ export default new VueRouter({
           path: 'list',
           name: 'ReservationsList',
           component: ReservationList
+        },
+        {
+          path: ':reservation_id/show',
+          name: 'ReservationShow',
+          component: ReservationShow
         },
         {
           path: ':customer_id/new',
