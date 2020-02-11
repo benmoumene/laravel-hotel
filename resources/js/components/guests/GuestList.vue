@@ -83,19 +83,24 @@
       </template>
     </b-table>
 
-    <b-modal id="room-info-modal" size="xl" centered title="Room Info">
+    <b-modal id="room-info-modal" size="xl" centered title="Room Info" hide-footer>
       <room-info :roomId="selectedRoomId"></room-info>
+    </b-modal>
+    <b-modal id="customer-info-modal" size="xl" centered title="Customer Info" hide-footer>
+      <customer-info :customerId="selectedCustomerId"></customer-info>
     </b-modal>
   </b-container>
 </template>
 <script>
 import { mapState, mapGetters } from "vuex";
 import RoomInfo from "../rooms/RoomInfo";
+import CustomerInfo from "../customers/CustomerInfo";
 export default {
   name: "GuestList",
   data: function() {
     return {
       selectedRoomId: null,
+      selectedCustomerId: null,
       fields: [
         {
           key: "first_name",
@@ -183,7 +188,8 @@ export default {
     }
   },
   components: {
-    "room-info": RoomInfo
+    "room-info": RoomInfo,
+    "customer-info": CustomerInfo
   }
 };
 </script>
