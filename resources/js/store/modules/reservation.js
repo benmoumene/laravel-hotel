@@ -71,6 +71,8 @@ export default ({
                     vm.makeToast("Reservation", "Reservation created.", "success");
                 }
             }).catch(function (response) {
+                //if(response.data.message.length)
+                //let message = response["data"]["message"]
                 vm.makeToast("Reservation", "Something went wrong.", "danger");
             });
         },

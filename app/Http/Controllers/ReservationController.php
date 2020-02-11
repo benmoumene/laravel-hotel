@@ -8,6 +8,7 @@ use App\Http\Requests\ReservationRequest;
 use App\Reservation;
 use App\Guest;
 use App\Services\ReservationService;
+use App\Services\GuestService;
 
 class ReservationController extends Controller
 {
@@ -20,36 +21,34 @@ class ReservationController extends Controller
     // Metodo para crear reservas
     public function store(ReservationRequest $request)
     {
-        //$rs = new ReservationService
-        //$reservation = new Reservation;
-        //$rs->registerReservation($reservation);
-        //$guest = new Guest;
-        //$rs->registerGuest($guest);
-        //$rs->registerInvoice;
-        //$rs->registerBilledServices
-        //if($rs->sucess)
-        //return response()->json([
-        //    'reservation' => $reservation,
-        //    'guest' => $guest
-        //], 200);
-        //else
-        //return response()->json('Reservation cannot be handle', 501);
+        // Servicios
+        $rs = new ReservationService;
+        $gs = new GuestService;
 
         // Creamos la reserva
-        $reservation = new Reservation;
-        $reservation->customer_id = $request->input('reservation.customer.id');
-        $reservation->status = 'active';
-        $reservation->room_id = $request->input('reservation.room.id');
-        $reservation->from_date = $request->input('reservation.from_date');
-        $reservation->to_date = $request->input('reservation.to_date');
-        $reservation->save();
+        $reservation = $rs->create(
+            $request->input('reservation.customer.id'),
+            $request->input('reservation.room.id'),
+            $request->input('reservation.from_date'),
+            $request->input('reservation.to_date')
+        );
+
+        // Si no se puede hacer la reserva ...
+        if (!$reservation) {
+            return response()->json(['message' =>
+                $rs->getError()], 500);
+        }
 
         // Creamos el guest asociado a la reserva
-        $guest = new Guest;
-        $guest->reservation_id = $reservation->id;
-        $guest->check_in = null;
-        $guest->check_out = null;
-        $guest->save();
+        $guest = $gs->create($reservation);
+
+        // Si no se puede registrar el huespued ...
+        if (!$guest) {
+            $reservation->delete();
+            $reservation->save();
+            return response()->json(['message' =>
+                $gs->getError()], 500);
+        }
 
         $guest['customer'] = ['id' => $guest->customer()->first()->id];
         $guest['room'] = ['id' => $guest->room()->first()->id];
@@ -59,11 +58,18 @@ class ReservationController extends Controller
     }
 
     // Metodo para cancelar reservas
-    public function cancel(Request $request, $id)
+    public function cancel(Request $request, $reservationId)
     {
-        $reservation = Reservation::where('id', $id)->first();
-        $reservation->status = 'cancelled';
-        $reservation->save();
+        // Servicios
+        $rs = new ReservationService;
+        $reservation = $rs->cancel($reservationId);
+
+        // En caso de fallo enviamos un error al cliente
+        if (!$reservation) {
+            return response()->json(['message' =>
+                $rs->getError()], 500);
+        }
+
         return response()->json(['reservation' => $reservation], 200);
     }
 }
