@@ -57,7 +57,7 @@
       show-empty
       small
       stacked="md"
-      :items="guests"
+      :items="guestsFull"
       :fields="fields"
       :current-page="currentPage"
       :per-page="perPage"
@@ -68,48 +68,34 @@
       :sort-direction="sortDirection"
       @filtered="onFiltered"
     >
-      <template v-slot:cell(first_name)="row">
-        <b-link v-b-modal.modal-center>{{ customer(row.item.customer.id).first_name }}</b-link>
+      <template v-slot:cell(first_name)="{item}">
+        <b-link>{{ item.customer.first_name }}</b-link>
       </template>
-      <template v-slot:cell(last_name)="row">
-        <b-link v-b-modal.modal-center>{{ customer(row.item.customer.id).last_name }}</b-link>
+      <template v-slot:cell(last_name)="{item}">
+        <b-link>{{ item.customer.last_name }}</b-link>
       </template>
-      <template v-slot:cell(room.name)="row">
-        <b-link v-b-modal.modal-center>{{ room(row.item.room.id).name }}</b-link>
+      <template v-slot:cell(room_name)="{item}">
+        <b-button size="sm" variant="info" @click="roomInfo(item.room.id)">{{ item.room.name }}</b-button>
       </template>
-      <template v-slot:cell(actions)="row">
-        <b-button size="sm" variant="info" @click="showCustomerInfo(row.item)">Customer</b-button>
-        <router-link :to="{path: row.item.id +'/cancel'}">
-          <b-button size="sm" variant="info">Reservation</b-button>
-        </router-link>
-        <b-button size="sm" variant="info">Room</b-button>
-        <b-button size="sm" @click="cancelReservation(row.item)" variant="primary">Guest Left</b-button>
+      <template v-slot:cell(actions)="{item}">
+        <b-button size="sm" variant="info" @click="customerInfo(item.id)">Customer</b-button>
+        <b-button size="sm" variant="info">Reservation</b-button>
       </template>
     </b-table>
 
-    <b-modal id="modal-center" centered title="Reservation Info">
-      <b-row>
-        <b-col sm="3" class="avatar-menu-inner">Room Name:</b-col>
-      </b-row>
-      <b-row>
-        <b-col sm="3" class="avatar-menu-inner">Type:</b-col>
-      </b-row>
-      <b-row>
-        <b-col sm="3" class="avatar-menu-inner">Floor:</b-col>
-      </b-row>
-      <b-row>
-        <b-col sm="3" class="avatar-menu-inner">From:</b-col>
-        <b-col sm="3" class="avatar-menu-inner">To:</b-col>
-      </b-row>
+    <b-modal id="room-info-modal" size="xl" centered title="Room Info">
+      <room-info :roomId="selectedRoomId"></room-info>
     </b-modal>
   </b-container>
 </template>
 <script>
 import { mapState, mapGetters } from "vuex";
+import RoomInfo from "../rooms/RoomInfo";
 export default {
   name: "GuestList",
   data: function() {
     return {
+      selectedRoomId: null,
       fields: [
         {
           key: "first_name",
@@ -124,22 +110,19 @@ export default {
           sortDirection: "desc"
         },
         {
-          key: "room.name",
+          key: "room_name",
           label: "Room Name",
-          sortable: true,
-          class: "text-center"
+          sortable: true
         },
         {
           key: "check_in",
           label: "Check in",
-          sortable: true,
-          class: "text-center"
+          sortable: true
         },
         {
           key: "check_out",
           label: "Check Out",
-          sortable: true,
-          class: "text-center"
+          sortable: true
         },
         { key: "actions", label: "Actions" }
       ],
@@ -150,19 +133,22 @@ export default {
       sortDesc: false,
       sortDirection: "asc",
       filter: null,
+      totalRows: 0,
       filterOn: []
     };
   },
   methods: {
     onFiltered(filteredItems) {
-      // Trigger pagination to update the number of buttons/pages due to filtering
       this.currentPage = 1;
+      this.totalRows = filteredItems.length;
     },
-    customer(id) {
-      return this.getCustomer(id);
+    roomInfo(id) {
+      this.selectedRoomId = id;
+      this.$bvModal.show("room-info-modal");
     },
-    room(id) {
-      return this.getRoom(id);
+    customerInfo(id) {
+      this.selectedCustomerId = id;
+      this.$bvModal.show("customer-info-modal");
     }
   },
   computed: {
@@ -173,6 +159,10 @@ export default {
       getCustomer: "customer/getCustomer",
       getRoom: "room/getRoom"
     }),
+    countRows() {
+      return this.guestsFull.length;
+      //return this.guests.length;
+    },
     sortOptions() {
       // Create an options list from our fields
       return this.fields
@@ -181,9 +171,19 @@ export default {
           return { text: f.label, value: f.key };
         });
     },
-    totalRows() {
-      return this.guests.length;
+    guestsFull() {
+      let newArray = [];
+
+      for (const guest of this.guests) {
+        guest.customer = this.getCustomer(guest.customer.id);
+        guest.room = this.getRoom(guest.room.id);
+        newArray.push(guest);
+      }
+      return newArray;
     }
+  },
+  components: {
+    "room-info": RoomInfo
   }
 };
 </script>
