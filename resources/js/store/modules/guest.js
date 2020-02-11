@@ -7,7 +7,7 @@ export default ({
     getters: {
         getGuest: (state, getters) => (customerId) => {
             return state.guests.find(
-                guest => guest.customer_id === customerId
+                guest => guest.customer.id === customerId
             );
         },
         getGuestIndex: (state, getters) => (guestId) => {

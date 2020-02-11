@@ -112,11 +112,7 @@
     </b-modal>
 
     <b-modal id="guest-info-modal" size="xl" centered title="Guest Info">
-      <guest-info
-        :room_name="selectedGuest.check_in"
-        :check_in="selectedGuest.check_in"
-        :check_out="selectedGuest.check_out"
-      ></guest-info>
+      <guest :guestId="selectedGuestId"></guest>
     </b-modal>
 
     <b-modal
@@ -144,13 +140,13 @@ import { mapState, mapGetters } from "vuex";
 import CustomerInfo from "./CustomerInfo";
 import CustomerInvoices from "./CustomerInvoices";
 import CustomerReservations from "./CustomerReservations";
-import GuestInfo from "./CustomerGuestInfo";
+import Guest from "../guests/Guest";
 export default {
   name: "CustomerList",
   data: function() {
     return {
       selectedCustomer: {},
-      selectedGuest: {},
+      selectedGuestId: 0,
       fields: [
         {
           key: "first_name",
@@ -195,7 +191,7 @@ export default {
     },
     showGuestInfo(customer) {
       this.selectedCustomer = customer;
-      this.selectedGuest = this.getGuest(customer.id);
+      this.selectedGuestId = this.getGuest(customer.id).id;
       this.$bvModal.show("guest-info-modal");
     },
     showReservations(customer) {
@@ -217,9 +213,9 @@ export default {
     }),
     ...mapGetters({
       isCurrentGuest: "guest/isCurrentGuest",
-      getGuest: "guest/getGuest",
       customerInvoices: "billing/getCustomerInvoices",
       hasPendingInvoices: "billing/hasPendingInvoices",
+      getGuest: "guest/getGuest",
       customerReservations: "reservation/getCustomerReservations"
     }),
     filteredCustomers() {
@@ -254,7 +250,7 @@ export default {
   updated() {},
   components: {
     "customer-info": CustomerInfo,
-    "guest-info": GuestInfo,
+    guest: Guest,
     "customer-reservations": CustomerReservations,
     "customer-invoices": CustomerInvoices
   }
