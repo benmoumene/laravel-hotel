@@ -68,33 +68,29 @@
       :sort-direction="sortDirection"
       @filtered="onFiltered"
     >
-      <template v-slot:cell(first_name)="{item}">
-        <b-link>{{ item.customer.first_name }}</b-link>
-      </template>
-      <template v-slot:cell(last_name)="{item}">
-        <b-link>{{ item.customer.last_name }}</b-link>
-      </template>
+      <template v-slot:cell(first_name)="{item}">{{ item.customer.first_name }}</template>
+      <template v-slot:cell(last_name)="{item}">{{ item.customer.last_name }}</template>
       <template v-slot:cell(room_name)="{item}">
         <b-button size="sm" variant="info" @click="roomInfo(item.room.id)">{{ item.room.name }}</b-button>
       </template>
       <template v-slot:cell(actions)="{item}">
-        <b-button size="sm" variant="info" @click="customerInfo(item.id)">Customer</b-button>
+        <b-button size="sm" variant="info" @click="customerInfo(item.customer.id)">Customer</b-button>
         <b-button size="sm" variant="info">Reservation</b-button>
       </template>
     </b-table>
 
     <b-modal id="room-info-modal" size="xl" centered title="Room Info" hide-footer>
-      <room-info :roomId="selectedRoomId"></room-info>
+      <room-info :roomId="selectedRoomId" :readonly="true"></room-info>
     </b-modal>
     <b-modal id="customer-info-modal" size="xl" centered title="Customer Info" hide-footer>
-      <customer-info :customerId="selectedCustomerId"></customer-info>
+      <customer-info :customerId="selectedCustomerId" :readonly="true"></customer-info>
     </b-modal>
   </b-container>
 </template>
 <script>
 import { mapState, mapGetters } from "vuex";
-import RoomInfo from "../rooms/RoomInfo";
-import CustomerInfo from "../customers/CustomerInfo";
+import Room from "../rooms/Room";
+import Customer from "../customers/Customer";
 export default {
   name: "GuestList",
   data: function() {
@@ -188,8 +184,8 @@ export default {
     }
   },
   components: {
-    "room-info": RoomInfo,
-    "customer-info": CustomerInfo
+    "room-info": Room,
+    "customer-info": Customer
   }
 };
 </script>
