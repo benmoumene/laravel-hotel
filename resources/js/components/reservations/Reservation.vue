@@ -49,13 +49,6 @@
     <b-form-group label-cols="12" label-cols-sm="4" label="Floor">
       <b-form-input :value="room.floor" readonly></b-form-input>
     </b-form-group>
-    <b-row class="mt-3 mb-3">
-      <b-col class="text-right">
-        <b-button @click="checkOut" variant="warning">Check Out</b-button>
-        <b-button @click="checkIn" variant="success">Check In</b-button>
-        <b-button @click="cancelReservation" variant="danger">Cancel</b-button>
-      </b-col>
-    </b-row>
   </b-container>
 </template>
 <script>
@@ -75,24 +68,6 @@ export default {
         solid: true,
         toaster: "b-toaster-bottom-right",
         appendToast: true
-      });
-    },
-    cancelReservation() {
-      this.$store.dispatch("reservation/cancel", {
-        vm: this,
-        reservation: this.reservation
-      });
-    },
-    checkIn() {
-      this.$store.dispatch("guest/checkIn", {
-        vm: this,
-        reservation: this.reservation
-      });
-    },
-    checkOut() {
-      this.$store.dispatch("guest/checkOut", {
-        vm: this,
-        reservation: this.reservation
       });
     }
   },
@@ -122,7 +97,7 @@ export default {
       return this.getRoom(this.reservation.room_id);
     },
     guest() {
-      return this.getGuest(this.reservation.id);
+      return this.getGuest(this.reservationId);
     }
   }
 };
