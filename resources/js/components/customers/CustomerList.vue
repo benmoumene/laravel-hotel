@@ -97,18 +97,8 @@
       </b-table>
     </b-row>
 
-    <b-modal id="customer-info-modal" size="xl" centered title="Customer Info" hide-footer>
-      <customer-info
-        :id="selectedCustomer.id"
-        :first_name="selectedCustomer.first_name"
-        :last_name="selectedCustomer.last_name"
-        :address="selectedCustomer.address"
-        :phone="selectedCustomer.phone"
-        :sex="selectedCustomer.sex"
-        :document_id="selectedCustomer.document_id"
-        :document_id_type="selectedCustomer.document_id_type"
-        :nationality="selectedCustomer.nationality"
-      ></customer-info>
+    <b-modal id="customer-edit-modal" size="xl" centered title="Customer Info" hide-footer>
+      <customer-edit :customerId="selectedCustomer.id" :readonly="false"></customer-edit>
     </b-modal>
 
     <b-modal id="guest-info-modal" size="xl" centered title="Guest Info">
@@ -137,7 +127,7 @@
 </template>
 <script>
 import { mapState, mapGetters } from "vuex";
-import CustomerInfo from "./CustomerInfo";
+import CustomerEdit from "./CustomerEdit";
 import CustomerInvoices from "./CustomerInvoices";
 import CustomerReservations from "./CustomerReservations";
 import Guest from "../guests/Guest";
@@ -187,7 +177,7 @@ export default {
   methods: {
     showCustomerInfo(customer) {
       this.selectedCustomer = customer;
-      this.$bvModal.show("customer-info-modal");
+      this.$bvModal.show("customer-edit-modal");
     },
     showGuestInfo(customer) {
       this.selectedCustomer = customer;
@@ -246,15 +236,11 @@ export default {
       return this.customers.length;
     }
   },
-  mounted() {},
-  updated() {},
   components: {
-    "customer-info": CustomerInfo,
+    "customer-edit": CustomerEdit,
     guest: Guest,
     "customer-reservations": CustomerReservations,
     "customer-invoices": CustomerInvoices
   }
 };
 </script>
-<style scoped>
-</style>
