@@ -7,10 +7,13 @@ export default ({
         getInvoiceById: (state, getters) => (invoiceId) => {
             return state.invoices.find(invoice => invoice.id === invoiceId);
         },
-        getInvoice: (state, getters) => (invoiceId) => {
+        getInvoiceFromReservation: (state, getters) => (reservationId) => {
             return state.invoices.find(
-                invoice => invoice.id === invoiceId
+                invoice => invoice.reservation_id === reservationId
             );
+        },
+        getInvoice: (state, getters) => (invoiceId) => {
+            return getters.getInvoiceById(invoiceId);
         },
         getCustomerInvoices: (state, getters) => (customerId) => {
             return state.invoices.filter(
