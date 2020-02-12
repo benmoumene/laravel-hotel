@@ -18,8 +18,6 @@ import CustomerList from '../components/customers/CustomerList.vue'
 
 import GuestRouter from '../components/guests/GuestRouter.vue'
 import GuestList from '../components/guests/GuestList.vue'
-import GuestAdd from '../components/guests/GuestAdd.vue'
-import GuestEdit from '../components/guests/GuestEdit.vue'
 
 import RoomRouter from '../components/rooms/RoomRouter.vue'
 import RoomAdd from '../components/rooms/RoomAdd.vue'
@@ -82,16 +80,6 @@ export default new VueRouter({
           path: 'list',
           name: 'GuestList',
           component: GuestList
-        },
-        {
-          path: 'add',
-          name: 'GuestAdd',
-          component: GuestAdd
-        },
-        {
-          path: ':id/edit',
-          name: 'GuestEdit',
-          component: GuestEdit
         },
       ]
     },

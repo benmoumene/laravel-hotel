@@ -97,26 +97,12 @@
       </b-table>
     </b-row>
 
-    <b-modal id="customer-info-modal" size="xl" centered title="Customer Info" hide-footer>
-      <customer-info
-        :id="selectedCustomer.id"
-        :first_name="selectedCustomer.first_name"
-        :last_name="selectedCustomer.last_name"
-        :address="selectedCustomer.address"
-        :phone="selectedCustomer.phone"
-        :sex="selectedCustomer.sex"
-        :document_id="selectedCustomer.document_id"
-        :document_id_type="selectedCustomer.document_id_type"
-        :nationality="selectedCustomer.nationality"
-      ></customer-info>
+    <b-modal id="customer-edit-modal" size="xl" centered title="Customer Info" hide-footer>
+      <customer-edit :customerId="selectedCustomer.id" :readonly="false"></customer-edit>
     </b-modal>
 
-    <b-modal id="guest-info-modal" size="xl" centered title="Guest Info">
-      <guest-info
-        :room_name="selectedGuest.check_in"
-        :check_in="selectedGuest.check_in"
-        :check_out="selectedGuest.check_out"
-      ></guest-info>
+    <b-modal id="guest-info-modal" size="xl" centered title="Guest Info" hide-footer>
+      <guest-info :guestId="selectedGuestId" :readonly="true"></guest-info>
     </b-modal>
 
     <b-modal
@@ -141,16 +127,16 @@
 </template>
 <script>
 import { mapState, mapGetters } from "vuex";
-import CustomerInfo from "./CustomerInfo";
+import CustomerEdit from "./CustomerEdit";
 import CustomerInvoices from "./CustomerInvoices";
 import CustomerReservations from "./CustomerReservations";
-import GuestInfo from "./CustomerGuestInfo";
+import Guest from "../guests/Guest";
 export default {
   name: "CustomerList",
   data: function() {
     return {
       selectedCustomer: {},
-      selectedGuest: {},
+      selectedGuestId: 0,
       fields: [
         {
           key: "first_name",
@@ -191,11 +177,11 @@ export default {
   methods: {
     showCustomerInfo(customer) {
       this.selectedCustomer = customer;
-      this.$bvModal.show("customer-info-modal");
+      this.$bvModal.show("customer-edit-modal");
     },
     showGuestInfo(customer) {
       this.selectedCustomer = customer;
-      this.selectedGuest = this.getGuest(customer.id);
+      this.selectedGuestId = this.getGuest(customer.id).id;
       this.$bvModal.show("guest-info-modal");
     },
     showReservations(customer) {
@@ -217,9 +203,9 @@ export default {
     }),
     ...mapGetters({
       isCurrentGuest: "guest/isCurrentGuest",
-      getGuest: "guest/getGuest",
       customerInvoices: "billing/getCustomerInvoices",
       hasPendingInvoices: "billing/hasPendingInvoices",
+      getGuest: "guest/getGuestWithCustomerId",
       customerReservations: "reservation/getCustomerReservations"
     }),
     filteredCustomers() {
@@ -250,15 +236,11 @@ export default {
       return this.customers.length;
     }
   },
-  mounted() {},
-  updated() {},
   components: {
-    "customer-info": CustomerInfo,
-    "guest-info": GuestInfo,
+    "customer-edit": CustomerEdit,
+    "guest-info": Guest,
     "customer-reservations": CustomerReservations,
     "customer-invoices": CustomerInvoices
   }
 };
 </script>
-<style scoped>
-</style>

@@ -4,7 +4,7 @@
       <b-col class="brand-link">
         <!-- Brand Logo -->
         <a href="#">
-          <span class="brand-text font-weight-light">Laravel Hotel</span>
+          <span class="brand-text font-weight-light">{{ setting('hotel_name') }}</span>
         </a>
       </b-col>
     </b-row>
@@ -196,19 +196,27 @@ export default {
   methods: {
     logout() {
       return this.$store.dispatch("logout");
+    },
+    setting(name) {
+      return this.getSetting(name);
     }
   },
   computed: {
     ...mapGetters(["isAdmin", "isRecepcionist", "isManager"]),
     ...mapGetters({
-      countPendingInvoices: "billing/countPendingInvoices"
+      countPendingInvoices: "billing/countPendingInvoices",
+      getSetting: "getSettingValue"
     }),
     ...mapState(["appUser"]),
     ...mapState({
-      inventory: state => state.inventory.items
+      inventory: state => state.inventory.items,
+      isReady: state => state.ready
     }),
     avatarPath() {
-      return "/storage/" + this.appUser.avatar_filename;
+      //if (typeof this.appUser.avatar_filename !== "undefined") {
+      if (this.isReady && this.appUser.avatar_filename != null) {
+        return "/storage/" + this.appUser.avatar_filename;
+      }
     },
     lowStock() {
       for (var item of this.inventory) {

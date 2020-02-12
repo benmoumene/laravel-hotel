@@ -57,7 +57,7 @@
       show-empty
       small
       stacked="md"
-      :items="guests"
+      :items="items"
       :fields="fields"
       :current-page="currentPage"
       :per-page="perPage"
@@ -68,57 +68,99 @@
       :sort-direction="sortDirection"
       @filtered="onFiltered"
     >
-      <template v-slot:cell(first_name)="row">
-        <b-link v-b-modal.modal-center>{{ customer(row.item.customer.id).first_name }}</b-link>
-      </template>
-      <template v-slot:cell(last_name)="row">
-        <b-link v-b-modal.modal-center>{{ customer(row.item.customer.id).last_name }}</b-link>
-      </template>
-      <template v-slot:cell(room.name)="row">
-        <b-link v-b-modal.modal-center>{{ room(row.item.room.id).name }}</b-link>
-      </template>
-      <template v-slot:cell(actions)="row">
-        <b-button size="sm" variant="info" @click="showCustomerInfo(row.item)">Customer</b-button>
-        <router-link :to="{path: row.item.id +'/cancel'}">
-          <b-button size="sm" variant="info">Reservation</b-button>
-        </router-link>
-        <b-button size="sm" variant="info">Room</b-button>
-        <b-button size="sm" @click="cancelReservation(row.item)" variant="primary">Guest Left</b-button>
+      <template v-slot:cell(customer.first_name)="item">{{ item.value }}</template>
+      <template v-slot:cell(customer.last_name)="item">{{ item.value }}</template>
+
+      <template v-slot:cell(actions)="{item}">
+        <b-button
+          v-b-tooltip.hover
+          title="Customer details"
+          size="sm"
+          variant="info"
+          @click="customerInfo(item.customer.id)"
+        >
+          <i class="fa fa-user"></i>
+        </b-button>
+        <b-button
+          v-b-tooltip.hover
+          title="Reservation details"
+          size="sm"
+          variant="info"
+          @click="reservationInfo(item.reservation_id)"
+        >
+          <i class="fa fa-calendar-alt"></i>
+        </b-button>
+        <b-button
+          v-b-tooltip.hover
+          title="Room details"
+          size="sm"
+          variant="info"
+          @click="roomInfo(item.room.id)"
+        >
+          <i class="fa fa-bed"></i>
+        </b-button>
+        <b-button
+          v-b-tooltip.hover
+          title="Services"
+          size="sm"
+          variant="success"
+          @click="billingInfo(item.reservation_id)"
+        >
+          <i class="nav-icon fa fa-coffee"></i>
+        </b-button>
+        <b-button
+          v-b-tooltip.hover
+          title="Invoice"
+          size="sm"
+          variant="success"
+          @click="invoiceInfo(item.reservation_id)"
+        >
+          <i class="nav-icon fa fa-file-invoice-dollar"></i>
+        </b-button>
       </template>
     </b-table>
-
-    <b-modal id="modal-center" centered title="Reservation Info">
-      <b-row>
-        <b-col sm="3" class="avatar-menu-inner">Room Name:</b-col>
-      </b-row>
-      <b-row>
-        <b-col sm="3" class="avatar-menu-inner">Type:</b-col>
-      </b-row>
-      <b-row>
-        <b-col sm="3" class="avatar-menu-inner">Floor:</b-col>
-      </b-row>
-      <b-row>
-        <b-col sm="3" class="avatar-menu-inner">From:</b-col>
-        <b-col sm="3" class="avatar-menu-inner">To:</b-col>
-      </b-row>
+    <b-modal id="room-modal" size="xl" centered title="Room Info" hide-footer>
+      <room-info :roomId="selectedRoomId" :readonly="true"></room-info>
+    </b-modal>
+    <b-modal id="customer-modal" size="xl" centered title="Customer Info" hide-footer>
+      <customer-info :customerId="selectedCustomerId" :readonly="true"></customer-info>
+    </b-modal>
+    <b-modal id="reservation-modal" size="xl" centered title="Reservation Info" hide-footer>
+      <reservation-info :reservationId="selectedReservationId" :readonly="true"></reservation-info>
+    </b-modal>
+    <b-modal id="billing-modal" size="xl" centered title="Billing Info" hide-footer>
+      <billed-info :reservationId="reservationId" :readonly="true" />
+    </b-modal>
+    <b-modal id="invoice-modal" size="xl" centered title="Invoice Info" hide-footer>
+      <invoice-info :invoiceId="invoiceId" :readonly="true"></invoice-info>
     </b-modal>
   </b-container>
 </template>
 <script>
 import { mapState, mapGetters } from "vuex";
+import Room from "../rooms/Room";
+import Invoice from "../billing/Invoice";
+import BilledServices from "../billing/BilledServices";
+import Reservation from "../reservations/Reservation";
+import Customer from "../customers/Customer";
 export default {
   name: "GuestList",
   data: function() {
     return {
+      invoiceId: null,
+      reservationId: null,
+      selectedRoomId: null,
+      selectedCustomerId: null,
+      selectedReservationId: null,
       fields: [
         {
-          key: "first_name",
+          key: "customer.first_name",
           label: "First Name",
           sortable: true,
           sortDirection: "desc"
         },
         {
-          key: "last_name",
+          key: "customer.last_name",
           label: "Last Name",
           sortable: true,
           sortDirection: "desc"
@@ -126,23 +168,21 @@ export default {
         {
           key: "room.name",
           label: "Room Name",
-          sortable: true,
-          class: "text-center"
+          sortable: true
         },
         {
           key: "check_in",
           label: "Check in",
-          sortable: true,
-          class: "text-center"
+          sortable: true
         },
         {
           key: "check_out",
           label: "Check Out",
-          sortable: true,
-          class: "text-center"
+          sortable: true
         },
         { key: "actions", label: "Actions" }
       ],
+      items: [],
       currentPage: 1,
       perPage: 5,
       pageOptions: [5, 10, 15],
@@ -150,19 +190,34 @@ export default {
       sortDesc: false,
       sortDirection: "asc",
       filter: null,
+      totalRows: null,
       filterOn: []
     };
   },
   methods: {
     onFiltered(filteredItems) {
-      // Trigger pagination to update the number of buttons/pages due to filtering
       this.currentPage = 1;
+      this.totalRows = filteredItems.length;
     },
-    customer(id) {
-      return this.getCustomer(id);
+    reservationInfo(id) {
+      this.selectedReservationId = id;
+      this.$bvModal.show("reservation-modal");
     },
-    room(id) {
-      return this.getRoom(id);
+    roomInfo(id) {
+      this.selectedRoomId = id;
+      this.$bvModal.show("room-modal");
+    },
+    invoiceInfo(reservation_id) {
+      this.invoiceId = this.getInvoice(reservation_id).id;
+      this.$bvModal.show("invoice-modal");
+    },
+    billingInfo(reservation_id) {
+      this.reservationId = reservation_id;
+      this.$bvModal.show("billing-modal");
+    },
+    customerInfo(id) {
+      this.selectedCustomerId = id;
+      this.$bvModal.show("customer-modal");
     }
   },
   computed: {
@@ -171,6 +226,7 @@ export default {
     }),
     ...mapGetters({
       getCustomer: "customer/getCustomer",
+      getInvoice: "billing/getInvoiceFromReservation",
       getRoom: "room/getRoom"
     }),
     sortOptions() {
@@ -181,9 +237,33 @@ export default {
           return { text: f.label, value: f.key };
         });
     },
-    totalRows() {
-      return this.guests.length;
+    guestNormalized() {
+      let newArray = [];
+
+      for (const guest of this.guests) {
+        guest.customer = this.getCustomer(guest.customer.id);
+        guest.room = this.getRoom(guest.room.id);
+        newArray.push(guest);
+      }
+      return newArray;
     }
+  },
+  mounted() {
+    this.items = this.guestNormalized;
+    this.totalRows = this.items.length;
+  },
+  watch: {
+    guestNormalized: function(val) {
+      this.items = this.guestNormalized;
+      this.totalRows = this.items.length;
+    }
+  },
+  components: {
+    "room-info": Room,
+    "customer-info": Customer,
+    "invoice-info": Invoice,
+    "billed-info": BilledServices,
+    "reservation-info": Reservation
   }
 };
 </script>
