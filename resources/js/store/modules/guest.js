@@ -26,6 +26,25 @@ export default ({
             return state.guests.find(guest => guest.id === guestId);
         },
         isCurrentGuest: (state, getters) => (customerId) => {
+            // Si check_in != null && check_out == null
+            // Buscar reserva
+            // si reserva == 'active' es current guest
+            let guest = getters.getGuestWithCustomerId(customerId);
+
+            if (typeof guest === 'undefined') {
+                return false;
+            }
+
+            if (guest.check_in !== null && guest.check_out === null) {
+                return true;
+            }
+
+            return false;
+        },
+        isCurrentGuestasdasd: (state, getters) => (customerId) => {
+            // Si check_in != null && check_out == null
+            // Buscar reserva
+            // si reserva == 'active' es current guest
             var now = new Date();
             var dd = String(now.getDate()).padStart(2, "0");
             var mm = String(now.getMonth() + 1).padStart(2, "0");
