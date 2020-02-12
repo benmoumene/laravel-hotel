@@ -101,8 +101,8 @@
       <customer-edit :customerId="selectedCustomer.id" :readonly="false"></customer-edit>
     </b-modal>
 
-    <b-modal id="guest-info-modal" size="xl" centered title="Guest Info">
-      <guest :guestId="selectedGuestId"></guest>
+    <b-modal id="guest-info-modal" size="xl" centered title="Guest Info" hide-footer>
+      <guest-info :guestId="selectedGuestId" :readonly="true"></guest-info>
     </b-modal>
 
     <b-modal
@@ -205,7 +205,7 @@ export default {
       isCurrentGuest: "guest/isCurrentGuest",
       customerInvoices: "billing/getCustomerInvoices",
       hasPendingInvoices: "billing/hasPendingInvoices",
-      getGuest: "guest/getGuest",
+      getGuest: "guest/getGuestWithCustomerId",
       customerReservations: "reservation/getCustomerReservations"
     }),
     filteredCustomers() {
@@ -238,7 +238,7 @@ export default {
   },
   components: {
     "customer-edit": CustomerEdit,
-    guest: Guest,
+    "guest-info": Guest,
     "customer-reservations": CustomerReservations,
     "customer-invoices": CustomerInvoices
   }

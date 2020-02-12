@@ -6,6 +6,9 @@ export default ({
     },
     getters: {
         getGuest: (state, getters) => (customerId) => {
+            return getters.getGuestById(customerId);
+        },
+        getGuestWithCustomerId: (state, getters) => (customerId) => {
             return state.guests.find(
                 guest => guest.customer.id === customerId
             );
