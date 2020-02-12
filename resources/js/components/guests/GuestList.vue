@@ -68,9 +68,9 @@
       :sort-direction="sortDirection"
       @filtered="onFiltered"
     >
-      <template v-slot:cell(first_name)="{item}">{{ item.customer.first_name }}</template>
-      <template v-slot:cell(last_name)="{item}">{{ item.customer.last_name }}</template>
-      <template v-slot:cell(room_name)="{item}">
+      <template v-slot:cell(customer.first_name)="item">{{ item.value }}</template>
+      <template v-slot:cell(customer.last_name)="item">{{ item.value }}</template>
+      <template v-slot:cell(room.name)="{item}">
         <b-button size="sm" variant="info" @click="roomInfo(item.room.id)">{{ item.room.name }}</b-button>
       </template>
       <template v-slot:cell(actions)="{item}">
@@ -99,19 +99,19 @@ export default {
       selectedCustomerId: null,
       fields: [
         {
-          key: "first_name",
+          key: "customer.first_name",
           label: "First Name",
           sortable: true,
           sortDirection: "desc"
         },
         {
-          key: "last_name",
+          key: "customer.last_name",
           label: "Last Name",
           sortable: true,
           sortDirection: "desc"
         },
         {
-          key: "room_name",
+          key: "room.name",
           label: "Room Name",
           sortable: true
         },
@@ -179,6 +179,9 @@ export default {
       }
       return newArray;
     }
+  },
+  mounted() {
+    //this.items = this.guestNormalized;
   },
   watch: {
     guestNormalized: function(val) {

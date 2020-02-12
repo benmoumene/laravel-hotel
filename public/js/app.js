@@ -3987,17 +3987,17 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       selectedRoomId: null,
       selectedCustomerId: null,
       fields: [{
-        key: "first_name",
+        key: "customer.first_name",
         label: "First Name",
         sortable: true,
         sortDirection: "desc"
       }, {
-        key: "last_name",
+        key: "customer.last_name",
         label: "Last Name",
         sortable: true,
         sortDirection: "desc"
       }, {
-        key: "room_name",
+        key: "room.name",
         label: "Room Name",
         sortable: true
       }, {
@@ -4088,6 +4088,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       return newArray;
     }
   }),
+  mounted: function mounted() {//this.items = this.guestNormalized;
+  },
   watch: {
     guestNormalized: function guestNormalized(val) {
       this.filter = null;
@@ -74914,21 +74916,19 @@ var render = function() {
         },
         scopedSlots: _vm._u([
           {
-            key: "cell(first_name)",
-            fn: function(ref) {
-              var item = ref.item
-              return [_vm._v(_vm._s(item.customer.first_name))]
+            key: "cell(customer.first_name)",
+            fn: function(item) {
+              return [_vm._v(_vm._s(item.value))]
             }
           },
           {
-            key: "cell(last_name)",
-            fn: function(ref) {
-              var item = ref.item
-              return [_vm._v(_vm._s(item.customer.last_name))]
+            key: "cell(customer.last_name)",
+            fn: function(item) {
+              return [_vm._v(_vm._s(item.value))]
             }
           },
           {
-            key: "cell(room_name)",
+            key: "cell(room.name)",
             fn: function(ref) {
               var item = ref.item
               return [
