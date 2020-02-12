@@ -73,7 +73,7 @@ export default new Vuex.Store({
         // Este metodo realiza una peticion al backend y recibe los datos
         // necesarios para inicializar la aplicacion
         fetchData(context) {
-            axios.get("http://127.0.0.1:8000/hotel/fetch").then(function (response) {
+            axios.get("/hotel/fetch").then(function (response) {
                 // Si el request tuvo exito (codigo 200)
                 if (response.status == 200) {
                     var data = response["data"];
@@ -103,7 +103,7 @@ export default new Vuex.Store({
             });
         },
         logout(context) {
-            axios.post("http://127.0.0.1:8000/logout").catch(error => {
+            axios.post("/logout").catch(error => {
                 window.location.href = '/login';
             });
         },
@@ -130,7 +130,7 @@ export default new Vuex.Store({
             var fd = new FormData();
             fd.append('image', avatar);
             fd.append('_method', 'put');
-            axios.post("http://127.0.0.1:8000/users/" + userId, fd).then(function (response) {
+            axios.post("/users/" + userId, fd).then(function (response) {
                 // Si el request tuvo exito (codigo 200)
                 if (response.status == 200) {
                     context.state.appUser.avatar_filename = response['data']['avatar'];
