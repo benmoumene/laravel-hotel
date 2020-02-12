@@ -70,26 +70,52 @@
     >
       <template v-slot:cell(customer.first_name)="item">{{ item.value }}</template>
       <template v-slot:cell(customer.last_name)="item">{{ item.value }}</template>
-      <template v-slot:cell(room.name)="{item}">
-        <b-button size="sm" variant="info" @click="roomInfo(item.room.id)">{{ item.room.name }}</b-button>
-      </template>
+
       <template v-slot:cell(actions)="{item}">
-        <b-button size="sm" variant="info" @click="customerInfo(item.customer.id)">Customer</b-button>
-        <b-button size="sm" variant="info">Reservation</b-button>
+        <b-button
+          v-b-tooltip.hover
+          title="Customer details"
+          size="sm"
+          variant="info"
+          @click="customerInfo(item.customer.id)"
+        >
+          <i class="fa fa-user"></i>
+        </b-button>
+        <b-button
+          v-b-tooltip.hover
+          title="Reservation details"
+          size="sm"
+          variant="info"
+          @click="reservationInfo(item.reservation_id)"
+        >
+          <i class="fa fa-calendar-alt"></i>
+        </b-button>
+        <b-button
+          v-b-tooltip.hover
+          title="Room details"
+          size="sm"
+          variant="info"
+          @click="roomInfo(item.room.id)"
+        >
+          <i class="fa fa-bed"></i>
+        </b-button>
       </template>
     </b-table>
-
     <b-modal id="room-info-modal" size="xl" centered title="Room Info" hide-footer>
       <room-info :roomId="selectedRoomId" :readonly="true"></room-info>
     </b-modal>
     <b-modal id="customer-info-modal" size="xl" centered title="Customer Info" hide-footer>
       <customer-info :customerId="selectedCustomerId" :readonly="true"></customer-info>
     </b-modal>
+    <b-modal id="reservation-info-modal" size="xl" centered title="Reservation Info" hide-footer>
+      <reservation-info :reservationId="selectedReservationId" :readonly="true"></reservation-info>
+    </b-modal>
   </b-container>
 </template>
 <script>
 import { mapState, mapGetters } from "vuex";
 import Room from "../rooms/Room";
+import Reservation from "../reservations/Reservation";
 import Customer from "../customers/Customer";
 export default {
   name: "GuestList",
@@ -97,6 +123,7 @@ export default {
     return {
       selectedRoomId: null,
       selectedCustomerId: null,
+      selectedReservationId: null,
       fields: [
         {
           key: "customer.first_name",
@@ -143,6 +170,10 @@ export default {
     onFiltered(filteredItems) {
       this.currentPage = 1;
       this.totalRows = filteredItems.length;
+    },
+    reservationInfo(id) {
+      this.selectedReservationId = id;
+      this.$bvModal.show("reservation-info-modal");
     },
     roomInfo(id) {
       this.selectedRoomId = id;
@@ -192,7 +223,8 @@ export default {
   },
   components: {
     "room-info": Room,
-    "customer-info": Customer
+    "customer-info": Customer,
+    "reservation-info": Reservation
   }
 };
 </script>
