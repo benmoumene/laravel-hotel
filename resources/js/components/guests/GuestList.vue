@@ -57,7 +57,7 @@
       show-empty
       small
       stacked="md"
-      :items="guestsFull"
+      :items="items"
       :fields="fields"
       :current-page="currentPage"
       :per-page="perPage"
@@ -127,6 +127,7 @@ export default {
         },
         { key: "actions", label: "Actions" }
       ],
+      items: [],
       currentPage: 1,
       perPage: 5,
       pageOptions: [5, 10, 15],
@@ -134,7 +135,7 @@ export default {
       sortDesc: false,
       sortDirection: "asc",
       filter: null,
-      totalRows: 0,
+      totalRows: null,
       filterOn: []
     };
   },
@@ -160,10 +161,6 @@ export default {
       getCustomer: "customer/getCustomer",
       getRoom: "room/getRoom"
     }),
-    countRows() {
-      return this.guestsFull.length;
-      //return this.guests.length;
-    },
     sortOptions() {
       // Create an options list from our fields
       return this.fields
@@ -172,7 +169,7 @@ export default {
           return { text: f.label, value: f.key };
         });
     },
-    guestsFull() {
+    guestNormalized() {
       let newArray = [];
 
       for (const guest of this.guests) {
@@ -181,6 +178,13 @@ export default {
         newArray.push(guest);
       }
       return newArray;
+    }
+  },
+  watch: {
+    guestNormalized: function(val) {
+      this.filter = null;
+      this.items = this.guestNormalized;
+      this.totalRows = this.items.length;
     }
   },
   components: {
