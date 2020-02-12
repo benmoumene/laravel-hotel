@@ -99,28 +99,56 @@
         >
           <i class="fa fa-bed"></i>
         </b-button>
+        <b-button
+          v-b-tooltip.hover
+          title="Services"
+          size="sm"
+          variant="success"
+          @click="billingInfo(item.reservation_id)"
+        >
+          <i class="nav-icon fa fa-coffee"></i>
+        </b-button>
+        <b-button
+          v-b-tooltip.hover
+          title="Invoice"
+          size="sm"
+          variant="success"
+          @click="invoiceInfo(item.reservation_id)"
+        >
+          <i class="nav-icon fa fa-file-invoice-dollar"></i>
+        </b-button>
       </template>
     </b-table>
-    <b-modal id="room-info-modal" size="xl" centered title="Room Info" hide-footer>
+    <b-modal id="room-modal" size="xl" centered title="Room Info" hide-footer>
       <room-info :roomId="selectedRoomId" :readonly="true"></room-info>
     </b-modal>
-    <b-modal id="customer-info-modal" size="xl" centered title="Customer Info" hide-footer>
+    <b-modal id="customer-modal" size="xl" centered title="Customer Info" hide-footer>
       <customer-info :customerId="selectedCustomerId" :readonly="true"></customer-info>
     </b-modal>
-    <b-modal id="reservation-info-modal" size="xl" centered title="Reservation Info" hide-footer>
+    <b-modal id="reservation-modal" size="xl" centered title="Reservation Info" hide-footer>
       <reservation-info :reservationId="selectedReservationId" :readonly="true"></reservation-info>
+    </b-modal>
+    <b-modal id="billing-modal" size="xl" centered title="Billing Info" hide-footer>
+      <billed-info :reservationId="reservationId" :readonly="true" />
+    </b-modal>
+    <b-modal id="invoice-modal" size="xl" centered title="Invoice Info" hide-footer>
+      <invoice-info :invoiceId="invoiceId" :readonly="true"></invoice-info>
     </b-modal>
   </b-container>
 </template>
 <script>
 import { mapState, mapGetters } from "vuex";
 import Room from "../rooms/Room";
+import Invoice from "../billing/Invoice";
+import BilledServices from "../billing/BilledServices";
 import Reservation from "../reservations/Reservation";
 import Customer from "../customers/Customer";
 export default {
   name: "GuestList",
   data: function() {
     return {
+      invoiceId: null,
+      reservationId: null,
       selectedRoomId: null,
       selectedCustomerId: null,
       selectedReservationId: null,
@@ -173,15 +201,23 @@ export default {
     },
     reservationInfo(id) {
       this.selectedReservationId = id;
-      this.$bvModal.show("reservation-info-modal");
+      this.$bvModal.show("reservation-modal");
     },
     roomInfo(id) {
       this.selectedRoomId = id;
-      this.$bvModal.show("room-info-modal");
+      this.$bvModal.show("room-modal");
+    },
+    invoiceInfo(reservation_id) {
+      this.invoiceId = this.getInvoice(reservation_id).id;
+      this.$bvModal.show("invoice-modal");
+    },
+    billingInfo(reservation_id) {
+      this.reservationId = reservation_id;
+      this.$bvModal.show("billing-modal");
     },
     customerInfo(id) {
       this.selectedCustomerId = id;
-      this.$bvModal.show("customer-info-modal");
+      this.$bvModal.show("customer-modal");
     }
   },
   computed: {
@@ -190,6 +226,7 @@ export default {
     }),
     ...mapGetters({
       getCustomer: "customer/getCustomer",
+      getInvoice: "billing/getInvoiceFromReservation",
       getRoom: "room/getRoom"
     }),
     sortOptions() {
@@ -224,6 +261,8 @@ export default {
   components: {
     "room-info": Room,
     "customer-info": Customer,
+    "invoice-info": Invoice,
+    "billed-info": BilledServices,
     "reservation-info": Reservation
   }
 };
