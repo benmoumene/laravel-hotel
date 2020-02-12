@@ -205,10 +205,14 @@ export default {
     }),
     ...mapState(["appUser"]),
     ...mapState({
-      inventory: state => state.inventory.items
+      inventory: state => state.inventory.items,
+      isReady: state => state.ready
     }),
     avatarPath() {
-      return "/storage/" + this.appUser.avatar_filename;
+      //if (typeof this.appUser.avatar_filename !== "undefined") {
+      if (this.isReady && this.appUser.avatar_filename != null) {
+        return "/storage/" + this.appUser.avatar_filename;
+      }
     },
     lowStock() {
       for (var item of this.inventory) {
