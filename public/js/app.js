@@ -4012,6 +4012,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         key: "actions",
         label: "Actions"
       }],
+      items: [],
       currentPage: 1,
       perPage: 5,
       pageOptions: [5, 10, 15],
@@ -4019,7 +4020,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       sortDesc: false,
       sortDirection: "asc",
       filter: null,
-      totalRows: 0,
+      totalRows: null,
       filterOn: []
     };
   },
@@ -4045,9 +4046,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     getCustomer: "customer/getCustomer",
     getRoom: "room/getRoom"
   }), {
-    countRows: function countRows() {
-      return this.guestsFull.length; //return this.guests.length;
-    },
     sortOptions: function sortOptions() {
       // Create an options list from our fields
       return this.fields.filter(function (f) {
@@ -4059,7 +4057,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         };
       });
     },
-    guestsFull: function guestsFull() {
+    guestNormalized: function guestNormalized() {
       var newArray = [];
       var _iteratorNormalCompletion = true;
       var _didIteratorError = false;
@@ -4090,6 +4088,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       return newArray;
     }
   }),
+  watch: {
+    guestNormalized: function guestNormalized(val) {
+      this.filter = null;
+      this.items = this.guestNormalized;
+      this.totalRows = this.items.length;
+    }
+  },
   components: {
     "room-info": _rooms_Room__WEBPACK_IMPORTED_MODULE_1__["default"],
     "customer-info": _customers_Customer__WEBPACK_IMPORTED_MODULE_2__["default"]
@@ -74882,7 +74887,7 @@ var render = function() {
           "show-empty": "",
           small: "",
           stacked: "md",
-          items: _vm.guestsFull,
+          items: _vm.items,
           fields: _vm.fields,
           "current-page": _vm.currentPage,
           "per-page": _vm.perPage,
@@ -95557,17 +95562,6 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/components/guests/GuestAdd.vue":
-/*!*****************************************************!*\
-  !*** ./resources/js/components/guests/GuestAdd.vue ***!
-  \*****************************************************/
-/*! exports provided: default */
-/***/ (function(module, exports) {
-
-throw new Error("Module build failed (from ./node_modules/vue-loader/lib/index.js):\nError: ENOENT: no such file or directory, open '/srv/http/laravel-hotel/resources/js/components/guests/GuestAdd.vue'");
-
-/***/ }),
-
 /***/ "./resources/js/components/guests/GuestList.vue":
 /*!******************************************************!*\
   !*** ./resources/js/components/guests/GuestList.vue ***!
@@ -97078,25 +97072,23 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_customers_CustomerList_vue__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../components/customers/CustomerList.vue */ "./resources/js/components/customers/CustomerList.vue");
 /* harmony import */ var _components_guests_GuestRouter_vue__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../components/guests/GuestRouter.vue */ "./resources/js/components/guests/GuestRouter.vue");
 /* harmony import */ var _components_guests_GuestList_vue__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../components/guests/GuestList.vue */ "./resources/js/components/guests/GuestList.vue");
-/* harmony import */ var _components_guests_GuestAdd_vue__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ../components/guests/GuestAdd.vue */ "./resources/js/components/guests/GuestAdd.vue");
-/* harmony import */ var _components_rooms_RoomRouter_vue__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ../components/rooms/RoomRouter.vue */ "./resources/js/components/rooms/RoomRouter.vue");
-/* harmony import */ var _components_rooms_RoomAdd_vue__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ../components/rooms/RoomAdd.vue */ "./resources/js/components/rooms/RoomAdd.vue");
-/* harmony import */ var _components_rooms_RoomEdit_vue__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ../components/rooms/RoomEdit.vue */ "./resources/js/components/rooms/RoomEdit.vue");
-/* harmony import */ var _components_rooms_RoomList_vue__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ../components/rooms/RoomList.vue */ "./resources/js/components/rooms/RoomList.vue");
-/* harmony import */ var _components_reservations_wizard_ReservationWizard_vue__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ../components/reservations/wizard/ReservationWizard.vue */ "./resources/js/components/reservations/wizard/ReservationWizard.vue");
-/* harmony import */ var _components_reservations_ReservationList_vue__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ../components/reservations/ReservationList.vue */ "./resources/js/components/reservations/ReservationList.vue");
-/* harmony import */ var _components_reservations_ReservationShow_vue__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ../components/reservations/ReservationShow.vue */ "./resources/js/components/reservations/ReservationShow.vue");
-/* harmony import */ var _components_reservations_ReservationRouter_vue__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ../components/reservations/ReservationRouter.vue */ "./resources/js/components/reservations/ReservationRouter.vue");
-/* harmony import */ var _components_services_ServiceAdd_vue__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! ../components/services/ServiceAdd.vue */ "./resources/js/components/services/ServiceAdd.vue");
-/* harmony import */ var _components_services_ServiceList_vue__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! ../components/services/ServiceList.vue */ "./resources/js/components/services/ServiceList.vue");
-/* harmony import */ var _components_services_ServiceRouter_vue__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! ../components/services/ServiceRouter.vue */ "./resources/js/components/services/ServiceRouter.vue");
-/* harmony import */ var _components_inventory_InventoryItemAdd_vue__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! ../components/inventory/InventoryItemAdd.vue */ "./resources/js/components/inventory/InventoryItemAdd.vue");
-/* harmony import */ var _components_inventory_InventoryItemList_vue__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! ../components/inventory/InventoryItemList.vue */ "./resources/js/components/inventory/InventoryItemList.vue");
-/* harmony import */ var _components_inventory_InventoryRouter_vue__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! ../components/inventory/InventoryRouter.vue */ "./resources/js/components/inventory/InventoryRouter.vue");
+/* harmony import */ var _components_rooms_RoomRouter_vue__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ../components/rooms/RoomRouter.vue */ "./resources/js/components/rooms/RoomRouter.vue");
+/* harmony import */ var _components_rooms_RoomAdd_vue__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ../components/rooms/RoomAdd.vue */ "./resources/js/components/rooms/RoomAdd.vue");
+/* harmony import */ var _components_rooms_RoomEdit_vue__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ../components/rooms/RoomEdit.vue */ "./resources/js/components/rooms/RoomEdit.vue");
+/* harmony import */ var _components_rooms_RoomList_vue__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ../components/rooms/RoomList.vue */ "./resources/js/components/rooms/RoomList.vue");
+/* harmony import */ var _components_reservations_wizard_ReservationWizard_vue__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ../components/reservations/wizard/ReservationWizard.vue */ "./resources/js/components/reservations/wizard/ReservationWizard.vue");
+/* harmony import */ var _components_reservations_ReservationList_vue__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ../components/reservations/ReservationList.vue */ "./resources/js/components/reservations/ReservationList.vue");
+/* harmony import */ var _components_reservations_ReservationShow_vue__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ../components/reservations/ReservationShow.vue */ "./resources/js/components/reservations/ReservationShow.vue");
+/* harmony import */ var _components_reservations_ReservationRouter_vue__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ../components/reservations/ReservationRouter.vue */ "./resources/js/components/reservations/ReservationRouter.vue");
+/* harmony import */ var _components_services_ServiceAdd_vue__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ../components/services/ServiceAdd.vue */ "./resources/js/components/services/ServiceAdd.vue");
+/* harmony import */ var _components_services_ServiceList_vue__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! ../components/services/ServiceList.vue */ "./resources/js/components/services/ServiceList.vue");
+/* harmony import */ var _components_services_ServiceRouter_vue__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! ../components/services/ServiceRouter.vue */ "./resources/js/components/services/ServiceRouter.vue");
+/* harmony import */ var _components_inventory_InventoryItemAdd_vue__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! ../components/inventory/InventoryItemAdd.vue */ "./resources/js/components/inventory/InventoryItemAdd.vue");
+/* harmony import */ var _components_inventory_InventoryItemList_vue__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! ../components/inventory/InventoryItemList.vue */ "./resources/js/components/inventory/InventoryItemList.vue");
+/* harmony import */ var _components_inventory_InventoryRouter_vue__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! ../components/inventory/InventoryRouter.vue */ "./resources/js/components/inventory/InventoryRouter.vue");
 
 
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]);
-
 
 
 
@@ -97159,46 +97151,42 @@ var customerRoutes = {
       path: 'list',
       name: 'GuestList',
       component: _components_guests_GuestList_vue__WEBPACK_IMPORTED_MODULE_14__["default"]
-    }, {
-      path: 'add',
-      name: 'GuestAdd',
-      component: _components_guests_GuestAdd_vue__WEBPACK_IMPORTED_MODULE_15__["default"]
     }]
   }, {
     path: '/room',
-    component: _components_rooms_RoomRouter_vue__WEBPACK_IMPORTED_MODULE_16__["default"],
+    component: _components_rooms_RoomRouter_vue__WEBPACK_IMPORTED_MODULE_15__["default"],
     children: [{
       path: '',
       name: 'Room',
-      component: _components_rooms_RoomList_vue__WEBPACK_IMPORTED_MODULE_19__["default"]
+      component: _components_rooms_RoomList_vue__WEBPACK_IMPORTED_MODULE_18__["default"]
     }, {
       path: 'list',
       name: 'RoomList',
-      component: _components_rooms_RoomList_vue__WEBPACK_IMPORTED_MODULE_19__["default"]
+      component: _components_rooms_RoomList_vue__WEBPACK_IMPORTED_MODULE_18__["default"]
     }, {
       path: 'add',
       name: 'RoomAdd',
-      component: _components_rooms_RoomAdd_vue__WEBPACK_IMPORTED_MODULE_17__["default"]
+      component: _components_rooms_RoomAdd_vue__WEBPACK_IMPORTED_MODULE_16__["default"]
     }, {
       path: ':id/edit',
       name: 'RoomEdit',
-      component: _components_rooms_RoomEdit_vue__WEBPACK_IMPORTED_MODULE_18__["default"]
+      component: _components_rooms_RoomEdit_vue__WEBPACK_IMPORTED_MODULE_17__["default"]
     }]
   }, {
     path: '/reservation',
-    component: _components_reservations_ReservationRouter_vue__WEBPACK_IMPORTED_MODULE_23__["default"],
+    component: _components_reservations_ReservationRouter_vue__WEBPACK_IMPORTED_MODULE_22__["default"],
     children: [{
       path: 'list',
       name: 'ReservationsList',
-      component: _components_reservations_ReservationList_vue__WEBPACK_IMPORTED_MODULE_21__["default"]
+      component: _components_reservations_ReservationList_vue__WEBPACK_IMPORTED_MODULE_20__["default"]
     }, {
       path: ':reservation_id/show',
       name: 'ReservationShow',
-      component: _components_reservations_ReservationShow_vue__WEBPACK_IMPORTED_MODULE_22__["default"]
+      component: _components_reservations_ReservationShow_vue__WEBPACK_IMPORTED_MODULE_21__["default"]
     }, {
       path: ':customer_id/new',
       name: 'ReservationWizard',
-      component: _components_reservations_wizard_ReservationWizard_vue__WEBPACK_IMPORTED_MODULE_20__["default"]
+      component: _components_reservations_wizard_ReservationWizard_vue__WEBPACK_IMPORTED_MODULE_19__["default"]
     }]
   }, {
     path: '/billing',
@@ -97214,27 +97202,27 @@ var customerRoutes = {
     }]
   }, {
     path: '/services',
-    component: _components_services_ServiceRouter_vue__WEBPACK_IMPORTED_MODULE_26__["default"],
+    component: _components_services_ServiceRouter_vue__WEBPACK_IMPORTED_MODULE_25__["default"],
     children: [{
       path: 'add',
       name: 'ServiceAdd',
-      component: _components_services_ServiceAdd_vue__WEBPACK_IMPORTED_MODULE_24__["default"]
+      component: _components_services_ServiceAdd_vue__WEBPACK_IMPORTED_MODULE_23__["default"]
     }, {
       path: 'list',
       name: 'ServiceList',
-      component: _components_services_ServiceList_vue__WEBPACK_IMPORTED_MODULE_25__["default"]
+      component: _components_services_ServiceList_vue__WEBPACK_IMPORTED_MODULE_24__["default"]
     }]
   }, {
     path: '/inventory',
-    component: _components_inventory_InventoryRouter_vue__WEBPACK_IMPORTED_MODULE_29__["default"],
+    component: _components_inventory_InventoryRouter_vue__WEBPACK_IMPORTED_MODULE_28__["default"],
     children: [{
       path: 'add',
       name: 'InventoryItemAdd',
-      component: _components_inventory_InventoryItemAdd_vue__WEBPACK_IMPORTED_MODULE_27__["default"]
+      component: _components_inventory_InventoryItemAdd_vue__WEBPACK_IMPORTED_MODULE_26__["default"]
     }, {
       path: 'list',
       name: 'InventoryItemList',
-      component: _components_inventory_InventoryItemList_vue__WEBPACK_IMPORTED_MODULE_28__["default"]
+      component: _components_inventory_InventoryItemList_vue__WEBPACK_IMPORTED_MODULE_27__["default"]
     }]
   }, {
     path: '/about',
