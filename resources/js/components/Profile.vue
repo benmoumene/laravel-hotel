@@ -1,36 +1,37 @@
 <template>
   <b-container fluid>
     <b-row>
-      <b-col cols="8">
-        <b-row>
-          <strong>Username:</strong>
-          <span>{{ appUser.name }}</span>
-        </b-row>
-        <b-row>
-          <strong>First Name:</strong>
-          <span>{{ appUser.first_name }}</span>
-        </b-row>
-        <b-row>
-          <strong>Last Name:</strong>
-          <span>{{ appUser.last_name }}</span>
-        </b-row>
-        <b-row>
-          <strong>Email:</strong>
-          <span>{{ appUser.email }}</span>
-        </b-row>
-        <b-row>
-          <strong>Role:</strong>
-          <span>{{ appUser.role }}</span>
+      <b-col cols="12" sm="8">
+        <b-form-group label-cols="12" label-cols-sm="4" label="Username">
+          <b-form-input v-model="appUser.name"></b-form-input>
+        </b-form-group>
+        <b-form-group label-cols="12" label-cols-sm="4" label="First name">
+          <b-form-input v-model="appUser.first_name"></b-form-input>
+        </b-form-group>
+        <b-form-group label-cols="12" label-cols-sm="4" label="Last name">
+          <b-form-input v-model="appUser.last_name"></b-form-input>
+        </b-form-group>
+        <b-form-group label-cols="12" label-cols-sm="4" label="E-Mail">
+          <b-form-input v-model="appUser.email" readonly></b-form-input>
+        </b-form-group>
+        <b-form-group label-cols="12" label-cols-sm="4" label="Role">
+          <b-form-input v-model="appUser.role" readonly></b-form-input>
+        </b-form-group>
+        <b-row class="float-right">
+          <b-col>
+            <b-button variant="primary" @click="updateProfile">Update</b-button>
+          </b-col>
         </b-row>
       </b-col>
-      <b-col cols="4">
-        <b-row>
-          <img class="avatar" :src="avatarPath" @click="chooseAvatar" />
-          <b-form-file v-model="image" id="fileChooser" class="mt-3 hidden" plain></b-form-file>
-        </b-row>
-        <b-row>
-          <b-button variant="success" @click="uploadAvatar">UPLOAD</b-button>
-        </b-row>
+      <b-col cols="12" sm="4">
+        <img
+          v-b-tooltip.hover
+          title="Click on the image to change your avatar"
+          class="avatar"
+          :src="avatarPath"
+          @click="chooseAvatar"
+        />
+        <b-form-file v-model="image" id="fileChooser" class="mt-3 hidden" plain></b-form-file>
       </b-col>
     </b-row>
   </b-container>
@@ -45,6 +46,9 @@ export default {
     };
   },
   methods: {
+    updateProfile() {
+      this.$store.dispatch("updateProfile", { vm: this, avatar: this.image });
+    },
     makeToast(title, message, variant = "info") {
       this.$bvToast.toast(message, {
         title,
@@ -58,11 +62,6 @@ export default {
     chooseAvatar() {
       var chooser = document.getElementById("fileChooser");
       chooser.click();
-    },
-    uploadAvatar() {
-      if (this.image !== null) {
-        this.$store.dispatch("uploadAvatar", { vm: this, avatar: this.image });
-      }
     }
   },
   computed: {

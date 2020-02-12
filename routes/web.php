@@ -102,7 +102,7 @@ Route::delete('/invoice/{invoice_id}', 'InvoiceController@destroy');
 // =============================================
 // Actualizar setting (middleware admin)
 Route::put('/settings/{setting_id}', 'SettingController@update')->middleware('role:admin');
-// Actualizar Avatar
+// Actualizar perfil
 Route::put('/users/{user_id}', 'ProfileController@update');
 // Borrar Billed Service
 Route::delete('/billed_service/{billed_service_id}', 'BilledServiceController@destroy');
