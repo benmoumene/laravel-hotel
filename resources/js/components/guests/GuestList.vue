@@ -181,11 +181,11 @@ export default {
     }
   },
   mounted() {
-    //this.items = this.guestNormalized;
+    this.items = this.guestNormalized;
+    this.totalRows = this.items.length;
   },
   watch: {
     guestNormalized: function(val) {
-      this.filter = null;
       this.items = this.guestNormalized;
       this.totalRows = this.items.length;
     }

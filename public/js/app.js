@@ -4088,11 +4088,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       return newArray;
     }
   }),
-  mounted: function mounted() {//this.items = this.guestNormalized;
+  mounted: function mounted() {
+    this.items = this.guestNormalized;
+    this.totalRows = this.items.length;
   },
   watch: {
     guestNormalized: function guestNormalized(val) {
-      this.filter = null;
       this.items = this.guestNormalized;
       this.totalRows = this.items.length;
     }
