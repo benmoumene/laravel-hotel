@@ -106,4 +106,6 @@ Route::put('/settings/{setting_id}', 'SettingController@update')->middleware('ro
 Route::put('/users/{user_id}', 'ProfileController@update');
 // Borrar Billed Service
 Route::delete('/billed_service/{billed_service_id}', 'BilledServiceController@destroy');
+// Agregar Billed service
+Route::post('/billed_service', 'BilledServiceController@store');
 // =============================================
