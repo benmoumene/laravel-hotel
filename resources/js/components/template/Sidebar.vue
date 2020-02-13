@@ -40,28 +40,11 @@
                 Dashboard
               </router-link>
             </li>
-            <li class="nav-item has-treeview">
-              <a href="#" class="nav-link">
+            <li class="nav-item">
+              <router-link to="/customer/list" class="nav-link">
                 <i class="nav-icon fa fa-users"></i>
-                <p>
-                  Customers
-                  <i class="fa fa-angle-left right"></i>
-                </p>
-              </a>
-              <ul class="nav nav-treeview">
-                <li class="nav-item">
-                  <router-link to="/customer/add" class="nav-link">
-                    <i class="nav-icon fa fa-user-plus"></i>
-                    Add Customer
-                  </router-link>
-                </li>
-                <li class="nav-item">
-                  <router-link to="/customer/list" class="nav-link">
-                    <i class="nav-icon fa fa-list"></i>
-                    Customer List
-                  </router-link>
-                </li>
-              </ul>
+                Customers
+              </router-link>
             </li>
             <li class="nav-item">
               <router-link to="/reservation/list" class="nav-link">

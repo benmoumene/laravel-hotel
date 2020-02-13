@@ -6670,23 +6670,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Sidebar",
@@ -79139,62 +79122,24 @@ var render = function() {
                     1
                   ),
                   _vm._v(" "),
-                  _c("li", { staticClass: "nav-item has-treeview" }, [
-                    _c("a", { staticClass: "nav-link", attrs: { href: "#" } }, [
-                      _c("i", { staticClass: "nav-icon fa fa-users" }),
-                      _vm._v(" "),
-                      _c("p", [
-                        _vm._v("\n                Customers\n                "),
-                        _c("i", { staticClass: "fa fa-angle-left right" })
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("ul", { staticClass: "nav nav-treeview" }, [
+                  _c(
+                    "li",
+                    { staticClass: "nav-item" },
+                    [
                       _c(
-                        "li",
-                        { staticClass: "nav-item" },
+                        "router-link",
+                        {
+                          staticClass: "nav-link",
+                          attrs: { to: "/customer/list" }
+                        },
                         [
-                          _c(
-                            "router-link",
-                            {
-                              staticClass: "nav-link",
-                              attrs: { to: "/customer/add" }
-                            },
-                            [
-                              _c("i", {
-                                staticClass: "nav-icon fa fa-user-plus"
-                              }),
-                              _vm._v(
-                                "\n                  Add Customer\n                "
-                              )
-                            ]
-                          )
-                        ],
-                        1
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "li",
-                        { staticClass: "nav-item" },
-                        [
-                          _c(
-                            "router-link",
-                            {
-                              staticClass: "nav-link",
-                              attrs: { to: "/customer/list" }
-                            },
-                            [
-                              _c("i", { staticClass: "nav-icon fa fa-list" }),
-                              _vm._v(
-                                "\n                  Customer List\n                "
-                              )
-                            ]
-                          )
-                        ],
-                        1
+                          _c("i", { staticClass: "nav-icon fa fa-users" }),
+                          _vm._v("\n              Customers\n            ")
+                        ]
                       )
-                    ])
-                  ]),
+                    ],
+                    1
+                  ),
                   _vm._v(" "),
                   _c(
                     "li",
