@@ -19,14 +19,13 @@ Esta aplicacion es un dashboard que permite gestionar el Backend de un hotel. La
 
 ## Pendiente
 - Implementar el resto de la aplicacion  (Guest)
-- Cuando un usuario realiza un pago y se marca como pagado, ejecutar un service container que ponga la factura como pagada y ademas elimine los bille services???
-- Terminar de implmentar las relaciones de Eloquent en los modelos
 - Mejorar y Terminar el sistema de invoices
-=========================
-- Mejorar codigo(nombre de metodos etc...) de las stores/routes
 - Reorganizacion y mejora de nombres de archivos/carpetas
-- Eliminar dependencia de jQuery del sidebar, hacer todo en js y vue
 - Validacion y Filtros de input (tambien para el avatar) Request.
 - Terminar de implementar los roles en la app
+===============
+- Eliminar dependencia de jQuery del sidebar, hacer todo en js y vue
+- Terminar de implmentar las relaciones de Eloquent en los modelos
+- Mejorar codigo(nombre de metodos etc...) de las stores/routes
 - Limpieza de codigo y separacion de la logica del backend en Services
 - Pensar en otros usos al dashboard. Mostrar habitaciones libres???
