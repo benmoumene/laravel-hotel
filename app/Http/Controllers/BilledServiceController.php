@@ -22,11 +22,10 @@ class BilledServiceController extends Controller
      */
     public function store(Request $request)
     {
-        $currentUserId = Auth::user()->id;
         $service = new BilledService;
-        $service->guest_id = $request['service']['guest_id'];
-        $service->service_id = $request['service']['service_id'];
-        $service->billed_on = $request['service']['billed_on'];
+        $service->reservation_id = $request['billed_service']['reservation_id'];
+        $service->service_id = $request['billed_service']['service_id'];
+        //$service->billed_on = $request['service']['billed_on'];
         $service->save();
         return response()->json(['service' => $service], 200);
     }
