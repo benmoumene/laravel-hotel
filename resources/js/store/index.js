@@ -1,15 +1,15 @@
-import Vuex from 'vuex'
-import Vue from 'vue'
+import Vuex from "vuex"
+import Vue from "vue"
 
 // Modules
-import room from './modules/room'
-import service from './modules/service'
-import customer from './modules/customer'
-import reservation from './modules/reservation'
-import inventory from './modules/inventory'
-import billing from './modules/billing'
-import guest from './modules/guest'
-import billed_services from './modules/billed_services'
+import room from "./modules/room"
+import service from "./modules/service"
+import customer from "./modules/customer"
+import reservation from "./modules/reservation"
+import inventory from "./modules/inventory"
+import billing from "./modules/billing"
+import guest from "./modules/guest"
+import billed_services from "./modules/billed_services"
 
 Vue.use(Vuex)
 
@@ -20,31 +20,31 @@ export default new Vuex.Store({
     },
     state: {
         // Datos de usuario y perfil
-        appUser: { name: '' },
+        appUser: { name: "" },
         settings: [],
         ready: false
     },
     getters: {
         getSettingValue: (state, getters) => (name) => {
             var setting = state.settings.find(setting => setting.name === name);
-            if (typeof setting !== 'undefined') {
+            if (typeof setting !== "undefined") {
                 return setting.value;
             }
         },
         isAdmin: (state, getters) => {
-            if (state.appUser.role === 'admin') {
+            if (state.appUser.role === "admin") {
                 return true;
             }
             return false;
         },
         isManager: (state, getters) => {
-            if (state.appUser.role === 'manager') {
+            if (state.appUser.role === "manager") {
                 return true;
             }
             return false;
         },
         isRecepcionist: (state, getters) => {
-            if (state.appUser.role === 'recepcionist') {
+            if (state.appUser.role === "recepcionist") {
                 return true;
             }
             return false;
@@ -67,7 +67,7 @@ export default new Vuex.Store({
         // Selecciona el usuario con el id indicado
         selectClientById(context, userId) {
             var client = context.getters.getClientById(clientId);
-            //context.commit('SET_SELECTED_USER', client);
+            //context.commit("SET_SELECTED_USER", client);
         },
 
         // Este metodo realiza una peticion al backend y recibe los datos
@@ -79,32 +79,32 @@ export default new Vuex.Store({
                     var data = response["data"];
 
                     // Userdata
-                    context.commit('SET_USER', data['app_user']);
+                    context.commit("SET_USER", data["app_user"]);
                     // Settings
-                    context.commit('SET_SETTINGS', data['settings']);
+                    context.commit("SET_SETTINGS", data["settings"]);
                     // Guests
-                    context.commit('guest/SET_GUESTS', data['guests']);
+                    context.commit("guest/SET_GUESTS", data["guests"]);
                     // Customers
-                    context.commit('customer/SET_CUSTOMERS', data['customers']);
+                    context.commit("customer/SET_CUSTOMERS", data["customers"]);
                     // Services
-                    context.commit('service/SET_SERVICES', data['services']);
+                    context.commit("service/SET_SERVICES", data["services"]);
                     // Billed Services
-                    context.commit('billed_services/SET_BILLED_SERVICES', data['billed_services']);
+                    context.commit("billed_services/SET_BILLED_SERVICES", data["billed_services"]);
                     // Reservations
-                    context.commit('reservation/SET_RESERVATIONS', data['reservations']);
+                    context.commit("reservation/SET_RESERVATIONS", data["reservations"]);
                     // Invoices
-                    context.commit('billing/SET_INVOICES', data['invoices']);
+                    context.commit("billing/SET_INVOICES", data["invoices"]);
                     // Inventory
-                    context.commit('inventory/SET_ITEMS', data['inventory']);
+                    context.commit("inventory/SET_ITEMS", data["inventory"]);
                     // Rooms
-                    context.commit('room/SET_ROOMS', data['rooms']);
-                    context.commit('SET_READY', true);
+                    context.commit("room/SET_ROOMS", data["rooms"]);
+                    context.commit("SET_READY", true);
                 }
             });
         },
         logout(context) {
             axios.post("/logout").catch(error => {
-                window.location.href = '/login';
+                window.location.href = "/login";
             });
         },
         editSetting(context, { vm, setting }) {
@@ -115,29 +115,44 @@ export default new Vuex.Store({
                 // Si el request tuvo exito (codigo 200)
                 if (response.status == 200) {
                     // Agregamos una nueva conversacion si existe el objeto
-                    if (response['data'].length == 0) {
+                    if (response["data"].length == 0) {
                         return;
                     }
-                    vm.makeToast("Setting updated", 'The setting ' + setting.name
-                        + ' has been updated.', 'success');
+                    vm.makeToast("Setting updated", "The setting " + setting.name
+                        + " has been updated.", "success");
                 }
             }).catch(function (response) {
-                vm.makeToast("Error", 'The setting cannot be updated!', 'danger');
+                vm.makeToast("Error", "The setting cannot be updated!", "danger");
             });
         },
-        uploadAvatar(context, { vm, avatar }) {
+        updateAvatar(context, { vm, avatar }) {
             var userId = context.state.appUser.id;
             var fd = new FormData();
-            fd.append('image', avatar);
-            fd.append('_method', 'put');
+            fd.append("image", avatar);
+            fd.append("_method", "put");
             axios.post("/users/" + userId, fd).then(function (response) {
                 // Si el request tuvo exito (codigo 200)
                 if (response.status == 200) {
-                    context.state.appUser.avatar_filename = response['data']['avatar'];
-                    vm.makeToast("Avatar updated", 'The avatar has been updated.', 'success');
+                    let newAvatar = response["data"]["profile"]["avatar_filename"];
+                    context.state.appUser.avatar_filename = newAvatar;
+                    vm.makeToast("Avatar", "The avatar has been updated!", "success");
                 }
             }).catch(function (response) {
-                vm.makeToast("Error", 'The avatar cannot be updated!', 'danger');
+                vm.makeToast("Avatar", "The avatar cannot be updated!", "danger");
+            });
+        },
+        updateProfile(context, { vm }) {
+            var userId = context.state.appUser.id;
+            axios.post("/users/" + userId, {
+                profile: context.state.appUser,
+                _method: "PUT"
+            }).then(function (response) {
+                // Si el request tuvo exito (codigo 200)
+                if (response.status == 200) {
+                    vm.makeToast("Profile", "Profile updated.", "success");
+                }
+            }).catch(function (response) {
+                vm.makeToast("Profile", "Something went wrong.", "danger");
             });
         },
     }

@@ -2367,6 +2367,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Profile",
@@ -2376,6 +2383,17 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     };
   },
   methods: {
+    updateProfile: function updateProfile() {
+      this.$store.dispatch("updateProfile", {
+        vm: this
+      });
+    },
+    updateAvatar: function updateAvatar() {
+      this.$store.dispatch("updateAvatar", {
+        vm: this,
+        avatar: this.image
+      });
+    },
     makeToast: function makeToast(title, message) {
       var variant = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "info";
       this.$bvToast.toast(message, {
@@ -2390,14 +2408,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     chooseAvatar: function chooseAvatar() {
       var chooser = document.getElementById("fileChooser");
       chooser.click();
-    },
-    uploadAvatar: function uploadAvatar() {
-      if (this.image !== null) {
-        this.$store.dispatch("uploadAvatar", {
-          vm: this,
-          avatar: this.image
-        });
-      }
     }
   },
   computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])(["appUser"]), {
@@ -73123,63 +73133,119 @@ var render = function() {
         [
           _c(
             "b-col",
-            { attrs: { cols: "8" } },
-            [
-              _c("b-row", [
-                _c("strong", [_vm._v("Username:")]),
-                _vm._v(" "),
-                _c("span", [_vm._v(_vm._s(_vm.appUser.name))])
-              ]),
-              _vm._v(" "),
-              _c("b-row", [
-                _c("strong", [_vm._v("First Name:")]),
-                _vm._v(" "),
-                _c("span", [_vm._v(_vm._s(_vm.appUser.first_name))])
-              ]),
-              _vm._v(" "),
-              _c("b-row", [
-                _c("strong", [_vm._v("Last Name:")]),
-                _vm._v(" "),
-                _c("span", [_vm._v(_vm._s(_vm.appUser.last_name))])
-              ]),
-              _vm._v(" "),
-              _c("b-row", [
-                _c("strong", [_vm._v("Email:")]),
-                _vm._v(" "),
-                _c("span", [_vm._v(_vm._s(_vm.appUser.email))])
-              ]),
-              _vm._v(" "),
-              _c("b-row", [
-                _c("strong", [_vm._v("Role:")]),
-                _vm._v(" "),
-                _c("span", [_vm._v(_vm._s(_vm.appUser.role))])
-              ])
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "b-col",
-            { attrs: { cols: "4" } },
+            { attrs: { cols: "12", sm: "8" } },
             [
               _c(
-                "b-row",
+                "b-form-group",
+                {
+                  attrs: {
+                    "label-cols": "12",
+                    "label-cols-sm": "4",
+                    label: "Username"
+                  }
+                },
                 [
-                  _c("img", {
-                    staticClass: "avatar",
-                    attrs: { src: _vm.avatarPath },
-                    on: { click: _vm.chooseAvatar }
-                  }),
-                  _vm._v(" "),
-                  _c("b-form-file", {
-                    staticClass: "mt-3 hidden",
-                    attrs: { id: "fileChooser", plain: "" },
+                  _c("b-form-input", {
                     model: {
-                      value: _vm.image,
+                      value: _vm.appUser.name,
                       callback: function($$v) {
-                        _vm.image = $$v
+                        _vm.$set(_vm.appUser, "name", $$v)
                       },
-                      expression: "image"
+                      expression: "appUser.name"
+                    }
+                  })
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "b-form-group",
+                {
+                  attrs: {
+                    "label-cols": "12",
+                    "label-cols-sm": "4",
+                    label: "First name"
+                  }
+                },
+                [
+                  _c("b-form-input", {
+                    model: {
+                      value: _vm.appUser.first_name,
+                      callback: function($$v) {
+                        _vm.$set(_vm.appUser, "first_name", $$v)
+                      },
+                      expression: "appUser.first_name"
+                    }
+                  })
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "b-form-group",
+                {
+                  attrs: {
+                    "label-cols": "12",
+                    "label-cols-sm": "4",
+                    label: "Last name"
+                  }
+                },
+                [
+                  _c("b-form-input", {
+                    model: {
+                      value: _vm.appUser.last_name,
+                      callback: function($$v) {
+                        _vm.$set(_vm.appUser, "last_name", $$v)
+                      },
+                      expression: "appUser.last_name"
+                    }
+                  })
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "b-form-group",
+                {
+                  attrs: {
+                    "label-cols": "12",
+                    "label-cols-sm": "4",
+                    label: "E-Mail"
+                  }
+                },
+                [
+                  _c("b-form-input", {
+                    attrs: { readonly: "" },
+                    model: {
+                      value: _vm.appUser.email,
+                      callback: function($$v) {
+                        _vm.$set(_vm.appUser, "email", $$v)
+                      },
+                      expression: "appUser.email"
+                    }
+                  })
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "b-form-group",
+                {
+                  attrs: {
+                    "label-cols": "12",
+                    "label-cols-sm": "4",
+                    label: "Role"
+                  }
+                },
+                [
+                  _c("b-form-input", {
+                    attrs: { readonly: "" },
+                    model: {
+                      value: _vm.appUser.role,
+                      callback: function($$v) {
+                        _vm.$set(_vm.appUser, "role", $$v)
+                      },
+                      expression: "appUser.role"
                     }
                   })
                 ],
@@ -73188,18 +73254,61 @@ var render = function() {
               _vm._v(" "),
               _c(
                 "b-row",
+                { staticClass: "float-right" },
                 [
                   _c(
-                    "b-button",
-                    {
-                      attrs: { variant: "success" },
-                      on: { click: _vm.uploadAvatar }
-                    },
-                    [_vm._v("UPLOAD")]
+                    "b-col",
+                    [
+                      _c(
+                        "b-button",
+                        {
+                          attrs: { variant: "primary" },
+                          on: { click: _vm.updateProfile }
+                        },
+                        [_vm._v("Update")]
+                      )
+                    ],
+                    1
                   )
                 ],
                 1
               )
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "b-col",
+            { attrs: { cols: "12", sm: "4" } },
+            [
+              _c("img", {
+                directives: [
+                  {
+                    name: "b-tooltip",
+                    rawName: "v-b-tooltip.hover",
+                    modifiers: { hover: true }
+                  }
+                ],
+                staticClass: "avatar",
+                attrs: {
+                  title: "Click on the image to change your avatar",
+                  src: _vm.avatarPath
+                },
+                on: { click: _vm.chooseAvatar }
+              }),
+              _vm._v(" "),
+              _c("b-form-file", {
+                staticClass: "mt-3 hidden",
+                attrs: { id: "fileChooser", plain: "" },
+                on: { input: _vm.updateAvatar },
+                model: {
+                  value: _vm.image,
+                  callback: function($$v) {
+                    _vm.image = $$v
+                  },
+                  expression: "image"
+                }
+              })
             ],
             1
           )
@@ -98732,7 +98841,7 @@ vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_0__
   state: {
     // Datos de usuario y perfil
     appUser: {
-      name: ''
+      name: ""
     },
     settings: [],
     ready: false
@@ -98744,27 +98853,27 @@ vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_0__
           return setting.name === name;
         });
 
-        if (typeof setting !== 'undefined') {
+        if (typeof setting !== "undefined") {
           return setting.value;
         }
       };
     },
     isAdmin: function isAdmin(state, getters) {
-      if (state.appUser.role === 'admin') {
+      if (state.appUser.role === "admin") {
         return true;
       }
 
       return false;
     },
     isManager: function isManager(state, getters) {
-      if (state.appUser.role === 'manager') {
+      if (state.appUser.role === "manager") {
         return true;
       }
 
       return false;
     },
     isRecepcionist: function isRecepcionist(state, getters) {
-      if (state.appUser.role === 'recepcionist') {
+      if (state.appUser.role === "recepcionist") {
         return true;
       }
 
@@ -98787,7 +98896,7 @@ vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_0__
   actions: {
     // Selecciona el usuario con el id indicado
     selectClientById: function selectClientById(context, userId) {
-      var client = context.getters.getClientById(clientId); //context.commit('SET_SELECTED_USER', client);
+      var client = context.getters.getClientById(clientId); //context.commit("SET_SELECTED_USER", client);
     },
     // Este metodo realiza una peticion al backend y recibe los datos
     // necesarios para inicializar la aplicacion
@@ -98797,32 +98906,32 @@ vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_0__
         if (response.status == 200) {
           var data = response["data"]; // Userdata
 
-          context.commit('SET_USER', data['app_user']); // Settings
+          context.commit("SET_USER", data["app_user"]); // Settings
 
-          context.commit('SET_SETTINGS', data['settings']); // Guests
+          context.commit("SET_SETTINGS", data["settings"]); // Guests
 
-          context.commit('guest/SET_GUESTS', data['guests']); // Customers
+          context.commit("guest/SET_GUESTS", data["guests"]); // Customers
 
-          context.commit('customer/SET_CUSTOMERS', data['customers']); // Services
+          context.commit("customer/SET_CUSTOMERS", data["customers"]); // Services
 
-          context.commit('service/SET_SERVICES', data['services']); // Billed Services
+          context.commit("service/SET_SERVICES", data["services"]); // Billed Services
 
-          context.commit('billed_services/SET_BILLED_SERVICES', data['billed_services']); // Reservations
+          context.commit("billed_services/SET_BILLED_SERVICES", data["billed_services"]); // Reservations
 
-          context.commit('reservation/SET_RESERVATIONS', data['reservations']); // Invoices
+          context.commit("reservation/SET_RESERVATIONS", data["reservations"]); // Invoices
 
-          context.commit('billing/SET_INVOICES', data['invoices']); // Inventory
+          context.commit("billing/SET_INVOICES", data["invoices"]); // Inventory
 
-          context.commit('inventory/SET_ITEMS', data['inventory']); // Rooms
+          context.commit("inventory/SET_ITEMS", data["inventory"]); // Rooms
 
-          context.commit('room/SET_ROOMS', data['rooms']);
-          context.commit('SET_READY', true);
+          context.commit("room/SET_ROOMS", data["rooms"]);
+          context.commit("SET_READY", true);
         }
       });
     },
     logout: function logout(context) {
       axios.post("/logout")["catch"](function (error) {
-        window.location.href = '/login';
+        window.location.href = "/login";
       });
     },
     editSetting: function editSetting(context, _ref) {
@@ -98835,31 +98944,47 @@ vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_0__
         // Si el request tuvo exito (codigo 200)
         if (response.status == 200) {
           // Agregamos una nueva conversacion si existe el objeto
-          if (response['data'].length == 0) {
+          if (response["data"].length == 0) {
             return;
           }
 
-          vm.makeToast("Setting updated", 'The setting ' + setting.name + ' has been updated.', 'success');
+          vm.makeToast("Setting updated", "The setting " + setting.name + " has been updated.", "success");
         }
       })["catch"](function (response) {
-        vm.makeToast("Error", 'The setting cannot be updated!', 'danger');
+        vm.makeToast("Error", "The setting cannot be updated!", "danger");
       });
     },
-    uploadAvatar: function uploadAvatar(context, _ref2) {
+    updateAvatar: function updateAvatar(context, _ref2) {
       var vm = _ref2.vm,
           avatar = _ref2.avatar;
       var userId = context.state.appUser.id;
       var fd = new FormData();
-      fd.append('image', avatar);
-      fd.append('_method', 'put');
+      fd.append("image", avatar);
+      fd.append("_method", "put");
       axios.post("/users/" + userId, fd).then(function (response) {
         // Si el request tuvo exito (codigo 200)
         if (response.status == 200) {
-          context.state.appUser.avatar_filename = response['data']['avatar'];
-          vm.makeToast("Avatar updated", 'The avatar has been updated.', 'success');
+          var newAvatar = response["data"]["profile"]["avatar_filename"];
+          context.state.appUser.avatar_filename = newAvatar;
+          vm.makeToast("Avatar", "The avatar has been updated!", "success");
         }
       })["catch"](function (response) {
-        vm.makeToast("Error", 'The avatar cannot be updated!', 'danger');
+        vm.makeToast("Avatar", "The avatar cannot be updated!", "danger");
+      });
+    },
+    updateProfile: function updateProfile(context, _ref3) {
+      var vm = _ref3.vm;
+      var userId = context.state.appUser.id;
+      axios.post("/users/" + userId, {
+        profile: context.state.appUser,
+        _method: "PUT"
+      }).then(function (response) {
+        // Si el request tuvo exito (codigo 200)
+        if (response.status == 200) {
+          vm.makeToast("Profile", "Profile updated.", "success");
+        }
+      })["catch"](function (response) {
+        vm.makeToast("Profile", "Something went wrong.", "danger");
       });
     }
   }
@@ -99166,6 +99291,27 @@ __webpack_require__.r(__webpack_exports__);
     },
     isCurrentGuest: function isCurrentGuest(state, getters) {
       return function (customerId) {
+        // Si check_in != null && check_out == null
+        // Buscar reserva
+        // si reserva == 'active' es current guest
+        var guest = getters.getGuestWithCustomerId(customerId);
+
+        if (typeof guest === 'undefined') {
+          return false;
+        }
+
+        if (guest.check_in !== null && guest.check_out === null) {
+          return true;
+        }
+
+        return false;
+      };
+    },
+    isCurrentGuestasdasd: function isCurrentGuestasdasd(state, getters) {
+      return function (customerId) {
+        // Si check_in != null && check_out == null
+        // Buscar reserva
+        // si reserva == 'active' es current guest
         var now = new Date();
         var dd = String(now.getDate()).padStart(2, "0");
         var mm = String(now.getMonth() + 1).padStart(2, "0");
