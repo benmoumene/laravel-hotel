@@ -27,16 +27,17 @@
 
       <b-col sm="5" md="6" class="my-1">
         <b-form-group
-          label="Per page"
-          label-cols-sm="6"
-          label-cols-md="4"
-          label-cols-lg="3"
+          label="Filter On"
+          label-cols-sm="3"
           label-align-sm="right"
           label-size="sm"
-          label-for="perPageSelect"
+          description="Leave all unchecked to filter on all data"
           class="mb-0"
         >
-          <b-form-select v-model="perPage" id="perPageSelect" size="sm" :options="pageOptions"></b-form-select>
+          <b-form-checkbox-group v-model="filterOn" class="mt-1">
+            <b-form-checkbox value="current_guests">Current Guests</b-form-checkbox>
+            <b-form-checkbox value="pending_invoices">Pending Invoices</b-form-checkbox>
+          </b-form-checkbox-group>
         </b-form-group>
       </b-col>
 
@@ -50,20 +51,10 @@
           class="my-0"
         ></b-pagination>
       </b-col>
-      <b-col sm="6" class="my-1">
-        <b-form-group
-          label="Filter On"
-          label-cols-sm="3"
-          label-align-sm="right"
-          label-size="sm"
-          description="Leave all unchecked to filter on all data"
-          class="mb-0"
-        >
-          <b-form-checkbox-group v-model="filterOn" class="mt-1">
-            <b-form-checkbox value="current_guests">Current Guests</b-form-checkbox>
-            <b-form-checkbox value="pending_invoices">Pending Invoices</b-form-checkbox>
-          </b-form-checkbox-group>
-        </b-form-group>
+      <b-col sm="6" class="my-1 text-right">
+        <b-button v-b-modal.new-customer-modal variant="primary">
+          <i class="fas fa-plus"></i>
+        </b-button>
       </b-col>
     </b-row>
 
@@ -123,11 +114,16 @@
     <b-modal id="invoices-modal" size="xl" centered title="Invoices" hide-footer>
       <customer-invoices :invoices="customerInvoices(selectedCustomer.id)"></customer-invoices>
     </b-modal>
+
+    <b-modal id="new-customer-modal" size="xl" centered title="New customer" hide-footer>
+      <new-customer></new-customer>
+    </b-modal>
   </b-container>
 </template>
 <script>
 import { mapState, mapGetters } from "vuex";
 import CustomerEdit from "./CustomerEdit";
+import CustomerAdd from "./CustomerAdd";
 import CustomerInvoices from "./CustomerInvoices";
 import CustomerReservations from "./CustomerReservations";
 import Guest from "../guests/Guest";
@@ -243,6 +239,7 @@ export default {
   },
   components: {
     "customer-edit": CustomerEdit,
+    "new-customer": CustomerAdd,
     "guest-info": Guest,
     "customer-reservations": CustomerReservations,
     "customer-invoices": CustomerInvoices
