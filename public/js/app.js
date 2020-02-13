@@ -6184,6 +6184,7 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var _ServiceAdd__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ServiceAdd */ "./resources/js/components/services/ServiceAdd.vue");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -6278,6 +6279,16 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Services",
@@ -6356,8 +6367,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       return this.services.length;
     }
   }),
-  mounted: function mounted() {},
-  updated: function updated() {}
+  components: {
+    "new-service": _ServiceAdd__WEBPACK_IMPORTED_MODULE_1__["default"]
+  }
 });
 
 /***/ }),
@@ -78452,10 +78464,10 @@ render._withStripped = true
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/services/ServiceList.vue?vue&type=template&id=453b2c6d&scoped=true&":
-/*!***********************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/services/ServiceList.vue?vue&type=template&id=453b2c6d&scoped=true& ***!
-  \***********************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/services/ServiceList.vue?vue&type=template&id=453b2c6d&":
+/*!***********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/services/ServiceList.vue?vue&type=template&id=453b2c6d& ***!
+  \***********************************************************************************************************************************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -78600,6 +78612,28 @@ var render = function() {
               })
             ],
             1
+          ),
+          _vm._v(" "),
+          _c(
+            "b-col",
+            { staticClass: "my-1 text-right", attrs: { sm: "7", md: "6" } },
+            [
+              _c(
+                "b-button",
+                {
+                  directives: [
+                    {
+                      name: "b-modal",
+                      rawName: "v-b-modal.service-modal",
+                      modifiers: { "service-modal": true }
+                    }
+                  ],
+                  attrs: { variant: "primary" }
+                },
+                [_c("i", { staticClass: "fas fa-plus" })]
+              )
+            ],
+            1
           )
         ],
         1
@@ -78704,7 +78738,22 @@ var render = function() {
             }
           }
         ])
-      })
+      }),
+      _vm._v(" "),
+      _c(
+        "b-modal",
+        {
+          attrs: {
+            id: "service-modal",
+            size: "md",
+            centered: "",
+            title: "New service",
+            "hide-footer": ""
+          }
+        },
+        [_c("new-service")],
+        1
+      )
     ],
     1
   )
@@ -98123,7 +98172,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _ServiceList_vue_vue_type_template_id_453b2c6d_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ServiceList.vue?vue&type=template&id=453b2c6d&scoped=true& */ "./resources/js/components/services/ServiceList.vue?vue&type=template&id=453b2c6d&scoped=true&");
+/* harmony import */ var _ServiceList_vue_vue_type_template_id_453b2c6d___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ServiceList.vue?vue&type=template&id=453b2c6d& */ "./resources/js/components/services/ServiceList.vue?vue&type=template&id=453b2c6d&");
 /* harmony import */ var _ServiceList_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ServiceList.vue?vue&type=script&lang=js& */ "./resources/js/components/services/ServiceList.vue?vue&type=script&lang=js&");
 /* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
@@ -98135,11 +98184,11 @@ __webpack_require__.r(__webpack_exports__);
 
 var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
   _ServiceList_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _ServiceList_vue_vue_type_template_id_453b2c6d_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
-  _ServiceList_vue_vue_type_template_id_453b2c6d_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  _ServiceList_vue_vue_type_template_id_453b2c6d___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _ServiceList_vue_vue_type_template_id_453b2c6d___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
   false,
   null,
-  "453b2c6d",
+  null,
   null
   
 )
@@ -98165,19 +98214,19 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/components/services/ServiceList.vue?vue&type=template&id=453b2c6d&scoped=true&":
-/*!*****************************************************************************************************!*\
-  !*** ./resources/js/components/services/ServiceList.vue?vue&type=template&id=453b2c6d&scoped=true& ***!
-  \*****************************************************************************************************/
+/***/ "./resources/js/components/services/ServiceList.vue?vue&type=template&id=453b2c6d&":
+/*!*****************************************************************************************!*\
+  !*** ./resources/js/components/services/ServiceList.vue?vue&type=template&id=453b2c6d& ***!
+  \*****************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ServiceList_vue_vue_type_template_id_453b2c6d_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./ServiceList.vue?vue&type=template&id=453b2c6d&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/services/ServiceList.vue?vue&type=template&id=453b2c6d&scoped=true&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ServiceList_vue_vue_type_template_id_453b2c6d_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ServiceList_vue_vue_type_template_id_453b2c6d___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./ServiceList.vue?vue&type=template&id=453b2c6d& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/services/ServiceList.vue?vue&type=template&id=453b2c6d&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ServiceList_vue_vue_type_template_id_453b2c6d___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ServiceList_vue_vue_type_template_id_453b2c6d_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ServiceList_vue_vue_type_template_id_453b2c6d___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
@@ -98554,13 +98603,6 @@ var customerRoutes = {
     name: 'CustomerList',
     component: _components_customers_CustomerList_vue__WEBPACK_IMPORTED_MODULE_12__["default"]
   }, {
-    path: 'add',
-    name: 'CustomerAdd',
-    meta: {
-      title: 'Customer Add'
-    },
-    component: _components_customers_CustomerAdd_vue__WEBPACK_IMPORTED_MODULE_10__["default"]
-  }, {
     path: ':id/edit',
     name: 'CustomerEdit',
     meta: {
@@ -98586,21 +98628,9 @@ var customerRoutes = {
     path: '/room',
     component: _components_rooms_RoomRouter_vue__WEBPACK_IMPORTED_MODULE_15__["default"],
     children: [{
-      path: '',
-      name: 'Room',
-      component: _components_rooms_RoomList_vue__WEBPACK_IMPORTED_MODULE_18__["default"]
-    }, {
       path: 'list',
       name: 'RoomList',
       component: _components_rooms_RoomList_vue__WEBPACK_IMPORTED_MODULE_18__["default"]
-    }, {
-      path: 'add',
-      name: 'RoomAdd',
-      component: _components_rooms_RoomAdd_vue__WEBPACK_IMPORTED_MODULE_16__["default"]
-    }, {
-      path: ':id/edit',
-      name: 'RoomEdit',
-      component: _components_rooms_RoomEdit_vue__WEBPACK_IMPORTED_MODULE_17__["default"]
     }]
   }, {
     path: '/reservation',
@@ -98634,10 +98664,6 @@ var customerRoutes = {
     path: '/services',
     component: _components_services_ServiceRouter_vue__WEBPACK_IMPORTED_MODULE_25__["default"],
     children: [{
-      path: 'add',
-      name: 'ServiceAdd',
-      component: _components_services_ServiceAdd_vue__WEBPACK_IMPORTED_MODULE_23__["default"]
-    }, {
       path: 'list',
       name: 'ServiceList',
       component: _components_services_ServiceList_vue__WEBPACK_IMPORTED_MODULE_24__["default"]
@@ -98646,10 +98672,6 @@ var customerRoutes = {
     path: '/inventory',
     component: _components_inventory_InventoryRouter_vue__WEBPACK_IMPORTED_MODULE_28__["default"],
     children: [{
-      path: 'add',
-      name: 'ItemAdd',
-      component: _components_inventory_ItemAdd_vue__WEBPACK_IMPORTED_MODULE_26__["default"]
-    }, {
       path: 'list',
       name: 'ItemList',
       component: _components_inventory_ItemList_vue__WEBPACK_IMPORTED_MODULE_27__["default"]

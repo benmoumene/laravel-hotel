@@ -50,6 +50,11 @@
           class="my-0"
         ></b-pagination>
       </b-col>
+      <b-col sm="7" md="6" class="my-1 text-right">
+        <b-button v-b-modal.service-modal variant="primary">
+          <i class="fas fa-plus"></i>
+        </b-button>
+      </b-col>
     </b-row>
 
     <!-- Main table element -->
@@ -84,10 +89,15 @@
         <b-button variant="info" @click="updateService(row.item)">Update</b-button>
       </template>
     </b-table>
+
+    <b-modal id="service-modal" size="md" centered title="New service" hide-footer>
+      <new-service></new-service>
+    </b-modal>
   </b-container>
 </template>
 <script>
 import { mapState } from "vuex";
+import ServiceAdd from "./ServiceAdd";
 export default {
   name: "Services",
   data: function() {
@@ -159,9 +169,8 @@ export default {
       return this.services.length;
     }
   },
-  mounted() {},
-  updated() {}
+  components: {
+    "new-service": ServiceAdd
+  }
 };
 </script>
-<style scoped>
-</style>
