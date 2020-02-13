@@ -3764,9 +3764,10 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 /* harmony import */ var _CustomerEdit__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./CustomerEdit */ "./resources/js/components/customers/CustomerEdit.vue");
-/* harmony import */ var _CustomerInvoices__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./CustomerInvoices */ "./resources/js/components/customers/CustomerInvoices.vue");
-/* harmony import */ var _CustomerReservations__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./CustomerReservations */ "./resources/js/components/customers/CustomerReservations.vue");
-/* harmony import */ var _guests_Guest__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../guests/Guest */ "./resources/js/components/guests/Guest.vue");
+/* harmony import */ var _CustomerAdd__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./CustomerAdd */ "./resources/js/components/customers/CustomerAdd.vue");
+/* harmony import */ var _CustomerInvoices__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./CustomerInvoices */ "./resources/js/components/customers/CustomerInvoices.vue");
+/* harmony import */ var _CustomerReservations__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./CustomerReservations */ "./resources/js/components/customers/CustomerReservations.vue");
+/* harmony import */ var _guests_Guest__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../guests/Guest */ "./resources/js/components/guests/Guest.vue");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -3895,11 +3896,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
-//
-//
-//
-//
+
 
 
 
@@ -4021,9 +4018,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   }),
   components: {
     "customer-edit": _CustomerEdit__WEBPACK_IMPORTED_MODULE_1__["default"],
-    "guest-info": _guests_Guest__WEBPACK_IMPORTED_MODULE_4__["default"],
-    "customer-reservations": _CustomerReservations__WEBPACK_IMPORTED_MODULE_3__["default"],
-    "customer-invoices": _CustomerInvoices__WEBPACK_IMPORTED_MODULE_2__["default"]
+    "new-customer": _CustomerAdd__WEBPACK_IMPORTED_MODULE_2__["default"],
+    "guest-info": _guests_Guest__WEBPACK_IMPORTED_MODULE_5__["default"],
+    "customer-reservations": _CustomerReservations__WEBPACK_IMPORTED_MODULE_4__["default"],
+    "customer-invoices": _CustomerInvoices__WEBPACK_IMPORTED_MODULE_3__["default"]
   }
 });
 
@@ -74878,6 +74876,7 @@ var render = function() {
       _vm._v(" "),
       _c(
         "b-form-group",
+        { staticClass: "text-right" },
         [
           _c(
             "b-button",
@@ -75133,70 +75132,6 @@ var render = function() {
                 {
                   staticClass: "mb-0",
                   attrs: {
-                    label: "Per page",
-                    "label-cols-sm": "6",
-                    "label-cols-md": "4",
-                    "label-cols-lg": "3",
-                    "label-align-sm": "right",
-                    "label-size": "sm",
-                    "label-for": "perPageSelect"
-                  }
-                },
-                [
-                  _c("b-form-select", {
-                    attrs: {
-                      id: "perPageSelect",
-                      size: "sm",
-                      options: _vm.pageOptions
-                    },
-                    model: {
-                      value: _vm.perPage,
-                      callback: function($$v) {
-                        _vm.perPage = $$v
-                      },
-                      expression: "perPage"
-                    }
-                  })
-                ],
-                1
-              )
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "b-col",
-            { staticClass: "my-1", attrs: { sm: "6" } },
-            [
-              _c("b-pagination", {
-                staticClass: "my-0",
-                attrs: {
-                  "total-rows": _vm.totalRows,
-                  "per-page": _vm.perPage,
-                  align: "fill",
-                  size: "sm"
-                },
-                model: {
-                  value: _vm.currentPage,
-                  callback: function($$v) {
-                    _vm.currentPage = $$v
-                  },
-                  expression: "currentPage"
-                }
-              })
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "b-col",
-            { staticClass: "my-1", attrs: { sm: "6" } },
-            [
-              _c(
-                "b-form-group",
-                {
-                  staticClass: "mb-0",
-                  attrs: {
                     label: "Filter On",
                     "label-cols-sm": "3",
                     "label-align-sm": "right",
@@ -75234,6 +75169,52 @@ var render = function() {
                   )
                 ],
                 1
+              )
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "b-col",
+            { staticClass: "my-1", attrs: { sm: "6" } },
+            [
+              _c("b-pagination", {
+                staticClass: "my-0",
+                attrs: {
+                  "total-rows": _vm.totalRows,
+                  "per-page": _vm.perPage,
+                  align: "fill",
+                  size: "sm"
+                },
+                model: {
+                  value: _vm.currentPage,
+                  callback: function($$v) {
+                    _vm.currentPage = $$v
+                  },
+                  expression: "currentPage"
+                }
+              })
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "b-col",
+            { staticClass: "my-1 text-right", attrs: { sm: "6" } },
+            [
+              _c(
+                "b-button",
+                {
+                  directives: [
+                    {
+                      name: "b-modal",
+                      rawName: "v-b-modal.new-customer-modal",
+                      modifiers: { "new-customer-modal": true }
+                    }
+                  ],
+                  attrs: { variant: "primary" }
+                },
+                [_c("i", { staticClass: "fas fa-plus" })]
               )
             ],
             1
@@ -75422,6 +75403,21 @@ var render = function() {
             attrs: { invoices: _vm.customerInvoices(_vm.selectedCustomer.id) }
           })
         ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "b-modal",
+        {
+          attrs: {
+            id: "new-customer-modal",
+            size: "xl",
+            centered: "",
+            title: "New customer",
+            "hide-footer": ""
+          }
+        },
+        [_c("new-customer")],
         1
       )
     ],

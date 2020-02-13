@@ -55,7 +55,7 @@
       <b-input cols="12" sm="2" placeholder="Spanish" v-model="customer.nationality"></b-input>
     </b-form-group>
 
-    <b-form-group>
+    <b-form-group class="text-right">
       <b-button cols="12" sm="2" variant="primary" @click="add">Add Customer</b-button>
     </b-form-group>
   </b-container>
