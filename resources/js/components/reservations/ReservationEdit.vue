@@ -13,6 +13,7 @@
 </template>
 <script>
 import { mapState, mapGetters } from "vuex";
+import Reservation from "./Reservation";
 export default {
   name: "Reservation",
   props: {
@@ -67,16 +68,10 @@ export default {
       }
       this.reservationId = parseInt(this.$route.params.reservation_id);
       return this.getReservation(this.reservationId);
-    },
-    customer() {
-      return this.getCustomer(this.reservation.customer_id);
-    },
-    room() {
-      return this.getRoom(this.reservation.room_id);
-    },
-    guest() {
-      return this.getGuest(this.reservation.id);
     }
+  },
+  components: {
+    "reservation-info": Reservation
   }
 };
 </script>
