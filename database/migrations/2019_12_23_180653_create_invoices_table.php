@@ -19,10 +19,10 @@ class CreateInvoicesTable extends Migration
         Schema::create('invoices', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('reservation_id');
-            $table->enum('status', ['pending', 'paid'])->default('pending');
-            $table->enum('payment_method', ['', 'cash', 'credit_card'])->default('');
-            $table->decimal('total');
-            $table->timestamp('generated_on');
+            $table->enum('status', ['pending', 'paid'])->nullable();
+            $table->enum('payment_method', ['cash', 'credit_card'])->nullable();
+            $table->decimal('total')->nullable();
+            $table->dateTime('generated_on')->nullable();
             $table->foreign('reservation_id')->references('id')->on('reservations')->onDelete('CASCADE');
         });
     }
