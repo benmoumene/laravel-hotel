@@ -47,14 +47,6 @@ const customerRoutes =
       component: CustomerList
     },
     {
-      path: 'add',
-      name: 'CustomerAdd',
-      meta: {
-        title: 'Customer Add'
-      },
-      component: CustomerAdd
-    },
-    {
       path: ':id/edit',
       name: 'CustomerEdit',
       meta: {
@@ -87,24 +79,9 @@ export default new VueRouter({
       path: '/room', component: RoomRouter,
       children: [
         {
-          path: '',
-          name: 'Room',
-          component: RoomList
-        },
-        {
           path: 'list',
           name: 'RoomList',
           component: RoomList
-        },
-        {
-          path: 'add',
-          name: 'RoomAdd',
-          component: RoomAdd
-        },
-        {
-          path: ':id/edit',
-          name: 'RoomEdit',
-          component: RoomEdit
         },
       ]
     },
@@ -147,11 +124,6 @@ export default new VueRouter({
       path: '/services', component: ServiceRouter,
       children: [
         {
-          path: 'add',
-          name: 'ServiceAdd',
-          component: ServiceAdd
-        },
-        {
           path: 'list',
           name: 'ServiceList',
           component: ServiceList
@@ -161,11 +133,6 @@ export default new VueRouter({
     {
       path: '/inventory', component: InventoryRouter,
       children: [
-        {
-          path: 'add',
-          name: 'ItemAdd',
-          component: ItemAdd
-        },
         {
           path: 'list',
           name: 'ItemList',
