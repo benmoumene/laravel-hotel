@@ -104,27 +104,12 @@
           >
             <i class="nav-icon fa fa-file-invoice-dollar"></i>
           </b-button>
-
-          <b-button
-            v-if="isCurrentGuest(row.item.id)"
-            v-b-tooltip.hover
-            title="This customer is currently hosted. Click for more details."
-            size="sm"
-            variant="primary"
-            @click="showGuestInfo(row.item)"
-          >
-            <i class="nav-icon fa fa-home"></i>
-          </b-button>
         </template>
       </b-table>
     </b-row>
 
     <b-modal id="customer-edit-modal" size="xl" centered title="Customer Info" hide-footer>
       <customer-edit :customerId="selectedCustomer.id" :readonly="false"></customer-edit>
-    </b-modal>
-
-    <b-modal id="guest-info-modal" size="xl" centered title="Guest Info" hide-footer>
-      <guest-info :guestId="selectedGuestId" :readonly="true"></guest-info>
     </b-modal>
 
     <b-modal
@@ -157,7 +142,6 @@ import CustomerEdit from "./CustomerEdit";
 import CustomerAdd from "./CustomerAdd";
 import CustomerInvoices from "./CustomerInvoices";
 import CustomerReservations from "./CustomerReservations";
-import Guest from "../guests/Guest";
 export default {
   name: "CustomerList",
   data: function() {
@@ -207,11 +191,6 @@ export default {
       this.selectedCustomer = customer;
       this.$bvModal.show("customer-edit-modal");
     },
-    showGuestInfo(customer) {
-      this.selectedCustomer = customer;
-      this.selectedGuestId = this.getGuest(customer.id).id;
-      this.$bvModal.show("guest-info-modal");
-    },
     showReservations(customer) {
       this.selectedCustomer = customer;
       this.$bvModal.show("reservations-modal");
@@ -234,6 +213,7 @@ export default {
       isCurrentGuest: "guest/isCurrentGuest",
       customerInvoices: "billing/getCustomerInvoices",
       hasPendingInvoices: "billing/hasPendingInvoices",
+      hasActiveReservation: "reservation/hasActiveReservation",
       getGuest: "guest/getGuestWithCustomerId",
       customerReservations: "reservation/getCustomerReservations"
     }),
@@ -271,7 +251,6 @@ export default {
   components: {
     "customer-edit": CustomerEdit,
     "new-customer": CustomerAdd,
-    "guest-info": Guest,
     "customer-reservations": CustomerReservations,
     "customer-invoices": CustomerInvoices
   }
