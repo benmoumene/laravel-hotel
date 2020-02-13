@@ -128,7 +128,7 @@
     </b-modal>
 
     <b-modal id="invoices-modal" size="xl" centered title="Invoices" hide-footer>
-      <customer-invoices :invoices="customerInvoices(selectedCustomer.id)"></customer-invoices>
+      <customer-invoices :customerId="selectedCustomer.id"></customer-invoices>
     </b-modal>
 
     <b-modal id="new-customer-modal" size="xl" centered title="New customer" hide-footer>

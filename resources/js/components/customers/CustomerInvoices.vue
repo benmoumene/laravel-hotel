@@ -25,6 +25,7 @@
   </b-container>
 </template>
 <script>
+import { mapState, mapGetters } from "vuex";
 export default {
   name: "CustomerInvoices",
   data: function() {
@@ -55,14 +56,20 @@ export default {
     };
   },
   props: {
-    invoices: { type: Array, required: true }
+    customerId: { type: Number, required: true }
   },
   computed: {
+    ...mapGetters({
+      customerInvoices: "billing/getCustomerInvoices"
+    }),
+    invoices() {
+      return this.customerInvoices(this.customerId).filter(
+        invoice => invoice.status !== null
+      );
+    },
     totalRows() {
       return this.invoices.length;
     }
   }
 };
 </script>
-<style scoped>
-</style>
