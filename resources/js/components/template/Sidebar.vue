@@ -10,9 +10,6 @@
     </b-row>
 
     <b-row class="user-panel m-0">
-      <b-col cols="4" class="pull-left image">
-        <img :src="avatarPath" class="img-circle" alt="User Image" />
-      </b-col>
       <b-col cols="8" class="pull-left info">
         <p>
           <router-link
@@ -20,6 +17,9 @@
             class="nav-link"
           >{{ appUser.first_name + ' ' + appUser.last_name }}</router-link>
         </p>
+      </b-col>
+      <b-col cols="4" class="pull-left image">
+        <img :src="avatarPath" class="img-circle" alt="User Image" />
       </b-col>
     </b-row>
 
@@ -121,29 +121,15 @@
                 </li>
               </ul>
             </li>
-            <li class="nav-item has-treeview">
-              <a href="#" class="nav-link">
-                <i class="nav-icon fa fa-barcode"></i>
-                <span v-if="lowStock" class="badge badge-danger right">Low Stock!</span>
-                <p>
-                  Inventory
-                  <i class="fa fa-angle-left right"></i>
-                </p>
-              </a>
-              <ul class="nav nav-treeview">
-                <li class="nav-item">
-                  <router-link to="/inventory/add" class="nav-link">
-                    <i class="nav-icon fa fa-plus"></i>
-                    Add Item
-                  </router-link>
-                </li>
-                <li class="nav-item">
-                  <router-link to="/inventory/list" class="nav-link">
-                    <i class="nav-icon fa fa-shopping-cart"></i>
-                    Stock
-                  </router-link>
-                </li>
-              </ul>
+            <li class="nav-item">
+              <router-link to="/inventory/list" class="nav-link">
+                <i class="nav-icon fa fa-shopping-cart"></i>
+                Stock
+                <span
+                  v-if="lowStock"
+                  class="badge badge-danger right"
+                >Low Stock!</span>
+              </router-link>
             </li>
             <li class="nav-item">
               <router-link to="/billing/list" class="nav-link">
