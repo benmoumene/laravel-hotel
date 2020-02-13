@@ -50,6 +50,11 @@
           class="my-0"
         ></b-pagination>
       </b-col>
+      <b-col sm="7" md="6" class="my-1 text-right">
+        <b-button v-b-modal.room-modal variant="primary">
+          <i class="fas fa-plus"></i>
+        </b-button>
+      </b-col>
     </b-row>
 
     <!-- Main table element -->
@@ -100,10 +105,15 @@
         <b-button variant="info" @click="updateRoom(row.item)">Update</b-button>
       </template>
     </b-table>
+
+    <b-modal id="room-modal" size="md" centered title="New Room" hide-footer>
+      <new-room></new-room>
+    </b-modal>
   </b-container>
 </template>
 <script>
 import { mapState } from "vuex";
+import RoomAdd from "./RoomAdd";
 export default {
   name: "RoomList",
   data: function() {
@@ -180,9 +190,8 @@ export default {
       return this.rooms.length;
     }
   },
-  mounted() {},
-  updated() {}
+  components: {
+    "new-room": RoomAdd
+  }
 };
 </script>
-<style scoped>
-</style>

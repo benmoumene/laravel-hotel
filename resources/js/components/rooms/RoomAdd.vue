@@ -58,10 +58,6 @@ export default {
         appendToast: true
       });
     }
-  },
-  computed: {},
-  mounted() {}
+  }
 };
 </script>
-<style scoped>
-</style>

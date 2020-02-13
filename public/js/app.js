@@ -5803,9 +5803,7 @@ __webpack_require__.r(__webpack_exports__);
         appendToast: true
       });
     }
-  },
-  computed: {},
-  mounted: function mounted() {}
+  }
 });
 
 /***/ }),
@@ -5884,6 +5882,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var _RoomAdd__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./RoomAdd */ "./resources/js/components/rooms/RoomAdd.vue");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -5994,6 +5993,16 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "RoomList",
@@ -6076,8 +6085,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       return this.rooms.length;
     }
   }),
-  mounted: function mounted() {},
-  updated: function updated() {}
+  components: {
+    "new-room": _RoomAdd__WEBPACK_IMPORTED_MODULE_1__["default"]
+  }
 });
 
 /***/ }),
@@ -6504,40 +6514,6 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -77842,10 +77818,10 @@ render._withStripped = true
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/rooms/RoomAdd.vue?vue&type=template&id=9f84fc58&scoped=true&":
-/*!****************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/rooms/RoomAdd.vue?vue&type=template&id=9f84fc58&scoped=true& ***!
-  \****************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/rooms/RoomAdd.vue?vue&type=template&id=9f84fc58&":
+/*!****************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/rooms/RoomAdd.vue?vue&type=template&id=9f84fc58& ***!
+  \****************************************************************************************************************************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -78021,10 +77997,10 @@ render._withStripped = true
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/rooms/RoomList.vue?vue&type=template&id=181d8f0a&scoped=true&":
-/*!*****************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/rooms/RoomList.vue?vue&type=template&id=181d8f0a&scoped=true& ***!
-  \*****************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/rooms/RoomList.vue?vue&type=template&id=181d8f0a&":
+/*!*****************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/rooms/RoomList.vue?vue&type=template&id=181d8f0a& ***!
+  \*****************************************************************************************************************************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -78169,6 +78145,28 @@ var render = function() {
               })
             ],
             1
+          ),
+          _vm._v(" "),
+          _c(
+            "b-col",
+            { staticClass: "my-1 text-right", attrs: { sm: "7", md: "6" } },
+            [
+              _c(
+                "b-button",
+                {
+                  directives: [
+                    {
+                      name: "b-modal",
+                      rawName: "v-b-modal.room-modal",
+                      modifiers: { "room-modal": true }
+                    }
+                  ],
+                  attrs: { variant: "primary" }
+                },
+                [_c("i", { staticClass: "fas fa-plus" })]
+              )
+            ],
+            1
           )
         ],
         1
@@ -78305,7 +78303,22 @@ var render = function() {
             }
           }
         ])
-      })
+      }),
+      _vm._v(" "),
+      _c(
+        "b-modal",
+        {
+          attrs: {
+            id: "room-modal",
+            size: "md",
+            centered: "",
+            title: "New Room",
+            "hide-footer": ""
+          }
+        },
+        [_c("new-room")],
+        1
+      )
     ],
     1
   )
@@ -79158,127 +79171,43 @@ var render = function() {
                     1
                   ),
                   _vm._v(" "),
-                  _vm.isAdmin || _vm.isManager
-                    ? _c("li", { staticClass: "nav-item has-treeview" }, [
-                        _c(
-                          "a",
-                          { staticClass: "nav-link", attrs: { href: "#" } },
-                          [
-                            _c("i", { staticClass: "nav-icon fa fa-bed" }),
-                            _vm._v(" "),
-                            _c("p", [
-                              _vm._v(
-                                "\n                Rooms\n                "
-                              ),
-                              _c("i", { staticClass: "fa fa-angle-left right" })
-                            ])
-                          ]
-                        ),
-                        _vm._v(" "),
-                        _c("ul", { staticClass: "nav nav-treeview" }, [
-                          _c(
-                            "li",
-                            { staticClass: "nav-item" },
-                            [
-                              _c(
-                                "router-link",
-                                {
-                                  staticClass: "nav-link",
-                                  attrs: { to: "/room/add" }
-                                },
-                                [
-                                  _c("i", {
-                                    staticClass: "nav-icon fa fa-plus"
-                                  }),
-                                  _vm._v(
-                                    "\n                  Add Room\n                "
-                                  )
-                                ]
-                              )
-                            ],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "li",
-                            { staticClass: "nav-item" },
-                            [
-                              _c(
-                                "router-link",
-                                {
-                                  staticClass: "nav-link",
-                                  attrs: { to: "/room/list" }
-                                },
-                                [
-                                  _c("i", {
-                                    staticClass: "nav-icon fa fa-list"
-                                  }),
-                                  _vm._v(
-                                    "\n                  Room List\n                "
-                                  )
-                                ]
-                              )
-                            ],
-                            1
-                          )
-                        ])
-                      ])
-                    : _vm._e(),
-                  _vm._v(" "),
-                  _c("li", { staticClass: "nav-item has-treeview" }, [
-                    _c("a", { staticClass: "nav-link", attrs: { href: "#" } }, [
-                      _c("i", { staticClass: "nav-icon fa fa-coffee" }),
-                      _vm._v(" "),
-                      _c("p", [
-                        _vm._v("\n                Services\n                "),
-                        _c("i", { staticClass: "fa fa-angle-left right" })
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("ul", { staticClass: "nav nav-treeview" }, [
+                  _c(
+                    "li",
+                    { staticClass: "nav-item" },
+                    [
                       _c(
-                        "li",
-                        { staticClass: "nav-item" },
+                        "router-link",
+                        {
+                          staticClass: "nav-link",
+                          attrs: { to: "/room/list" }
+                        },
                         [
-                          _c(
-                            "router-link",
-                            {
-                              staticClass: "nav-link",
-                              attrs: { to: "/services/add" }
-                            },
-                            [
-                              _c("i", { staticClass: "nav-icon fa fa-plus" }),
-                              _vm._v(
-                                "\n                  Add Service\n                "
-                              )
-                            ]
-                          )
-                        ],
-                        1
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "li",
-                        { staticClass: "nav-item" },
-                        [
-                          _c(
-                            "router-link",
-                            {
-                              staticClass: "nav-link",
-                              attrs: { to: "/services/list" }
-                            },
-                            [
-                              _c("i", { staticClass: "nav-icon fa fa-list" }),
-                              _vm._v(
-                                "\n                  Service List\n                "
-                              )
-                            ]
-                          )
-                        ],
-                        1
+                          _c("i", { staticClass: "nav-icon fa fa-bed" }),
+                          _vm._v("\n              Rooms\n            ")
+                        ]
                       )
-                    ])
-                  ]),
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "li",
+                    { staticClass: "nav-item" },
+                    [
+                      _c(
+                        "router-link",
+                        {
+                          staticClass: "nav-link",
+                          attrs: { to: "/services/list" }
+                        },
+                        [
+                          _c("i", { staticClass: "nav-icon fa fa-coffee" }),
+                          _vm._v("\n              Services\n            ")
+                        ]
+                      )
+                    ],
+                    1
+                  ),
                   _vm._v(" "),
                   _c(
                     "li",
@@ -97849,7 +97778,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _RoomAdd_vue_vue_type_template_id_9f84fc58_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./RoomAdd.vue?vue&type=template&id=9f84fc58&scoped=true& */ "./resources/js/components/rooms/RoomAdd.vue?vue&type=template&id=9f84fc58&scoped=true&");
+/* harmony import */ var _RoomAdd_vue_vue_type_template_id_9f84fc58___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./RoomAdd.vue?vue&type=template&id=9f84fc58& */ "./resources/js/components/rooms/RoomAdd.vue?vue&type=template&id=9f84fc58&");
 /* harmony import */ var _RoomAdd_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./RoomAdd.vue?vue&type=script&lang=js& */ "./resources/js/components/rooms/RoomAdd.vue?vue&type=script&lang=js&");
 /* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
@@ -97861,11 +97790,11 @@ __webpack_require__.r(__webpack_exports__);
 
 var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
   _RoomAdd_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _RoomAdd_vue_vue_type_template_id_9f84fc58_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
-  _RoomAdd_vue_vue_type_template_id_9f84fc58_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  _RoomAdd_vue_vue_type_template_id_9f84fc58___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _RoomAdd_vue_vue_type_template_id_9f84fc58___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
   false,
   null,
-  "9f84fc58",
+  null,
   null
   
 )
@@ -97891,19 +97820,19 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/components/rooms/RoomAdd.vue?vue&type=template&id=9f84fc58&scoped=true&":
-/*!**********************************************************************************************!*\
-  !*** ./resources/js/components/rooms/RoomAdd.vue?vue&type=template&id=9f84fc58&scoped=true& ***!
-  \**********************************************************************************************/
+/***/ "./resources/js/components/rooms/RoomAdd.vue?vue&type=template&id=9f84fc58&":
+/*!**********************************************************************************!*\
+  !*** ./resources/js/components/rooms/RoomAdd.vue?vue&type=template&id=9f84fc58& ***!
+  \**********************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_RoomAdd_vue_vue_type_template_id_9f84fc58_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./RoomAdd.vue?vue&type=template&id=9f84fc58&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/rooms/RoomAdd.vue?vue&type=template&id=9f84fc58&scoped=true&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_RoomAdd_vue_vue_type_template_id_9f84fc58_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_RoomAdd_vue_vue_type_template_id_9f84fc58___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./RoomAdd.vue?vue&type=template&id=9f84fc58& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/rooms/RoomAdd.vue?vue&type=template&id=9f84fc58&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_RoomAdd_vue_vue_type_template_id_9f84fc58___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_RoomAdd_vue_vue_type_template_id_9f84fc58_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_RoomAdd_vue_vue_type_template_id_9f84fc58___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
@@ -97987,7 +97916,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _RoomList_vue_vue_type_template_id_181d8f0a_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./RoomList.vue?vue&type=template&id=181d8f0a&scoped=true& */ "./resources/js/components/rooms/RoomList.vue?vue&type=template&id=181d8f0a&scoped=true&");
+/* harmony import */ var _RoomList_vue_vue_type_template_id_181d8f0a___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./RoomList.vue?vue&type=template&id=181d8f0a& */ "./resources/js/components/rooms/RoomList.vue?vue&type=template&id=181d8f0a&");
 /* harmony import */ var _RoomList_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./RoomList.vue?vue&type=script&lang=js& */ "./resources/js/components/rooms/RoomList.vue?vue&type=script&lang=js&");
 /* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
@@ -97999,11 +97928,11 @@ __webpack_require__.r(__webpack_exports__);
 
 var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
   _RoomList_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _RoomList_vue_vue_type_template_id_181d8f0a_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
-  _RoomList_vue_vue_type_template_id_181d8f0a_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  _RoomList_vue_vue_type_template_id_181d8f0a___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _RoomList_vue_vue_type_template_id_181d8f0a___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
   false,
   null,
-  "181d8f0a",
+  null,
   null
   
 )
@@ -98029,19 +97958,19 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/components/rooms/RoomList.vue?vue&type=template&id=181d8f0a&scoped=true&":
-/*!***********************************************************************************************!*\
-  !*** ./resources/js/components/rooms/RoomList.vue?vue&type=template&id=181d8f0a&scoped=true& ***!
-  \***********************************************************************************************/
+/***/ "./resources/js/components/rooms/RoomList.vue?vue&type=template&id=181d8f0a&":
+/*!***********************************************************************************!*\
+  !*** ./resources/js/components/rooms/RoomList.vue?vue&type=template&id=181d8f0a& ***!
+  \***********************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_RoomList_vue_vue_type_template_id_181d8f0a_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./RoomList.vue?vue&type=template&id=181d8f0a&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/rooms/RoomList.vue?vue&type=template&id=181d8f0a&scoped=true&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_RoomList_vue_vue_type_template_id_181d8f0a_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_RoomList_vue_vue_type_template_id_181d8f0a___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./RoomList.vue?vue&type=template&id=181d8f0a& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/rooms/RoomList.vue?vue&type=template&id=181d8f0a&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_RoomList_vue_vue_type_template_id_181d8f0a___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_RoomList_vue_vue_type_template_id_181d8f0a_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_RoomList_vue_vue_type_template_id_181d8f0a___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
