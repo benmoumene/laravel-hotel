@@ -75,51 +75,17 @@
                 Guests
               </router-link>
             </li>
-            <li class="nav-item has-treeview" v-if="isAdmin || isManager">
-              <a href="#" class="nav-link">
+            <li class="nav-item">
+              <router-link to="/room/list" class="nav-link">
                 <i class="nav-icon fa fa-bed"></i>
-                <p>
-                  Rooms
-                  <i class="fa fa-angle-left right"></i>
-                </p>
-              </a>
-              <ul class="nav nav-treeview">
-                <li class="nav-item">
-                  <router-link to="/room/add" class="nav-link">
-                    <i class="nav-icon fa fa-plus"></i>
-                    Add Room
-                  </router-link>
-                </li>
-                <li class="nav-item">
-                  <router-link to="/room/list" class="nav-link">
-                    <i class="nav-icon fa fa-list"></i>
-                    Room List
-                  </router-link>
-                </li>
-              </ul>
+                Rooms
+              </router-link>
             </li>
-            <li class="nav-item has-treeview">
-              <a href="#" class="nav-link">
+            <li class="nav-item">
+              <router-link to="/services/list" class="nav-link">
                 <i class="nav-icon fa fa-coffee"></i>
-                <p>
-                  Services
-                  <i class="fa fa-angle-left right"></i>
-                </p>
-              </a>
-              <ul class="nav nav-treeview">
-                <li class="nav-item">
-                  <router-link to="/services/add" class="nav-link">
-                    <i class="nav-icon fa fa-plus"></i>
-                    Add Service
-                  </router-link>
-                </li>
-                <li class="nav-item">
-                  <router-link to="/services/list" class="nav-link">
-                    <i class="nav-icon fa fa-list"></i>
-                    Service List
-                  </router-link>
-                </li>
-              </ul>
+                Services
+              </router-link>
             </li>
             <li class="nav-item">
               <router-link to="/inventory/list" class="nav-link">
