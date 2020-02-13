@@ -33,8 +33,8 @@ import ServiceAdd from '../components/services/ServiceAdd.vue'
 import ServiceList from '../components/services/ServiceList.vue'
 import ServiceRouter from '../components/services/ServiceRouter.vue'
 
-import InventoryItemAdd from '../components/inventory/InventoryItemAdd.vue'
-import InventoryItemList from '../components/inventory/InventoryItemList.vue'
+import ItemAdd from '../components/inventory/ItemAdd.vue'
+import ItemList from '../components/inventory/ItemList.vue'
 import InventoryRouter from '../components/inventory/InventoryRouter.vue'
 
 const customerRoutes =
@@ -163,13 +163,13 @@ export default new VueRouter({
       children: [
         {
           path: 'add',
-          name: 'InventoryItemAdd',
-          component: InventoryItemAdd
+          name: 'ItemAdd',
+          component: ItemAdd
         },
         {
           path: 'list',
-          name: 'InventoryItemList',
-          component: InventoryItemList
+          name: 'ItemList',
+          component: ItemList
         },
       ]
     },

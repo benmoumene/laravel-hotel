@@ -50,6 +50,11 @@
           class="my-0"
         ></b-pagination>
       </b-col>
+      <b-col sm="7" md="6" class="my-1 text-right">
+        <b-button v-b-modal.item-modal variant="primary">
+          <i class="fas fa-plus"></i>
+        </b-button>
+      </b-col>
     </b-row>
 
     <!-- Main table element -->
@@ -88,10 +93,15 @@
         <b-button variant="info" @click="updateItem(row.item)">Update</b-button>
       </template>
     </b-table>
+
+    <b-modal id="item-modal" size="md" centered title="New item" hide-footer>
+      <new-item></new-item>
+    </b-modal>
   </b-container>
 </template>
 <script>
 import { mapState } from "vuex";
+import ItemAdd from "./ItemAdd";
 export default {
   name: "InventoryItemList",
   data: function() {
@@ -169,8 +179,9 @@ export default {
       return this.inventory.length;
     }
   },
-  mounted() {},
-  updated() {}
+  components: {
+    "new-item": ItemAdd
+  }
 };
 </script>
 <style scoped>
