@@ -53,12 +53,6 @@
               </router-link>
             </li>
             <li class="nav-item">
-              <router-link to="/guest/list" class="nav-link">
-                <i class="nav-icon fa fa-user"></i>
-                Guests
-              </router-link>
-            </li>
-            <li class="nav-item">
               <router-link to="/room/list" class="nav-link">
                 <i class="nav-icon fa fa-bed"></i>
                 Rooms

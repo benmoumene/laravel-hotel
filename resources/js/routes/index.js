@@ -16,24 +16,17 @@ import CustomerAdd from '../components/customers/CustomerAdd.vue'
 import CustomerEdit from '../components/customers/CustomerEdit.vue'
 import CustomerList from '../components/customers/CustomerList.vue'
 
-import GuestRouter from '../components/guests/GuestRouter.vue'
-import GuestList from '../components/guests/GuestList.vue'
-
 import RoomRouter from '../components/rooms/RoomRouter.vue'
-import RoomAdd from '../components/rooms/RoomAdd.vue'
-import RoomEdit from '../components/rooms/RoomEdit.vue'
 import RoomList from '../components/rooms/RoomList.vue'
 
 import ReservationWizard from '../components/reservations/wizard/ReservationWizard.vue'
 import ReservationList from '../components/reservations/ReservationList.vue'
-import ReservationShow from '../components/reservations/ReservationShow.vue'
+import ReservationEdit from '../components/reservations/ReservationEdit.vue'
 import ReservationRouter from '../components/reservations/ReservationRouter.vue'
 
-import ServiceAdd from '../components/services/ServiceAdd.vue'
 import ServiceList from '../components/services/ServiceList.vue'
 import ServiceRouter from '../components/services/ServiceRouter.vue'
 
-import ItemAdd from '../components/inventory/ItemAdd.vue'
 import ItemList from '../components/inventory/ItemList.vue'
 import InventoryRouter from '../components/inventory/InventoryRouter.vue'
 
@@ -66,16 +59,6 @@ export default new VueRouter({
     },
     customerRoutes,
     {
-      path: '/guest', component: GuestRouter,
-      children: [
-        {
-          path: 'list',
-          name: 'GuestList',
-          component: GuestList
-        },
-      ]
-    },
-    {
       path: '/room', component: RoomRouter,
       children: [
         {
@@ -95,8 +78,8 @@ export default new VueRouter({
         },
         {
           path: ':reservation_id/show',
-          name: 'ReservationShow',
-          component: ReservationShow
+          name: 'ReservationEdit',
+          component: ReservationEdit
         },
         {
           path: ':customer_id/new',
