@@ -3896,6 +3896,37 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -75247,54 +75278,103 @@ var render = function() {
                     _c(
                       "b-button",
                       {
-                        attrs: { variant: "info" },
+                        directives: [
+                          {
+                            name: "b-tooltip",
+                            rawName: "v-b-tooltip.hover",
+                            modifiers: { hover: true }
+                          }
+                        ],
+                        attrs: {
+                          title: "Customer details",
+                          size: "sm",
+                          variant: "info"
+                        },
                         on: {
                           click: function($event) {
                             return _vm.showCustomerInfo(row.item)
                           }
                         }
                       },
-                      [_vm._v("+Info")]
+                      [_c("i", { staticClass: "fa fa-user" })]
                     ),
                     _vm._v(" "),
                     _c(
                       "b-button",
                       {
-                        attrs: { variant: "info" },
+                        directives: [
+                          {
+                            name: "b-tooltip",
+                            rawName: "v-b-tooltip.hover",
+                            modifiers: { hover: true }
+                          }
+                        ],
+                        attrs: {
+                          title: "Customer reservations",
+                          size: "sm",
+                          variant: "info"
+                        },
                         on: {
                           click: function($event) {
                             return _vm.showReservations(row.item)
                           }
                         }
                       },
-                      [_vm._v("Reservations")]
+                      [_c("i", { staticClass: "fa fa-calendar-alt" })]
                     ),
                     _vm._v(" "),
                     _c(
                       "b-button",
                       {
-                        attrs: { variant: "info" },
+                        directives: [
+                          {
+                            name: "b-tooltip",
+                            rawName: "v-b-tooltip.hover",
+                            modifiers: { hover: true }
+                          }
+                        ],
+                        attrs: {
+                          title: "Customer invoices",
+                          size: "sm",
+                          variant: "primary"
+                        },
                         on: {
                           click: function($event) {
                             return _vm.showInvoices(row.item)
                           }
                         }
                       },
-                      [_vm._v("Invoices")]
+                      [
+                        _c("i", {
+                          staticClass: "nav-icon fa fa-file-invoice-dollar"
+                        })
+                      ]
                     ),
                     _vm._v(" "),
                     _vm.isCurrentGuest(row.item.id)
                       ? _c(
                           "b-button",
                           {
-                            attrs: { variant: "info" },
+                            directives: [
+                              {
+                                name: "b-tooltip",
+                                rawName: "v-b-tooltip.hover",
+                                modifiers: { hover: true }
+                              }
+                            ],
+                            attrs: {
+                              title:
+                                "This customer is currently hosted. Click for more details.",
+                              size: "sm",
+                              variant: "primary"
+                            },
                             on: {
                               click: function($event) {
                                 return _vm.showGuestInfo(row.item)
                               }
                             }
                           },
-                          [_vm._v("Guest")]
+                          [_c("i", { staticClass: "nav-icon fa fa-home" })]
                         )
                       : _vm._e()
                   ]

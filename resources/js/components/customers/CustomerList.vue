@@ -76,14 +76,45 @@
         @filtered="onFiltered"
       >
         <template v-slot:cell(actions)="row">
-          <b-button variant="info" @click="showCustomerInfo(row.item)">+Info</b-button>
-          <b-button variant="info" @click="showReservations(row.item)">Reservations</b-button>
-          <b-button variant="info" @click="showInvoices(row.item)">Invoices</b-button>
+          <b-button
+            v-b-tooltip.hover
+            title="Customer details"
+            size="sm"
+            variant="info"
+            @click="showCustomerInfo(row.item)"
+          >
+            <i class="fa fa-user"></i>
+          </b-button>
+          <b-button
+            v-b-tooltip.hover
+            title="Customer reservations"
+            size="sm"
+            variant="info"
+            @click="showReservations(row.item)"
+          >
+            <i class="fa fa-calendar-alt"></i>
+          </b-button>
+
+          <b-button
+            v-b-tooltip.hover
+            title="Customer invoices"
+            size="sm"
+            variant="primary"
+            @click="showInvoices(row.item)"
+          >
+            <i class="nav-icon fa fa-file-invoice-dollar"></i>
+          </b-button>
+
           <b-button
             v-if="isCurrentGuest(row.item.id)"
-            variant="info"
+            v-b-tooltip.hover
+            title="This customer is currently hosted. Click for more details."
+            size="sm"
+            variant="primary"
             @click="showGuestInfo(row.item)"
-          >Guest</b-button>
+          >
+            <i class="nav-icon fa fa-home"></i>
+          </b-button>
         </template>
       </b-table>
     </b-row>
