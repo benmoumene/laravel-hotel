@@ -1,8 +1,11 @@
 <template>
-  <b-container fluid>YOUR BILLED SERVICES:</b-container>
+  <b-container fluid>
+    <billed-service-add :reservationId="reservationId" :readonly="false"></billed-service-add>YOUR BILLED SERVICES:
+  </b-container>
 </template>
 <script>
 import { mapState, mapGetters } from "vuex";
+import BilledServiceAdd from "./BilledServiceAdd";
 export default {
   name: "BilledServices",
   props: {
@@ -88,6 +91,9 @@ export default {
       return services;
     }
   },
-  mounted() {}
+  mounted() {},
+  components: {
+    "billed-service-add": BilledServiceAdd
+  }
 };
 </script>
