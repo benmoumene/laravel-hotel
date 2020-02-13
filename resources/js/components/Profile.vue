@@ -31,7 +31,13 @@
           :src="avatarPath"
           @click="chooseAvatar"
         />
-        <b-form-file v-model="image" id="fileChooser" class="mt-3 hidden" plain></b-form-file>
+        <b-form-file
+          @input="updateAvatar"
+          v-model="image"
+          id="fileChooser"
+          class="mt-3 hidden"
+          plain
+        ></b-form-file>
       </b-col>
     </b-row>
   </b-container>
@@ -47,7 +53,10 @@ export default {
   },
   methods: {
     updateProfile() {
-      this.$store.dispatch("updateProfile", { vm: this, avatar: this.image });
+      this.$store.dispatch("updateProfile", { vm: this });
+    },
+    updateAvatar() {
+      this.$store.dispatch("updateAvatar", { vm: this, avatar: this.image });
     },
     makeToast(title, message, variant = "info") {
       this.$bvToast.toast(message, {
