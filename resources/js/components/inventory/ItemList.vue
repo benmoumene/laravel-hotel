@@ -140,6 +140,7 @@ export default {
       sortDesc: false,
       sortDirection: "asc",
       filter: null,
+      filteredRows: null,
       filterOn: []
     };
   },
@@ -149,7 +150,7 @@ export default {
     },
     onFiltered(filteredItems) {
       // Trigger pagination to update the number of buttons/pages due to filtering
-      this.totalRows = filteredItems.length;
+      this.filteredRows = filteredItems.length;
       this.currentPage = 1;
     },
     makeToast(title, message, variant = "info") {
@@ -176,6 +177,9 @@ export default {
         });
     },
     totalRows() {
+      if (this.filteredRows !== null) {
+        return this.filteredRows;
+      }
       return this.inventory.length;
     }
   },

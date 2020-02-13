@@ -171,7 +171,8 @@ export default {
       sortDesc: false,
       sortDirection: "asc",
       filter: null,
-      filterOn: ["lalala"]
+      filteredRows: null,
+      filterOn: ["first_name", "last_name", "phone", "document_id"]
     };
   },
   methods: {
@@ -195,6 +196,7 @@ export default {
     onFiltered(filteredItems) {
       // Trigger pagination to update the number of buttons/pages due to filtering
       this.currentPage = 1;
+      this.filteredRows = filteredItems.length;
     }
   },
   computed: {
@@ -233,7 +235,10 @@ export default {
         });
     },
     totalRows() {
-      return this.customers.length;
+      if (this.filteredRows !== null) {
+        return this.filteredRows;
+      }
+      return this.filteredCustomers.length;
     }
   },
   components: {

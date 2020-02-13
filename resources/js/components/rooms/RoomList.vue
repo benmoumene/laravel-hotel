@@ -152,12 +152,13 @@ export default {
       sortDesc: false,
       sortDirection: "asc",
       filter: null,
+      filteredRows: null,
       filterOn: []
     };
   },
   methods: {
-    onFiltered() {
-      // Trigger pagination to update the number of buttons/pages due to filtering
+    onFiltered(filteredItems) {
+      this.filteredRows = filteredItems.length;
       this.currentPage = 1;
     },
     updateRoom(room) {
@@ -187,6 +188,9 @@ export default {
         });
     },
     totalRows() {
+      if (this.filteredRows !== null) {
+        return this.filteredRows;
+      }
       return this.rooms.length;
     }
   },

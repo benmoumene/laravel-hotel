@@ -57,7 +57,7 @@
       show-empty
       small
       stacked="md"
-      :items="items"
+      :items="guestNormalized"
       :fields="fields"
       :current-page="currentPage"
       :per-page="perPage"
@@ -190,14 +190,14 @@ export default {
       sortDesc: false,
       sortDirection: "asc",
       filter: null,
-      totalRows: null,
+      filteredRows: null,
       filterOn: []
     };
   },
   methods: {
     onFiltered(filteredItems) {
       this.currentPage = 1;
-      this.totalRows = filteredItems.length;
+      this.filteredRows = filteredItems.length;
     },
     reservationInfo(id) {
       this.selectedReservationId = id;
@@ -246,16 +246,13 @@ export default {
         newArray.push(guest);
       }
       return newArray;
-    }
-  },
-  mounted() {
-    this.items = this.guestNormalized;
-    this.totalRows = this.items.length;
-  },
-  watch: {
-    guestNormalized: function(val) {
-      this.items = this.guestNormalized;
-      this.totalRows = this.items.length;
+    },
+    totalRows() {
+      if (this.filteredRows !== null) {
+        return this.filteredRows;
+      }
+
+      return this.guestNormalized.length;
     }
   },
   components: {
