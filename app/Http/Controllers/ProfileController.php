@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Auth;
 use App\User;
+use App\Http\Requests\ProfileUpdateRequest;
 
 class ProfileController extends Controller
 {
@@ -25,17 +26,23 @@ class ProfileController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(ProfileUpdateRequest $request, $id)
     {
-        //if ($request->has('avatar')) {
-        //}
-        $date = date("Y-m-d H:i:s");
-        $filename = md5($date);
-        $request->image->storeAs('public', $filename);
         $currentUser = Auth::user();
-        $currentUser->avatar_filename = $filename;
-        $currentUser->save();
+        if ($request->has('image')) {
+            $date = date("Y-m-d H:i:s");
+            $filename = md5($date); // uniqueid
+            $request->image->storeAs('public', $filename);
+            $currentUser->avatar_filename = $filename;
+        }
 
-        return response()->json(['avatar' => $filename], 200);
+        if ($request->has('profile')) {
+            $currentUser->name = $request->input('profile.name');
+            $currentUser->first_name = $request->input('profile.first_name');
+            $currentUser->last_name = $request->input('profile.last_name');
+        }
+        
+        $currentUser->save();
+        return response()->json(['profile' => $currentUser], 200);
     }
 }
