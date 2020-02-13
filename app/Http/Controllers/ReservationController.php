@@ -8,6 +8,7 @@ use App\Http\Requests\ReservationRequest;
 use App\Reservation;
 use App\Guest;
 use App\Services\ReservationService;
+use App\Services\InvoiceService;
 use App\Services\GuestService;
 
 class ReservationController extends Controller
@@ -24,6 +25,7 @@ class ReservationController extends Controller
         // Servicios
         $rs = new ReservationService;
         $gs = new GuestService;
+        $is = new InvoiceService;
 
         // Creamos la reserva
         $reservation = $rs->create(
@@ -50,11 +52,27 @@ class ReservationController extends Controller
                 $gs->getError()], 500);
         }
 
+        $invoice = $is->create($reservation->id);
+        if (!$invoice) {
+            $guest->delete();
+            $reservation->delete();
+            return response()->json(['message' =>
+                $is->getError()], 500);
+        }
+
         $guest['customer'] = ['id' => $guest->customer()->first()->id];
         $guest['room'] = ['id' => $guest->room()->first()->id];
         $reservation['guest'] = ['id' => $guest->id];
-        $response = ['guest' => $guest , 'reservation' => $reservation];
+        $reservation['invoice'] = ['id' => $invoice->id];
+        $response = ['guest' => $guest,
+            'reservation' => $reservation,
+            'invoice' => $invoice
+        ];
         return response()->json($response, 200);
+    }
+
+    public function checkForExpiredReservations()
+    {
     }
 
     // Metodo para cancelar reservas
