@@ -3149,6 +3149,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "CustomerInvoices",
@@ -74211,9 +74213,16 @@ var render = function() {
                   "router-link",
                   {
                     staticClass: "nav-link",
-                    attrs: { to: { path: "/billing/" + row.item.id + "/edit" } }
+                    attrs: {
+                      to: { path: "/invoices/" + row.item.id + "/edit" }
+                    }
                   },
-                  [_vm._v("View Invoice")]
+                  [
+                    _c("b-button", { attrs: { variant: "primary" } }, [
+                      _vm._v("Show")
+                    ])
+                  ],
+                  1
                 )
               ]
             }
