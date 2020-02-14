@@ -28,7 +28,7 @@
           title="Remove this service"
           size="sm"
           variant="danger"
-          @click="deleteService(row.item.service_id)"
+          @click="deleteService(row.item.id)"
         >
           <i class="fa fa-trash"></i>
         </b-button>
@@ -70,11 +70,10 @@ export default {
     readonly: { Type: Boolean, required: true }
   },
   methods: {
-    deleteService(serviceId) {
-      this.$store.dispatch("billed_service/delete", {
+    deleteService(id) {
+      this.$store.dispatch("billed_services/delete", {
         vm: this,
-        reservationId: this.reservationId,
-        serviceId
+        id
       });
     },
     makeToast(title, message, variant = "info") {

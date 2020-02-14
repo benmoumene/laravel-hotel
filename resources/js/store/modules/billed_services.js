@@ -42,7 +42,7 @@ export default ({
                 vm.makeToast("Error", "Something went wrong.", 'danger');
             });
         },
-        deleteBilledService(context, { vm, id }) {
+        delete(context, { vm, id }) {
             axios.post("/billed-services/" + id, {
                 _method: "delete"
             }).then(function (response) {

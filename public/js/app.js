@@ -2753,6 +2753,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "BilledServices",
@@ -2765,8 +2766,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         key: "cost",
         label: "Cost"
       }, {
-        key: "description",
+        key: "comments",
         label: "Description"
+      }, {
+        key: "billed_on",
+        label: "Billed on"
       }, {
         key: "actions",
         label: "Actions"
@@ -2786,11 +2790,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     }
   },
   methods: {
-    deleteService: function deleteService(serviceId) {
-      this.$store.dispatch("billed_service/delete", {
+    deleteService: function deleteService(id) {
+      this.$store.dispatch("billed_services/delete", {
         vm: this,
-        reservationId: this.reservationId,
-        serviceId: serviceId
+        id: id
       });
     },
     makeToast: function makeToast(title, message) {
@@ -73457,6 +73460,12 @@ var render = function() {
             }
           },
           {
+            key: "cell(comments)",
+            fn: function(row) {
+              return [_vm._v(_vm._s(_vm.service(row.item.service_id).comments))]
+            }
+          },
+          {
             key: "cell(description)",
             fn: function(row) {
               return [
@@ -73485,7 +73494,7 @@ var render = function() {
                     },
                     on: {
                       click: function($event) {
-                        return _vm.deleteService(row.item.service_id)
+                        return _vm.deleteService(row.item.id)
                       }
                     }
                   },
@@ -97893,7 +97902,7 @@ __webpack_require__.r(__webpack_exports__);
         vm.makeToast("Error", "Something went wrong.", 'danger');
       });
     },
-    deleteBilledService: function deleteBilledService(context, _ref2) {
+    "delete": function _delete(context, _ref2) {
       var vm = _ref2.vm,
           id = _ref2.id;
       axios.post("/billed-services/" + id, {
