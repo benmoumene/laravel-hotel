@@ -11,7 +11,7 @@
         ></b-pagination>
       </b-col>
       <b-col cols="6">
-        <router-link :to="{path: '/reservation/' + customer_id +'/new'}">
+        <router-link :to="{path: '/reservations/' + customer_id +'/new'}">
           <b-button class="float-right">New reservation</b-button>
         </router-link>
       </b-col>
@@ -32,10 +32,9 @@
           >{{ getRoomName(row.item.room_id) }}</router-link>
         </template>
         <template v-slot:cell(actions)="row">
-          <router-link :to="{path: '/reservation/' + row.item.id +'/show'}">
+          <router-link :to="{path: '/reservations/' + row.item.id +'/show'}">
             <b-button variant="info">Show</b-button>
           </router-link>
-          <b-button @click="cancelReservation(row.item)" variant="danger">Cancel</b-button>
         </template>
       </b-table>
     </b-row>
@@ -70,6 +69,12 @@ export default {
           sortable: true,
           class: "text-center"
         },
+        {
+          key: "status",
+          label: "Status",
+          sortable: true,
+          class: "text-center"
+        },
         { key: "actions", label: "Actions" }
       ],
       currentPage: 1,
@@ -77,9 +82,6 @@ export default {
     };
   },
   methods: {
-    cancelReservation(reservation) {
-      this.deleteReservation({ vm: this, reservation });
-    },
     makeToast(title, message, variant = "info") {
       this.$bvToast.toast(message, {
         title,
@@ -89,10 +91,7 @@ export default {
         toaster: "b-toaster-bottom-right",
         appendToast: true
       });
-    },
-    ...mapActions({
-      deleteReservation: "reservation/deleteReservation"
-    })
+    }
   },
   computed: {
     totalRows() {
@@ -104,5 +103,3 @@ export default {
   }
 };
 </script>
-<style scoped>
-</style>
