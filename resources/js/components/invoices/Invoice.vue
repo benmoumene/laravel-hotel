@@ -1,5 +1,6 @@
 <template>
-  <b-container fluid>
+  <b-container fluid v-if="!invoice">Loading...</b-container>
+  <b-container fluid v-else>
     <div id="invoice" class="invoice">
       <b-row class="header mb-3">
         <b-col cols="12">
@@ -98,8 +99,8 @@ import { mapState, mapGetters } from "vuex";
 export default {
   name: "Invoice",
   props: {
-    invoiceId: { type: Number, required: true },
-    readonly: { Type: Boolean, required: true }
+    id: { type: Number, required: false },
+    readonly: { Type: Boolean, required: false }
   },
   data: function() {
     return {
@@ -107,7 +108,12 @@ export default {
     };
   },
   methods: {
-    deleteBilledService(id) {},
+    deleteBilledService(id) {
+      this.$store.dispatch("billed_services/delete", {
+        vm: this,
+        id
+      });
+    },
     makeToast(title, message, variant = "info") {
       this.$bvToast.toast(message, {
         title,
@@ -132,15 +138,7 @@ export default {
       getRoom: "room/getRoom"
     }),
     invoice() {
-      if (typeof this.invoiceId === "undefined") {
-        this.invoiceId = parseInt(this.$route.params.id);
-      }
-
-      var invoice = this.getInvoice(this.invoiceId);
-      if (typeof invoice === "undefined") {
-        return "";
-      }
-      return invoice;
+      return this.getInvoice(this.id);
     },
     reservation() {
       var reservation = this.getReservation(this.invoice.reservation_id);

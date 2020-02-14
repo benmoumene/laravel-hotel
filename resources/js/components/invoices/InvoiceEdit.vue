@@ -1,7 +1,7 @@
 <template>
   <b-container fluid v-if="!invoice">Loading...</b-container>
   <b-container fluid v-else>
-    <invoice-info :invoiceId="getInvoiceId" :readonly="false" />
+    <invoice-info :id="invoiceId" :readonly="false" />
     <b-row class="mt-3 pull-right">
       <b-col>
         <b-button v-b-modal.invoice-pay-modal variant="success">Mark as paid</b-button>
@@ -30,7 +30,7 @@ import Invoice from "./Invoice";
 export default {
   name: "InvoiceEdit",
   props: {
-    invoiceId: { type: Number, required: false },
+    id: { type: Number, required: false },
     readonly: { Type: Boolean, required: false }
   },
   data: function() {
@@ -46,12 +46,6 @@ export default {
       printWindow.document.body.innerHTML = printDiv;
       printWindow.print();
       printWindow.close();
-    },
-    deleteBilledService(id) {
-      this.$store.dispatch("billed_services/deleteBilledService", {
-        vm: this,
-        id
-      });
     },
     markAsPaid() {
       this.invoice.status = "success";
@@ -78,65 +72,18 @@ export default {
     }
   },
   computed: {
-    ...mapState(["settings"]),
     ...mapGetters({
-      getService: "service/getService",
-      getCustomer: "customer/getCustomer",
-      getBilledServices: "billed_services/getBilledServices",
-      getReservation: "reservation/getReservation",
-      getGuestWithReservationId: "guest/getGuestWithReservationId",
-      getSettingValue: "getSettingValue",
-      getInvoice: "billing/getInvoice",
-      getRoom: "room/getRoom"
+      getInvoice: "billing/getInvoice"
     }),
-    getInvoiceId() {
-      if (this.reservationId) {
-        return this.reservationId;
+    invoiceId() {
+      if (this.id) {
+        return this.id;
       }
 
       return parseInt(this.$route.params.id);
     },
     invoice() {
-      return this.getInvoice(this.getInvoiceId);
-    },
-    reservation() {
-      var reservation = this.getReservation(this.invoice.reservation_id);
-
-      if (typeof reservation === "undefined") {
-        return "";
-      }
-      return reservation;
-    },
-    guest() {
-      var guest = this.getGuestWithReservationId(this.invoice.reservation_id);
-
-      if (typeof guest === "undefined") {
-        //return { id: 0, from_date: "", to_date: "" };
-        return "";
-      }
-      return guest;
-    },
-    customer() {
-      var customer = this.getCustomer(this.reservation.customer_id);
-      if (typeof customer === "undefined") {
-        //return { id: 0, from_date: "", to_date: "" };
-        return "";
-      }
-      return customer;
-    },
-    room() {
-      var room = this.getRoom(this.reservation.room_id);
-      if (typeof room === "undefined") {
-        return "";
-      }
-      return room;
-    },
-    billedServices() {
-      var services = this.getBilledServices(this.reservation.id);
-      if (typeof services === "undefined") {
-        return [];
-      }
-      return services;
+      return this.getInvoice(this.invoiceId);
     }
   },
   components: {

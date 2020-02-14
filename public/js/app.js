@@ -4037,17 +4037,18 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Invoice",
   props: {
-    invoiceId: {
+    id: {
       type: Number,
-      required: true
+      required: false
     },
     readonly: {
       Type: Boolean,
-      required: true
+      required: false
     }
   },
   data: function data() {
@@ -4058,7 +4059,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     };
   },
   methods: {
-    deleteBilledService: function deleteBilledService(id) {},
+    deleteBilledService: function deleteBilledService(id) {
+      this.$store.dispatch("billed_services/delete", {
+        vm: this,
+        id: id
+      });
+    },
     makeToast: function makeToast(title, message) {
       var variant = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "info";
       this.$bvToast.toast(message, {
@@ -4082,17 +4088,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     getRoom: "room/getRoom"
   }), {
     invoice: function invoice() {
-      if (typeof this.invoiceId === "undefined") {
-        this.invoiceId = parseInt(this.$route.params.id);
-      }
-
-      var invoice = this.getInvoice(this.invoiceId);
-
-      if (typeof invoice === "undefined") {
-        return "";
-      }
-
-      return invoice;
+      return this.getInvoice(this.id);
     },
     reservation: function reservation() {
       var reservation = this.getReservation(this.invoice.reservation_id);
@@ -4189,18 +4185,19 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "InvoiceEdit",
   props: {
-    invoiceId: {
+    id: {
       type: Number,
-      required: true
+      required: false
     },
     readonly: {
       Type: Boolean,
-      required: true
+      required: false
     }
   },
   data: function data() {
@@ -4218,12 +4215,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       printWindow.document.body.innerHTML = printDiv;
       printWindow.print();
       printWindow.close();
-    },
-    deleteBilledService: function deleteBilledService(id) {
-      this.$store.dispatch("billed_services/deleteBilledService", {
-        vm: this,
-        id: id
-      });
     },
     markAsPaid: function markAsPaid() {
       this.invoice.status = "success";
@@ -4250,75 +4241,18 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       });
     }
   },
-  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])(["settings"]), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])({
-    getService: "service/getService",
-    getCustomer: "customer/getCustomer",
-    getBilledServices: "billed_services/getBilledServices",
-    getReservation: "reservation/getReservation",
-    getGuestWithReservationId: "guest/getGuestWithReservationId",
-    getSettingValue: "getSettingValue",
-    getInvoice: "billing/getInvoice",
-    getRoom: "room/getRoom"
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])({
+    getInvoice: "billing/getInvoice"
   }), {
+    invoiceId: function invoiceId() {
+      if (this.id) {
+        return this.id;
+      }
+
+      return parseInt(this.$route.params.id);
+    },
     invoice: function invoice() {
-      if (typeof this.invoiceId === "undefined") {
-        this.invoiceId = parseInt(this.$route.params.id);
-      }
-
-      var invoice = this.getInvoice(this.invoiceId);
-
-      if (typeof invoice === "undefined") {
-        return "";
-      }
-
-      return invoice;
-    },
-    reservation: function reservation() {
-      var reservation = this.getReservation(this.invoice.reservation_id);
-
-      if (typeof reservation === "undefined") {
-        return "";
-      }
-
-      return reservation;
-    },
-    guest: function guest() {
-      var guest = this.getGuestWithReservationId(this.invoice.reservation_id);
-
-      if (typeof guest === "undefined") {
-        //return { id: 0, from_date: "", to_date: "" };
-        return "";
-      }
-
-      return guest;
-    },
-    customer: function customer() {
-      var customer = this.getCustomer(this.reservation.customer_id);
-
-      if (typeof customer === "undefined") {
-        //return { id: 0, from_date: "", to_date: "" };
-        return "";
-      }
-
-      return customer;
-    },
-    room: function room() {
-      var room = this.getRoom(this.reservation.room_id);
-
-      if (typeof room === "undefined") {
-        return "";
-      }
-
-      return room;
-    },
-    billedServices: function billedServices() {
-      var services = this.getBilledServices(this.reservation.id);
-
-      if (typeof services === "undefined") {
-        return [];
-      }
-
-      return services;
+      return this.getInvoice(this.invoiceId);
     }
   }),
   components: {
@@ -4794,7 +4728,7 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 /* harmony import */ var _rooms_Room__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../rooms/Room */ "./resources/js/components/rooms/Room.vue");
-/* harmony import */ var _invoices_Invoice__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../invoices/Invoice */ "./resources/js/components/invoices/Invoice.vue");
+/* harmony import */ var _invoices_InvoiceEdit__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../invoices/InvoiceEdit */ "./resources/js/components/invoices/InvoiceEdit.vue");
 /* harmony import */ var _billed_services_BilledServiceAdd__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../billed-services/BilledServiceAdd */ "./resources/js/components/billed-services/BilledServiceAdd.vue");
 /* harmony import */ var _billed_services_BilledServices__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../billed-services/BilledServices */ "./resources/js/components/billed-services/BilledServices.vue");
 /* harmony import */ var _ReservationEdit__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./ReservationEdit */ "./resources/js/components/reservations/ReservationEdit.vue");
@@ -5143,7 +5077,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   components: {
     "room-info": _rooms_Room__WEBPACK_IMPORTED_MODULE_1__["default"],
     "customer-info": _customers_Customer__WEBPACK_IMPORTED_MODULE_6__["default"],
-    "invoice-info": _invoices_Invoice__WEBPACK_IMPORTED_MODULE_2__["default"],
+    "invoice-edit": _invoices_InvoiceEdit__WEBPACK_IMPORTED_MODULE_2__["default"],
     "billed-service-add": _billed_services_BilledServiceAdd__WEBPACK_IMPORTED_MODULE_3__["default"],
     "billed-services": _billed_services_BilledServices__WEBPACK_IMPORTED_MODULE_4__["default"],
     reservation: _ReservationEdit__WEBPACK_IMPORTED_MODULE_5__["default"]
@@ -75282,213 +75216,227 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("b-container", { attrs: { fluid: "" } }, [
-    _c(
-      "div",
-      { staticClass: "invoice", attrs: { id: "invoice" } },
-      [
+  return !_vm.invoice
+    ? _c("b-container", { attrs: { fluid: "" } }, [_vm._v("Loading...")])
+    : _c("b-container", { attrs: { fluid: "" } }, [
         _c(
-          "b-row",
-          { staticClass: "header mb-3" },
-          [
-            _c("b-col", { attrs: { cols: "12" } }, [
-              _c("strong", [_vm._v(_vm._s(_vm.getSettingValue("hotel_name")))])
-            ]),
-            _vm._v(" "),
-            _c("b-col", { attrs: { cols: "12" } }, [
-              _vm._v(_vm._s(_vm.getSettingValue("hotel_address")))
-            ]),
-            _vm._v(" "),
-            _c("b-col", { attrs: { cols: "12" } }, [
-              _vm._v(_vm._s(_vm.getSettingValue("hotel_phone")))
-            ])
-          ],
-          1
-        ),
-        _vm._v(" "),
-        _c(
-          "b-row",
-          { staticClass: "mb-3" },
+          "div",
+          { staticClass: "invoice", attrs: { id: "invoice" } },
           [
             _c(
-              "b-col",
+              "b-row",
+              { staticClass: "header mb-3" },
               [
-                _c("strong", [_vm._v("Invoice #")]),
-                _vm._v("\n        " + _vm._s(_vm.invoice.id) + "\n        "),
+                _c("b-col", { attrs: { cols: "12" } }, [
+                  _c("strong", [
+                    _vm._v(_vm._s(_vm.getSettingValue("hotel_name")))
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("b-col", { attrs: { cols: "12" } }, [
+                  _vm._v(_vm._s(_vm.getSettingValue("hotel_address")))
+                ]),
+                _vm._v(" "),
+                _c("b-col", { attrs: { cols: "12" } }, [
+                  _vm._v(_vm._s(_vm.getSettingValue("hotel_phone")))
+                ])
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c(
+              "b-row",
+              { staticClass: "mb-3" },
+              [
                 _c(
-                  "b-badge",
-                  {
-                    attrs: {
-                      variant:
-                        _vm.invoice.status == "paid" ? "success" : "danger"
-                    }
-                  },
-                  [_vm._v(_vm._s(_vm.invoice.status))]
+                  "b-col",
+                  [
+                    _c("strong", [_vm._v("Invoice #")]),
+                    _vm._v(
+                      "\n        " + _vm._s(_vm.invoice.id) + "\n        "
+                    ),
+                    _c(
+                      "b-badge",
+                      {
+                        attrs: {
+                          variant:
+                            _vm.invoice.status == "paid" ? "success" : "danger"
+                        }
+                      },
+                      [_vm._v(_vm._s(_vm.invoice.status))]
+                    )
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c("b-col", [
+                  _c("strong", [_vm._v("Date")]),
+                  _vm._v(
+                    "\n        " + _vm._s(_vm.invoice.generated_on) + "\n      "
+                  )
+                ])
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c(
+              "b-row",
+              { staticClass: "mb-3" },
+              [
+                _c("b-col", { attrs: { cols: "12" } }, [
+                  _c("strong", [_vm._v("Customer")])
+                ]),
+                _vm._v(" "),
+                _c("b-col", { attrs: { cols: "12" } }, [
+                  _c("strong", [_vm._v("Name")]),
+                  _vm._v(
+                    "\n        " +
+                      _vm._s(_vm.customer.first_name) +
+                      "\n        " +
+                      _vm._s(_vm.customer.last_name) +
+                      "\n      "
+                  )
+                ]),
+                _vm._v(" "),
+                _c("b-col", { attrs: { cols: "6" } }, [
+                  _c("strong", [_vm._v("Phone")]),
+                  _vm._v("\n        " + _vm._s(_vm.customer.phone) + "\n      ")
+                ]),
+                _vm._v(" "),
+                _c("b-col", { attrs: { cols: "6" } }, [
+                  _c("strong", [_vm._v("Address")]),
+                  _vm._v(
+                    "\n        " + _vm._s(_vm.customer.address) + "\n      "
+                  )
+                ])
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c(
+              "b-row",
+              { staticClass: "mb-3" },
+              [
+                _c("b-col", { attrs: { cols: "12" } }, [
+                  _c("strong", [_vm._v("Reservation")])
+                ]),
+                _vm._v(" "),
+                _c("b-col", { attrs: { cols: "6" } }, [
+                  _c("strong", [_vm._v("From")]),
+                  _vm._v(
+                    "\n        " +
+                      _vm._s(_vm.reservation.from_date) +
+                      "\n      "
+                  )
+                ]),
+                _vm._v(" "),
+                _c("b-col", { attrs: { cols: "6" } }, [
+                  _c("strong", [_vm._v("To")]),
+                  _vm._v(
+                    "\n        " + _vm._s(_vm.reservation.to_date) + "\n      "
+                  )
+                ]),
+                _vm._v(" "),
+                _c("b-col", { attrs: { cols: "6" } }, [
+                  _c("strong", [_vm._v("Arrival")]),
+                  _vm._v("\n        " + _vm._s(_vm.guest.check_in) + "\n      ")
+                ]),
+                _vm._v(" "),
+                _c("b-col", { attrs: { cols: "6" } }, [
+                  _c("strong", [_vm._v("Left")]),
+                  _vm._v(
+                    "\n        " + _vm._s(_vm.guest.check_out) + "\n      "
+                  )
+                ]),
+                _vm._v(" "),
+                _c("b-col", { attrs: { cols: "6" } }, [
+                  _c("strong", [_vm._v("Room")]),
+                  _vm._v("\n        " + _vm._s(_vm.room.name) + "\n      ")
+                ])
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c(
+              "b-row",
+              { staticClass: "mb-3" },
+              [
+                _c("b-col", { attrs: { cols: "12" } }, [
+                  _c("strong", [_vm._v("Billed Services")])
+                ]),
+                _vm._v(" "),
+                _c(
+                  "b-col",
+                  { attrs: { cols: "12" } },
+                  _vm._l(_vm.billedServices, function(billed_service) {
+                    return _c(
+                      "b-row",
+                      { key: billed_service.id },
+                      [
+                        _c(
+                          "b-col",
+                          [
+                            _c(
+                              "b-link",
+                              {
+                                on: {
+                                  click: function($event) {
+                                    return _vm.deleteBilledService(
+                                      billed_service.id
+                                    )
+                                  }
+                                }
+                              },
+                              [_c("i", { staticClass: "fas fa-trash" })]
+                            ),
+                            _vm._v(
+                              "\n            " +
+                                _vm._s(
+                                  _vm.getService(billed_service.service_id).name
+                                ) +
+                                "\n          "
+                            )
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c("b-col", [
+                          _vm._v(
+                            _vm._s(
+                              _vm.getService(billed_service.service_id).cost
+                            )
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("b-col", [_vm._v(_vm._s(billed_service.billed_on))])
+                      ],
+                      1
+                    )
+                  }),
+                  1
                 )
               ],
               1
             ),
             _vm._v(" "),
-            _c("b-col", [
-              _c("strong", [_vm._v("Date")]),
-              _vm._v(
-                "\n        " + _vm._s(_vm.invoice.generated_on) + "\n      "
-              )
-            ])
-          ],
-          1
-        ),
-        _vm._v(" "),
-        _c(
-          "b-row",
-          { staticClass: "mb-3" },
-          [
-            _c("b-col", { attrs: { cols: "12" } }, [
-              _c("strong", [_vm._v("Customer")])
-            ]),
-            _vm._v(" "),
-            _c("b-col", { attrs: { cols: "12" } }, [
-              _c("strong", [_vm._v("Name")]),
-              _vm._v(
-                "\n        " +
-                  _vm._s(_vm.customer.first_name) +
-                  "\n        " +
-                  _vm._s(_vm.customer.last_name) +
-                  "\n      "
-              )
-            ]),
-            _vm._v(" "),
-            _c("b-col", { attrs: { cols: "6" } }, [
-              _c("strong", [_vm._v("Phone")]),
-              _vm._v("\n        " + _vm._s(_vm.customer.phone) + "\n      ")
-            ]),
-            _vm._v(" "),
-            _c("b-col", { attrs: { cols: "6" } }, [
-              _c("strong", [_vm._v("Address")]),
-              _vm._v("\n        " + _vm._s(_vm.customer.address) + "\n      ")
-            ])
-          ],
-          1
-        ),
-        _vm._v(" "),
-        _c(
-          "b-row",
-          { staticClass: "mb-3" },
-          [
-            _c("b-col", { attrs: { cols: "12" } }, [
-              _c("strong", [_vm._v("Reservation")])
-            ]),
-            _vm._v(" "),
-            _c("b-col", { attrs: { cols: "6" } }, [
-              _c("strong", [_vm._v("From")]),
-              _vm._v(
-                "\n        " + _vm._s(_vm.reservation.from_date) + "\n      "
-              )
-            ]),
-            _vm._v(" "),
-            _c("b-col", { attrs: { cols: "6" } }, [
-              _c("strong", [_vm._v("To")]),
-              _vm._v(
-                "\n        " + _vm._s(_vm.reservation.to_date) + "\n      "
-              )
-            ]),
-            _vm._v(" "),
-            _c("b-col", { attrs: { cols: "6" } }, [
-              _c("strong", [_vm._v("Arrival")]),
-              _vm._v("\n        " + _vm._s(_vm.guest.check_in) + "\n      ")
-            ]),
-            _vm._v(" "),
-            _c("b-col", { attrs: { cols: "6" } }, [
-              _c("strong", [_vm._v("Left")]),
-              _vm._v("\n        " + _vm._s(_vm.guest.check_out) + "\n      ")
-            ]),
-            _vm._v(" "),
-            _c("b-col", { attrs: { cols: "6" } }, [
-              _c("strong", [_vm._v("Room")]),
-              _vm._v("\n        " + _vm._s(_vm.room.name) + "\n      ")
-            ])
-          ],
-          1
-        ),
-        _vm._v(" "),
-        _c(
-          "b-row",
-          { staticClass: "mb-3" },
-          [
-            _c("b-col", { attrs: { cols: "12" } }, [
-              _c("strong", [_vm._v("Billed Services")])
-            ]),
-            _vm._v(" "),
             _c(
-              "b-col",
-              { attrs: { cols: "12" } },
-              _vm._l(_vm.billedServices, function(billed_service) {
-                return _c(
-                  "b-row",
-                  { key: billed_service.id },
-                  [
-                    _c(
-                      "b-col",
-                      [
-                        _c(
-                          "b-link",
-                          {
-                            on: {
-                              click: function($event) {
-                                return _vm.deleteBilledService(
-                                  billed_service.id
-                                )
-                              }
-                            }
-                          },
-                          [_c("i", { staticClass: "fas fa-trash" })]
-                        ),
-                        _vm._v(
-                          "\n            " +
-                            _vm._s(
-                              _vm.getService(billed_service.service_id).name
-                            ) +
-                            "\n          "
-                        )
-                      ],
-                      1
-                    ),
-                    _vm._v(" "),
-                    _c("b-col", [
-                      _vm._v(
-                        _vm._s(_vm.getService(billed_service.service_id).cost)
-                      )
-                    ]),
-                    _vm._v(" "),
-                    _c("b-col", [_vm._v(_vm._s(billed_service.billed_on))])
-                  ],
-                  1
-                )
-              }),
+              "b-row",
+              { staticClass: "mb-3" },
+              [
+                _c("b-col", { attrs: { cols: "12" } }, [
+                  _c("strong", [_vm._v("Total")])
+                ]),
+                _vm._v(" "),
+                _c("b-col", { attrs: { cols: "12" } }, [
+                  _vm._v("Due amount: " + _vm._s(_vm.invoice.total))
+                ])
+              ],
               1
             )
           ],
           1
-        ),
-        _vm._v(" "),
-        _c(
-          "b-row",
-          { staticClass: "mb-3" },
-          [
-            _c("b-col", { attrs: { cols: "12" } }, [
-              _c("strong", [_vm._v("Total")])
-            ]),
-            _vm._v(" "),
-            _c("b-col", { attrs: { cols: "12" } }, [
-              _vm._v("Due amount: " + _vm._s(_vm.invoice.total))
-            ])
-          ],
-          1
         )
-      ],
-      1
-    )
-  ])
+      ])
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -75512,123 +75460,126 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "b-container",
-    { attrs: { fluid: "" } },
-    [
-      _c("invoice-info", {
-        attrs: { invoiceId: _vm.invoiceId, readonly: false }
-      }),
-      _vm._v(" "),
-      _c(
-        "b-row",
-        { staticClass: "mt-3 pull-right" },
+  return !_vm.invoice
+    ? _c("b-container", { attrs: { fluid: "" } }, [_vm._v("Loading...")])
+    : _c(
+        "b-container",
+        { attrs: { fluid: "" } },
         [
+          _c("invoice-info", { attrs: { id: _vm.invoiceId, readonly: false } }),
+          _vm._v(" "),
           _c(
-            "b-col",
+            "b-row",
+            { staticClass: "mt-3 pull-right" },
             [
               _c(
-                "b-button",
-                {
-                  directives: [
+                "b-col",
+                [
+                  _c(
+                    "b-button",
                     {
-                      name: "b-modal",
-                      rawName: "v-b-modal.invoice-pay-modal",
-                      modifiers: { "invoice-pay-modal": true }
-                    }
-                  ],
-                  attrs: { variant: "success" }
-                },
-                [_vm._v("Mark as paid")]
-              ),
-              _vm._v(" "),
-              _c(
-                "b-button",
+                      directives: [
+                        {
+                          name: "b-modal",
+                          rawName: "v-b-modal.invoice-pay-modal",
+                          modifiers: { "invoice-pay-modal": true }
+                        }
+                      ],
+                      attrs: { variant: "success" }
+                    },
+                    [_vm._v("Mark as paid")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "b-button",
+                    {
+                      attrs: { variant: "success" },
+                      on: { click: _vm.recalculate }
+                    },
+                    [_vm._v("Recalculate")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "b-button",
+                    {
+                      attrs: { variant: "secondary" },
+                      on: { click: _vm.print }
+                    },
+                    [_vm._v("PRINT")]
+                  )
+                ],
+                1
+              )
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "b-modal",
+            {
+              attrs: {
+                id: "invoice-pay-modal",
+                size: "md",
+                centered: "",
+                title: "Payment Info"
+              },
+              scopedSlots: _vm._u([
                 {
-                  attrs: { variant: "success" },
-                  on: { click: _vm.recalculate }
-                },
-                [_vm._v("Recalculate")]
-              ),
-              _vm._v(" "),
+                  key: "modal-footer",
+                  fn: function() {
+                    return [
+                      _c(
+                        "b-button",
+                        {
+                          staticClass: "float-right",
+                          attrs: { variant: "success" },
+                          on: { click: _vm.markAsPaid }
+                        },
+                        [_vm._v("Mark as paid")]
+                      )
+                    ]
+                  },
+                  proxy: true
+                }
+              ])
+            },
+            [
               _c(
-                "b-button",
-                { attrs: { variant: "secondary" }, on: { click: _vm.print } },
-                [_vm._v("PRINT")]
+                "b-form-group",
+                {
+                  attrs: {
+                    "label-cols": "12",
+                    "label-cols-sm": "4",
+                    label: "Payment Method"
+                  }
+                },
+                [
+                  _c("b-form-select", {
+                    attrs: {
+                      cols: "12",
+                      options: {
+                        "": "Please select an option",
+                        cash: "Cash",
+                        credit_card: "Credit Card"
+                      }
+                    },
+                    model: {
+                      value: _vm.invoice.payment_method,
+                      callback: function($$v) {
+                        _vm.$set(_vm.invoice, "payment_method", $$v)
+                      },
+                      expression: "invoice.payment_method"
+                    }
+                  })
+                ],
+                1
               )
             ],
             1
           )
         ],
         1
-      ),
-      _vm._v(" "),
-      _c(
-        "b-modal",
-        {
-          attrs: {
-            id: "invoice-pay-modal",
-            size: "md",
-            centered: "",
-            title: "Payment Info"
-          },
-          scopedSlots: _vm._u([
-            {
-              key: "modal-footer",
-              fn: function() {
-                return [
-                  _c(
-                    "b-button",
-                    {
-                      staticClass: "float-right",
-                      attrs: { variant: "success" },
-                      on: { click: _vm.markAsPaid }
-                    },
-                    [_vm._v("Mark as paid")]
-                  )
-                ]
-              },
-              proxy: true
-            }
-          ])
-        },
-        [
-          _c(
-            "b-form-group",
-            {
-              attrs: {
-                "label-cols": "12",
-                "label-cols-sm": "4",
-                label: "Payment Method"
-              }
-            },
-            [
-              _c("b-form-select", {
-                attrs: {
-                  cols: "12",
-                  options: {
-                    "": "Please select an option",
-                    cash: "Cash",
-                    credit_card: "Credit Card"
-                  }
-                },
-                model: {
-                  value: _vm.invoice.payment_method,
-                  callback: function($$v) {
-                    _vm.$set(_vm.invoice, "payment_method", $$v)
-                  },
-                  expression: "invoice.payment_method"
-                }
-              })
-            ],
-            1
-          )
-        ],
-        1
       )
-    ],
-    1
-  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -75841,7 +75792,9 @@ var render = function() {
                 _c(
                   "router-link",
                   {
-                    attrs: { to: { path: "/billing/" + row.item.id + "/edit" } }
+                    attrs: {
+                      to: { path: "/invoices/" + row.item.id + "/edit" }
+                    }
                   },
                   [
                     _c("b-button", { attrs: { variant: "info", size: "sm" } }, [
@@ -76555,7 +76508,7 @@ var render = function() {
                     attrs: { title: "Invoice", size: "sm", variant: "success" },
                     on: {
                       click: function($event) {
-                        return _vm.invoiceInfo(item.id)
+                        return _vm.invoiceInfo(item.invoice.id)
                       }
                     }
                   },
@@ -76658,11 +76611,7 @@ var render = function() {
             "hide-footer": ""
           }
         },
-        [
-          _c("invoice-info", {
-            attrs: { invoiceId: _vm.invoiceId, readonly: true }
-          })
-        ],
+        [_c("invoice-edit", { attrs: { id: _vm.invoiceId, readonly: true } })],
         1
       )
     ],

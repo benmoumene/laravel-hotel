@@ -148,7 +148,7 @@
       <billed-services :reservationId="reservationId" :readonly="true" />
     </b-modal>
     <b-modal id="invoice-modal" size="xl" centered title="Invoice Info" hide-footer>
-      <invoice-info :invoiceId="invoiceId" :readonly="true"></invoice-info>
+      <invoice-edit :id="invoiceId" :readonly="true" />
     </b-modal>
   </b-container>
 </template>
@@ -156,7 +156,7 @@
 // Implementar filtro de fechas por defecto en RESERVATION LIST.
 import { mapState, mapGetters } from "vuex";
 import Room from "../rooms/Room";
-import Invoice from "../invoices/Invoice";
+import InvoiceEdit from "../invoices/InvoiceEdit";
 import BilledServiceAdd from "../billed-services/BilledServiceAdd";
 import BilledServices from "../billed-services/BilledServices";
 import ReservationEdit from "./ReservationEdit";
@@ -315,7 +315,7 @@ export default {
   components: {
     "room-info": Room,
     "customer-info": Customer,
-    "invoice-info": Invoice,
+    "invoice-edit": InvoiceEdit,
     "billed-service-add": BilledServiceAdd,
     "billed-services": BilledServices,
     reservation: ReservationEdit
