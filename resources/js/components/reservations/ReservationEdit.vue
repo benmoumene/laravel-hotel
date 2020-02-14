@@ -1,7 +1,7 @@
 <template>
   <b-container fluid v-if="!onReady">Loading ...</b-container>
   <b-container fluid v-else>
-    <reservation-info :reservationId="reservationId" :readonly="false"></reservation-info>
+    <reservation-info :reservationId="getReservationId" :readonly="false"></reservation-info>
     <b-row class="mt-3 mb-3">
       <b-col class="text-right">
         <b-button @click="checkOut" variant="warning">Check Out</b-button>
@@ -15,10 +15,10 @@
 import { mapState, mapGetters } from "vuex";
 import Reservation from "./Reservation";
 export default {
-  name: "Reservation",
+  name: "ReservationEdit",
   props: {
-    reservationId: { type: Number, required: true },
-    readonly: { Type: Boolean, required: true }
+    reservationId: { type: Number, required: false },
+    readonly: { Type: Boolean, required: false }
   },
   methods: {
     makeToast(title, message, variant = "info") {
@@ -61,13 +61,21 @@ export default {
       getGuest: "guest/getGuestWithReservationId",
       getReservation: "reservation/getReservation"
     }),
+    getReservationId() {
+      // Comprobar si existe reservationId en props
+      if (this.reservationId) {
+        return this.reservationId;
+      }
+
+      return parseInt(this.$route.params.reservation_id);
+    },
     reservation() {
       // Comprobar si existe reservationId en props
       if (this.reservationId) {
         return this.getReservation(this.reservationId);
       }
-      this.reservationId = parseInt(this.$route.params.reservation_id);
-      return this.getReservation(this.reservationId);
+      let reservationId = parseInt(this.$route.params.reservation_id);
+      return this.getReservation(reservationId);
     }
   },
   components: {
