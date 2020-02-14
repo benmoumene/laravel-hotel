@@ -2,10 +2,10 @@
   <b-container fluid v-if="!invoice">Loading...</b-container>
   <b-container fluid v-else>
     <invoice-info :id="invoiceId" :readonly="false" />
-    <b-row class="mt-3 pull-right">
+    <b-row class="mt-3 text-right">
       <b-col>
-        <b-button v-b-modal.invoice-pay-modal variant="success">Mark as paid</b-button>
-        <b-button @click="recalculate" variant="success">Recalculate</b-button>
+        <b-button v-b-modal.invoice-pay-modal variant="primary">Mark as paid</b-button>
+        <b-button @click="recalculate" variant="primary">Recalculate</b-button>
         <b-button @click="print" variant="secondary">PRINT</b-button>
       </b-col>
     </b-row>
@@ -48,7 +48,7 @@ export default {
       printWindow.close();
     },
     markAsPaid() {
-      this.invoice.status = "success";
+      this.invoice.status = "paid";
       this.$store.dispatch("billing/payInvoice", {
         vm: this,
         invoice: this.invoice
@@ -91,9 +91,3 @@ export default {
   }
 };
 </script>
-<style scoped>
-.invoice {
-  border: 1px solid gray;
-  padding: 5px 15px;
-}
-</style>

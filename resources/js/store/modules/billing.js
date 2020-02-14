@@ -75,6 +75,8 @@ export default ({
                 invoice,
                 _method: "post"
             }).then(function (response) {
+                let newInvoice = response["data"]["invoice"];
+                invoice.total = newInvoice.total;
                 vm.makeToast("Invoice updated", 'The invoice has been updated.', 'success');
             }).catch(function (response) {
                 vm.makeToast("Invoice update error", ' The invoice cannot be updated', 'danger');
