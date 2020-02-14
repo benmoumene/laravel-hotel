@@ -1,6 +1,7 @@
 <template>
-  <b-container fluid>
-    <invoice-info :invoiceId="invoiceId" :readonly="false" />
+  <b-container fluid v-if="!invoice">Loading...</b-container>
+  <b-container fluid v-else>
+    <invoice-info :invoiceId="getInvoiceId" :readonly="false" />
     <b-row class="mt-3 pull-right">
       <b-col>
         <b-button v-b-modal.invoice-pay-modal variant="success">Mark as paid</b-button>
@@ -29,8 +30,8 @@ import Invoice from "./Invoice";
 export default {
   name: "InvoiceEdit",
   props: {
-    invoiceId: { type: Number, required: true },
-    readonly: { Type: Boolean, required: true }
+    invoiceId: { type: Number, required: false },
+    readonly: { Type: Boolean, required: false }
   },
   data: function() {
     return {
@@ -88,16 +89,15 @@ export default {
       getInvoice: "billing/getInvoice",
       getRoom: "room/getRoom"
     }),
-    invoice() {
-      if (typeof this.invoiceId === "undefined") {
-        this.invoiceId = parseInt(this.$route.params.id);
+    getInvoiceId() {
+      if (this.reservationId) {
+        return this.reservationId;
       }
 
-      var invoice = this.getInvoice(this.invoiceId);
-      if (typeof invoice === "undefined") {
-        return "";
-      }
-      return invoice;
+      return parseInt(this.$route.params.id);
+    },
+    invoice() {
+      return this.getInvoice(this.getInvoiceId);
     },
     reservation() {
       var reservation = this.getReservation(this.invoice.reservation_id);
