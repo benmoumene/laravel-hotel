@@ -5060,6 +5060,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       return state.reservation.reservations;
     }
   }), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])({
+    isCurrentGuest: "guest/isCurrentGuest",
     getCustomer: "customer/getCustomer",
     getRoom: "room/getRoom",
     getGuest: "guest/getGuest",
@@ -5099,6 +5100,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
       if (this.onStatus === "all") {
         return newArray;
+      }
+
+      if (this.filterOn.indexOf("current_guests") > -1) {
+        newArray = newArray.filter(function (reservation) {
+          return _this.isCurrentGuest(reservation.customer_id);
+        });
       }
 
       return newArray.filter(function (reservation) {

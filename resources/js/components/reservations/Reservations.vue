@@ -267,6 +267,7 @@ export default {
       reservations: state => state.reservation.reservations
     }),
     ...mapGetters({
+      isCurrentGuest: "guest/isCurrentGuest",
       getCustomer: "customer/getCustomer",
       getRoom: "room/getRoom",
       getGuest: "guest/getGuest",
@@ -284,6 +285,12 @@ export default {
 
       if (this.onStatus === "all") {
         return newArray;
+      }
+
+      if (this.filterOn.indexOf("current_guests") > -1) {
+        newArray = newArray.filter(reservation =>
+          this.isCurrentGuest(reservation.customer_id)
+        );
       }
 
       return newArray.filter(
