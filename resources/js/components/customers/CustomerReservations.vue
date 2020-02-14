@@ -28,7 +28,7 @@
         <!-- Al hacer click en room mostrar info de esta -->
         <template v-slot:cell(room_name)="row">
           <router-link
-            :to="{path: '/room/' + row.item.room_id }"
+            :to="{path: '/rooms/' + row.item.room_id + '/edit'}"
           >{{ getRoomName(row.item.room_id) }}</router-link>
         </template>
         <template v-slot:cell(actions)="row">

@@ -18,6 +18,7 @@ import Customers from '../components/customers/Customers.vue'
 
 import RoomRouter from '../components/rooms/RoomRouter.vue'
 import Rooms from '../components/rooms/Rooms.vue'
+import RoomEdit from '../components/rooms/RoomEdit.vue'
 
 import ReservationWizard from '../components/reservations/wizard/ReservationWizard.vue'
 import Reservations from '../components/reservations/Reservations.vue'
@@ -58,6 +59,10 @@ export default new VueRouter({
         {
           path: '',
           component: Rooms
+        },
+        {
+          path: ':id/edit',
+          component: RoomEdit
         },
       ]
     },
