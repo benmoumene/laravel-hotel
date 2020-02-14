@@ -19,6 +19,7 @@
     >
       <template v-slot:cell(name)="row">{{ service(row.item.service_id).name }}</template>
       <template v-slot:cell(cost)="row">{{ service(row.item.service_id).cost }}</template>
+      <template v-slot:cell(comments)="row">{{ service(row.item.service_id).comments }}</template>
       <template v-slot:cell(description)="row">{{ service(row.item.service_id).description }}</template>
 
       <template v-slot:cell(actions)="row">
@@ -51,8 +52,12 @@ export default {
           label: "Cost"
         },
         {
-          key: "description",
+          key: "comments",
           label: "Description"
+        },
+        {
+          key: "billed_on",
+          label: "Billed on"
         },
         { key: "actions", label: "Actions" }
       ],
