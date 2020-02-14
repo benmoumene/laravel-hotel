@@ -127,7 +127,7 @@
           title="Invoice"
           size="sm"
           variant="success"
-          @click="invoiceInfo(item.id)"
+          @click="invoiceInfo(item.invoice.id)"
         >
           <i class="nav-icon fa fa-file-invoice-dollar"></i>
         </b-button>
