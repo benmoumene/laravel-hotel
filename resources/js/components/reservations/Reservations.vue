@@ -143,8 +143,9 @@
     <b-modal id="reservation-modal" size="xl" centered title="Reservation Info" hide-footer>
       <reservation :reservationId="reservationId" :readonly="false" />
     </b-modal>
-    <b-modal id="billing-modal" size="xl" centered title="Billing Info" hide-footer>
-      <billed-info :reservationId="reservationId" :readonly="true" />
+    <b-modal id="billed-services-modal" size="xl" centered title="Billed Services" hide-footer>
+      <billed-service-add :reservationId="reservationId" :readonly="true" />
+      <billed-services :reservationId="reservationId" :readonly="true" />
     </b-modal>
     <b-modal id="invoice-modal" size="xl" centered title="Invoice Info" hide-footer>
       <invoice-info :invoiceId="invoiceId" :readonly="true"></invoice-info>
@@ -156,6 +157,7 @@
 import { mapState, mapGetters } from "vuex";
 import Room from "../rooms/Room";
 import Invoice from "../invoices/Invoice";
+import BilledServiceAdd from "../billed-services/BilledServiceAdd";
 import BilledServices from "../billed-services/BilledServices";
 import ReservationEdit from "./ReservationEdit";
 import Customer from "../customers/Customer";
@@ -227,7 +229,7 @@ export default {
     },
     billingInfo(reservation_id) {
       this.reservationId = reservation_id;
-      this.$bvModal.show("billing-modal");
+      this.$bvModal.show("billed-services-modal");
     },
     customerInfo(id) {
       this.customerId = id;
@@ -307,7 +309,8 @@ export default {
     "room-info": Room,
     "customer-info": Customer,
     "invoice-info": Invoice,
-    "billed-info": BilledServices,
+    "billed-service-add": BilledServiceAdd,
+    "billed-services": BilledServices,
     reservation: ReservationEdit
   }
 };

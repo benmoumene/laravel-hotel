@@ -2710,7 +2710,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
-/* harmony import */ var _BilledServiceAdd__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./BilledServiceAdd */ "./resources/js/components/billed-services/BilledServiceAdd.vue");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -2722,10 +2721,60 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "BilledServices",
+  data: function data() {
+    return {
+      fields: [{
+        key: "name",
+        label: "Service"
+      }, {
+        key: "cost",
+        label: "Cost"
+      }, {
+        key: "description",
+        label: "Description"
+      }, {
+        key: "actions",
+        label: "Actions"
+      }],
+      currentPage: 1,
+      perPage: 10
+    };
+  },
   props: {
     reservationId: {
       type: Number,
@@ -2736,11 +2785,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       required: true
     }
   },
-  data: function data() {
-    return {};
-  },
   methods: {
-    deleteBilledService: function deleteBilledService(id) {},
+    deleteService: function deleteService(serviceId) {
+      this.$store.dispatch("billed_service/delete", {
+        vm: this,
+        reservationId: this.reservationId,
+        serviceId: serviceId
+      });
+    },
     makeToast: function makeToast(title, message) {
       var variant = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "info";
       this.$bvToast.toast(message, {
@@ -2751,83 +2803,22 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         toaster: "b-toaster-bottom-right",
         appendToast: true
       });
+    },
+    service: function service(id) {
+      return this.getService(id);
     }
   },
-  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])(["settings"]), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])({
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])({
     getService: "service/getService",
-    getCustomer: "customer/getCustomer",
-    getBilledServices: "billed_services/getBilledServices",
-    getReservation: "reservation/getReservation",
-    getGuestWithReservationId: "guest/getGuestWithReservationId",
-    getSettingValue: "getSettingValue",
-    getInvoice: "billing/getInvoice",
-    getRoom: "room/getRoom"
+    getBilledServices: "billed_services/getBilledServices"
   }), {
-    invoice: function invoice() {
-      if (typeof this.invoiceId === "undefined") {
-        this.invoiceId = parseInt(this.$route.params.id);
-      }
-
-      var invoice = this.getInvoice(this.invoiceId);
-
-      if (typeof invoice === "undefined") {
-        return "";
-      }
-
-      return invoice;
-    },
-    reservation: function reservation() {
-      var reservation = this.getReservation(this.invoice.reservation_id);
-
-      if (typeof reservation === "undefined") {
-        return "";
-      }
-
-      return reservation;
-    },
-    guest: function guest() {
-      var guest = this.getGuestWithReservationId(this.invoice.reservation_id);
-
-      if (typeof guest === "undefined") {
-        //return { id: 0, from_date: "", to_date: "" };
-        return "";
-      }
-
-      return guest;
-    },
-    customer: function customer() {
-      var customer = this.getCustomer(this.reservation.customer_id);
-
-      if (typeof customer === "undefined") {
-        //return { id: 0, from_date: "", to_date: "" };
-        return "";
-      }
-
-      return customer;
-    },
-    room: function room() {
-      var room = this.getRoom(this.reservation.room_id);
-
-      if (typeof room === "undefined") {
-        return "";
-      }
-
-      return room;
-    },
     billedServices: function billedServices() {
-      var services = this.getBilledServices(this.reservation.id);
-
-      if (typeof services === "undefined") {
-        return [];
-      }
-
-      return services;
+      return this.getBilledServices(this.reservationId);
+    },
+    totalRows: function totalRows() {
+      return this.billedServices.length;
     }
-  }),
-  mounted: function mounted() {},
-  components: {
-    "billed-service-add": _BilledServiceAdd__WEBPACK_IMPORTED_MODULE_1__["default"]
-  }
+  })
 });
 
 /***/ }),
@@ -4795,15 +4786,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 /* harmony import */ var _rooms_Room__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../rooms/Room */ "./resources/js/components/rooms/Room.vue");
 /* harmony import */ var _invoices_Invoice__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../invoices/Invoice */ "./resources/js/components/invoices/Invoice.vue");
-/* harmony import */ var _billed_services_BilledServices__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../billed-services/BilledServices */ "./resources/js/components/billed-services/BilledServices.vue");
-/* harmony import */ var _ReservationEdit__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./ReservationEdit */ "./resources/js/components/reservations/ReservationEdit.vue");
-/* harmony import */ var _customers_Customer__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../customers/Customer */ "./resources/js/components/customers/Customer.vue");
+/* harmony import */ var _billed_services_BilledServiceAdd__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../billed-services/BilledServiceAdd */ "./resources/js/components/billed-services/BilledServiceAdd.vue");
+/* harmony import */ var _billed_services_BilledServices__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../billed-services/BilledServices */ "./resources/js/components/billed-services/BilledServices.vue");
+/* harmony import */ var _ReservationEdit__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./ReservationEdit */ "./resources/js/components/reservations/ReservationEdit.vue");
+/* harmony import */ var _customers_Customer__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../customers/Customer */ "./resources/js/components/customers/Customer.vue");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+//
 //
 //
 //
@@ -4964,6 +4957,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "ReservationList",
   data: function data() {
@@ -5027,7 +5021,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     billingInfo: function billingInfo(reservation_id) {
       this.reservationId = reservation_id;
-      this.$bvModal.show("billing-modal");
+      this.$bvModal.show("billed-services-modal");
     },
     customerInfo: function customerInfo(id) {
       this.customerId = id;
@@ -5132,10 +5126,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   }),
   components: {
     "room-info": _rooms_Room__WEBPACK_IMPORTED_MODULE_1__["default"],
-    "customer-info": _customers_Customer__WEBPACK_IMPORTED_MODULE_5__["default"],
+    "customer-info": _customers_Customer__WEBPACK_IMPORTED_MODULE_6__["default"],
     "invoice-info": _invoices_Invoice__WEBPACK_IMPORTED_MODULE_2__["default"],
-    "billed-info": _billed_services_BilledServices__WEBPACK_IMPORTED_MODULE_3__["default"],
-    reservation: _ReservationEdit__WEBPACK_IMPORTED_MODULE_4__["default"]
+    "billed-service-add": _billed_services_BilledServiceAdd__WEBPACK_IMPORTED_MODULE_3__["default"],
+    "billed-services": _billed_services_BilledServices__WEBPACK_IMPORTED_MODULE_4__["default"],
+    reservation: _ReservationEdit__WEBPACK_IMPORTED_MODULE_5__["default"]
   }
 });
 
@@ -73351,7 +73346,14 @@ var render = function() {
                       return _c(
                         "option",
                         { key: service.id, domProps: { value: service.id } },
-                        [_vm._v(_vm._s(service.name))]
+                        [
+                          _vm._v(
+                            _vm._s(service.name) +
+                              " - " +
+                              _vm._s(service.cost) +
+                              "$"
+                          )
+                        ]
                       )
                     }),
                     0
@@ -73407,10 +73409,86 @@ var render = function() {
     "b-container",
     { attrs: { fluid: "" } },
     [
-      _c("billed-service-add", {
-        attrs: { reservationId: _vm.reservationId, readonly: false }
+      _c("b-pagination", {
+        staticClass: "my-0",
+        attrs: {
+          "total-rows": _vm.totalRows,
+          "per-page": _vm.perPage,
+          align: "fill",
+          size: "sm"
+        },
+        model: {
+          value: _vm.currentPage,
+          callback: function($$v) {
+            _vm.currentPage = $$v
+          },
+          expression: "currentPage"
+        }
       }),
-      _vm._v("YOUR BILLED SERVICES:\n")
+      _vm._v(" "),
+      _c("b-table", {
+        attrs: {
+          "show-empty": "",
+          small: "",
+          stacked: "md",
+          items: _vm.billedServices,
+          fields: _vm.fields,
+          "current-page": _vm.currentPage,
+          "per-page": _vm.perPage
+        },
+        scopedSlots: _vm._u([
+          {
+            key: "cell(name)",
+            fn: function(row) {
+              return [_vm._v(_vm._s(_vm.service(row.item.service_id).name))]
+            }
+          },
+          {
+            key: "cell(cost)",
+            fn: function(row) {
+              return [_vm._v(_vm._s(_vm.service(row.item.service_id).cost))]
+            }
+          },
+          {
+            key: "cell(description)",
+            fn: function(row) {
+              return [
+                _vm._v(_vm._s(_vm.service(row.item.service_id).description))
+              ]
+            }
+          },
+          {
+            key: "cell(actions)",
+            fn: function(row) {
+              return [
+                _c(
+                  "b-button",
+                  {
+                    directives: [
+                      {
+                        name: "b-tooltip",
+                        rawName: "v-b-tooltip.hover",
+                        modifiers: { hover: true }
+                      }
+                    ],
+                    attrs: {
+                      title: "Remove this service",
+                      size: "sm",
+                      variant: "danger"
+                    },
+                    on: {
+                      click: function($event) {
+                        return _vm.deleteService(row.item.service_id)
+                      }
+                    }
+                  },
+                  [_c("i", { staticClass: "fa fa-trash" })]
+                )
+              ]
+            }
+          }
+        ])
+      })
     ],
     1
   )
@@ -76466,15 +76544,19 @@ var render = function() {
         "b-modal",
         {
           attrs: {
-            id: "billing-modal",
+            id: "billed-services-modal",
             size: "xl",
             centered: "",
-            title: "Billing Info",
+            title: "Billed Services",
             "hide-footer": ""
           }
         },
         [
-          _c("billed-info", {
+          _c("billed-service-add", {
+            attrs: { reservationId: _vm.reservationId, readonly: true }
+          }),
+          _vm._v(" "),
+          _c("billed-services", {
             attrs: { reservationId: _vm.reservationId, readonly: true }
           })
         ],
@@ -97776,6 +97858,9 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   mutations: {
+    ADD_SERVICE: function ADD_SERVICE(state, service) {
+      state.billedServices.push(service);
+    },
     SET_BILLED_SERVICES: function SET_BILLED_SERVICES(state, billed_services) {
       state.billedServices = billed_services;
     },
@@ -97794,7 +97879,8 @@ __webpack_require__.r(__webpack_exports__);
           reservation_id: reservationId
         }
       }).then(function (response) {
-        // commit    
+        var service = response["data"]["service"];
+        context.commit("ADD_SERVICE", service);
         vm.makeToast("Success", "Billed service has been add.", 'success');
       })["catch"](function (response) {
         vm.makeToast("Error", "Something went wrong.", 'danger');
