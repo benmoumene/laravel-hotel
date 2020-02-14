@@ -80,7 +80,7 @@
             v-b-tooltip.hover
             title="Customer details"
             size="sm"
-            variant="info"
+            variant="primary"
             @click="showCustomerInfo(row.item)"
           >
             <i class="fa fa-user"></i>
@@ -89,7 +89,7 @@
             v-b-tooltip.hover
             title="Customer reservations"
             size="sm"
-            variant="info"
+            variant="primary"
             @click="showReservations(row.item)"
           >
             <i class="fa fa-calendar-alt"></i>

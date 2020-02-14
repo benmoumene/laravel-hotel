@@ -90,7 +90,7 @@
           v-b-tooltip.hover
           title="Customer details"
           size="sm"
-          variant="info"
+          variant="primary"
           @click="customerInfo(item.customer.id)"
         >
           <i class="fa fa-user"></i>
@@ -99,7 +99,7 @@
           v-b-tooltip.hover
           title="Reservation details"
           size="sm"
-          variant="info"
+          variant="primary"
           @click="reservationInfo(item.id)"
         >
           <i class="fa fa-calendar-alt"></i>
@@ -108,7 +108,7 @@
           v-b-tooltip.hover
           title="Room details"
           size="sm"
-          variant="info"
+          variant="primary"
           @click="roomInfo(item.room_id)"
         >
           <i class="fa fa-bed"></i>
@@ -117,7 +117,7 @@
           v-b-tooltip.hover
           title="Services"
           size="sm"
-          variant="success"
+          variant="primary"
           @click="billingInfo(item.id)"
         >
           <i class="nav-icon fa fa-coffee"></i>
@@ -126,7 +126,7 @@
           v-b-tooltip.hover
           title="Invoice"
           size="sm"
-          variant="success"
+          variant="primary"
           @click="invoiceInfo(item.invoice.id)"
         >
           <i class="nav-icon fa fa-file-invoice-dollar"></i>

@@ -2917,9 +2917,25 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Customer",
+  data: function data() {
+    return {
+      documentIdOptions: {
+        national_id: "National Id",
+        passport: "Passport"
+      },
+      sexOptions: {
+        male: "Male",
+        female: "Female"
+      }
+    };
+  },
   props: {
     customerId: {
       type: Number,
@@ -2950,14 +2966,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-//
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -73604,20 +73612,12 @@ var render = function() {
         { attrs: { "label-cols": "12", "label-cols-sm": "4", label: "Sex" } },
         [
           _c("b-form-select", {
-            attrs: { cols: "12", sm: "2", disabled: _vm.readonly },
-            scopedSlots: _vm._u([
-              {
-                key: "first",
-                fn: function() {
-                  return [
-                    _c("option", { attrs: { readonly: _vm.readonly } }, [
-                      _vm._v(_vm._s(_vm.customer.sex))
-                    ])
-                  ]
-                },
-                proxy: true
-              }
-            ]),
+            attrs: {
+              cols: "12",
+              sm: "2",
+              options: _vm.sexOptions,
+              disabled: _vm.readonly
+            },
             model: {
               value: _vm.customer.sex,
               callback: function($$v) {
@@ -73647,20 +73647,12 @@ var render = function() {
             },
             [
               _c("b-form-select", {
-                attrs: { cols: "12", sm: "2", disabled: _vm.readonly },
-                scopedSlots: _vm._u([
-                  {
-                    key: "first",
-                    fn: function() {
-                      return [
-                        _c("option", { attrs: { readonly: _vm.readonly } }, [
-                          _vm._v(_vm._s(_vm.customer.document_id_type))
-                        ])
-                      ]
-                    },
-                    proxy: true
-                  }
-                ]),
+                attrs: {
+                  cols: "12",
+                  sm: "2",
+                  options: _vm.documentIdOptions,
+                  disabled: _vm.readonly
+                },
                 model: {
                   value: _vm.customer.document_id_type,
                   callback: function($$v) {
@@ -73857,17 +73849,6 @@ var render = function() {
               options: { male: "Male", female: "Female" },
               id: "inline-form-custom-select-pref"
             },
-            scopedSlots: _vm._u([
-              {
-                key: "first",
-                fn: function() {
-                  return [
-                    _c("option", { domProps: { value: null } }, [_vm._v("Sex")])
-                  ]
-                },
-                proxy: true
-              }
-            ]),
             model: {
               value: _vm.customer.sex,
               callback: function($$v) {
@@ -73903,19 +73884,6 @@ var render = function() {
                   value: null,
                   options: { national_id: "National Id", passport: "Passport" }
                 },
-                scopedSlots: _vm._u([
-                  {
-                    key: "first",
-                    fn: function() {
-                      return [
-                        _c("option", { domProps: { value: null } }, [
-                          _vm._v("Choose...")
-                        ])
-                      ]
-                    },
-                    proxy: true
-                  }
-                ]),
                 model: {
                   value: _vm.customer.document_id_type,
                   callback: function($$v) {
@@ -74543,7 +74511,7 @@ var render = function() {
                         attrs: {
                           title: "Customer details",
                           size: "sm",
-                          variant: "info"
+                          variant: "primary"
                         },
                         on: {
                           click: function($event) {
@@ -74567,7 +74535,7 @@ var render = function() {
                         attrs: {
                           title: "Customer reservations",
                           size: "sm",
-                          variant: "info"
+                          variant: "primary"
                         },
                         on: {
                           click: function($event) {
@@ -76383,7 +76351,7 @@ var render = function() {
                     attrs: {
                       title: "Customer details",
                       size: "sm",
-                      variant: "info"
+                      variant: "primary"
                     },
                     on: {
                       click: function($event) {
@@ -76407,7 +76375,7 @@ var render = function() {
                     attrs: {
                       title: "Reservation details",
                       size: "sm",
-                      variant: "info"
+                      variant: "primary"
                     },
                     on: {
                       click: function($event) {
@@ -76431,7 +76399,7 @@ var render = function() {
                     attrs: {
                       title: "Room details",
                       size: "sm",
-                      variant: "info"
+                      variant: "primary"
                     },
                     on: {
                       click: function($event) {
@@ -76455,7 +76423,7 @@ var render = function() {
                     attrs: {
                       title: "Services",
                       size: "sm",
-                      variant: "success"
+                      variant: "primary"
                     },
                     on: {
                       click: function($event) {
@@ -76476,7 +76444,7 @@ var render = function() {
                         modifiers: { hover: true }
                       }
                     ],
-                    attrs: { title: "Invoice", size: "sm", variant: "success" },
+                    attrs: { title: "Invoice", size: "sm", variant: "primary" },
                     on: {
                       click: function($event) {
                         return _vm.invoiceInfo(item.invoice.id)
