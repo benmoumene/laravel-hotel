@@ -8,7 +8,7 @@
               v-for="service in services"
               v-bind:key="service.id"
               v-bind:value="service.id"
-            >{{ service.name }}</option>
+            >{{ service.name }} - {{ service.cost }}$</option>
           </select>
         </b-form-group>
       </b-col>
