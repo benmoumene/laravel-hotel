@@ -62,7 +62,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      customerInvoices: "billing/getCustomerInvoices"
+      customerInvoices: "invoice/getCustomerInvoices"
     }),
     invoices() {
       return this.customerInvoices(this.customerId).filter(

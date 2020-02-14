@@ -49,13 +49,13 @@ export default {
     },
     markAsPaid() {
       this.invoice.status = "paid";
-      this.$store.dispatch("billing/payInvoice", {
+      this.$store.dispatch("invoice/payInvoice", {
         vm: this,
         invoice: this.invoice
       });
     },
     recalculate() {
-      this.$store.dispatch("billing/recalculateInvoice", {
+      this.$store.dispatch("invoice/recalculateInvoice", {
         vm: this,
         invoice: this.invoice
       });
@@ -73,7 +73,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      getInvoice: "billing/getInvoice"
+      getInvoice: "invoice/getInvoice"
     }),
     invoiceId() {
       if (this.id) {

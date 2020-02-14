@@ -128,9 +128,8 @@ export default {
     }
   },
   computed: {
-    //...mapState(["billing/invoices"]),
     ...mapState({
-      invoices: state => state.billing.invoices
+      invoices: state => state.invoice.invoices
     }),
     sortOptions() {
       // Create an options list from our fields

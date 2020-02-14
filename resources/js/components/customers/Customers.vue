@@ -211,8 +211,8 @@ export default {
     }),
     ...mapGetters({
       isCurrentGuest: "guest/isCurrentGuest",
-      customerInvoices: "billing/getCustomerInvoices",
-      hasPendingInvoices: "billing/hasPendingInvoices",
+      customerInvoices: "invoice/getCustomerInvoices",
+      hasPendingInvoices: "invoice/hasPendingInvoices",
       hasActiveReservation: "reservation/hasActiveReservation",
       getGuest: "guest/getGuestWithCustomerId",
       customerReservations: "reservation/getCustomerReservations"

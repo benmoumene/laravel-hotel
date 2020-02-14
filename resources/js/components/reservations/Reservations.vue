@@ -271,7 +271,7 @@ export default {
       getCustomer: "customer/getCustomer",
       getRoom: "room/getRoom",
       getGuest: "guest/getGuest",
-      getInvoice: "billing/getInvoiceFromReservation"
+      getInvoice: "invoice/getInvoiceFromReservation"
     }),
     filteredReservations() {
       let newArray = [];

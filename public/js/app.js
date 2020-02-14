@@ -1870,7 +1870,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "About",
   methods: {},
-  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])(["settings"]), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])(["getSettingValue"])),
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])({
+    settings: function settings(state) {
+      return state.setting.settings;
+    }
+  }), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])({
+    getSettingValue: "setting/getSettingValue"
+  })),
   components: {},
   mounted: function mounted() {}
 });
@@ -2210,7 +2216,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       return state.reservation.reservations;
     },
     invoices: function invoices(state) {
-      return state.billing.invoices;
+      return state.invoice.invoices;
     }
   }), {
     countMaintenanceRooms: function countMaintenanceRooms() {
@@ -2384,12 +2390,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   },
   methods: {
     updateProfile: function updateProfile() {
-      this.$store.dispatch("updateProfile", {
+      this.$store.dispatch("appuser/updateProfile", {
         vm: this
       });
     },
     updateAvatar: function updateAvatar() {
-      this.$store.dispatch("updateAvatar", {
+      this.$store.dispatch("appuser/updateAvatar", {
         vm: this,
         avatar: this.image
       });
@@ -2410,7 +2416,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       chooser.click();
     }
   },
-  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])(["appUser"]), {
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])({
+    appUser: function appUser(state) {
+      return state.appuser.appUser;
+    }
+  }), {
     avatarPath: function avatarPath() {
       return "/storage/" + this.appUser.avatar_filename;
     }
@@ -2556,7 +2566,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   },
   methods: {
     updateSetting: function updateSetting(setting) {
-      this.$store.dispatch("editSetting", {
+      this.$store.dispatch("setting/editSetting", {
         vm: this,
         setting: setting
       });
@@ -2578,7 +2588,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       });
     }
   },
-  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])(["settings"]), {
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])({
+    settings: function settings(state) {
+      return state.setting.settings;
+    }
+  }), {
     sortOptions: function sortOptions() {
       // Create an options list from our fields
       return this.fields.filter(function (f) {
@@ -2660,7 +2674,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   },
   methods: {
     add: function add() {
-      this.$store.dispatch("billed_services/add", {
+      this.$store.dispatch("billedservice/add", {
         vm: this,
         serviceId: this.serviceId,
         reservationId: this.reservationId
@@ -2685,11 +2699,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   }), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])({
     getService: "service/getService",
     getCustomer: "customer/getCustomer",
-    getBilledServices: "billed_services/getBilledServices",
+    getBilledServices: "billedservice/getBilledServices",
     getReservation: "reservation/getReservation",
     getGuestWithReservationId: "guest/getGuestWithReservationId",
-    getSettingValue: "getSettingValue",
-    getInvoice: "billing/getInvoice",
+    getSettingValue: "setting/getSettingValue",
+    getInvoice: "invoice/getInvoice",
     getRoom: "room/getRoom"
   }), {
     reservation: function reservation() {
@@ -2791,7 +2805,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   },
   methods: {
     deleteService: function deleteService(id) {
-      this.$store.dispatch("billed_services/delete", {
+      this.$store.dispatch("billedservice/delete", {
         vm: this,
         id: id
       });
@@ -2813,7 +2827,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   },
   computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])({
     getService: "service/getService",
-    getBilledServices: "billed_services/getBilledServices"
+    getBilledServices: "billedservice/getBilledServices"
   }), {
     billedServices: function billedServices() {
       return this.getBilledServices(this.reservationId);
@@ -3186,7 +3200,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     }
   },
   computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])({
-    customerInvoices: "billing/getCustomerInvoices"
+    customerInvoices: "invoice/getCustomerInvoices"
   }), {
     invoices: function invoices() {
       return this.customerInvoices(this.customerId).filter(function (invoice) {
@@ -3573,8 +3587,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     }
   }), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])({
     isCurrentGuest: "guest/isCurrentGuest",
-    customerInvoices: "billing/getCustomerInvoices",
-    hasPendingInvoices: "billing/hasPendingInvoices",
+    customerInvoices: "invoice/getCustomerInvoices",
+    hasPendingInvoices: "invoice/hasPendingInvoices",
     hasActiveReservation: "reservation/hasActiveReservation",
     getGuest: "guest/getGuestWithCustomerId",
     customerReservations: "reservation/getCustomerReservations"
@@ -4080,11 +4094,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])(["settings"]), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])({
     getService: "service/getService",
     getCustomer: "customer/getCustomer",
-    getBilledServices: "billed_services/getBilledServices",
+    getBilledServices: "billedservice/getBilledServices",
     getReservation: "reservation/getReservation",
     getGuestWithReservationId: "guest/getGuestWithReservationId",
-    getSettingValue: "getSettingValue",
-    getInvoice: "billing/getInvoice",
+    getSettingValue: "setting/getSettingValue",
+    getInvoice: "invoice/getInvoice",
     getRoom: "room/getRoom"
   }), {
     invoice: function invoice() {
@@ -4218,13 +4232,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     markAsPaid: function markAsPaid() {
       this.invoice.status = "paid";
-      this.$store.dispatch("billing/payInvoice", {
+      this.$store.dispatch("invoice/payInvoice", {
         vm: this,
         invoice: this.invoice
       });
     },
     recalculate: function recalculate() {
-      this.$store.dispatch("billing/recalculateInvoice", {
+      this.$store.dispatch("invoice/recalculateInvoice", {
         vm: this,
         invoice: this.invoice
       });
@@ -4242,7 +4256,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     }
   },
   computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])({
-    getInvoice: "billing/getInvoice"
+    getInvoice: "invoice/getInvoice"
   }), {
     invoiceId: function invoiceId() {
       if (this.id) {
@@ -4423,7 +4437,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   },
   computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])({
     invoices: function invoices(state) {
-      return state.billing.invoices;
+      return state.invoice.invoices;
     }
   }), {
     sortOptions: function sortOptions() {
@@ -5007,7 +5021,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     getCustomer: "customer/getCustomer",
     getRoom: "room/getRoom",
     getGuest: "guest/getGuest",
-    getInvoice: "billing/getInvoiceFromReservation"
+    getInvoice: "invoice/getInvoiceFromReservation"
   }), {
     filteredReservations: function filteredReservations() {
       var _this = this;
@@ -6430,9 +6444,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     }
   },
   computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])(["isAdmin", "isRecepcionist", "isManager"]), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])({
-    countPendingInvoices: "billing/countPendingInvoices",
-    getSetting: "getSettingValue"
-  }), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])(["appUser"]), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])({
+    isAdmin: "appuser/isAdmin",
+    isRecepcionist: "appuser/isRecepcionist",
+    isManager: "appuser/isManager",
+    countPendingInvoices: "invoice/countPendingInvoices",
+    getSetting: "setting/getSettingValue"
+  }), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])({
+    appUser: function appUser(state) {
+      return state.appuser.appUser;
+    },
     inventory: function inventory(state) {
       return state.inventory.items;
     },
@@ -97741,11 +97761,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_customer__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modules/customer */ "./resources/js/store/modules/customer.js");
 /* harmony import */ var _modules_reservation__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./modules/reservation */ "./resources/js/store/modules/reservation.js");
 /* harmony import */ var _modules_inventory__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./modules/inventory */ "./resources/js/store/modules/inventory.js");
-/* harmony import */ var _modules_billing__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./modules/billing */ "./resources/js/store/modules/billing.js");
+/* harmony import */ var _modules_invoice__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./modules/invoice */ "./resources/js/store/modules/invoice.js");
 /* harmony import */ var _modules_guest__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./modules/guest */ "./resources/js/store/modules/guest.js");
-/* harmony import */ var _modules_billed_services__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./modules/billed_services */ "./resources/js/store/modules/billed_services.js");
+/* harmony import */ var _modules_billed_service__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./modules/billed-service */ "./resources/js/store/modules/billed-service.js");
+/* harmony import */ var _modules_app_user__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./modules/app-user */ "./resources/js/store/modules/app-user.js");
+/* harmony import */ var _modules_setting__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./modules/setting */ "./resources/js/store/modules/setting.js");
 
  // Modules
+
+
 
 
 
@@ -97763,30 +97787,73 @@ vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_0__
     customer: _modules_customer__WEBPACK_IMPORTED_MODULE_4__["default"],
     inventory: _modules_inventory__WEBPACK_IMPORTED_MODULE_6__["default"],
     reservation: _modules_reservation__WEBPACK_IMPORTED_MODULE_5__["default"],
-    billing: _modules_billing__WEBPACK_IMPORTED_MODULE_7__["default"],
+    invoice: _modules_invoice__WEBPACK_IMPORTED_MODULE_7__["default"],
     guest: _modules_guest__WEBPACK_IMPORTED_MODULE_8__["default"],
-    billed_services: _modules_billed_services__WEBPACK_IMPORTED_MODULE_9__["default"]
+    billedservice: _modules_billed_service__WEBPACK_IMPORTED_MODULE_9__["default"],
+    setting: _modules_setting__WEBPACK_IMPORTED_MODULE_11__["default"],
+    appuser: _modules_app_user__WEBPACK_IMPORTED_MODULE_10__["default"]
   },
   state: {
-    // Datos de usuario y perfil
-    appUser: {
-      name: ""
-    },
-    settings: [],
     ready: false
   },
-  getters: {
-    getSettingValue: function getSettingValue(state, getters) {
-      return function (name) {
-        var setting = state.settings.find(function (setting) {
-          return setting.name === name;
-        });
+  getters: {},
+  mutations: {
+    SET_READY: function SET_READY(state, ready) {
+      state.ready = ready;
+    }
+  },
+  actions: {
+    // Este metodo realiza una peticion al backend y recibe los datos
+    // necesarios para inicializar la aplicacion
+    fetchData: function fetchData(context) {
+      axios.get("/hotel/fetch").then(function (response) {
+        // Si el request tuvo exito (codigo 200)
+        if (response.status == 200) {
+          var data = response["data"]; // Userdata
 
-        if (typeof setting !== "undefined") {
-          return setting.value;
+          context.commit("appuser/SET_USER", data["app_user"]); // Settings
+
+          context.commit("setting/SET_SETTINGS", data["settings"]); // Guests
+
+          context.commit("guest/SET_GUESTS", data["guests"]); // Customers
+
+          context.commit("customer/SET_CUSTOMERS", data["customers"]); // Services
+
+          context.commit("service/SET_SERVICES", data["services"]); // Billed Services
+
+          context.commit("billedservice/SET_BILLED_SERVICES", data["billed_services"]); // Reservations
+
+          context.commit("reservation/SET_RESERVATIONS", data["reservations"]); // Invoices
+
+          context.commit("invoice/SET_INVOICES", data["invoices"]); // Inventory
+
+          context.commit("inventory/SET_ITEMS", data["inventory"]); // Rooms
+
+          context.commit("room/SET_ROOMS", data["rooms"]);
+          context.commit("SET_READY", true);
         }
-      };
-    },
+      });
+    }
+  }
+}));
+
+/***/ }),
+
+/***/ "./resources/js/store/modules/app-user.js":
+/*!************************************************!*\
+  !*** ./resources/js/store/modules/app-user.js ***!
+  \************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ({
+  namespaced: true,
+  state: {
+    appUser: {}
+  },
+  getters: {
     isAdmin: function isAdmin(state, getters) {
       if (state.appUser.role === "admin") {
         return true;
@@ -97813,79 +97880,21 @@ vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_0__
     // Asigna el usuario de la app
     SET_USER: function SET_USER(state, user) {
       state.appUser = user;
-    },
-    // 
-    SET_SETTINGS: function SET_SETTINGS(state, settings) {
-      state.settings = settings;
-    },
-    SET_READY: function SET_READY(state, ready) {
-      state.ready = ready;
     }
   },
   actions: {
-    // Selecciona el usuario con el id indicado
-    selectClientById: function selectClientById(context, userId) {
-      var client = context.getters.getClientById(clientId); //context.commit("SET_SELECTED_USER", client);
-    },
-    // Este metodo realiza una peticion al backend y recibe los datos
-    // necesarios para inicializar la aplicacion
-    fetchData: function fetchData(context) {
-      axios.get("/hotel/fetch").then(function (response) {
-        // Si el request tuvo exito (codigo 200)
-        if (response.status == 200) {
-          var data = response["data"]; // Userdata
-
-          context.commit("SET_USER", data["app_user"]); // Settings
-
-          context.commit("SET_SETTINGS", data["settings"]); // Guests
-
-          context.commit("guest/SET_GUESTS", data["guests"]); // Customers
-
-          context.commit("customer/SET_CUSTOMERS", data["customers"]); // Services
-
-          context.commit("service/SET_SERVICES", data["services"]); // Billed Services
-
-          context.commit("billed_services/SET_BILLED_SERVICES", data["billed_services"]); // Reservations
-
-          context.commit("reservation/SET_RESERVATIONS", data["reservations"]); // Invoices
-
-          context.commit("billing/SET_INVOICES", data["invoices"]); // Inventory
-
-          context.commit("inventory/SET_ITEMS", data["inventory"]); // Rooms
-
-          context.commit("room/SET_ROOMS", data["rooms"]);
-          context.commit("SET_READY", true);
-        }
-      });
-    },
     logout: function logout(context) {
       axios.post("/logout")["catch"](function (error) {
         window.location.href = "/login";
       });
     },
-    editSetting: function editSetting(context, _ref) {
-      var vm = _ref.vm,
-          setting = _ref.setting;
-      axios.post("/settings/" + setting.id, {
-        setting: setting,
-        _method: "put"
-      }).then(function (response) {
-        // Si el request tuvo exito (codigo 200)
-        if (response.status == 200) {
-          // Agregamos una nueva conversacion si existe el objeto
-          if (response["data"].length == 0) {
-            return;
-          }
-
-          vm.makeToast("Setting updated", "The setting " + setting.name + " has been updated.", "success");
-        }
-      })["catch"](function (response) {
-        vm.makeToast("Error", "The setting cannot be updated!", "danger");
-      });
+    // Selecciona el usuario con el id indicado
+    selectClientById: function selectClientById(context, userId) {
+      var client = context.getters.getClientById(clientId); //context.commit("SET_SELECTED_USER", client);
     },
-    updateAvatar: function updateAvatar(context, _ref2) {
-      var vm = _ref2.vm,
-          avatar = _ref2.avatar;
+    updateAvatar: function updateAvatar(context, _ref) {
+      var vm = _ref.vm,
+          avatar = _ref.avatar;
       var userId = context.state.appUser.id;
       var fd = new FormData();
       fd.append("image", avatar);
@@ -97901,8 +97910,8 @@ vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_0__
         vm.makeToast("Avatar", "The avatar cannot be updated!", "danger");
       });
     },
-    updateProfile: function updateProfile(context, _ref3) {
-      var vm = _ref3.vm;
+    updateProfile: function updateProfile(context, _ref2) {
+      var vm = _ref2.vm;
       var userId = context.state.appUser.id;
       axios.post("/users/" + userId, {
         profile: context.state.appUser,
@@ -97917,14 +97926,14 @@ vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_0__
       });
     }
   }
-}));
+});
 
 /***/ }),
 
-/***/ "./resources/js/store/modules/billed_services.js":
-/*!*******************************************************!*\
-  !*** ./resources/js/store/modules/billed_services.js ***!
-  \*******************************************************/
+/***/ "./resources/js/store/modules/billed-service.js":
+/*!******************************************************!*\
+  !*** ./resources/js/store/modules/billed-service.js ***!
+  \******************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -97991,137 +98000,6 @@ __webpack_require__.r(__webpack_exports__);
         context.commit('REMOVE_SERVICE', index);
       })["catch"](function (response) {
         vm.makeToast("Billed service cannot be removed.", 'danger');
-      });
-    }
-  }
-});
-
-/***/ }),
-
-/***/ "./resources/js/store/modules/billing.js":
-/*!***********************************************!*\
-  !*** ./resources/js/store/modules/billing.js ***!
-  \***********************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ({
-  namespaced: true,
-  state: {
-    invoices: []
-  },
-  getters: {
-    getInvoiceById: function getInvoiceById(state, getters) {
-      return function (invoiceId) {
-        return state.invoices.find(function (invoice) {
-          return invoice.id === invoiceId;
-        });
-      };
-    },
-    getInvoiceIndex: function getInvoiceIndex(state, getters) {
-      return function (invoiceId) {
-        return state.invoices.findIndex(function (invoice) {
-          return invoice.id === invoiceId;
-        });
-      };
-    },
-    getInvoiceFromReservation: function getInvoiceFromReservation(state, getters) {
-      return function (reservationId) {
-        return state.invoices.find(function (invoice) {
-          return invoice.reservation_id === reservationId;
-        });
-      };
-    },
-    getInvoice: function getInvoice(state, getters) {
-      return function (invoiceId) {
-        return getters.getInvoiceById(invoiceId);
-      };
-    },
-    getCustomerInvoices: function getCustomerInvoices(state, getters) {
-      return function (customerId) {
-        return state.invoices.filter(function (invoice) {
-          return invoice.customer.id === customerId;
-        });
-      };
-    },
-    hasPendingInvoices: function hasPendingInvoices(state, getters) {
-      return function (customerId) {
-        var invoices = state.invoices.filter(function (invoice) {
-          return invoice.customer.id === customerId && invoice.status === 'pending';
-        });
-
-        if (invoices.length >= 1) {
-          return true;
-        }
-
-        return false;
-      };
-    },
-    countPendingInvoices: function countPendingInvoices(state, getters) {
-      return state.invoices.filter(function (invoice) {
-        return invoice.status === 'pending';
-      }).length;
-    }
-  },
-  mutations: {
-    SET_INVOICES: function SET_INVOICES(state, invoices) {
-      state.invoices = invoices;
-    },
-    REPLACE_INVOICE: function REPLACE_INVOICE(state, _ref) {
-      var invoiceIndex = _ref.invoiceIndex,
-          newInvoice = _ref.newInvoice;
-      Vue.set(state.invoices, invoiceIndex, newInvoice);
-    }
-  },
-  actions: {
-    replaceInvoiceById: function replaceInvoiceById(context, _ref2) {
-      var invoiceId = _ref2.invoiceId,
-          newInvoice = _ref2.newInvoice;
-      console.log(invoiceId);
-      console.log(newInvoice);
-      var invoiceIndex = context.getters.getInvoiceIndex(invoiceId);
-      context.commit("REPLACE_INVOICE", {
-        invoiceIndex: invoiceIndex,
-        newInvoice: newInvoice
-      });
-    },
-    generateInvoice: function generateInvoice(context, _ref3) {
-      var vm = _ref3.vm,
-          reservation = _ref3.reservation;
-      //axios.post("/invoices/" + reservation.id, {
-      axios.post("/reservations/" + reservation.id, {
-        reservation: reservation,
-        _method: "put"
-      }).then(function (response) {})["catch"](function (response) {});
-    },
-    // Marca una factura como pagada. (Status/Payment Method)
-    payInvoice: function payInvoice(context, _ref4) {
-      var vm = _ref4.vm,
-          invoice = _ref4.invoice;
-      axios.post("/invoices/" + invoice.id + "/pay", {
-        invoice: invoice,
-        _method: "put"
-      }).then(function (response) {
-        vm.makeToast("Invoice updated", 'The invoice has been paid.', 'success');
-      })["catch"](function (response) {
-        vm.makeToast("Invoice update error", ' The invoice cannot be paid', 'danger');
-      });
-    },
-    // Marca una factura como pagada. (Status/Payment Method)
-    recalculateInvoice: function recalculateInvoice(context, _ref5) {
-      var vm = _ref5.vm,
-          invoice = _ref5.invoice;
-      axios.post("/invoices/" + invoice.id + '/recalc', {
-        invoice: invoice,
-        _method: "post"
-      }).then(function (response) {
-        var newInvoice = response["data"]["invoice"];
-        invoice.total = newInvoice.total;
-        vm.makeToast("Invoice updated", 'The invoice has been updated.', 'success');
-      })["catch"](function (response) {
-        vm.makeToast("Invoice update error", ' The invoice cannot be updated', 'danger');
       });
     }
   }
@@ -98405,7 +98283,7 @@ __webpack_require__.r(__webpack_exports__);
             newStatus: newReservation.status
           });
           var newInvoice = response["data"]["invoice"];
-          vm.$store.dispatch("billing/replaceInvoiceById", {
+          vm.$store.dispatch("invoice/replaceInvoiceById", {
             invoiceId: newInvoice.id,
             newInvoice: newInvoice
           }); // Mostramos un mensaje
@@ -98485,6 +98363,135 @@ __webpack_require__.r(__webpack_exports__);
         }
       })["catch"](function (response) {
         vm.makeToast("Error", 'The item cannot be updated!!!', 'danger');
+      });
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./resources/js/store/modules/invoice.js":
+/*!***********************************************!*\
+  !*** ./resources/js/store/modules/invoice.js ***!
+  \***********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ({
+  namespaced: true,
+  state: {
+    invoices: []
+  },
+  getters: {
+    getInvoiceById: function getInvoiceById(state, getters) {
+      return function (invoiceId) {
+        return state.invoices.find(function (invoice) {
+          return invoice.id === invoiceId;
+        });
+      };
+    },
+    getInvoiceIndex: function getInvoiceIndex(state, getters) {
+      return function (invoiceId) {
+        return state.invoices.findIndex(function (invoice) {
+          return invoice.id === invoiceId;
+        });
+      };
+    },
+    getInvoiceFromReservation: function getInvoiceFromReservation(state, getters) {
+      return function (reservationId) {
+        return state.invoices.find(function (invoice) {
+          return invoice.reservation_id === reservationId;
+        });
+      };
+    },
+    getInvoice: function getInvoice(state, getters) {
+      return function (invoiceId) {
+        return getters.getInvoiceById(invoiceId);
+      };
+    },
+    getCustomerInvoices: function getCustomerInvoices(state, getters) {
+      return function (customerId) {
+        return state.invoices.filter(function (invoice) {
+          return invoice.customer.id === customerId;
+        });
+      };
+    },
+    hasPendingInvoices: function hasPendingInvoices(state, getters) {
+      return function (customerId) {
+        var invoices = state.invoices.filter(function (invoice) {
+          return invoice.customer.id === customerId && invoice.status === 'pending';
+        });
+
+        if (invoices.length >= 1) {
+          return true;
+        }
+
+        return false;
+      };
+    },
+    countPendingInvoices: function countPendingInvoices(state, getters) {
+      return state.invoices.filter(function (invoice) {
+        return invoice.status === 'pending';
+      }).length;
+    }
+  },
+  mutations: {
+    SET_INVOICES: function SET_INVOICES(state, invoices) {
+      state.invoices = invoices;
+    },
+    REPLACE_INVOICE: function REPLACE_INVOICE(state, _ref) {
+      var invoiceIndex = _ref.invoiceIndex,
+          newInvoice = _ref.newInvoice;
+      Vue.set(state.invoices, invoiceIndex, newInvoice);
+    }
+  },
+  actions: {
+    replaceInvoiceById: function replaceInvoiceById(context, _ref2) {
+      var invoiceId = _ref2.invoiceId,
+          newInvoice = _ref2.newInvoice;
+      var invoiceIndex = context.getters.getInvoiceIndex(invoiceId);
+      context.commit("REPLACE_INVOICE", {
+        invoiceIndex: invoiceIndex,
+        newInvoice: newInvoice
+      });
+    },
+    generateInvoice: function generateInvoice(context, _ref3) {
+      var vm = _ref3.vm,
+          reservation = _ref3.reservation;
+      //axios.post("/invoices/" + reservation.id, {
+      axios.post("/reservations/" + reservation.id, {
+        reservation: reservation,
+        _method: "put"
+      }).then(function (response) {})["catch"](function (response) {});
+    },
+    // Marca una factura como pagada. (Status/Payment Method)
+    payInvoice: function payInvoice(context, _ref4) {
+      var vm = _ref4.vm,
+          invoice = _ref4.invoice;
+      axios.post("/invoices/" + invoice.id + "/pay", {
+        invoice: invoice,
+        _method: "put"
+      }).then(function (response) {
+        vm.makeToast("Invoice updated", 'The invoice has been paid.', 'success');
+      })["catch"](function (response) {
+        vm.makeToast("Invoice update error", ' The invoice cannot be paid', 'danger');
+      });
+    },
+    // Marca una factura como pagada. (Status/Payment Method)
+    recalculateInvoice: function recalculateInvoice(context, _ref5) {
+      var vm = _ref5.vm,
+          invoice = _ref5.invoice;
+      axios.post("/invoices/" + invoice.id + '/recalc', {
+        invoice: invoice,
+        _method: "post"
+      }).then(function (response) {
+        var newInvoice = response["data"]["invoice"];
+        invoice.total = newInvoice.total;
+        vm.makeToast("Invoice updated", 'The invoice has been updated.', 'success');
+      })["catch"](function (response) {
+        vm.makeToast("Invoice update error", ' The invoice cannot be updated', 'danger');
       });
     }
   }
@@ -98790,6 +98797,64 @@ __webpack_require__.r(__webpack_exports__);
         }
       })["catch"](function (response) {
         vm.makeToast("Service error", 'The service cannot be updated.', 'danger');
+      });
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./resources/js/store/modules/setting.js":
+/*!***********************************************!*\
+  !*** ./resources/js/store/modules/setting.js ***!
+  \***********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ({
+  namespaced: true,
+  state: {
+    settings: []
+  },
+  getters: {
+    getSettingValue: function getSettingValue(state, getters) {
+      return function (name) {
+        var setting = state.settings.find(function (setting) {
+          return setting.name === name;
+        });
+
+        if (typeof setting !== "undefined") {
+          return setting.value;
+        }
+      };
+    }
+  },
+  mutations: {
+    SET_SETTINGS: function SET_SETTINGS(state, settings) {
+      state.settings = settings;
+    }
+  },
+  actions: {
+    editSetting: function editSetting(context, _ref) {
+      var vm = _ref.vm,
+          setting = _ref.setting;
+      axios.post("/settings/" + setting.id, {
+        setting: setting,
+        _method: "put"
+      }).then(function (response) {
+        // Si el request tuvo exito (codigo 200)
+        if (response.status == 200) {
+          // Agregamos una nueva conversacion si existe el objeto
+          if (response["data"].length == 0) {
+            return;
+          }
+
+          vm.makeToast("Setting updated", "The setting " + setting.name + " has been updated.", "success");
+        }
+      })["catch"](function (response) {
+        vm.makeToast("Error", "The setting cannot be updated!", "danger");
       });
     }
   }

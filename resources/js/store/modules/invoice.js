@@ -50,8 +50,6 @@ export default ({
     },
     actions: {
         replaceInvoiceById(context, { invoiceId, newInvoice }) {
-            console.log(invoiceId);
-            console.log(newInvoice);
             let invoiceIndex = context.getters.getInvoiceIndex(invoiceId);
             context.commit("REPLACE_INVOICE", {
                 invoiceIndex,

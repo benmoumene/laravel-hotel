@@ -157,7 +157,7 @@ export default ({
                     });
 
                     let newInvoice = response["data"]["invoice"];
-                    vm.$store.dispatch("billing/replaceInvoiceById", {
+                    vm.$store.dispatch("invoice/replaceInvoiceById", {
                         invoiceId: newInvoice.id,
                         newInvoice
                     });

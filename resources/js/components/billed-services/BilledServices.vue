@@ -71,7 +71,7 @@ export default {
   },
   methods: {
     deleteService(id) {
-      this.$store.dispatch("billed_services/delete", {
+      this.$store.dispatch("billedservice/delete", {
         vm: this,
         id
       });
@@ -93,7 +93,7 @@ export default {
   computed: {
     ...mapGetters({
       getService: "service/getService",
-      getBilledServices: "billed_services/getBilledServices"
+      getBilledServices: "billedservice/getBilledServices"
     }),
     billedServices() {
       return this.getBilledServices(this.reservationId);

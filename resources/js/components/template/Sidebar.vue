@@ -133,11 +133,14 @@ export default {
   computed: {
     ...mapGetters(["isAdmin", "isRecepcionist", "isManager"]),
     ...mapGetters({
-      countPendingInvoices: "billing/countPendingInvoices",
-      getSetting: "getSettingValue"
+      isAdmin: "appuser/isAdmin",
+      isRecepcionist: "appuser/isRecepcionist",
+      isManager: "appuser/isManager",
+      countPendingInvoices: "invoice/countPendingInvoices",
+      getSetting: "setting/getSettingValue"
     }),
-    ...mapState(["appUser"]),
     ...mapState({
+      appUser: state => state.appuser.appUser,
       inventory: state => state.inventory.items,
       isReady: state => state.ready
     }),
