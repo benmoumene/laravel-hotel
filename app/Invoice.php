@@ -12,6 +12,15 @@ class Invoice extends Model
         'laravel_through_key'
     ];
 
+    // Genera la factura
+    public function generate()
+    {
+        $this->status = "pending";
+        $this->total = $this->totalDue();
+        $this->generated_on = date("Y-m-d h:i:s");
+        $this->save();
+    }
+
     public function totalDue()
     {
         return $this->billedServices->sum('service.cost');

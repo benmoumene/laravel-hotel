@@ -98020,6 +98020,13 @@ __webpack_require__.r(__webpack_exports__);
         });
       };
     },
+    getInvoiceIndex: function getInvoiceIndex(state, getters) {
+      return function (invoiceId) {
+        return state.invoices.findIndex(function (invoice) {
+          return invoice.id === invoiceId;
+        });
+      };
+    },
     getInvoiceFromReservation: function getInvoiceFromReservation(state, getters) {
       return function (reservationId) {
         return state.invoices.find(function (invoice) {
@@ -98062,13 +98069,27 @@ __webpack_require__.r(__webpack_exports__);
     SET_INVOICES: function SET_INVOICES(state, invoices) {
       state.invoices = invoices;
     },
-    ADD_INVOICE: function ADD_INVOICE(state, invoice) {},
-    SET_INVOICE: function SET_INVOICE(state, invoice) {}
+    REPLACE_INVOICE: function REPLACE_INVOICE(state, _ref) {
+      var invoiceIndex = _ref.invoiceIndex,
+          newInvoice = _ref.newInvoice;
+      Vue.set(state.invoices, invoiceIndex, newInvoice);
+    }
   },
   actions: {
-    generateInvoice: function generateInvoice(context, _ref) {
-      var vm = _ref.vm,
-          reservation = _ref.reservation;
+    replaceInvoiceById: function replaceInvoiceById(context, _ref2) {
+      var invoiceId = _ref2.invoiceId,
+          newInvoice = _ref2.newInvoice;
+      console.log(invoiceId);
+      console.log(newInvoice);
+      var invoiceIndex = context.getters.getInvoiceIndex(invoiceId);
+      context.commit("REPLACE_INVOICE", {
+        invoiceIndex: invoiceIndex,
+        newInvoice: newInvoice
+      });
+    },
+    generateInvoice: function generateInvoice(context, _ref3) {
+      var vm = _ref3.vm,
+          reservation = _ref3.reservation;
       //axios.post("/invoices/" + reservation.id, {
       axios.post("/reservations/" + reservation.id, {
         reservation: reservation,
@@ -98076,9 +98097,9 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function (response) {})["catch"](function (response) {});
     },
     // Marca una factura como pagada. (Status/Payment Method)
-    payInvoice: function payInvoice(context, _ref2) {
-      var vm = _ref2.vm,
-          invoice = _ref2.invoice;
+    payInvoice: function payInvoice(context, _ref4) {
+      var vm = _ref4.vm,
+          invoice = _ref4.invoice;
       axios.post("/invoices/" + invoice.id + "/pay", {
         invoice: invoice,
         _method: "put"
@@ -98089,9 +98110,9 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     // Marca una factura como pagada. (Status/Payment Method)
-    recalculateInvoice: function recalculateInvoice(context, _ref3) {
-      var vm = _ref3.vm,
-          invoice = _ref3.invoice;
+    recalculateInvoice: function recalculateInvoice(context, _ref5) {
+      var vm = _ref5.vm,
+          invoice = _ref5.invoice;
       axios.post("/invoices/" + invoice.id + '/recalc', {
         invoice: invoice,
         _method: "post"
@@ -98382,6 +98403,11 @@ __webpack_require__.r(__webpack_exports__);
           vm.$store.dispatch("reservation/updateStatus", {
             reservationId: newReservation.id,
             newStatus: newReservation.status
+          });
+          var newInvoice = response["data"]["invoice"];
+          vm.$store.dispatch("billing/replaceInvoiceById", {
+            invoiceId: newInvoice.id,
+            newInvoice: newInvoice
           }); // Mostramos un mensaje
 
           vm.makeToast("Check Out", "Guest check out " + checkOut, "success");
