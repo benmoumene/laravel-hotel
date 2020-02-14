@@ -21,20 +21,24 @@
     </b-form-group>
 
     <b-form-group label-cols="12" label-cols-sm="4" label="Sex">
-      <b-form-select cols="12" sm="2" v-model="customer.sex" :disabled="readonly">
-        <template v-slot:first>
-          <option :readonly="readonly">{{ customer.sex }}</option>
-        </template>
-      </b-form-select>
+      <b-form-select
+        cols="12"
+        sm="2"
+        :options="sexOptions"
+        v-model="customer.sex"
+        :disabled="readonly"
+      ></b-form-select>
     </b-form-group>
 
     <b-form-group label-cols="12" label-cols-sm="4" label="Document Identity">
       <b-form-group label-cols="12" label-cols-sm="4" label="Type">
-        <b-form-select cols="12" sm="2" v-model="customer.document_id_type" :disabled="readonly">
-          <template v-slot:first>
-            <option :readonly="readonly">{{ customer.document_id_type }}</option>
-          </template>
-        </b-form-select>
+        <b-form-select
+          cols="12"
+          sm="2"
+          :options="documentIdOptions"
+          v-model="customer.document_id_type"
+          :disabled="readonly"
+        ></b-form-select>
       </b-form-group>
 
       <b-form-group label-cols="12" label-cols-sm="4" label="Id">
@@ -63,6 +67,12 @@
 import { mapState, mapGetters } from "vuex";
 export default {
   name: "Customer",
+  data: function() {
+    return {
+      documentIdOptions: { national_id: "National Id", passport: "Passport" },
+      sexOptions: { male: "Male", female: "Female" }
+    };
+  },
   props: {
     customerId: { type: Number, required: true },
     readonly: { type: Boolean, required: true }
