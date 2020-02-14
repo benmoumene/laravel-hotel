@@ -75,7 +75,7 @@
 <script>
 import { mapState } from "vuex";
 export default {
-  name: "CustomerList",
+  name: "Invoices",
   data: function() {
     return {
       fields: [

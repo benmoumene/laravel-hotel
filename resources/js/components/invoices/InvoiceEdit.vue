@@ -1,6 +1,6 @@
 <template>
   <b-container fluid>
-    <invoice-info :invoiceId="invoiceId" :readonly="false"></invoice-info>
+    <invoice-info :invoiceId="invoiceId" :readonly="false" />
     <b-row class="mt-3 pull-right">
       <b-col>
         <b-button v-b-modal.invoice-pay-modal variant="success">Mark as paid</b-button>
@@ -25,8 +25,9 @@
 </template>
 <script>
 import { mapState, mapGetters } from "vuex";
+import Invoice from "./Invoice";
 export default {
-  name: "Invoice",
+  name: "InvoiceEdit",
   props: {
     invoiceId: { type: Number, required: true },
     readonly: { Type: Boolean, required: true }
@@ -138,7 +139,9 @@ export default {
       return services;
     }
   },
-  mounted() {}
+  components: {
+    "invoice-info": Invoice
+  }
 };
 </script>
 <style scoped>

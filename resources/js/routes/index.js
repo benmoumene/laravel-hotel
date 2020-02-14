@@ -7,9 +7,9 @@ import Profile from '../components/Profile.vue'
 import About from '../components/About.vue'
 import Settings from '../components/Settings.vue'
 
-import BillingRouter from '../components/billing/BillingRouter.vue'
-import BillingEdit from '../components/billing/BillingEdit.vue'
-import BillingList from '../components/billing/BillingList.vue'
+import InvoiceRouter from '../components/invoices/InvoiceRouter.vue'
+import InvoiceEdit from '../components/invoices/InvoiceEdit.vue'
+import Invoices from '../components/invoices/Invoices.vue'
 
 import CustomerRouter from '../components/customers/CustomerRouter.vue'
 import CustomerAdd from '../components/customers/CustomerAdd.vue'
@@ -27,7 +27,7 @@ import ReservationRouter from '../components/reservations/ReservationRouter.vue'
 import ServiceList from '../components/services/ServiceList.vue'
 import ServiceRouter from '../components/services/ServiceRouter.vue'
 
-import ItemList from '../components/inventory/ItemList.vue'
+import InventoryItems from '../components/inventory/InventoryItems.vue'
 import InventoryRouter from '../components/inventory/InventoryRouter.vue'
 
 const customerRoutes =
@@ -89,17 +89,17 @@ export default new VueRouter({
       ]
     },
     {
-      path: '/billing', component: BillingRouter,
+      path: '/invoices', component: InvoiceRouter,
       children: [
         {
           path: ':id/edit',
-          name: 'BillingEdit',
-          component: BillingEdit
+          name: 'InvoiceEdit',
+          component: InvoiceEdit
         },
         {
           path: 'list',
-          name: 'BillingList',
-          component: BillingList
+          name: 'Invoices',
+          component: Invoices
         },
       ]
     },
@@ -118,8 +118,8 @@ export default new VueRouter({
       children: [
         {
           path: 'list',
-          name: 'ItemList',
-          component: ItemList
+          name: 'InventoryItems',
+          component: InventoryItems
         },
       ]
     },

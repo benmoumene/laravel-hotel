@@ -101,7 +101,7 @@
 </template>
 <script>
 import { mapState } from "vuex";
-import ItemAdd from "./ItemAdd";
+import InventoryItemAdd from "./InventoryItemAdd";
 export default {
   name: "InventoryItemList",
   data: function() {
@@ -184,7 +184,7 @@ export default {
     }
   },
   components: {
-    "new-item": ItemAdd
+    "new-item": InventoryItemAdd
   }
 };
 </script>

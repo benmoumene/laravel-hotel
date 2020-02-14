@@ -155,8 +155,8 @@
 // Implementar filtro de fechas por defecto en RESERVATION LIST.
 import { mapState, mapGetters } from "vuex";
 import Room from "../rooms/Room";
-import Invoice from "../billing/Invoice";
-import BilledServices from "../billing/BilledServices";
+import Invoice from "../invoices/Invoice";
+import BilledServices from "../billed-services/BilledServices";
 import ReservationEdit from "./ReservationEdit";
 import Customer from "../customers/Customer";
 export default {
