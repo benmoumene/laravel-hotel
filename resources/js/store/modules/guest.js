@@ -106,7 +106,7 @@ export default ({
     },
     actions: {
         checkIn(context, { vm, reservation }) {
-            axios.post("/guest/" + reservation.guest.id + "/checkin", {
+            axios.post("/guests/" + reservation.guest.id + "/checkin", {
                 guest: reservation.guest,
             }).then(function (response) {
                 // Si el request tuvo exito (codigo 200)
@@ -132,7 +132,7 @@ export default ({
             });
         },
         checkOut(context, { vm, reservation }) {
-            axios.post("/guest/" + reservation.guest.id + "/checkout", {
+            axios.post("/guests/" + reservation.guest.id + "/checkout", {
                 guest: reservation.guest,
             }).then(function (response) {
                 // Si el request tuvo exito (codigo 200)

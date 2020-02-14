@@ -98091,7 +98091,7 @@ __webpack_require__.r(__webpack_exports__);
       var vm = _ref.vm,
           serviceId = _ref.serviceId,
           reservationId = _ref.reservationId;
-      axios.post("/billed_service/", {
+      axios.post("/billed-services/", {
         billed_service: {
           service_id: serviceId,
           reservation_id: reservationId
@@ -98106,7 +98106,7 @@ __webpack_require__.r(__webpack_exports__);
     deleteBilledService: function deleteBilledService(context, _ref2) {
       var vm = _ref2.vm,
           id = _ref2.id;
-      axios.post("http://127.0.0.1:8000/billed_service/" + id, {
+      axios.post("/billed-services/" + id, {
         _method: "delete"
       }).then(function (response) {
         var index = context.getters.getBilledServiceIndex(id);
@@ -98192,6 +98192,7 @@ __webpack_require__.r(__webpack_exports__);
     generateInvoice: function generateInvoice(context, _ref) {
       var vm = _ref.vm,
           reservation = _ref.reservation;
+      //axios.post("/invoices/" + reservation.id, {
       axios.post("/reservations/" + reservation.id, {
         reservation: reservation,
         _method: "put"
@@ -98201,7 +98202,7 @@ __webpack_require__.r(__webpack_exports__);
     payInvoice: function payInvoice(context, _ref2) {
       var vm = _ref2.vm,
           invoice = _ref2.invoice;
-      axios.post("/invoice/" + invoice.id + "/pay", {
+      axios.post("/invoices/" + invoice.id + "/pay", {
         invoice: invoice,
         _method: "put"
       }).then(function (response) {
@@ -98214,7 +98215,7 @@ __webpack_require__.r(__webpack_exports__);
     recalculateInvoice: function recalculateInvoice(context, _ref3) {
       var vm = _ref3.vm,
           invoice = _ref3.invoice;
-      axios.post("/invoice/" + invoice.id + '/recalc', {
+      axios.post("/invoices/" + invoice.id + '/recalc', {
         invoice: invoice,
         _method: "post"
       }).then(function (response) {
@@ -98270,7 +98271,7 @@ __webpack_require__.r(__webpack_exports__);
     addCustomer: function addCustomer(context, _ref) {
       var vm = _ref.vm,
           customer = _ref.customer;
-      axios.post("http://127.0.0.1:8000/customers/", {
+      axios.post("/customers/", {
         customer: customer
       }).then(function (response) {
         // Si el request tuvo exito (codigo 200)
@@ -98291,7 +98292,7 @@ __webpack_require__.r(__webpack_exports__);
     editCustomer: function editCustomer(context, _ref2) {
       var vm = _ref2.vm,
           customer = _ref2.customer;
-      axios.post("http://127.0.0.1:8000/customers/" + customer.id, {
+      axios.post("/customers/" + customer.id, {
         customer: customer,
         _method: "put"
       }).then(function (response) {
@@ -98450,7 +98451,7 @@ __webpack_require__.r(__webpack_exports__);
     checkIn: function checkIn(context, _ref4) {
       var vm = _ref4.vm,
           reservation = _ref4.reservation;
-      axios.post("/guest/" + reservation.guest.id + "/checkin", {
+      axios.post("/guests/" + reservation.guest.id + "/checkin", {
         guest: reservation.guest
       }).then(function (response) {
         // Si el request tuvo exito (codigo 200)
@@ -98479,7 +98480,7 @@ __webpack_require__.r(__webpack_exports__);
     checkOut: function checkOut(context, _ref5) {
       var vm = _ref5.vm,
           reservation = _ref5.reservation;
-      axios.post("/guest/" + reservation.guest.id + "/checkout", {
+      axios.post("/guests/" + reservation.guest.id + "/checkout", {
         guest: reservation.guest
       }).then(function (response) {
         // Si el request tuvo exito (codigo 200)
@@ -98542,7 +98543,7 @@ __webpack_require__.r(__webpack_exports__);
     addItem: function addItem(context, _ref) {
       var vm = _ref.vm,
           item = _ref.item;
-      axios.post("http://127.0.0.1:8000/inventory/", {
+      axios.post("/inventory-items/", {
         item: item
       }).then(function (response) {
         // Si el request tuvo exito (codigo 200)
@@ -98563,7 +98564,7 @@ __webpack_require__.r(__webpack_exports__);
     editItem: function editItem(context, _ref2) {
       var vm = _ref2.vm,
           item = _ref2.item;
-      axios.post("http://127.0.0.1:8000/inventory/" + item.id, {
+      axios.post("/inventory-items/" + item.id, {
         item: item,
         _method: "put"
       }).then(function (response) {
@@ -98695,7 +98696,7 @@ __webpack_require__.r(__webpack_exports__);
     cancel: function cancel(context, _ref5) {
       var vm = _ref5.vm,
           reservation = _ref5.reservation;
-      axios.get("/reservation/" + reservation.id + "/cancel", {
+      axios.get("/reservations/" + reservation.id + "/cancel", {
         reservation: reservation
       }).then(function (response) {
         var newReservation = response["data"]["reservation"];
@@ -98763,7 +98764,7 @@ __webpack_require__.r(__webpack_exports__);
     addRoom: function addRoom(context, _ref) {
       var vm = _ref.vm,
           room = _ref.room;
-      axios.post("http://127.0.0.1:8000/room/", {
+      axios.post("/rooms/", {
         room: room
       }).then(function (response) {
         // Si el request tuvo exito (codigo 200)
@@ -98784,7 +98785,7 @@ __webpack_require__.r(__webpack_exports__);
     editRoom: function editRoom(context, _ref2) {
       var vm = _ref2.vm,
           room = _ref2.room;
-      axios.post("http://127.0.0.1:8000/room/" + room.id, {
+      axios.post("/rooms/" + room.id, {
         room: room,
         _method: "put"
       }).then(function (response) {
@@ -98848,7 +98849,7 @@ __webpack_require__.r(__webpack_exports__);
     addService: function addService(context, _ref) {
       var vm = _ref.vm,
           service = _ref.service;
-      axios.post("http://127.0.0.1:8000/services/", {
+      axios.post("/services/", {
         service: service
       }).then(function (response) {
         // Si el request tuvo exito (codigo 200)
@@ -98869,7 +98870,7 @@ __webpack_require__.r(__webpack_exports__);
     editService: function editService(context, _ref2) {
       var vm = _ref2.vm,
           service = _ref2.service;
-      axios.post("http://127.0.0.1:8000/services/" + service.id, {
+      axios.post("/services/" + service.id, {
         service: service,
         _method: "put"
       }).then(function (response) {

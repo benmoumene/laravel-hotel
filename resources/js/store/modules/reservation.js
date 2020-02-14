@@ -77,7 +77,7 @@ export default ({
             });
         },
         cancel(context, { vm, reservation }) {
-            axios.get("/reservation/" + reservation.id + "/cancel", {
+            axios.get("/reservations/" + reservation.id + "/cancel", {
                 reservation,
             }).then(function (response) {
                 let newReservation = response["data"]["reservation"];

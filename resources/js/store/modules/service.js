@@ -25,7 +25,7 @@ export default ({
     },
     actions: {
         addService(context, { vm, service }) {
-            axios.post("http://127.0.0.1:8000/services/", {
+            axios.post("/services/", {
                 service
             }).then(function (response) {
                 // Si el request tuvo exito (codigo 200)
@@ -45,7 +45,7 @@ export default ({
             });
         },
         editService(context, { vm, service }) {
-            axios.post("http://127.0.0.1:8000/services/" + service.id, {
+            axios.post("/services/" + service.id, {
                 service,
                 _method: "put"
             }).then(function (response) {

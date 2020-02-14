@@ -24,43 +24,37 @@ Route::get('/hotel/fetch', 'HotelController@index');
 // Nuevo
 Route::post('/customers', 'CustomerController@store');
 // Actualizar
-Route::put('/customers/{customer_id}', 'CustomerController@update');
+Route::put('/customers/{id}', 'CustomerController@update');
 // Borrar
-Route::delete('/customer/{customer_id}', 'CustomerController@destroy');
-// =============================================
-
+Route::delete('/customers/{id}', 'CustomerController@destroy');
 // =============================================
 // RESERVATIONS
 // =============================================
 // Nuevo
 Route::post('/reservations', 'ReservationController@store');
 // Actualiza reserva
-Route::put('/reservations/{reservation_id}', 'ReservationController@update');
+Route::put('/reservations/{id}', 'ReservationController@update');
 // Borrar reserva
-Route::delete('/reservations/{reservation_id}', 'ReservationController@destroy');
+Route::delete('/reservations/{id}', 'ReservationController@destroy');
 // Cancelar reserva
-Route::get('/reservation/{reservation_id}/cancel', 'ReservationController@cancel');
+Route::get('/reservations/{id}/cancel', 'ReservationController@cancel');
 // =============================================
 
 // =============================================
 // GUEST
 // =============================================
-// Nuevo
-Route::post('/guest', 'GuestController@store');
 // Llegada de guest
-Route::post('/guest/{reservation_id}/checkin', 'GuestController@checkIn');
+Route::post('/guests/{id}/checkin', 'GuestController@checkIn');
 // Salid de guest
-Route::post('/guest/{reservation_id}/checkout', 'GuestController@checkOut');
-// Actualizar datos guest
-Route::put('/guest/{guest_id}', 'GuestController@update');
+Route::post('/guests/{id}/checkout', 'GuestController@checkOut');
 
 // =============================================
 // ROOMS
 // =============================================
 // Nuevo Habitacion
-Route::post('/room', 'RoomController@store');
+Route::post('/rooms', 'RoomController@store');
 // Actualizar Habitacion
-Route::put('/room/{room_id}', 'RoomController@update');
+Route::put('/rooms/{id}', 'RoomController@update');
 // =============================================
 
 // =============================================
@@ -69,43 +63,50 @@ Route::put('/room/{room_id}', 'RoomController@update');
 // Nuevo servicio
 Route::post('/services', 'ServiceController@store');
 // Actualizar servicio
-Route::put('/services/{service_id}', 'ServiceController@update');
+Route::put('/services/{id}', 'ServiceController@update');
+// Borrar Servicio
+Route::delete('/services/{id}', 'ServiceController@destroy');
 // =============================================
 
 // =============================================
 // RUTAS DEL INVENTARIO DEL HOTEL
 // =============================================
 // Nuevo Item de inventario
-Route::post('/inventory', 'InventoryController@store');
+Route::post('/inventory-items', 'InventoryController@store');
 // Actualizar item
-Route::put('/inventory/{item_id}', 'InventoryController@update');
+Route::put('/inventory-items/{id}', 'InventoryController@update');
+// Eliminar item
+Route::delete('/inventory-items/{id}', 'InventoryController@destroy');
 // =============================================
 
 // =============================================
 // RUTAS DE LAS FACTURAS
 // =============================================
 // Generar factura
-Route::post('/invoice', 'InvoiceController@store');
+Route::post('/invoices', 'InvoiceController@store');
 // Pagar
-Route::put('/invoice/{invoice_id}/pay', 'InvoiceController@setAsPaid');
+Route::put('/invoices/{id}/pay', 'InvoiceController@setAsPaid');
 // Recalcular
-Route::post('/invoice/{invoice_id}/recalc', 'InvoiceController@recalculate');
+Route::post('/invoices/{id}/recalc', 'InvoiceController@recalculate');
 // Actualizar factura
-//Route::put('/invoice/{invoice_id}', 'InvoiceController@update');
+//Route::put('/invoices/{id}', 'InvoiceController@update');
 // Borrar factura
-Route::delete('/invoice/{invoice_id}', 'InvoiceController@destroy');
+Route::delete('/invoices/{id}', 'InvoiceController@destroy');
 // =============================================
 
+// =============================================
+// BILLED SERVICES
+// =============================================
+// Borrar Billed Service
+Route::delete('/billed-services/{id}', 'BilledServiceController@destroy');
+// Agregar Billed service
+Route::post('/billed-services', 'BilledServiceController@store');
 
 // =============================================
 // OTRAS RUTAS
 // =============================================
 // Actualizar setting (middleware admin)
-Route::put('/settings/{setting_id}', 'SettingController@update')->middleware('role:admin');
+Route::put('/settings/{id}', 'SettingController@update')->middleware('role:admin');
 // Actualizar perfil
-Route::put('/users/{user_id}', 'ProfileController@update');
-// Borrar Billed Service
-Route::delete('/billed_service/{billed_service_id}', 'BilledServiceController@destroy');
-// Agregar Billed service
-Route::post('/billed_service', 'BilledServiceController@store');
+Route::put('/users/{id}', 'ProfileController@update');
 // =============================================

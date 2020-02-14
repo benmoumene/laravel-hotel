@@ -25,7 +25,7 @@ export default ({
     },
     actions: {
         addCustomer(context, { vm, customer }) {
-            axios.post("http://127.0.0.1:8000/customers/", {
+            axios.post("/customers/", {
                 customer
             }).then(function (response) {
                 // Si el request tuvo exito (codigo 200)
@@ -49,7 +49,7 @@ export default ({
             });
         },
         editCustomer(context, { vm, customer }) {
-            axios.post("http://127.0.0.1:8000/customers/" + customer.id, {
+            axios.post("/customers/" + customer.id, {
                 customer,
                 _method: "put"
             }).then(function (response) {

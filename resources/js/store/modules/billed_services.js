@@ -26,7 +26,7 @@ export default ({
     },
     actions: {
         add(context, { vm, serviceId, reservationId }) {
-            axios.post("/billed_service/", {
+            axios.post("/billed-services/", {
                 billed_service: {
                     service_id: serviceId,
                     reservation_id: reservationId
@@ -39,7 +39,7 @@ export default ({
             });
         },
         deleteBilledService(context, { vm, id }) {
-            axios.post("http://127.0.0.1:8000/billed_service/" + id, {
+            axios.post("/billed-services/" + id, {
                 _method: "delete"
             }).then(function (response) {
                 var index = context.getters.getBilledServiceIndex(id);

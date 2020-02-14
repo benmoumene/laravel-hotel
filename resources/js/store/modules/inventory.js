@@ -16,7 +16,7 @@ export default ({
     },
     actions: {
         addItem(context, { vm, item }) {
-            axios.post("http://127.0.0.1:8000/inventory/", {
+            axios.post("/inventory-items/", {
                 item
             }).then(function (response) {
                 // Si el request tuvo exito (codigo 200)
@@ -35,7 +35,7 @@ export default ({
             });
         },
         editItem(context, { vm, item }) {
-            axios.post("http://127.0.0.1:8000/inventory/" + item.id, {
+            axios.post("/inventory-items/" + item.id, {
                 item,
                 _method: "put"
             }).then(function (response) {

@@ -25,7 +25,7 @@ export default ({
     },
     actions: {
         addRoom(context, { vm, room }) {
-            axios.post("http://127.0.0.1:8000/room/", {
+            axios.post("/rooms/", {
                 room
             }).then(function (response) {
                 // Si el request tuvo exito (codigo 200)
@@ -44,7 +44,7 @@ export default ({
             });
         },
         editRoom(context, { vm, room }) {
-            axios.post("http://127.0.0.1:8000/room/" + room.id, {
+            axios.post("/rooms/" + room.id, {
                 room,
                 _method: "put"
             }).then(function (response) {

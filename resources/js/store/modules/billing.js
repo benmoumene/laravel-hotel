@@ -50,6 +50,7 @@ export default ({
     },
     actions: {
         generateInvoice(context, { vm, reservation }) {
+            //axios.post("/invoices/" + reservation.id, {
             axios.post("/reservations/" + reservation.id, {
                 reservation,
                 _method: "put"
@@ -59,7 +60,7 @@ export default ({
         },
         // Marca una factura como pagada. (Status/Payment Method)
         payInvoice(context, { vm, invoice }) {
-            axios.post("/invoice/" + invoice.id + "/pay", {
+            axios.post("/invoices/" + invoice.id + "/pay", {
                 invoice,
                 _method: "put"
             }).then(function (response) {
@@ -70,7 +71,7 @@ export default ({
         },
         // Marca una factura como pagada. (Status/Payment Method)
         recalculateInvoice(context, { vm, invoice }) {
-            axios.post("/invoice/" + invoice.id + '/recalc', {
+            axios.post("/invoices/" + invoice.id + '/recalc', {
                 invoice,
                 _method: "post"
             }).then(function (response) {
