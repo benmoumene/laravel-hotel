@@ -1,22 +1,77 @@
 <template>
   <b-container fluid>
-    <billed-service-add :reservationId="reservationId" :readonly="false"></billed-service-add>YOUR BILLED SERVICES:
+    <b-pagination
+      v-model="currentPage"
+      :total-rows="totalRows"
+      :per-page="perPage"
+      align="fill"
+      size="sm"
+      class="my-0"
+    ></b-pagination>
+    <b-table
+      show-empty
+      small
+      stacked="md"
+      :items="billedServices"
+      :fields="fields"
+      :current-page="currentPage"
+      :per-page="perPage"
+    >
+      <template v-slot:cell(name)="row">{{ service(row.item.service_id).name }}</template>
+      <template v-slot:cell(cost)="row">{{ service(row.item.service_id).cost }}</template>
+      <template v-slot:cell(description)="row">{{ service(row.item.service_id).description }}</template>
+
+      <template v-slot:cell(actions)="row">
+        <b-button
+          v-b-tooltip.hover
+          title="Remove this service"
+          size="sm"
+          variant="danger"
+          @click="deleteService(row.item.service_id)"
+        >
+          <i class="fa fa-trash"></i>
+        </b-button>
+      </template>
+    </b-table>
   </b-container>
 </template>
 <script>
 import { mapState, mapGetters } from "vuex";
-import BilledServiceAdd from "./BilledServiceAdd";
 export default {
   name: "BilledServices",
+  data: function() {
+    return {
+      fields: [
+        {
+          key: "name",
+          label: "Service"
+        },
+        {
+          key: "cost",
+          label: "Cost"
+        },
+        {
+          key: "description",
+          label: "Description"
+        },
+        { key: "actions", label: "Actions" }
+      ],
+      currentPage: 1,
+      perPage: 10
+    };
+  },
   props: {
     reservationId: { type: Number, required: true },
     readonly: { Type: Boolean, required: true }
   },
-  data: function() {
-    return {};
-  },
   methods: {
-    deleteBilledService(id) {},
+    deleteService(serviceId) {
+      this.$store.dispatch("billed_service/delete", {
+        vm: this,
+        reservationId: this.reservationId,
+        serviceId
+      });
+    },
     makeToast(title, message, variant = "info") {
       this.$bvToast.toast(message, {
         title,
@@ -26,74 +81,22 @@ export default {
         toaster: "b-toaster-bottom-right",
         appendToast: true
       });
+    },
+    service(id) {
+      return this.getService(id);
     }
   },
   computed: {
-    ...mapState(["settings"]),
     ...mapGetters({
       getService: "service/getService",
-      getCustomer: "customer/getCustomer",
-      getBilledServices: "billed_services/getBilledServices",
-      getReservation: "reservation/getReservation",
-      getGuestWithReservationId: "guest/getGuestWithReservationId",
-      getSettingValue: "getSettingValue",
-      getInvoice: "billing/getInvoice",
-      getRoom: "room/getRoom"
+      getBilledServices: "billed_services/getBilledServices"
     }),
-    invoice() {
-      if (typeof this.invoiceId === "undefined") {
-        this.invoiceId = parseInt(this.$route.params.id);
-      }
-
-      var invoice = this.getInvoice(this.invoiceId);
-      if (typeof invoice === "undefined") {
-        return "";
-      }
-      return invoice;
-    },
-    reservation() {
-      var reservation = this.getReservation(this.invoice.reservation_id);
-
-      if (typeof reservation === "undefined") {
-        return "";
-      }
-      return reservation;
-    },
-    guest() {
-      var guest = this.getGuestWithReservationId(this.invoice.reservation_id);
-
-      if (typeof guest === "undefined") {
-        //return { id: 0, from_date: "", to_date: "" };
-        return "";
-      }
-      return guest;
-    },
-    customer() {
-      var customer = this.getCustomer(this.reservation.customer_id);
-      if (typeof customer === "undefined") {
-        //return { id: 0, from_date: "", to_date: "" };
-        return "";
-      }
-      return customer;
-    },
-    room() {
-      var room = this.getRoom(this.reservation.room_id);
-      if (typeof room === "undefined") {
-        return "";
-      }
-      return room;
-    },
     billedServices() {
-      var services = this.getBilledServices(this.reservation.id);
-      if (typeof services === "undefined") {
-        return [];
-      }
-      return services;
+      return this.getBilledServices(this.reservationId);
+    },
+    totalRows() {
+      return this.billedServices.length;
     }
-  },
-  mounted() {},
-  components: {
-    "billed-service-add": BilledServiceAdd
   }
 };
 </script>
