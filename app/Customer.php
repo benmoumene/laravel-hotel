@@ -7,10 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 class Customer extends Model
 {
     public $timestamps = false;
-    protected $table = "customers";
 
     protected $hidden = [
-        'laravel_through_key'
+        'laravel_through_key', "created_at", "updated_at"
+    ];
+
+    protected $fillable = [
+        "first_name", "last_name", "sex", "address",
+        "phone", "nationality", "document_id_type", "document_id"
     ];
 
     public function invoices()
@@ -19,6 +23,7 @@ class Customer extends Model
             'App\Invoice',
             'App\Reservation'
         );
+        //)->select("invoices.id");
     }
 
     public function reservations()
