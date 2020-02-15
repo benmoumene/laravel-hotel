@@ -11,6 +11,7 @@ use App\Reservation;
 use App\Setting;
 use App\Service;
 use App\InventoryItem;
+use App\Profile;
 use App\Invoice;
 use App\BilledService;
 
@@ -33,7 +34,7 @@ class HotelController extends Controller
         $currentUserId = Auth::user()->id;
         
         // Datos de usuario
-        $data['app_user'] = Auth::user();
+        $data['app_user'] = Profile::profile()->find($currentUserId);
 
         // Datos de los clientes del hotel
         $data['customers'] = Customer::with(['invoices:invoices.id', 'reservations:reservations.id'])->get();
