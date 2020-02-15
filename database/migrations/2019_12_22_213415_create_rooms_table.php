@@ -15,7 +15,7 @@ class CreateRoomsTable extends Migration
     {
         Schema::create('rooms', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('name');
+            $table->string('name')->unique();
             $table->enum('floor', ['1F', '2F', '3F']);
             $table->enum('size', ['single', 'double'])->default('single');
             $table->enum('type', ['common', 'suite'])->default('common');
