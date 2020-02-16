@@ -28,8 +28,6 @@ class ReservationController extends Controller
         return response()->json($reservation, 200);
     }
 
-    
-
     public function cancel(Request $request, $reservationId)
     {
         $reservation = $this->reservationService->cancelReservation(
