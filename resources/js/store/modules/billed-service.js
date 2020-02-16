@@ -39,7 +39,7 @@ export default ({
                 context.commit("ADD_SERVICE", service);
                 vm.makeToast("Success", "Billed service has been add.", 'success');
             }).catch(function (error) {
-                vm.makeToast("Billed Service", error.response.data.message, "danger");
+                vm.makeToast("Billed Service", "Something went wrong.", "danger");
             });
         },
         destroyService(context, { vm, id }) {
@@ -50,7 +50,7 @@ export default ({
                 vm.makeToast("Billed service has been removed.", 'success');
                 context.commit('REMOVE_SERVICE', index);
             }).catch(function (error) {
-                vm.makeToast("Billed Service", error.response.data.message, "danger");
+                vm.makeToast("Billed Service", "Something went wrong.", "danger");
             });
         },
     }

@@ -31,7 +31,7 @@ export default ({
                     vm.makeToast("Item ", newItem.name + ' added.', 'success');
                 }
             }).catch(function (error) {
-                vm.makeToast("Inventory", error.response.data.message, "danger");
+                vm.makeToast("Inventory", "Something went wrong.", "danger");
             });
         },
         updateItem(context, { vm, item }) {
@@ -50,7 +50,7 @@ export default ({
                     vm.makeToast("Item ", item.name + ' update.', 'success');
                 }
             }).catch(function (error) {
-                vm.makeToast("Inventory", error.response.data.message, "danger");
+                vm.makeToast("Inventory", "Something went wrong.", "danger");
             });
         },
     }

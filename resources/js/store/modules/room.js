@@ -40,7 +40,7 @@ export default ({
                     vm.makeToast("Room ", newRoom.name + ' has been added.', 'success');
                 }
             }).catch(function (error) {
-                vm.makeToast("Room", error.response.data.message, "danger");
+                vm.makeToast("Room", "Something went wrong.", "danger");
             });
         },
         updateRoom(context, { vm, room }) {
@@ -58,7 +58,7 @@ export default ({
                         + ' has been updated.', 'success');
                 }
             }).catch(function (error) {
-                vm.makeToast("Room", error.response.data.message, "danger");
+                vm.makeToast("Room", "Something went wrong.", "danger");
             });
         },
     }

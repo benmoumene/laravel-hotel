@@ -72,7 +72,7 @@ export default ({
                 _method: "put"
             }).then(function (response) {
             }).catch(function (error) {
-                vm.makeToast("Invoice", error.response.data.message, "danger");
+                vm.makeToast("Invoice", "Something went wrong.", "danger");
             });
         },
         // Marca una factura como pagada. (Status/Payment Method)
@@ -87,7 +87,7 @@ export default ({
                 });
                 vm.makeToast("Invoice updated", 'The invoice has been paid.', 'success');
             }).catch(function (error) {
-                vm.makeToast("Invoice", error.response.data.message, "danger");
+                vm.makeToast("Invoice", "Something went wrong.", "danger");
             });
         },
         // Marca una factura como pagada. (Status/Payment Method)
@@ -100,7 +100,7 @@ export default ({
                 invoice.total = newInvoice.total;
                 vm.makeToast("Invoice updated", 'The invoice has been updated.', 'success');
             }).catch(function (error) {
-                vm.makeToast("Invoice", error.response.data.message, "danger");
+                vm.makeToast("Invoice", "Something went wrong.", "danger");
             });
         },
     }

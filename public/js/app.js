@@ -97875,7 +97875,7 @@ __webpack_require__.r(__webpack_exports__);
           vm.makeToast("Avatar", "The avatar has been updated!", "success");
         }
       })["catch"](function (error) {
-        vm.makeToast("Avatar", error.response.data.message, "danger");
+        vm.makeToast("Avatar", "Something went wrong.", "danger");
       });
     },
     updateProfile: function updateProfile(context, _ref2) {
@@ -97890,7 +97890,7 @@ __webpack_require__.r(__webpack_exports__);
           vm.makeToast("Profile", "Profile updated.", "success");
         }
       })["catch"](function (error) {
-        vm.makeToast("Profile", error.response.data.message, "danger");
+        vm.makeToast("Profile", "Something went wrong.", "danger");
       });
     }
   }
@@ -97954,7 +97954,7 @@ __webpack_require__.r(__webpack_exports__);
         context.commit("ADD_SERVICE", service);
         vm.makeToast("Success", "Billed service has been add.", 'success');
       })["catch"](function (error) {
-        vm.makeToast("Billed Service", error.response.data.message, "danger");
+        vm.makeToast("Billed Service", "Something went wrong.", "danger");
       });
     },
     destroyService: function destroyService(context, _ref2) {
@@ -97967,7 +97967,7 @@ __webpack_require__.r(__webpack_exports__);
         vm.makeToast("Billed service has been removed.", 'success');
         context.commit('REMOVE_SERVICE', index);
       })["catch"](function (error) {
-        vm.makeToast("Billed Service", error.response.data.message, "danger");
+        vm.makeToast("Billed Service", "Something went wrong.", "danger");
       });
     }
   }
@@ -98032,7 +98032,7 @@ __webpack_require__.r(__webpack_exports__);
           vm.makeToast('Customer added', 'The customer ' + newCustomer.first_name + ' has been added.', 'success');
         }
       })["catch"](function (error) {
-        vm.makeToast("Customer", error.response.data.message, "danger");
+        vm.makeToast("Customer", "Something went wrong.", "danger");
       });
     },
     updateCustomer: function updateCustomer(context, _ref2) {
@@ -98052,7 +98052,7 @@ __webpack_require__.r(__webpack_exports__);
           vm.makeToast('Customer updated', 'The customer ' + customer.first_name + ' has been updated.', 'success');
         }
       })["catch"](function (error) {
-        vm.makeToast("Customer", error.response.data.message, "danger");
+        vm.makeToast("Customer", "Something went wrong.", "danger");
       });
     }
   }
@@ -98220,7 +98220,7 @@ __webpack_require__.r(__webpack_exports__);
           vm.makeToast("Check In", "Guest check in " + checkIn, "success");
         }
       })["catch"](function (error) {
-        vm.makeToast("Guest", error.response.data.message, "danger");
+        vm.makeToast("Guest", "Something went wrong.", "danger");
       });
     },
     checkOut: function checkOut(context, _ref5) {
@@ -98259,7 +98259,7 @@ __webpack_require__.r(__webpack_exports__);
           vm.makeToast("Check Out", "Guest check out " + checkOut, "success");
         }
       })["catch"](function (error) {
-        vm.makeToast("Guest", error.response.data.message, "danger");
+        vm.makeToast("Guest", "Something went wrong.", "danger");
       });
     }
   }
@@ -98309,7 +98309,7 @@ __webpack_require__.r(__webpack_exports__);
           vm.makeToast("Item ", newItem.name + ' added.', 'success');
         }
       })["catch"](function (error) {
-        vm.makeToast("Inventory", error.response.data.message, "danger");
+        vm.makeToast("Inventory", "Something went wrong.", "danger");
       });
     },
     updateItem: function updateItem(context, _ref2) {
@@ -98330,7 +98330,7 @@ __webpack_require__.r(__webpack_exports__);
           vm.makeToast("Item ", item.name + ' update.', 'success');
         }
       })["catch"](function (error) {
-        vm.makeToast("Inventory", error.response.data.message, "danger");
+        vm.makeToast("Inventory", "Something went wrong.", "danger");
       });
     }
   }
@@ -98442,7 +98442,7 @@ __webpack_require__.r(__webpack_exports__);
         reservation: reservation,
         _method: "put"
       }).then(function (response) {})["catch"](function (error) {
-        vm.makeToast("Invoice", error.response.data.message, "danger");
+        vm.makeToast("Invoice", "Something went wrong.", "danger");
       });
     },
     // Marca una factura como pagada. (Status/Payment Method)
@@ -98459,7 +98459,7 @@ __webpack_require__.r(__webpack_exports__);
         });
         vm.makeToast("Invoice updated", 'The invoice has been paid.', 'success');
       })["catch"](function (error) {
-        vm.makeToast("Invoice", error.response.data.message, "danger");
+        vm.makeToast("Invoice", "Something went wrong.", "danger");
       });
     },
     // Marca una factura como pagada. (Status/Payment Method)
@@ -98474,7 +98474,7 @@ __webpack_require__.r(__webpack_exports__);
         invoice.total = newInvoice.total;
         vm.makeToast("Invoice updated", 'The invoice has been updated.', 'success');
       })["catch"](function (error) {
-        vm.makeToast("Invoice", error.response.data.message, "danger");
+        vm.makeToast("Invoice", "Something went wrong.", "danger");
       });
     }
   }
@@ -98583,7 +98583,7 @@ __webpack_require__.r(__webpack_exports__);
           vm.makeToast("Reservation", "Reservation created.", "success");
         }
       })["catch"](function (error) {
-        vm.makeToast("Reservation", error.response.data.message, "danger");
+        vm.makeToast("Reservation", "Something went wrong.", "danger");
       });
     },
     cancel: function cancel(context, _ref5) {
@@ -98600,7 +98600,7 @@ __webpack_require__.r(__webpack_exports__);
         });
         vm.makeToast("Reservation", "Reservation cancelled.", "success");
       })["catch"](function (error) {
-        vm.makeToast("Reservation", error.response.data.message, "danger");
+        vm.makeToast("Reservation", "Something went wrong.", "danger");
       });
     }
   }
@@ -98672,7 +98672,7 @@ __webpack_require__.r(__webpack_exports__);
           vm.makeToast("Room ", newRoom.name + ' has been added.', 'success');
         }
       })["catch"](function (error) {
-        vm.makeToast("Room", error.response.data.message, "danger");
+        vm.makeToast("Room", "Something went wrong.", "danger");
       });
     },
     updateRoom: function updateRoom(context, _ref2) {
@@ -98692,7 +98692,7 @@ __webpack_require__.r(__webpack_exports__);
           vm.makeToast("Room updated", 'The room ' + room.name + ' has been updated.', 'success');
         }
       })["catch"](function (error) {
-        vm.makeToast("Room", error.response.data.message, "danger");
+        vm.makeToast("Room", "Something went wrong.", "danger");
       });
     }
   }
@@ -98757,7 +98757,7 @@ __webpack_require__.r(__webpack_exports__);
           vm.makeToast("Service added", 'The service ' + newService.name + ' has been added.', 'success');
         }
       })["catch"](function (error) {
-        vm.makeToast("Services", error.response.data.message, "danger");
+        vm.makeToast("Services", "Something went wrong.", "danger");
       });
     },
     updateService: function updateService(context, _ref2) {
@@ -98777,7 +98777,7 @@ __webpack_require__.r(__webpack_exports__);
           vm.makeToast("Service updated", 'The service ' + service.name + ' has been updated.', 'success');
         }
       })["catch"](function (error) {
-        vm.makeToast("Services", error.response.data.message, "danger");
+        vm.makeToast("Services", "Something went wrong.", "danger");
       });
     }
   }
@@ -98835,7 +98835,7 @@ __webpack_require__.r(__webpack_exports__);
           vm.makeToast("Setting updated", "The setting " + setting.name + " has been updated.", "success");
         }
       })["catch"](function (error) {
-        vm.makeToast("Settings", error.response.data.message, "danger");
+        vm.makeToast("Settings", "Something went wrong.", "danger");
       });
     }
   }

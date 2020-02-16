@@ -41,7 +41,7 @@ export default ({
                         + ' has been added.', 'success');
                 }
             }).catch(function (error) {
-                vm.makeToast("Services", error.response.data.message, "danger");
+                vm.makeToast("Services", "Something went wrong.", "danger");
             });
         },
         updateService(context, { vm, service }) {
@@ -59,7 +59,7 @@ export default ({
                         + ' has been updated.', 'success');
                 }
             }).catch(function (error) {
-                vm.makeToast("Services", error.response.data.message, "danger");
+                vm.makeToast("Services", "Something went wrong.", "danger");
             });
         },
     }

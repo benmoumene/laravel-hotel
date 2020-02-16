@@ -71,7 +71,7 @@ export default ({
                     vm.makeToast("Reservation", "Reservation created.", "success");
                 }
             }).catch(function (error) {
-                vm.makeToast("Reservation", error.response.data.message, "danger");
+                vm.makeToast("Reservation", "Something went wrong.", "danger");
             });
         },
         cancel(context, { vm, reservation }) {
@@ -87,7 +87,7 @@ export default ({
                 });
                 vm.makeToast("Reservation", "Reservation cancelled.", "success");
             }).catch(function (error) {
-                vm.makeToast("Reservation", error.response.data.message, "danger");
+                vm.makeToast("Reservation", "Something went wrong.", "danger");
             });
         },
     }

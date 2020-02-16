@@ -45,7 +45,7 @@ export default ({
                     );
                 }
             }).catch(function (error) {
-                vm.makeToast("Customer", error.response.data.message, "danger");
+                vm.makeToast("Customer", "Something went wrong.", "danger");
             });
         },
         updateCustomer(context, { vm, customer }) {
@@ -66,7 +66,7 @@ export default ({
                     );
                 }
             }).catch(function (error) {
-                vm.makeToast("Customer", error.response.data.message, "danger");
+                vm.makeToast("Customer", "Something went wrong.", "danger");
             });
         },
     }

@@ -50,7 +50,7 @@ export default ({
                     vm.makeToast("Avatar", "The avatar has been updated!", "success");
                 }
             }).catch(function (error) {
-                vm.makeToast("Avatar", error.response.data.message, "danger");
+                vm.makeToast("Avatar", "Something went wrong.", "danger");
             });
         },
         updateProfile(context, { vm }) {
@@ -64,7 +64,7 @@ export default ({
                     vm.makeToast("Profile", "Profile updated.", "success");
                 }
             }).catch(function (error) {
-                vm.makeToast("Profile", error.response.data.message, "danger");
+                vm.makeToast("Profile", "Something went wrong.", "danger");
             });
         },
     }

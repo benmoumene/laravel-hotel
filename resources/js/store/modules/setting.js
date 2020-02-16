@@ -33,7 +33,7 @@ export default ({
                         + " has been updated.", "success");
                 }
             }).catch(function (error) {
-                vm.makeToast("Settings", error.response.data.message, "danger");
+                vm.makeToast("Settings", "Something went wrong.", "danger");
             });
         },
     }
