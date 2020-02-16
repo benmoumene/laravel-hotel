@@ -39,37 +39,47 @@ class ReservationService
 
     public function storeReservation($request)
     {
-        // Creamos la reserva
-        $reservation = $this->createReservation(
-            $request->input('reservation.customer.id'),
-            $request->input('reservation.room.id'),
-            $request->input('reservation.from_date'),
-            $request->input('reservation.to_date')
-        );
+        $customerId = $request->input('reservation.customer.id');
+        $roomId = $request->input('reservation.room.id');
+        $from = $request->input('reservation.from_date');
+        $to = $request->input('reservation.to_date');
 
-        if (!$reservation) {
-            return [
-                "error" => "The reservation cannot be registered."
-            ];
-        }
-
-        // Creamos el guest asociado a la reserva
-        $guest = new Guest(["reservation_id" => $reservation->id]);
-
-        // Si no se puede registrar el huespued ...
-        if (!$guest->save()) {
-            $reservation->delete();
-            $reservation->save();
+        // Comprobamos que efectivamente podemos realizar
+        // una reserva durante la fecha indicada.
+        if (!$this->validateDate($from, $to, $roomId)) {
             return false;
         }
 
-        $invoice = new Invoice(["reservation_id" => $reservation->id]);
-        if (!$invoice->save()) {
-            $guest->delete();
+        try {
+            \DB::beginTransaction();
+            
+            // Creamos la reserva
+            $reservation = new Reservation(
+                [
+                    "customer_id" => $customerId,
+                    "room_id" => $roomId,
+                    "from_date" => $from,
+                    "to_date" => $to,
+                    "status" => "active"
+                ]
+            );
+
+            $reservation->save();
+
+            // Creamos el guest asociado a la reserva
+            $guest = new Guest(["reservation_id" => $reservation->id]);
             $guest->save();
-            $reservation->delete();
-            $reservation->save();
-            return false;
+
+            // Creamos la factura de la reserva
+            $invoice = new Invoice(["reservation_id" => $reservation->id]);
+            $invoice->save();
+            
+            // Realizar cambios
+            \DB::commit();
+        } catch (\Exception $e) {
+            // Si ocurre algun problema se borrara cualquier
+            // cambio realizado en la DB
+            \DB::rollback();
         }
 
         // Usar modelos para obtener la info ...
@@ -78,41 +88,12 @@ class ReservationService
         $guest['room'] = ['id' => $guest->room()->first()->id];
         $reservation['guest'] = ['id' => $guest->id];
         $reservation['invoice'] = ['id' => $invoice->id];
-        $response = ['guest' => $guest,
+        
+        return [
+            'guest' => $guest,
             'reservation' => $reservation,
             'invoice' => $invoice
         ];
-
-        return $response;
-    }
-
-    public function checkForExpiredReservations()
-    {
-    }
-
-    private function createReservation($customerId, $roomId, $from, $to)
-    {
-        // Comprobamos que efectivamente podemos realizar
-        // una reserva durante la fecha indicada.
-        if (!$this->validateDate($from, $to, $roomId)) {
-            return false;
-        }
-
-        // En el caso de que sea posible crear la reserva
-        // de la habitacion en las fechas indicadas, procedemos
-        // a insertar la reserva en la BD
-        $reservation = new Reservation;
-        $reservation->customer_id = $customerId;
-        $reservation->status = 'active';
-        $reservation->room_id = $roomId;
-        $reservation->from_date = $from;
-        $reservation->to_date = $to;
-
-        // Si no se consigue guardar la reserva en la BD
-        $reservation->save();
-
-        // Reserva creada con exito.
-        return $reservation;
     }
 
     // Metodo para cancelar una resevaa
@@ -126,5 +107,9 @@ class ReservationService
 
         // Reserva cancelada
         return $reservation;
+    }
+
+    public function checkForExpiredReservations()
+    {
     }
 }
