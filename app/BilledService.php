@@ -11,6 +11,10 @@ class BilledService extends Model
         'laravel_through_key'
     ];
 
+    protected $fillable = [
+        "reservation_id", "service_id"
+    ];
+
     public function service()
     {
         return $this->hasOne(
