@@ -21,15 +21,6 @@ class ProfileController extends Controller
     {
         // Utilizamos ProfileService para la logica.
         $profile = $this->profileService->updateProfile($request, $id);
-        
-        // En caso de que el servicio retorne false ...
-        if (!$profile) {
-            return response()->json([
-                "error" => "Profile cannot be updated."
-            ], 500);
-        }
-
-        // Exito!
         return response()->json(['profile' => $profile], 200);
     }
 }

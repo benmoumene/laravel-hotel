@@ -21,15 +21,6 @@ class RoomController extends Controller
     {
         // Utilizamos RoomService para la logica.
         $room = $this->roomService->storeRoom($request);
-
-        // En caso de que el servicio retorne false ...
-        if (!$room) {
-            return response()->json([
-                "error" => "Room cannot be created."
-            ], 500);
-        }
-
-        // Exito!
         return response()->json(['room' => $room], 200);
     }
 
@@ -38,11 +29,6 @@ class RoomController extends Controller
     {
         // Utilizamos RoomService para la logica.
         $room = $this->roomService->updateRoom($request, $roomId);
-        if (!$room) {
-            return response()->json([
-                "error" => "Room cannot be created."
-            ], 500);
-        }
 
         // Devolvemos el json con el perfil y codigo 200
         return response()->json(['room' => $room], 200);

@@ -23,12 +23,6 @@ class GuestController extends Controller
     public function checkIn(GuestRequest $request, $guestId)
     {
         $guest = $this->guestService->checkIn($request, $guestId);
-        
-        if (!$guest) {
-            return response()->json([
-                "error" => "Something went wrong during checkin."], 500);
-        }
-
         return response()->json(["guest" => $guest], 200);
     }
 
@@ -39,11 +33,6 @@ class GuestController extends Controller
             $request,
             $guestId,
         );
-
-        if (!$guest) {
-            return response()->json([
-                "error" => "Something went wrong during checkout."], 500);
-        }
 
         return response()->json($guest, 200);
     }

@@ -21,14 +21,6 @@ class CustomerController extends Controller
     {
         // Utilizamos CustomerService para la logica.
         $customer = $this->customerService->storeCustomer($request);
-
-        // En caso de que el servicio retorne false ...
-        if (!$customer) {
-            return response()->json([
-                "error" => "Customer cannot be created."
-            ], 500);
-        }
-
         return response()->json(['customer' => $customer], 200);
     }
 
@@ -36,14 +28,6 @@ class CustomerController extends Controller
     {
         // Utilizamos CustomerService para la logica.
         $customer = $this->customerService->updateCustomer($request, $customerId);
-
-        // En caso de que el servicio retorne false ...
-        if (!$customer) {
-            return response()->json([
-                "error" => "Customer cannot be updated."
-            ], 500);
-        }
-
         return response()->json(['customer' => $customer], 200);
     }
 

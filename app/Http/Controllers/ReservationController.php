@@ -25,13 +25,6 @@ class ReservationController extends Controller
             $request
         );
 
-        if (!$reservation) {
-            return response()->json(
-                ["error" => "The reservation cannot be registered."],
-                500
-            );
-        }
-
         return response()->json($reservation, 200);
     }
 
@@ -43,14 +36,6 @@ class ReservationController extends Controller
             $request,
             $reservationId
         );
-
-        // En caso de fallo enviamos un error al cliente
-        if (!$reservation) {
-            return response()->json(
-                ["error" => "The reservation cannot be updated."],
-                500
-            );
-        }
 
         return response()->json(['reservation' => $reservation], 200);
     }
