@@ -12,6 +12,10 @@ class Invoice extends Model
         'laravel_through_key'
     ];
 
+    protected $fillable = [
+        'reservation_id'
+    ];
+
     // Genera la factura
     public function generate()
     {
