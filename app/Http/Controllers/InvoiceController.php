@@ -5,68 +5,37 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Auth;
 use App\Invoice;
+use App\Services\InvoiceService;
+use App\Http\Requests\InvoiceUpdateRequest;
 
 class InvoiceController extends Controller
 {
-    public function __construct()
+    public function __construct(InvoiceService $invoiceService)
     {
         // Se necesita esta autentificado para llevar a cabo acciones
         $this->middleware('auth');
+        $this->invoiceService = $invoiceService;
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        $currentUserId = Auth::user()->id;
-        $invoice = new Invoice;
-        $invoice->reservation_id = $request['invoice']['reservation_id'];
-        $invoice->total = $request['invoice']['total'];
-        $invoice->generated_on = $request['invoice']['generated_on'];
-        $invoice->save();
+        $invoice = $invoiceService->storeInvoice($request);
         return response()->json(['invoice' => $invoice], 200);
     }
 
-    public function setAsPaid(Request $request, $id)
+    public function update(InvoiceUpdateRequest $request, $invoiceId)
     {
-        $invoice = Invoice::where('id', $id)->first();
-        $invoice->status = 'paid';
-        $invoice->payment_method = $request['invoice']['payment_method'];
-        $invoice->save();
+        $invoice = $this->invoiceService->updateInvoice($request, $invoiceId);
+        return response()->json(['invoice' => $invoice], 200);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function recalculate(Request $request, $id)
     {
-        $invoice = Invoice::with('billedServices.service')->where('id', $id)->first();
-        
-        // Calcular total
-        $invoice->total = $invoice->totalDue();
-
-        if ($invoice->generated_on != $request['invoice']['generated_on']) {
-            $invoice->generated_on = date('Y-m-d H:i:s');
-        }
-
-        $invoice->save();
+        $invoice = Invoice::with('customer:customers.id')->find($id);
+        $invoice->generate();
         return response()->json(['invoice' => $invoice], 200);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         //
