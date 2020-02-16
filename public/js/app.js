@@ -98583,7 +98583,7 @@ __webpack_require__.r(__webpack_exports__);
           vm.makeToast("Reservation", "Reservation created.", "success");
         }
       })["catch"](function (error) {
-        vm.makeToast("Reservation", "Something went wrong.", "danger");
+        vm.makeToast("Reservation", error.response.data.message, "danger");
       });
     },
     cancel: function cancel(context, _ref5) {
