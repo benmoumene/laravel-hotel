@@ -24,7 +24,7 @@ class HotelServicesService
     public function updateService($request, $serviceId)
     {
         // Buscamos El Service
-        $service = Service::find($serviceId);
+        $service = Service::findOrFail($serviceId);
 
         // El Service no existe ...
         if (!$service) {

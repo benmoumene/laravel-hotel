@@ -10,12 +10,7 @@ class SettingService
     public function updateSetting($request, $settingId)
     {
         // Buscamos la opcion
-        $setting = Setting::find($settingId);
-
-        // Setting no encontrada
-        if (!$setting) {
-            return false;
-        }
+        $setting = Setting::findOrFail($settingId);
 
         // Actualizamos la Setting mediante mass assigment
         $setting->fill($request->input("setting"));

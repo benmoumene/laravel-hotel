@@ -27,12 +27,7 @@ class ProfileService
     public function updateProfile($request, $userId)
     {
         // Buscamos el usuario que esta logeado actualmente
-        $profile = Profile::find(Auth::user()->id);
-
-        // El usuario no existe
-        if (!$profile) {
-            return false;
-        }
+        $profile = Profile::findOrFail(Auth::user()->id);
 
         // La peticion contiene una imagen para subir
         if ($request->has('image')) {

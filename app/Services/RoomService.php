@@ -24,12 +24,7 @@ class RoomService
     public function updateRoom($request, $roomId)
     {
         // Buscamos la Room
-        $room = Room::find($roomId);
-
-        // La room no existe ...
-        if (!$room) {
-            return false;
-        }
+        $room = Room::findOrFail($roomId);
 
         // La Room exista, asignamos nuevos valores mediante mass
         // assigment.

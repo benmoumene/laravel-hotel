@@ -24,7 +24,7 @@ class CustomerService
     public function updateCustomer($request, $customerId)
     {
         // Buscamos la Customer
-        $customer = Customer::find($customerId);
+        $customer = Customer::findOrFail($customerId);
 
         // La customer no existe ...
         if (!$customer) {
