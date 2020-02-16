@@ -71,7 +71,7 @@ export default {
   },
   methods: {
     deleteService(id) {
-      this.$store.dispatch("billedservice/delete", {
+      this.$store.dispatch("billedservice/destroyService", {
         vm: this,
         id
       });

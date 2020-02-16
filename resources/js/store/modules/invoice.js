@@ -49,6 +49,14 @@ export default ({
         },
     },
     actions: {
+        updateInvoice(context, { newInvoice }) {
+            let invoiceIndex = context.getters.getInvoiceIndex(newInvoice.id);
+            context.commit("REPLACE_INVOICE", {
+                invoiceIndex,
+                newInvoice
+            });
+        },
+        // Usar updateInvoice en lugar de este???
         replaceInvoiceById(context, { invoiceId, newInvoice }) {
             let invoiceIndex = context.getters.getInvoiceIndex(invoiceId);
             context.commit("REPLACE_INVOICE", {
@@ -63,18 +71,23 @@ export default ({
                 reservation,
                 _method: "put"
             }).then(function (response) {
-            }).catch(function (response) {
+            }).catch(function (error) {
+                vm.makeToast("Invoice", error.response.data.message, "danger");
             });
         },
         // Marca una factura como pagada. (Status/Payment Method)
         payInvoice(context, { vm, invoice }) {
-            axios.post("/invoices/" + invoice.id + "/pay", {
+            axios.post("/invoices/" + invoice.id, {
                 invoice,
                 _method: "put"
             }).then(function (response) {
+                let newInvoice = response["data"]["invoice"];
+                context.dispatch("updateInvoice", {
+                    newInvoice
+                });
                 vm.makeToast("Invoice updated", 'The invoice has been paid.', 'success');
-            }).catch(function (response) {
-                vm.makeToast("Invoice update error", ' The invoice cannot be paid', 'danger');
+            }).catch(function (error) {
+                vm.makeToast("Invoice", error.response.data.message, "danger");
             });
         },
         // Marca una factura como pagada. (Status/Payment Method)
@@ -86,8 +99,8 @@ export default ({
                 let newInvoice = response["data"]["invoice"];
                 invoice.total = newInvoice.total;
                 vm.makeToast("Invoice updated", 'The invoice has been updated.', 'success');
-            }).catch(function (response) {
-                vm.makeToast("Invoice update error", ' The invoice cannot be updated', 'danger');
+            }).catch(function (error) {
+                vm.makeToast("Invoice", error.response.data.message, "danger");
             });
         },
     }

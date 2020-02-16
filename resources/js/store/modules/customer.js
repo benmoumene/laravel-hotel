@@ -24,7 +24,7 @@ export default ({
         },
     },
     actions: {
-        addCustomer(context, { vm, customer }) {
+        storeCustomer(context, { vm, customer }) {
             axios.post("/customers/", {
                 customer
             }).then(function (response) {
@@ -44,11 +44,11 @@ export default ({
                         'success'
                     );
                 }
-            }).catch(function (response) {
-                vm.makeToast("Error", 'The customer cannot be created!', 'danger');
+            }).catch(function (error) {
+                vm.makeToast("Customer", error.response.data.message, "danger");
             });
         },
-        editCustomer(context, { vm, customer }) {
+        updateCustomer(context, { vm, customer }) {
             axios.post("/customers/" + customer.id, {
                 customer,
                 _method: "put"
@@ -65,8 +65,8 @@ export default ({
                         'success'
                     );
                 }
-            }).catch(function (response) {
-                vm.makeToast("Error", 'The customer cannot be updated!', 'danger');
+            }).catch(function (error) {
+                vm.makeToast("Customer", error.response.data.message, "danger");
             });
         },
     }

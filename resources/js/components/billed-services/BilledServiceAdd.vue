@@ -35,7 +35,7 @@ export default {
   },
   methods: {
     add() {
-      this.$store.dispatch("billedservice/add", {
+      this.$store.dispatch("billedservice/storeService", {
         vm: this,
         serviceId: this.serviceId,
         reservationId: this.reservationId

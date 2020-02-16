@@ -37,11 +37,6 @@ export default ({
                 window.location.href = "/login";
             });
         },
-        // Selecciona el usuario con el id indicado
-        selectClientById(context, userId) {
-            var client = context.getters.getClientById(clientId);
-            //context.commit("SET_SELECTED_USER", client);
-        },
         updateAvatar(context, { vm, avatar }) {
             var userId = context.state.appUser.id;
             var fd = new FormData();
@@ -54,8 +49,8 @@ export default ({
                     context.state.appUser.avatar_filename = newAvatar;
                     vm.makeToast("Avatar", "The avatar has been updated!", "success");
                 }
-            }).catch(function (response) {
-                vm.makeToast("Avatar", "The avatar cannot be updated!", "danger");
+            }).catch(function (error) {
+                vm.makeToast("Avatar", error.response.data.message, "danger");
             });
         },
         updateProfile(context, { vm }) {
@@ -68,8 +63,8 @@ export default ({
                 if (response.status == 200) {
                     vm.makeToast("Profile", "Profile updated.", "success");
                 }
-            }).catch(function (response) {
-                vm.makeToast("Profile", "Something went wrong.", "danger");
+            }).catch(function (error) {
+                vm.makeToast("Profile", error.response.data.message, "danger");
             });
         },
     }

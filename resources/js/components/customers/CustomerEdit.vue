@@ -17,7 +17,7 @@ export default {
   },
   methods: {
     edit() {
-      this.$store.dispatch("customer/editCustomer", {
+      this.$store.dispatch("customer/updateCustomer", {
         vm: this,
         customer: this.getCustomer(this.customerId)
       });

@@ -46,7 +46,7 @@ export default {
   },
   methods: {
     add() {
-      this.$store.dispatch("room/addRoom", { room: this.room, vm: this });
+      this.$store.dispatch("room/storeRoom", { room: this.room, vm: this });
     },
     makeToast(title, message, variant = "info") {
       this.$bvToast.toast(message, {

@@ -146,7 +146,7 @@ export default {
   },
   methods: {
     updateItem(item) {
-      this.$store.dispatch("inventory/editItem", { vm: this, item });
+      this.$store.dispatch("inventory/updateItem", { vm: this, item });
     },
     onFiltered(filteredItems) {
       // Trigger pagination to update the number of buttons/pages due to filtering

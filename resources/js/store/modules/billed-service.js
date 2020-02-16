@@ -28,7 +28,7 @@ export default ({
         },
     },
     actions: {
-        add(context, { vm, serviceId, reservationId }) {
+        storeService(context, { vm, serviceId, reservationId }) {
             axios.post("/billed-services/", {
                 billed_service: {
                     service_id: serviceId,
@@ -38,19 +38,19 @@ export default ({
                 let service = response["data"]["service"];
                 context.commit("ADD_SERVICE", service);
                 vm.makeToast("Success", "Billed service has been add.", 'success');
-            }).catch(function (response) {
-                vm.makeToast("Error", "Something went wrong.", 'danger');
+            }).catch(function (error) {
+                vm.makeToast("Billed Service", error.response.data.message, "danger");
             });
         },
-        delete(context, { vm, id }) {
+        destroyService(context, { vm, id }) {
             axios.post("/billed-services/" + id, {
                 _method: "delete"
             }).then(function (response) {
                 var index = context.getters.getBilledServiceIndex(id);
                 vm.makeToast("Billed service has been removed.", 'success');
                 context.commit('REMOVE_SERVICE', index);
-            }).catch(function (response) {
-                vm.makeToast("Billed service cannot be removed.", 'danger');
+            }).catch(function (error) {
+                vm.makeToast("Billed Service", error.response.data.message, "danger");
             });
         },
     }

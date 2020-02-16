@@ -127,8 +127,8 @@ export default ({
                     // Mostramos un mensaje
                     vm.makeToast("Check In", "Guest check in " + checkIn, "success");
                 }
-            }).catch(function (response) {
-                vm.makeToast("Check In", "Something went wrong.", "danger");
+            }).catch(function (error) {
+                vm.makeToast("Guest", error.response.data.message, "danger");
             });
         },
         checkOut(context, { vm, reservation }) {
@@ -165,8 +165,8 @@ export default ({
                     // Mostramos un mensaje
                     vm.makeToast("Check Out", "Guest check out " + checkOut, "success");
                 }
-            }).catch(function (response) {
-                vm.makeToast("Check Out", "Something went wrong.", "danger");
+            }).catch(function (error) {
+                vm.makeToast("Guest", error.response.data.message, "danger");
             });
         },
     }

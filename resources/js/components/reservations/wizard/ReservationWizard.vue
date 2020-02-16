@@ -78,7 +78,7 @@ export default {
     confirmReservation() {
       this.reservation.customer = this.customer;
 
-      this.$store.dispatch("reservation/addReservation", {
+      this.$store.dispatch("reservation/storeReservation", {
         vm: this,
         reservation: this.reservation
       });

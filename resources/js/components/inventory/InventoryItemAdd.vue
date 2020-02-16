@@ -36,7 +36,10 @@ export default {
   },
   methods: {
     add() {
-      this.$store.dispatch("inventory/addItem", { vm: this, item: this.item });
+      this.$store.dispatch("inventory/storeItem", {
+        vm: this,
+        item: this.item
+      });
     },
     makeToast(title, message, variant = "info") {
       this.$bvToast.toast(message, {

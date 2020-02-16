@@ -18,7 +18,7 @@ export default ({
         },
     },
     actions: {
-        editSetting(context, { vm, setting }) {
+        updateSetting(context, { vm, setting }) {
             axios.post("/settings/" + setting.id, {
                 setting,
                 _method: "put"
@@ -32,8 +32,8 @@ export default ({
                     vm.makeToast("Setting updated", "The setting " + setting.name
                         + " has been updated.", "success");
                 }
-            }).catch(function (response) {
-                vm.makeToast("Error", "The setting cannot be updated!", "danger");
+            }).catch(function (error) {
+                vm.makeToast("Settings", error.response.data.message, "danger");
             });
         },
     }

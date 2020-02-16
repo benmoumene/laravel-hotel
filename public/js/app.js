@@ -2566,7 +2566,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   },
   methods: {
     updateSetting: function updateSetting(setting) {
-      this.$store.dispatch("setting/editSetting", {
+      this.$store.dispatch("setting/updateSetting", {
         vm: this,
         setting: setting
       });
@@ -2674,7 +2674,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   },
   methods: {
     add: function add() {
-      this.$store.dispatch("billedservice/add", {
+      this.$store.dispatch("billedservice/storeService", {
         vm: this,
         serviceId: this.serviceId,
         reservationId: this.reservationId
@@ -2805,7 +2805,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   },
   methods: {
     deleteService: function deleteService(id) {
-      this.$store.dispatch("billedservice/delete", {
+      this.$store.dispatch("billedservice/destroyService", {
         vm: this,
         id: id
       });
@@ -3038,7 +3038,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     add: function add() {
-      this.$store.dispatch("customer/addCustomer", {
+      this.$store.dispatch("customer/storeCustomer", {
         vm: this,
         customer: this.customer
       });
@@ -3102,7 +3102,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   },
   methods: {
     edit: function edit() {
-      this.$store.dispatch("customer/editCustomer", {
+      this.$store.dispatch("customer/updateCustomer", {
         vm: this,
         customer: this.getCustomer(this.customerId)
       });
@@ -3695,7 +3695,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     add: function add() {
-      this.$store.dispatch("inventory/addItem", {
+      this.$store.dispatch("inventory/storeItem", {
         vm: this,
         item: this.item
       });
@@ -3877,7 +3877,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   },
   methods: {
     updateItem: function updateItem(item) {
-      this.$store.dispatch("inventory/editItem", {
+      this.$store.dispatch("inventory/updateItem", {
         vm: this,
         item: item
       });
@@ -4224,6 +4224,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   },
   data: function data() {
     return {
+      payment_method: "",
       invoicex: {
         billed_services: []
       }
@@ -4239,10 +4240,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       printWindow.close();
     },
     markAsPaid: function markAsPaid() {
-      this.invoice.status = "paid";
+      var invoiceCopy = this.invoice;
+      invoiceCopy.status = "paid";
+      invoiceCopy.payment_method = this.payment_method; //this.invoice.status = "paid";
+
       this.$store.dispatch("invoice/payInvoice", {
         vm: this,
-        invoice: this.invoice
+        invoice: invoiceCopy
       });
     },
     recalculate: function recalculate() {
@@ -5228,7 +5232,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       //this.reservation.to_date = this.filter.to_date;
       //this.$emit("updateReservation", this.reservation);
       //this.$store.commit("reservation/SET_RESERVATION", reservation);
-      //this.$store.dispatch("reservation/addReservation", reservation);
+      //this.$store.dispatch("reservation/storeReservation", reservation);
     },
     isAvailabe: function isAvailabe(roomId) {
       var room = this.filteredRooms.find(function (room) {
@@ -5396,7 +5400,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     confirmReservation: function confirmReservation() {
       this.reservation.customer = this.customer;
-      this.$store.dispatch("reservation/addReservation", {
+      this.$store.dispatch("reservation/storeReservation", {
         vm: this,
         reservation: this.reservation
       });
@@ -5572,7 +5576,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     add: function add() {
-      this.$store.dispatch("room/addRoom", {
+      this.$store.dispatch("room/storeRoom", {
         room: this.room,
         vm: this
       });
@@ -5626,7 +5630,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   name: "RoomEdit",
   methods: {
     update: function update() {
-      this.$store.dispatch("room/editRoom", {
+      this.$store.dispatch("room/updateRoom", {
         vm: this,
         room: this.getRoom(this.roomId)
       });
@@ -5852,7 +5856,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.currentPage = 1;
     },
     updateRoom: function updateRoom(room) {
-      this.$store.dispatch("room/editRoom", {
+      this.$store.dispatch("room/updateRoom", {
         vm: this,
         room: room
       });
@@ -5941,7 +5945,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     add: function add() {
-      this.$store.dispatch("service/addService", {
+      this.$store.dispatch("service/storeService", {
         vm: this,
         service: this.service
       });
@@ -6145,7 +6149,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       });
     },
     updateService: function updateService(service) {
-      this.$store.dispatch("service/editService", {
+      this.$store.dispatch("service/updateService", {
         vm: this,
         service: service
       });
@@ -75503,11 +75507,11 @@ var render = function() {
                       }
                     },
                     model: {
-                      value: _vm.invoice.payment_method,
+                      value: _vm.payment_method,
                       callback: function($$v) {
-                        _vm.$set(_vm.invoice, "payment_method", $$v)
+                        _vm.payment_method = $$v
                       },
-                      expression: "invoice.payment_method"
+                      expression: "payment_method"
                     }
                   })
                 ],
@@ -97856,10 +97860,6 @@ __webpack_require__.r(__webpack_exports__);
         window.location.href = "/login";
       });
     },
-    // Selecciona el usuario con el id indicado
-    selectClientById: function selectClientById(context, userId) {
-      var client = context.getters.getClientById(clientId); //context.commit("SET_SELECTED_USER", client);
-    },
     updateAvatar: function updateAvatar(context, _ref) {
       var vm = _ref.vm,
           avatar = _ref.avatar;
@@ -97874,8 +97874,8 @@ __webpack_require__.r(__webpack_exports__);
           context.state.appUser.avatar_filename = newAvatar;
           vm.makeToast("Avatar", "The avatar has been updated!", "success");
         }
-      })["catch"](function (response) {
-        vm.makeToast("Avatar", "The avatar cannot be updated!", "danger");
+      })["catch"](function (error) {
+        vm.makeToast("Avatar", error.response.data.message, "danger");
       });
     },
     updateProfile: function updateProfile(context, _ref2) {
@@ -97889,8 +97889,8 @@ __webpack_require__.r(__webpack_exports__);
         if (response.status == 200) {
           vm.makeToast("Profile", "Profile updated.", "success");
         }
-      })["catch"](function (response) {
-        vm.makeToast("Profile", "Something went wrong.", "danger");
+      })["catch"](function (error) {
+        vm.makeToast("Profile", error.response.data.message, "danger");
       });
     }
   }
@@ -97940,7 +97940,7 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   actions: {
-    add: function add(context, _ref) {
+    storeService: function storeService(context, _ref) {
       var vm = _ref.vm,
           serviceId = _ref.serviceId,
           reservationId = _ref.reservationId;
@@ -97953,11 +97953,11 @@ __webpack_require__.r(__webpack_exports__);
         var service = response["data"]["service"];
         context.commit("ADD_SERVICE", service);
         vm.makeToast("Success", "Billed service has been add.", 'success');
-      })["catch"](function (response) {
-        vm.makeToast("Error", "Something went wrong.", 'danger');
+      })["catch"](function (error) {
+        vm.makeToast("Billed Service", error.response.data.message, "danger");
       });
     },
-    "delete": function _delete(context, _ref2) {
+    destroyService: function destroyService(context, _ref2) {
       var vm = _ref2.vm,
           id = _ref2.id;
       axios.post("/billed-services/" + id, {
@@ -97966,8 +97966,8 @@ __webpack_require__.r(__webpack_exports__);
         var index = context.getters.getBilledServiceIndex(id);
         vm.makeToast("Billed service has been removed.", 'success');
         context.commit('REMOVE_SERVICE', index);
-      })["catch"](function (response) {
-        vm.makeToast("Billed service cannot be removed.", 'danger');
+      })["catch"](function (error) {
+        vm.makeToast("Billed Service", error.response.data.message, "danger");
       });
     }
   }
@@ -98014,7 +98014,7 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   actions: {
-    addCustomer: function addCustomer(context, _ref) {
+    storeCustomer: function storeCustomer(context, _ref) {
       var vm = _ref.vm,
           customer = _ref.customer;
       axios.post("/customers/", {
@@ -98031,11 +98031,11 @@ __webpack_require__.r(__webpack_exports__);
           context.commit('ADD_CUSTOMER', newCustomer);
           vm.makeToast('Customer added', 'The customer ' + newCustomer.first_name + ' has been added.', 'success');
         }
-      })["catch"](function (response) {
-        vm.makeToast("Error", 'The customer cannot be created!', 'danger');
+      })["catch"](function (error) {
+        vm.makeToast("Customer", error.response.data.message, "danger");
       });
     },
-    editCustomer: function editCustomer(context, _ref2) {
+    updateCustomer: function updateCustomer(context, _ref2) {
       var vm = _ref2.vm,
           customer = _ref2.customer;
       axios.post("/customers/" + customer.id, {
@@ -98051,8 +98051,8 @@ __webpack_require__.r(__webpack_exports__);
 
           vm.makeToast('Customer updated', 'The customer ' + customer.first_name + ' has been updated.', 'success');
         }
-      })["catch"](function (response) {
-        vm.makeToast("Error", 'The customer cannot be updated!', 'danger');
+      })["catch"](function (error) {
+        vm.makeToast("Customer", error.response.data.message, "danger");
       });
     }
   }
@@ -98219,8 +98219,8 @@ __webpack_require__.r(__webpack_exports__);
 
           vm.makeToast("Check In", "Guest check in " + checkIn, "success");
         }
-      })["catch"](function (response) {
-        vm.makeToast("Check In", "Something went wrong.", "danger");
+      })["catch"](function (error) {
+        vm.makeToast("Guest", error.response.data.message, "danger");
       });
     },
     checkOut: function checkOut(context, _ref5) {
@@ -98258,8 +98258,8 @@ __webpack_require__.r(__webpack_exports__);
 
           vm.makeToast("Check Out", "Guest check out " + checkOut, "success");
         }
-      })["catch"](function (response) {
-        vm.makeToast("Check Out", "Something went wrong.", "danger");
+      })["catch"](function (error) {
+        vm.makeToast("Guest", error.response.data.message, "danger");
       });
     }
   }
@@ -98291,7 +98291,7 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   actions: {
-    addItem: function addItem(context, _ref) {
+    storeItem: function storeItem(context, _ref) {
       var vm = _ref.vm,
           item = _ref.item;
       axios.post("/inventory-items/", {
@@ -98308,11 +98308,11 @@ __webpack_require__.r(__webpack_exports__);
           context.commit('ADD_ITEM', newItem);
           vm.makeToast("Item ", newItem.name + ' added.', 'success');
         }
-      })["catch"](function (response) {
-        vm.makeToast("Error", 'The item cannot be added!!!', 'danger');
+      })["catch"](function (error) {
+        vm.makeToast("Inventory", error.response.data.message, "danger");
       });
     },
-    editItem: function editItem(context, _ref2) {
+    updateItem: function updateItem(context, _ref2) {
       var vm = _ref2.vm,
           item = _ref2.item;
       axios.post("/inventory-items/" + item.id, {
@@ -98329,8 +98329,8 @@ __webpack_require__.r(__webpack_exports__);
           var item = response['data']['item'];
           vm.makeToast("Item ", item.name + ' update.', 'success');
         }
-      })["catch"](function (response) {
-        vm.makeToast("Error", 'The item cannot be updated!!!', 'danger');
+      })["catch"](function (error) {
+        vm.makeToast("Inventory", error.response.data.message, "danger");
       });
     }
   }
@@ -98416,41 +98416,56 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   actions: {
-    replaceInvoiceById: function replaceInvoiceById(context, _ref2) {
-      var invoiceId = _ref2.invoiceId,
-          newInvoice = _ref2.newInvoice;
+    updateInvoice: function updateInvoice(context, _ref2) {
+      var newInvoice = _ref2.newInvoice;
+      var invoiceIndex = context.getters.getInvoiceIndex(newInvoice.id);
+      context.commit("REPLACE_INVOICE", {
+        invoiceIndex: invoiceIndex,
+        newInvoice: newInvoice
+      });
+    },
+    // Usar updateInvoice en lugar de este???
+    replaceInvoiceById: function replaceInvoiceById(context, _ref3) {
+      var invoiceId = _ref3.invoiceId,
+          newInvoice = _ref3.newInvoice;
       var invoiceIndex = context.getters.getInvoiceIndex(invoiceId);
       context.commit("REPLACE_INVOICE", {
         invoiceIndex: invoiceIndex,
         newInvoice: newInvoice
       });
     },
-    generateInvoice: function generateInvoice(context, _ref3) {
-      var vm = _ref3.vm,
-          reservation = _ref3.reservation;
+    generateInvoice: function generateInvoice(context, _ref4) {
+      var vm = _ref4.vm,
+          reservation = _ref4.reservation;
       //axios.post("/invoices/" + reservation.id, {
       axios.post("/reservations/" + reservation.id, {
         reservation: reservation,
         _method: "put"
-      }).then(function (response) {})["catch"](function (response) {});
-    },
-    // Marca una factura como pagada. (Status/Payment Method)
-    payInvoice: function payInvoice(context, _ref4) {
-      var vm = _ref4.vm,
-          invoice = _ref4.invoice;
-      axios.post("/invoices/" + invoice.id + "/pay", {
-        invoice: invoice,
-        _method: "put"
-      }).then(function (response) {
-        vm.makeToast("Invoice updated", 'The invoice has been paid.', 'success');
-      })["catch"](function (response) {
-        vm.makeToast("Invoice update error", ' The invoice cannot be paid', 'danger');
+      }).then(function (response) {})["catch"](function (error) {
+        vm.makeToast("Invoice", error.response.data.message, "danger");
       });
     },
     // Marca una factura como pagada. (Status/Payment Method)
-    recalculateInvoice: function recalculateInvoice(context, _ref5) {
+    payInvoice: function payInvoice(context, _ref5) {
       var vm = _ref5.vm,
           invoice = _ref5.invoice;
+      axios.post("/invoices/" + invoice.id, {
+        invoice: invoice,
+        _method: "put"
+      }).then(function (response) {
+        var newInvoice = response["data"]["invoice"];
+        context.dispatch("updateInvoice", {
+          newInvoice: newInvoice
+        });
+        vm.makeToast("Invoice updated", 'The invoice has been paid.', 'success');
+      })["catch"](function (error) {
+        vm.makeToast("Invoice", error.response.data.message, "danger");
+      });
+    },
+    // Marca una factura como pagada. (Status/Payment Method)
+    recalculateInvoice: function recalculateInvoice(context, _ref6) {
+      var vm = _ref6.vm,
+          invoice = _ref6.invoice;
       axios.post("/invoices/" + invoice.id + '/recalc', {
         invoice: invoice,
         _method: "post"
@@ -98458,8 +98473,8 @@ __webpack_require__.r(__webpack_exports__);
         var newInvoice = response["data"]["invoice"];
         invoice.total = newInvoice.total;
         vm.makeToast("Invoice updated", 'The invoice has been updated.', 'success');
-      })["catch"](function (response) {
-        vm.makeToast("Invoice update error", ' The invoice cannot be updated', 'danger');
+      })["catch"](function (error) {
+        vm.makeToast("Invoice", error.response.data.message, "danger");
       });
     }
   }
@@ -98547,7 +98562,7 @@ __webpack_require__.r(__webpack_exports__);
         status: newStatus
       });
     },
-    addReservation: function addReservation(context, _ref4) {
+    storeReservation: function storeReservation(context, _ref4) {
       var vm = _ref4.vm,
           reservation = _ref4.reservation;
       axios.post("/reservations/", {
@@ -98567,10 +98582,8 @@ __webpack_require__.r(__webpack_exports__);
           vm.$store.commit("guest/ADD_GUEST", newGuest);
           vm.makeToast("Reservation", "Reservation created.", "success");
         }
-      })["catch"](function (response) {
-        //if(response.data.message.length)
-        //let message = response["data"]["message"]
-        vm.makeToast("Reservation", "Something went wrong.", "danger");
+      })["catch"](function (error) {
+        vm.makeToast("Reservation", error.response.data.message, "danger");
       });
     },
     cancel: function cancel(context, _ref5) {
@@ -98586,8 +98599,8 @@ __webpack_require__.r(__webpack_exports__);
           status: newReservation.status
         });
         vm.makeToast("Reservation", "Reservation cancelled.", "success");
-      })["catch"](function (response) {
-        vm.makeToast("Reservation", "Something went wrong.", "danger");
+      })["catch"](function (error) {
+        vm.makeToast("Reservation", error.response.data.message, "danger");
       });
     }
   }
@@ -98641,7 +98654,7 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   actions: {
-    addRoom: function addRoom(context, _ref) {
+    storeRoom: function storeRoom(context, _ref) {
       var vm = _ref.vm,
           room = _ref.room;
       axios.post("/rooms/", {
@@ -98658,11 +98671,11 @@ __webpack_require__.r(__webpack_exports__);
           context.commit('ADD_ROOM', newRoom);
           vm.makeToast("Room ", newRoom.name + ' has been added.', 'success');
         }
-      })["catch"](function (response) {
-        vm.makeToast("Error", 'The room' + room.name + 'cannot be added!', 'danger');
+      })["catch"](function (error) {
+        vm.makeToast("Room", error.response.data.message, "danger");
       });
     },
-    editRoom: function editRoom(context, _ref2) {
+    updateRoom: function updateRoom(context, _ref2) {
       var vm = _ref2.vm,
           room = _ref2.room;
       axios.post("/rooms/" + room.id, {
@@ -98678,8 +98691,8 @@ __webpack_require__.r(__webpack_exports__);
 
           vm.makeToast("Room updated", 'The room ' + room.name + ' has been updated.', 'success');
         }
-      })["catch"](function (response) {
-        vm.makeToast("Error", 'The room cannot be updated!', 'danger');
+      })["catch"](function (error) {
+        vm.makeToast("Room", error.response.data.message, "danger");
       });
     }
   }
@@ -98726,7 +98739,7 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   actions: {
-    addService: function addService(context, _ref) {
+    storeService: function storeService(context, _ref) {
       var vm = _ref.vm,
           service = _ref.service;
       axios.post("/services/", {
@@ -98743,11 +98756,11 @@ __webpack_require__.r(__webpack_exports__);
           context.commit('ADD_SERVICE', newService);
           vm.makeToast("Service added", 'The service ' + newService.name + ' has been added.', 'success');
         }
-      })["catch"](function (response) {
-        vm.makeToast("Service error", 'The service cannot be added.', 'danger');
+      })["catch"](function (error) {
+        vm.makeToast("Services", error.response.data.message, "danger");
       });
     },
-    editService: function editService(context, _ref2) {
+    updateService: function updateService(context, _ref2) {
       var vm = _ref2.vm,
           service = _ref2.service;
       axios.post("/services/" + service.id, {
@@ -98763,8 +98776,8 @@ __webpack_require__.r(__webpack_exports__);
 
           vm.makeToast("Service updated", 'The service ' + service.name + ' has been updated.', 'success');
         }
-      })["catch"](function (response) {
-        vm.makeToast("Service error", 'The service cannot be updated.', 'danger');
+      })["catch"](function (error) {
+        vm.makeToast("Services", error.response.data.message, "danger");
       });
     }
   }
@@ -98805,7 +98818,7 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   actions: {
-    editSetting: function editSetting(context, _ref) {
+    updateSetting: function updateSetting(context, _ref) {
       var vm = _ref.vm,
           setting = _ref.setting;
       axios.post("/settings/" + setting.id, {
@@ -98821,8 +98834,8 @@ __webpack_require__.r(__webpack_exports__);
 
           vm.makeToast("Setting updated", "The setting " + setting.name + " has been updated.", "success");
         }
-      })["catch"](function (response) {
-        vm.makeToast("Error", "The setting cannot be updated!", "danger");
+      })["catch"](function (error) {
+        vm.makeToast("Settings", error.response.data.message, "danger");
       });
     }
   }

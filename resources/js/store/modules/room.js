@@ -24,7 +24,7 @@ export default ({
         },
     },
     actions: {
-        addRoom(context, { vm, room }) {
+        storeRoom(context, { vm, room }) {
             axios.post("/rooms/", {
                 room
             }).then(function (response) {
@@ -39,11 +39,11 @@ export default ({
                     context.commit('ADD_ROOM', newRoom);
                     vm.makeToast("Room ", newRoom.name + ' has been added.', 'success');
                 }
-            }).catch(function (response) {
-                vm.makeToast("Error", 'The room' + room.name + 'cannot be added!', 'danger');
+            }).catch(function (error) {
+                vm.makeToast("Room", error.response.data.message, "danger");
             });
         },
-        editRoom(context, { vm, room }) {
+        updateRoom(context, { vm, room }) {
             axios.post("/rooms/" + room.id, {
                 room,
                 _method: "put"
@@ -57,8 +57,8 @@ export default ({
                     vm.makeToast("Room updated", 'The room ' + room.name
                         + ' has been updated.', 'success');
                 }
-            }).catch(function (response) {
-                vm.makeToast("Error", 'The room cannot be updated!', 'danger');
+            }).catch(function (error) {
+                vm.makeToast("Room", error.response.data.message, "danger");
             });
         },
     }
