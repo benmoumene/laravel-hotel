@@ -25,6 +25,12 @@ class ReservationController extends Controller
             $request
         );
 
+        if (!$reservation) {
+            return response()->json([
+                "message" => "Room occupied in these dates."
+            ], 500);
+        }
+
         return response()->json($reservation, 200);
     }
 
