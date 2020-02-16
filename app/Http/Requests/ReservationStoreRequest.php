@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ReservationRequest extends FormRequest
+class ReservationStoreRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,7 +25,7 @@ class ReservationRequest extends FormRequest
     {
         return [
             'reservation.from_date' => 'required|date|date_format:Y-m-d',
-            //'reservation.to_date' => 'date|date_format:Y-m-d H:i:s',
+            'reservation.to_date' => 'date|date_format:Y-m-d',
             'reservation.customer.id' => 'required|numeric',
             'reservation.room.id' => 'required|numeric',
         ];

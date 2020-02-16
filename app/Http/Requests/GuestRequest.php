@@ -24,7 +24,9 @@ class GuestRequest extends FormRequest
     public function rules()
     {
         return [
-            'guest.id' => 'required|numeric',
+            'guest.reservation_id' => 'required|numeric',
+            //'guest.check_in' => 'date|date_format:Y-m-d H:i:s',
+            //'guest.check_out' => 'date|date_format:Y-m-d H:i:s',
         ];
     }
 }
