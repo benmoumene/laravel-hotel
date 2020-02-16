@@ -14,11 +14,7 @@ class SettingService
 
         // Actualizamos la Setting mediante mass assigment
         $setting->fill($request->input("setting"));
-
-        // Guardado y en caso de fallo retornar false ...
-        if (!$setting->save()) {
-            return false;
-        }
+        $setting->save();
 
         // Todo fue bien, se devuelve el modelo (Setting)
         return $setting;

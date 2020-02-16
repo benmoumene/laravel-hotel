@@ -26,19 +26,12 @@ class HotelServicesService
         // Buscamos El Service
         $service = Service::findOrFail($serviceId);
 
-        // El Service no existe ...
-        if (!$service) {
-            return false;
-        }
-
         // La service exista, asignamos nuevos valores mediante mass
         // assigment.
         $service->fill($request->input("service"));
         
         // Guardamos y en caso de error retornamos false
-        if (!$service->save()) {
-            return false;
-        }
+        $service->save();
 
         // Se devuelve el modelo Service al haber guardado con exito.
         return $service;

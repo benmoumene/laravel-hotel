@@ -24,14 +24,6 @@ class SettingController extends Controller
             $settingId
         );
 
-        // En caso de error al actualizar ...
-        if (!$setting) {
-            return response()->json([
-                "error" => "Setting cannot be updated."
-            ], 500);
-        }
-        
-                
         // Todo fue bien!
         return response()->json(['setting' => $setting], 200);
     }

@@ -11,10 +11,8 @@ class RoomService
         // Creamos una nueva Room usando los datos recibidos
         $room = new Room($request->input("room"));
         
-        // Guardamos y en caso de error retornamos false
-        if (!$room->save()) {
-            return false;
-        }
+        // Guardamos los cambios
+        $room->save();
 
         // Se devuelve el modelo Room, ya que todo fue bien.
         return $room;
@@ -30,10 +28,8 @@ class RoomService
         // assigment.
         $room->fill($request->input("room"));
         
-        // Guardamos y en caso de error retornamos false
-        if (!$room->save()) {
-            return false;
-        }
+        // Guardamos los cambios
+        $room->save();
 
         // Se devuelve el modelo Room al haber guardado con exito.
         return $room;

@@ -45,10 +45,8 @@ class ProfileService
             $profile->fill($request->input("profile"));
         }
         
-        // Si no se consigue guardar retorna false
-        if (!$profile->save()) {
-            return false;
-        }
+        // Guardamos los cambios
+        $profile->save();
 
         // Devolvemos el perfil con los nuevos datos.
         return $profile;
