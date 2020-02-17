@@ -44,10 +44,10 @@ class HotelController extends Controller
         // Huespedes
         $data['guests'] = Guest::with(
             ['customer:customers.id', 'room:rooms.id']
-        )->get();
+        )->get()->keyBy("id");
 
         // Reservas
-        $data['reservations'] = Reservation::with('guest:guests.id')->get();
+        $data['reservations'] = Reservation::get()->keyBy("id");
 
         // Servicios
         $data['services'] = Service::get()->keyBy("id");
@@ -55,10 +55,10 @@ class HotelController extends Controller
         $data['settings'] = Setting::get()->keyBy("id");
         $data['inventory'] = InventoryItem::get()->keyBy("id");
         // Facturas con el cliente asociado.
-        $data['invoices'] = Invoice::with(['customer:customers.id'])->get();
+        $data['invoices'] = Invoice::with(['customer:customers.id'])->get()->keyBy("id");
         //$data['invoices'] = Invoice::get();
         // Servicios facturados
-        $data['billed_services'] = BilledService::get();
+        $data['billed_services'] = BilledService::get()->keyBy("id");
         return response()->json($data, 200);
     }
 }

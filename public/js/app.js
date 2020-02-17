@@ -5019,7 +5019,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     isCurrentGuest: "guest/isCurrentGuest",
     getCustomer: "customer/getCustomer",
     getRoom: "room/getRoom",
-    getGuest: "guest/getGuest",
+    getGuest: "guest/getGuestWithReservationId",
     getInvoice: "invoice/getInvoiceFromReservation"
   }), {
     filteredReservations: function filteredReservations() {
@@ -5035,7 +5035,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           var reservation = _step.value;
           reservation.customer = this.getCustomer(reservation.customer_id);
           reservation.room = this.getRoom(reservation.room_id);
-          reservation.guest = this.getGuest(reservation.guest.id);
+          reservation.guest = this.getGuest(reservation.id);
           reservation.invoice = this.getInvoice(reservation.id);
           newArray.push(reservation);
         }

@@ -268,7 +268,7 @@ export default {
       isCurrentGuest: "guest/isCurrentGuest",
       getCustomer: "customer/getCustomer",
       getRoom: "room/getRoom",
-      getGuest: "guest/getGuest",
+      getGuest: "guest/getGuestWithReservationId",
       getInvoice: "invoice/getInvoiceFromReservation"
     }),
     filteredReservations() {
@@ -276,7 +276,7 @@ export default {
       for (const reservation of this.reservations) {
         reservation.customer = this.getCustomer(reservation.customer_id);
         reservation.room = this.getRoom(reservation.room_id);
-        reservation.guest = this.getGuest(reservation.guest.id);
+        reservation.guest = this.getGuest(reservation.id);
         reservation.invoice = this.getInvoice(reservation.id);
         newArray.push(reservation);
       }
