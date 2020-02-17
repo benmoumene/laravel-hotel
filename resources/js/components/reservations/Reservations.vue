@@ -263,10 +263,8 @@ export default {
     }
   },
   computed: {
-    ...mapState({
-      reservations: state => state.reservation.reservations
-    }),
     ...mapGetters({
+      reservations: "reservation/getReservations",
       isCurrentGuest: "guest/isCurrentGuest",
       getCustomer: "customer/getCustomer",
       getRoom: "room/getRoom",

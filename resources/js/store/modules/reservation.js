@@ -1,24 +1,20 @@
 export default ({
     namespaced: true,
     state: {
-        reservations: [],
+        reservations: {},
         ready: false
     },
     getters: {
         getReservation: (state, getters) => (reservationId) => {
-            return getters.getReservationById(reservationId);
+            return state.reservations[reservationId];
         },
-        getReservationById: (state, getters) => (reservationId) => {
-            return state.reservations.find(
-                reservation => reservation.id === reservationId
+        getReservations: (state, getters) => {
+            return Object.keys(state.reservations).map(
+                id => state.reservations[id]
             );
         },
-        getReservationIndex: (state, getters) => (reservationId) => {
-            return state.reservations.findIndex(
-                reservation => reservation.id === reservationId);
-        },
         getCustomerReservations: (state, getters) => (customerId) => {
-            return state.reservations.filter(
+            return getters.getReservations.filter(
                 reservation => reservation.customer_id === customerId
             );
         },
@@ -32,26 +28,21 @@ export default ({
             state.ready = true;
         },
         ADD_RESERVATION(state, reservation) {
-            state.reservations.push(reservation);
+            //state.reservations.push(reservation);
+            Vue.set(state.reservations, reservation.id, reservation);
         },
-        DELETE_RESERVATION(state, index) {
-            Vue.delete(state.reservations, index);
+        UPDATE_RESERVATION(state, reservation) {
+            //state.reservations.push(reservation);
+            Vue.set(state.reservations, reservation.id, reservation);
         },
-        SET_RESERVATION_STATUS(state, { reservationIndex, status }) {
-            Vue.set(state.reservations[reservationIndex], 'status', status);
-        },
-        REPLACE_RESERVATION(state, { reservationIndex, newReservation }) {
-            Vue.set(state.reservations, reservationIndex, newReservation);
+        DELETE_RESERVATION(state, id) {
+            //Vue.delete(state.reservations, index);
+            Vue.delete(state.reservations, id);
         },
     },
     actions: {
-        updateStatus(context, { reservationId, newStatus }) {
-            var index = context.state.reservations.findIndex(
-                reservation => reservation.id === reservationId);
-            context.commit("SET_RESERVATION_STATUS", {
-                reservationIndex: index,
-                status: newStatus
-            });
+        updateReservation(context, newReservation) {
+            context.commit("UPDATE_RESERVATION", newReservation);
         },
         storeReservation(context, { vm, reservation }) {
             axios.post("/reservations/", {
@@ -79,12 +70,7 @@ export default ({
                 reservation,
             }).then(function (response) {
                 let newReservation = response["data"]["reservation"];
-                let reservationIndex = context.getters.getReservationIndex(reservation.id);
-
-                context.commit("SET_RESERVATION_STATUS", {
-                    reservationIndex,
-                    status: newReservation.status
-                });
+                context.commit("UPDATE_RESERVATION", newReservation);
                 vm.makeToast("Reservation", "Reservation cancelled.", "success");
             }).catch(function (error) {
                 vm.makeToast("Reservation", "Something went wrong.", "danger");

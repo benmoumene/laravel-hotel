@@ -143,7 +143,7 @@ export default ({
                     context.commit("UPDATE_GUEST", newGuest);
 
                     let newReservation = response["data"]["reservation"];
-                    vm.$store.dispatch("reservation/updateStatus", {
+                    vm.$store.dispatch("reservation/updateReservation", {
                         reservationId: newReservation.id,
                         newStatus: newReservation.status
                     });

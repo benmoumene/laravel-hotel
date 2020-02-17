@@ -5014,11 +5014,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       });
     }
   },
-  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])({
-    reservations: function reservations(state) {
-      return state.reservation.reservations;
-    }
-  }), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])({
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])({
+    reservations: "reservation/getReservations",
     isCurrentGuest: "guest/isCurrentGuest",
     getCustomer: "customer/getCustomer",
     getRoom: "room/getRoom",
@@ -98205,7 +98202,7 @@ __webpack_require__.r(__webpack_exports__);
 
           context.commit("UPDATE_GUEST", newGuest);
           var newReservation = response["data"]["reservation"];
-          vm.$store.dispatch("reservation/updateStatus", {
+          vm.$store.dispatch("reservation/updateReservation", {
             reservationId: newReservation.id,
             newStatus: newReservation.status
           });
@@ -98438,32 +98435,23 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   namespaced: true,
   state: {
-    reservations: [],
+    reservations: {},
     ready: false
   },
   getters: {
     getReservation: function getReservation(state, getters) {
       return function (reservationId) {
-        return getters.getReservationById(reservationId);
+        return state.reservations[reservationId];
       };
     },
-    getReservationById: function getReservationById(state, getters) {
-      return function (reservationId) {
-        return state.reservations.find(function (reservation) {
-          return reservation.id === reservationId;
-        });
-      };
-    },
-    getReservationIndex: function getReservationIndex(state, getters) {
-      return function (reservationId) {
-        return state.reservations.findIndex(function (reservation) {
-          return reservation.id === reservationId;
-        });
-      };
+    getReservations: function getReservations(state, getters) {
+      return Object.keys(state.reservations).map(function (id) {
+        return state.reservations[id];
+      });
     },
     getCustomerReservations: function getCustomerReservations(state, getters) {
       return function (customerId) {
-        return state.reservations.filter(function (reservation) {
+        return getters.getReservations.filter(function (reservation) {
           return reservation.customer_id === customerId;
         });
       };
@@ -98478,37 +98466,25 @@ __webpack_require__.r(__webpack_exports__);
       state.ready = true;
     },
     ADD_RESERVATION: function ADD_RESERVATION(state, reservation) {
-      state.reservations.push(reservation);
+      //state.reservations.push(reservation);
+      Vue.set(state.reservations, reservation.id, reservation);
     },
-    DELETE_RESERVATION: function DELETE_RESERVATION(state, index) {
-      Vue["delete"](state.reservations, index);
+    UPDATE_RESERVATION: function UPDATE_RESERVATION(state, reservation) {
+      //state.reservations.push(reservation);
+      Vue.set(state.reservations, reservation.id, reservation);
     },
-    SET_RESERVATION_STATUS: function SET_RESERVATION_STATUS(state, _ref) {
-      var reservationIndex = _ref.reservationIndex,
-          status = _ref.status;
-      Vue.set(state.reservations[reservationIndex], 'status', status);
-    },
-    REPLACE_RESERVATION: function REPLACE_RESERVATION(state, _ref2) {
-      var reservationIndex = _ref2.reservationIndex,
-          newReservation = _ref2.newReservation;
-      Vue.set(state.reservations, reservationIndex, newReservation);
+    DELETE_RESERVATION: function DELETE_RESERVATION(state, id) {
+      //Vue.delete(state.reservations, index);
+      Vue["delete"](state.reservations, id);
     }
   },
   actions: {
-    updateStatus: function updateStatus(context, _ref3) {
-      var reservationId = _ref3.reservationId,
-          newStatus = _ref3.newStatus;
-      var index = context.state.reservations.findIndex(function (reservation) {
-        return reservation.id === reservationId;
-      });
-      context.commit("SET_RESERVATION_STATUS", {
-        reservationIndex: index,
-        status: newStatus
-      });
+    updateReservation: function updateReservation(context, newReservation) {
+      context.commit("UPDATE_RESERVATION", newReservation);
     },
-    storeReservation: function storeReservation(context, _ref4) {
-      var vm = _ref4.vm,
-          reservation = _ref4.reservation;
+    storeReservation: function storeReservation(context, _ref) {
+      var vm = _ref.vm,
+          reservation = _ref.reservation;
       axios.post("/reservations/", {
         reservation: reservation
       }).then(function (response) {
@@ -98530,18 +98506,14 @@ __webpack_require__.r(__webpack_exports__);
         vm.makeToast("Reservation", error.response.data.message, "danger");
       });
     },
-    cancel: function cancel(context, _ref5) {
-      var vm = _ref5.vm,
-          reservation = _ref5.reservation;
+    cancel: function cancel(context, _ref2) {
+      var vm = _ref2.vm,
+          reservation = _ref2.reservation;
       axios.get("/reservations/" + reservation.id + "/cancel", {
         reservation: reservation
       }).then(function (response) {
         var newReservation = response["data"]["reservation"];
-        var reservationIndex = context.getters.getReservationIndex(reservation.id);
-        context.commit("SET_RESERVATION_STATUS", {
-          reservationIndex: reservationIndex,
-          status: newReservation.status
-        });
+        context.commit("UPDATE_RESERVATION", newReservation);
         vm.makeToast("Reservation", "Reservation cancelled.", "success");
       })["catch"](function (error) {
         vm.makeToast("Reservation", "Something went wrong.", "danger");
