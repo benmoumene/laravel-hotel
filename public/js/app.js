@@ -3562,8 +3562,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   },
   methods: {
     showCustomerInfo: function showCustomerInfo(customer) {
-      console.log(customer.id);
-      console.log(customer.first_name);
       this.selectedCustomer = customer;
       this.$bvModal.show("customer-edit-modal");
     },
