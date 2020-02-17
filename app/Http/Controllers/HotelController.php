@@ -53,8 +53,7 @@ class HotelController extends Controller
         $data['settings'] = Setting::get()->keyBy("id");
         $data['inventory'] = InventoryItem::get()->keyBy("id");
         // Facturas con el cliente asociado.
-        $data['invoices'] = Invoice::with(['customer:customers.id'])->get()->keyBy("id");
-        //$data['invoices'] = Invoice::get();
+        $data['invoices'] = Invoice::get()->keyBy("id");
         // Servicios facturados
         $data['billed_services'] = BilledService::get()->keyBy("id");
         return response()->json($data, 200);

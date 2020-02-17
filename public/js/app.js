@@ -98275,17 +98275,21 @@ __webpack_require__.r(__webpack_exports__);
         return state.invoices[invoiceId];
       };
     },
-    getCustomerInvoices: function getCustomerInvoices(state, getters) {
+    getCustomerInvoices: function getCustomerInvoices(state, getters, rootState, rootGetters) {
       return function (customerId) {
-        return getters.getInvoices.filter(function (invoice) {
-          return invoice.customer.id === customerId;
+        // Buscamos todas las reservas asociadas al cliente.
+        var customerReservations = rootGetters['reservation/getCustomerReservations'](customerId);
+        var customerInvoices = customerReservations.map(function (reservation) {
+          return getters.getInvoiceFromReservation(reservation.id);
         });
+        return customerInvoices;
       };
     },
     hasPendingInvoices: function hasPendingInvoices(state, getters) {
       return function (customerId) {
-        var invoices = getters.getInvoices.filter(function (invoice) {
-          return invoice.customer.id === customerId && invoice.status === 'pending';
+        var customerInvoices = getters.getCustomerInvoices(customerId);
+        var invoices = customerInvoices.filter(function (invoice) {
+          return invoice.status === 'pending';
         });
 
         if (invoices.length >= 1) {

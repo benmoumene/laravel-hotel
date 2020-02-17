@@ -17,15 +17,21 @@ export default ({
         getInvoice: (state, getters) => (invoiceId) => {
             return state.invoices[invoiceId];
         },
-        getCustomerInvoices: (state, getters) => (customerId) => {
-            return getters.getInvoices.filter(
-                invoice => invoice.customer.id === customerId
+        getCustomerInvoices: (state, getters, rootState, rootGetters) => (customerId) => {
+            // Buscamos todas las reservas asociadas al cliente.
+            let customerReservations = rootGetters['reservation/getCustomerReservations'](customerId);
+
+            let customerInvoices = customerReservations.map(
+                reservation => getters.getInvoiceFromReservation(reservation.id)
             );
+
+            return customerInvoices;
         },
         hasPendingInvoices: (state, getters) => (customerId) => {
-            let invoices = getters.getInvoices.filter(
-                invoice => invoice.customer.id === customerId
-                    && invoice.status === 'pending'
+            let customerInvoices = getters.getCustomerInvoices(customerId);
+
+            let invoices = customerInvoices.filter(
+                invoice => invoice.status === 'pending'
             );
 
             if (invoices.length >= 1) {
