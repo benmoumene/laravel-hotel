@@ -20,7 +20,7 @@ class CreateBilledServicesTable extends Migration
             $table->unsignedBigInteger('reservation_id');
             $table->unsignedBigInteger('service_id');
             // Fecha en la que se contrata el servicio
-            $table->timestamp('billed_on');
+            $table->dateTime('billed_on');
             // Determina si los gastos han sido incluidos ya en una factura
             $table->foreign('reservation_id')->references('id')->on('reservations');
             $table->foreign('service_id')->references('id')->on('services');
