@@ -99,12 +99,6 @@ export default {
     },
     selectRoom(room) {
       this.reservation.room = room;
-      //this.reservation.from_date = this.filter.from_date;
-      //this.reservation.to_date = this.filter.to_date;
-
-      //this.$emit("updateReservation", this.reservation);
-      //this.$store.commit("reservation/SET_RESERVATION", reservation);
-      //this.$store.dispatch("reservation/storeReservation", reservation);
     },
     isAvailabe(roomId) {
       var room = this.filteredRooms.find(room => room.id === roomId);
