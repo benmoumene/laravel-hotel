@@ -3592,7 +3592,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     isCurrentGuest: "guest/isCurrentGuest",
     customerInvoices: "invoice/getCustomerInvoices",
     hasPendingInvoices: "invoice/hasPendingInvoices",
-    getGuest: "guest/getGuestWithCustomerId",
     customers: "customer/getCustomers",
     customerReservations: "reservation/getCustomerReservations"
   }), {
@@ -98062,13 +98061,6 @@ __webpack_require__.r(__webpack_exports__);
         return state.guests[id];
       });
     },
-    getGuestWithCustomerId: function getGuestWithCustomerId(state, getters) {
-      return function (customerId) {
-        return getters.getGuests.find(function (guest) {
-          return guest.customer.id === customerId;
-        });
-      };
-    },
     getGuestWithReservationId: function getGuestWithReservationId(state, getters) {
       return function (reservationId) {
         return getters.getGuests.find(function (guest) {
@@ -98076,63 +98068,22 @@ __webpack_require__.r(__webpack_exports__);
         });
       };
     },
-    isCurrentGuest: function isCurrentGuest(state, getters) {
+    isCurrentGuest: function isCurrentGuest(state, getters, rootState, rootGetters) {
       return function (customerId) {
-        // Si check_in != null && check_out == null
-        // Buscar reserva
-        // si reserva == 'active' es current guest
-        var guest = getters.getGuestWithCustomerId(customerId);
+        // Buscamos todas las reservas asociadas al cliente.
+        var customerReservations = rootGetters['reservation/getCustomerReservations'](customerId); // Para cada reserva comprobamos que esten activas, que tenga fecha de entrada
+        // pero no tenga fecha de salida.
 
-        if (typeof guest === 'undefined') {
-          return false;
-        }
+        var rows = customerReservations.filter(function (reservation) {
+          var guest = getters.getGuestWithReservationId(reservation.id);
+          return guest.check_in !== null && guest.check_out === null && reservation.status === "active";
+        });
 
-        if (guest.check_in !== null && guest.check_out === null) {
+        if (rows.length > 0) {
           return true;
         }
 
         return false;
-      };
-    },
-    isCurrentGuestasdasd: function isCurrentGuestasdasd(state, getters) {
-      return function (customerId) {
-        // Si check_in != null && check_out == null
-        // Buscar reserva
-        // si reserva == 'active' es current guest
-        var now = new Date();
-        var dd = String(now.getDate()).padStart(2, "0");
-        var mm = String(now.getMonth() + 1).padStart(2, "0");
-        var yyyy = now.getFullYear();
-        var hour = now.getHours();
-        var minutes = now.getMinutes();
-        var seconds = now.getSeconds();
-        var date = yyyy + "-" + mm + "-" + dd;
-        var time = hour + ":" + minutes + ":" + seconds; //2020-01-13 19:59:12
-
-        var datetime = date + " " + time;
-        var rows = getters.getGuests.filter(function (guest) {
-          if (guest.customer.id !== customerId) {
-            return false;
-          }
-
-          if (guest.check_out === null) {
-            if (datetime >= guest.check_in) {
-              return true;
-            }
-          } else {
-            if (datetime >= guest.check_in && datetime <= guest.check_out) {
-              return true;
-            }
-          }
-
-          return false;
-        });
-
-        if (rows.length == 0) {
-          return false;
-        }
-
-        return true;
       };
     }
   },

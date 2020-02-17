@@ -13,74 +13,26 @@ export default ({
                 id => state.guests[id]
             );
         },
-        getGuestWithCustomerId: (state, getters) => (customerId) => {
-            return getters.getGuests.find(
-                guest => guest.customer.id === customerId
-            );
-        },
         getGuestWithReservationId: (state, getters) => (reservationId) => {
             return getters.getGuests.find(
                 guest => guest.reservation_id === reservationId
             );
         },
-        isCurrentGuest: (state, getters) => (customerId) => {
-            // Si check_in != null && check_out == null
-            // Buscar reserva
-            // si reserva == 'active' es current guest
-            let guest = getters.getGuestWithCustomerId(customerId);
+        isCurrentGuest: (state, getters, rootState, rootGetters) => (customerId) => {
+            // Buscamos todas las reservas asociadas al cliente.
+            let customerReservations = rootGetters['reservation/getCustomerReservations'](customerId);
 
-            if (typeof guest === 'undefined') {
-                return false;
-            }
+            // Para cada reserva comprobamos que esten activas, que tenga fecha de entrada
+            // pero no tenga fecha de salida.
+            let rows = customerReservations.filter(function (reservation) {
+                let guest = getters.getGuestWithReservationId(reservation.id);
+                return guest.check_in !== null && guest.check_out === null && reservation.status === "active";
+            });
 
-            if (guest.check_in !== null && guest.check_out === null) {
+            if (rows.length > 0) {
                 return true;
             }
-
             return false;
-        },
-        isCurrentGuestasdasd: (state, getters) => (customerId) => {
-            // Si check_in != null && check_out == null
-            // Buscar reserva
-            // si reserva == 'active' es current guest
-            var now = new Date();
-            var dd = String(now.getDate()).padStart(2, "0");
-            var mm = String(now.getMonth() + 1).padStart(2, "0");
-            var yyyy = now.getFullYear();
-            var hour = now.getHours();
-            var minutes = now.getMinutes();
-            var seconds = now.getSeconds();
-
-            var date = yyyy + "-" + mm + "-" + dd;
-            var time = hour + ":" + minutes + ":" + seconds;
-            //2020-01-13 19:59:12
-            var datetime = date + " " + time;
-
-            var rows = getters.getGuests.filter(
-                function (guest) {
-                    if (guest.customer.id !== customerId) {
-                        return false;
-                    }
-
-                    if (guest.check_out === null) {
-                        if (datetime >= guest.check_in) {
-                            return true;
-                        }
-                    } else {
-                        if (datetime >= guest.check_in &&
-                            datetime <= guest.check_out) {
-                            return true;
-                        }
-                    }
-                    return false;
-                }
-            );
-
-            if (rows.length == 0) {
-                return false;
-            }
-
-            return true;
         },
     },
     mutations: {

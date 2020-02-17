@@ -212,7 +212,6 @@ export default {
       isCurrentGuest: "guest/isCurrentGuest",
       customerInvoices: "invoice/getCustomerInvoices",
       hasPendingInvoices: "invoice/hasPendingInvoices",
-      getGuest: "guest/getGuestWithCustomerId",
       customers: "customer/getCustomers",
       customerReservations: "reservation/getCustomerReservations"
     }),
