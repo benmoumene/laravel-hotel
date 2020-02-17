@@ -13,7 +13,8 @@ class Invoice extends Model
     ];
 
     protected $fillable = [
-        'reservation_id', "status", "payment_method"
+        'reservation_id', "status", "total",
+        "payment_method", "generated_on"
     ];
 
     // Genera la factura

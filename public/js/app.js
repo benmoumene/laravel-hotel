@@ -5207,11 +5207,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       return yyyy + "-" + mm + "-" + dd;
     },
     selectRoom: function selectRoom(room) {
-      this.reservation.room = room; //this.reservation.from_date = this.filter.from_date;
-      //this.reservation.to_date = this.filter.to_date;
-      //this.$emit("updateReservation", this.reservation);
-      //this.$store.commit("reservation/SET_RESERVATION", reservation);
-      //this.$store.dispatch("reservation/storeReservation", reservation);
+      this.reservation.room = room;
     },
     isAvailabe: function isAvailabe(roomId) {
       var room = this.filteredRooms.find(function (room) {
@@ -98440,10 +98436,12 @@ __webpack_require__.r(__webpack_exports__);
           }
 
           var newGuest = response["data"]["guest"];
-          var newReservation = response["data"]["reservation"]; // Comprobar si reservation lleva reservation.guest
+          var newReservation = response["data"]["reservation"];
+          var newInvoice = response.data.invoice; // Comprobar si reservation lleva reservation.guest
 
           context.commit("ADD_RESERVATION", newReservation);
           vm.$store.commit("guest/ADD_GUEST", newGuest);
+          vm.$store.commit("invoice/ADD_INVOICE", newInvoice);
           vm.makeToast("Reservation", "Reservation created.", "success");
         }
       })["catch"](function (error) {

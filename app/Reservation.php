@@ -12,7 +12,7 @@ class Reservation extends Model
     ];
 
     protected $fillable = [
-        "customer_id", "room_id", "from_date", "to_date"
+        "customer_id", "room_id", "from_date", "to_date", "status"
     ];
 
     public function expire()

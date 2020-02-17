@@ -10,6 +10,7 @@ class BilledServicesService
     {
         // Creamos un nuevo Service usando los datos recibidos
         $service = new BilledService($request->input("billed_service"));
+        $service->billed_on = date("Y-m-d H:i:s");
         
         // Guardamos y en caso de error retornamos false
         $service->save();

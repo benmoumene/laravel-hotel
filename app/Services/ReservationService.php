@@ -67,11 +67,23 @@ class ReservationService
             $reservation->save();
 
             // Creamos el guest asociado a la reserva
-            $guest = new Guest(["reservation_id" => $reservation->id]);
+            $guest = new Guest(
+                [
+                    "reservation_id" => $reservation->id,
+                    "check_in" => null,
+                    "check_out" => null
+                ]
+            );
             $guest->save();
 
             // Creamos la factura de la reserva
-            $invoice = new Invoice(["reservation_id" => $reservation->id]);
+            $invoice = new Invoice([
+                "reservation_id" => $reservation->id,
+                "status" => null,
+                "payment_method" => null,
+                "total" => null,
+                "generated_on" => null
+            ]);
             $invoice->save();
             
             // Realizar cambios
