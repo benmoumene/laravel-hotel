@@ -62,9 +62,9 @@
       <b-col
         cols="12"
         sm="1"
-        v-for="room in rooms"
+        v-for="room in filteredRooms"
         :key="room.id"
-        :class="['room', isAvailabe(room.id) ? 'bg-success' : 'bg-danger']"
+        :class="['room', isAvailable(room.id) ? 'bg-success' : 'bg-danger']"
         @click="selectRoom(room)"
       >{{room.name}}</b-col>
     </b-row>
@@ -83,8 +83,8 @@ export default {
         roomType: "single",
         hotelFloor: "1F"
       },
-      roomTypes: ["single", "double", "suite"],
-      hotelFloors: ["1F", "2F", "3F"],
+      roomTypes: ["Any", "common", "suite"],
+      hotelFloors: ["Any", "1F", "2F", "3F"],
       selectedRoom: {},
       selectedReservation: {}
     };
@@ -100,7 +100,7 @@ export default {
     selectRoom(room) {
       this.reservation.room = room;
     },
-    isAvailabe(roomId) {
+    isAvailable(roomId) {
       var room = this.filteredRooms.find(room => room.id === roomId);
       let fromDate = this.reservation.from_date;
       let toDate = this.reservation.to_date;
@@ -125,27 +125,6 @@ export default {
       }
       //console.log("disponible");
       return true;
-    },
-    applyFilters(room) {
-      if (
-        room.type == this.filter.roomType &&
-        room.floor == this.filter.hotelFloor
-      ) {
-        for (var reservation of room.reservations) {
-          /*
-          if (this.fromDate > reservation.from_date) {
-            if (reservation.to_date !== null && this.toDate !== null) {
-              if (this.toDate < reservation.to_date) {
-                return false;
-              }
-            }
-          }
-          */
-        }
-        return true;
-      }
-
-      return false;
     }
   },
   computed: {
@@ -153,8 +132,16 @@ export default {
       rooms: "room/getRooms",
       reservations: "reservation/getReservations"
     }),
-    filteredRooms: function() {
-      return this.rooms.filter(room => this.applyFilters(room));
+    filteredRooms() {
+      return this.rooms.filter(
+        room =>
+          (this.filter.hotelFloor === "Any"
+            ? true
+            : room.floor === this.filter.hotelFloor) &&
+          (this.filter.roomType === "Any"
+            ? true
+            : room.type === this.filter.roomType)
+      );
     }
   }
 };

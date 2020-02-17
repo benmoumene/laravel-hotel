@@ -5193,8 +5193,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         roomType: "single",
         hotelFloor: "1F"
       },
-      roomTypes: ["single", "double", "suite"],
-      hotelFloors: ["1F", "2F", "3F"],
+      roomTypes: ["Any", "common", "suite"],
+      hotelFloors: ["Any", "1F", "2F", "3F"],
       selectedRoom: {},
       selectedReservation: {}
     };
@@ -5211,7 +5211,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     selectRoom: function selectRoom(room) {
       this.reservation.room = room;
     },
-    isAvailabe: function isAvailabe(roomId) {
+    isAvailable: function isAvailable(roomId) {
       var room = this.filteredRooms.find(function (room) {
         return room.id === roomId;
       });
@@ -5229,46 +5229,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
       return true;
-    },
-    applyFilters: function applyFilters(room) {
-      if (room.type == this.filter.roomType && room.floor == this.filter.hotelFloor) {
-        var _iteratorNormalCompletion = true;
-        var _didIteratorError = false;
-        var _iteratorError = undefined;
-
-        try {
-          for (var _iterator = room.reservations[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-            /*
-            if (this.fromDate > reservation.from_date) {
-              if (reservation.to_date !== null && this.toDate !== null) {
-                if (this.toDate < reservation.to_date) {
-                  return false;
-                }
-              }
-            }
-            */
-
-            var reservation = _step.value;
-          }
-        } catch (err) {
-          _didIteratorError = true;
-          _iteratorError = err;
-        } finally {
-          try {
-            if (!_iteratorNormalCompletion && _iterator["return"] != null) {
-              _iterator["return"]();
-            }
-          } finally {
-            if (_didIteratorError) {
-              throw _iteratorError;
-            }
-          }
-        }
-
-        return true;
-      }
-
-      return false;
     }
   },
   computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])({
@@ -5279,7 +5239,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       var _this = this;
 
       return this.rooms.filter(function (room) {
-        return _this.applyFilters(room);
+        return (_this.filter.hotelFloor === "Any" ? true : room.floor === _this.filter.hotelFloor) && (_this.filter.roomType === "Any" ? true : room.type === _this.filter.roomType);
       });
     }
   })
@@ -76717,14 +76677,14 @@ var render = function() {
       _c(
         "b-row",
         { staticClass: "roomList mb-3" },
-        _vm._l(_vm.rooms, function(room) {
+        _vm._l(_vm.filteredRooms, function(room) {
           return _c(
             "b-col",
             {
               key: room.id,
               class: [
                 "room",
-                _vm.isAvailabe(room.id) ? "bg-success" : "bg-danger"
+                _vm.isAvailable(room.id) ? "bg-success" : "bg-danger"
               ],
               attrs: { cols: "12", sm: "1" },
               on: {
