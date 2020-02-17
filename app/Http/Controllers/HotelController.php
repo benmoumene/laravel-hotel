@@ -42,9 +42,7 @@ class HotelController extends Controller
         )->get()->keyBy("id");
         
         // Huespedes
-        $data['guests'] = Guest::with(
-            ['customer:customers.id', 'room:rooms.id']
-        )->get()->keyBy("id");
+        $data['guests'] = Guest::get()->keyBy("id");
 
         // Reservas
         $data['reservations'] = Reservation::get()->keyBy("id");
