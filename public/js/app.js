@@ -2219,10 +2219,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       return maintenanceRooms.length;
     },
     countGuests: function countGuests() {
-      return this.guests.length;
+      return this.guests.filter(function (guest) {
+        return guest.check_in !== null && guest.check_out === null;
+      }).length;
     },
     countReservations: function countReservations() {
-      return this.reservations.length;
+      return this.reservations.filter(function (reservation) {
+        return reservation.status === "active";
+      }).length;
     },
     countPendingInvoices: function countPendingInvoices() {
       var invoices = this.invoices.filter(function (invoice) {
@@ -3550,7 +3554,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         label: "Actions"
       }],
       currentPage: 1,
-      perPage: 5,
+      perPage: 15,
       pageOptions: [5, 10, 15],
       sortBy: "",
       sortDesc: false,

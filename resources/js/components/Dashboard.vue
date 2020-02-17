@@ -320,10 +320,14 @@ export default {
       return maintenanceRooms.length;
     },
     countGuests() {
-      return this.guests.length;
+      return this.guests.filter(
+        guest => guest.check_in !== null && guest.check_out === null
+      ).length;
     },
     countReservations() {
-      return this.reservations.length;
+      return this.reservations.filter(
+        reservation => reservation.status === "active"
+      ).length;
     },
     countPendingInvoices() {
       var invoices = this.invoices.filter(
