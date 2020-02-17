@@ -162,7 +162,7 @@ export default {
       this.currentPage = 1;
     },
     updateRoom(room) {
-      this.$store.dispatch("room/editRoom", { vm: this, room });
+      this.$store.dispatch("room/updateRoom", { vm: this, room });
     },
     makeToast(title, message, variant = "info") {
       this.$bvToast.toast(message, {

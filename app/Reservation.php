@@ -11,6 +11,18 @@ class Reservation extends Model
         'laravel_through_key'
     ];
 
+    public function expire()
+    {
+        $this->status = "expired";
+        return $this->save();
+    }
+
+    public function cancel()
+    {
+        $this->status = "cancelled";
+        return $this->save();
+    }
+
     public function customer()
     {
         return $this->belongsTo(

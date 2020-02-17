@@ -24,7 +24,7 @@ export default ({
         },
     },
     actions: {
-        addService(context, { vm, service }) {
+        storeService(context, { vm, service }) {
             axios.post("/services/", {
                 service
             }).then(function (response) {
@@ -40,11 +40,11 @@ export default ({
                     vm.makeToast("Service added", 'The service ' + newService.name
                         + ' has been added.', 'success');
                 }
-            }).catch(function (response) {
-                vm.makeToast("Service error", 'The service cannot be added.', 'danger');
+            }).catch(function (error) {
+                vm.makeToast("Services", "Something went wrong.", "danger");
             });
         },
-        editService(context, { vm, service }) {
+        updateService(context, { vm, service }) {
             axios.post("/services/" + service.id, {
                 service,
                 _method: "put"
@@ -58,8 +58,8 @@ export default ({
                     vm.makeToast("Service updated", 'The service ' + service.name
                         + ' has been updated.', 'success');
                 }
-            }).catch(function (response) {
-                vm.makeToast("Service error", 'The service cannot be updated.', 'danger');
+            }).catch(function (error) {
+                vm.makeToast("Services", "Something went wrong.", "danger");
             });
         },
     }

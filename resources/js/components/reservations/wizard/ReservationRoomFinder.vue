@@ -104,7 +104,7 @@ export default {
 
       //this.$emit("updateReservation", this.reservation);
       //this.$store.commit("reservation/SET_RESERVATION", reservation);
-      //this.$store.dispatch("reservation/addReservation", reservation);
+      //this.$store.dispatch("reservation/storeReservation", reservation);
     },
     isAvailabe(roomId) {
       var room = this.filteredRooms.find(room => room.id === roomId);

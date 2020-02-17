@@ -6,18 +6,21 @@ use App\Invoice;
 
 class InvoiceService
 {
-    private $error = "";
-
-    public function getError()
+    public function storeInvoice($request)
     {
-        return $this->error;
-    }
-
-    public function create($reservationId)
-    {
-        $invoice = new Invoice;
-        $invoice->reservation_id = $reservationId;
+        $invoice = new Invoice($request->input("invoice"));
+        // Guardamos los cambios
         $invoice->save();
+        
+        return $invoice;
+    }
+    
+    public function updateInvoice($request, $invoiceId)
+    {
+        $invoice = Invoice::find($invoiceId);
+        $invoice->fill($request->input("invoice"));
+        $invoice->save();
+
         return $invoice;
     }
 }

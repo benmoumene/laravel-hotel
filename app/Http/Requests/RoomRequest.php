@@ -26,6 +26,7 @@ class RoomRequest extends FormRequest
         return [
             'room.name' => 'required|string|max:30',
             'room.type' => 'required|string|max:30',
+            'room.size' => 'required|string|max:30',
             'room.floor' => 'required|string|max:30',
         ];
     }

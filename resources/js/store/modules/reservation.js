@@ -53,7 +53,7 @@ export default ({
                 status: newStatus
             });
         },
-        addReservation(context, { vm, reservation }) {
+        storeReservation(context, { vm, reservation }) {
             axios.post("/reservations/", {
                 reservation
             }).then(function (response) {
@@ -70,10 +70,8 @@ export default ({
                     vm.$store.commit("guest/ADD_GUEST", newGuest)
                     vm.makeToast("Reservation", "Reservation created.", "success");
                 }
-            }).catch(function (response) {
-                //if(response.data.message.length)
-                //let message = response["data"]["message"]
-                vm.makeToast("Reservation", "Something went wrong.", "danger");
+            }).catch(function (error) {
+                vm.makeToast("Reservation", error.response.data.message, "danger");
             });
         },
         cancel(context, { vm, reservation }) {
@@ -88,7 +86,7 @@ export default ({
                     status: newReservation.status
                 });
                 vm.makeToast("Reservation", "Reservation cancelled.", "success");
-            }).catch(function (response) {
+            }).catch(function (error) {
                 vm.makeToast("Reservation", "Something went wrong.", "danger");
             });
         },

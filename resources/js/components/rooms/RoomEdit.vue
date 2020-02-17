@@ -15,7 +15,7 @@ export default {
   name: "RoomEdit",
   methods: {
     update() {
-      this.$store.dispatch("room/editRoom", {
+      this.$store.dispatch("room/updateRoom", {
         vm: this,
         room: this.getRoom(this.roomId)
       });

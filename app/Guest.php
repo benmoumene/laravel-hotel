@@ -14,8 +14,22 @@ class Guest extends Model
     ];
 
     protected $fillable = [
-        'reservation_id'
+        "reservation_id", "check_in", "check_out"
     ];
+
+    public function checkIn()
+    {
+        // Asignamos la fecha actual como la entrada
+        $this->check_in = date('Y-m-d H:i:s');
+        return $this->save();
+    }
+
+    public function checkOut()
+    {
+        // Asignamos la fecha actual como la salida
+        $this->check_out = date('Y-m-d H:i:s');
+        return $this->save();
+    }
 
     // Guest es un cliente
     public function customer()
@@ -30,12 +44,11 @@ class Guest extends Model
         );
     }
 
-    // Reservas de este huesped
+    // Reserva de este huesped
     public function reservation()
     {
-        return $this->hasOne(
-            'App\Reservation',
-            'customer_id'
+        return $this->belongsTo(
+            'App\Reservation'
         );
     }
 

@@ -4,94 +4,42 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Auth;
-use App\Http\Requests\ReservationRequest;
+use App\Http\Requests\ReservationStoreRequest;
 use App\Reservation;
 use App\Guest;
 use App\Services\ReservationService;
-use App\Services\InvoiceService;
-use App\Services\GuestService;
 
 class ReservationController extends Controller
 {
-    public function __construct()
+    public function __construct(ReservationService $reservationService)
     {
         // Se necesita esta autentificado para llevar a cabo acciones
         $this->middleware('auth');
+        $this->reservationService = $reservationService;
     }
     
     // Metodo para crear reservas
-    public function store(ReservationRequest $request)
+    public function store(ReservationStoreRequest $request)
     {
-        // Servicios
-        $rs = new ReservationService;
-        $gs = new GuestService;
-        $is = new InvoiceService;
-
-        // Creamos la reserva
-        $reservation = $rs->create(
-            $request->input('reservation.customer.id'),
-            $request->input('reservation.room.id'),
-            $request->input('reservation.from_date'),
-            $request->input('reservation.to_date')
+        $reservation = $this->reservationService->storeReservation(
+            $request
         );
 
-        // Si no se puede hacer la reserva ...
         if (!$reservation) {
-            return response()->json(['message' =>
-                $rs->getError()], 500);
+            return response()->json([
+                "message" => "Room occupied in these dates."
+            ], 500);
         }
 
-        // Creamos el guest asociado a la reserva
-        $guest = $gs->create($reservation);
-
-        // Si no se puede registrar el huespued ...
-        if (!$guest) {
-            $reservation->delete();
-            $reservation->save();
-            return response()->json(['message' =>
-                $gs->getError()], 500);
-        }
-
-        $invoice = $is->create($reservation->id);
-        if (!$invoice) {
-            $guest->delete();
-            $reservation->delete();
-            return response()->json(['message' =>
-                $is->getError()], 500);
-        }
-
-        // Usar modelos para obtener la info ...
-        // $guest->with(['customer:id', 'room:id'])
-        $guest['customer'] = ['id' => $guest->customer()->first()->id];
-        $guest['room'] = ['id' => $guest->room()->first()->id];
-        $reservation['guest'] = ['id' => $guest->id];
-        $reservation['invoice'] = ['id' => $invoice->id];
-        $response = ['guest' => $guest,
-            'reservation' => $reservation,
-            'invoice' => $invoice
-        ];
-        return response()->json($response, 200);
+        return response()->json($reservation, 200);
     }
 
-    public function checkForExpiredReservations()
-    {
-    }
-
-    // Metodo para cancelar reservas
-    //public function updateCancel(Request $request, $reservationId)
-    //public function updateStatus(Request $request, $reservationId)
-    //agregar status en $request validations
     public function cancel(Request $request, $reservationId)
     {
-        // Servicios
-        $rs = new ReservationService;
-        $reservation = $rs->cancel($reservationId);
-
-        // En caso de fallo enviamos un error al cliente
-        if (!$reservation) {
-            return response()->json(['message' =>
-                $rs->getError()], 500);
-        }
+        $reservation = $this->reservationService->cancelReservation(
+            $request,
+            $reservationId
+        );
 
         return response()->json(['reservation' => $reservation], 200);
     }

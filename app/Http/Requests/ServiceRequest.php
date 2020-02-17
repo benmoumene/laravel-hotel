@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class GuestRequest extends FormRequest
+class ServiceRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,9 +24,9 @@ class GuestRequest extends FormRequest
     public function rules()
     {
         return [
-            'guest.reservation_id' => 'required|numeric',
-            //'guest.check_in' => 'date|date_format:Y-m-d H:i:s',
-            //'guest.check_out' => 'date|date_format:Y-m-d H:i:s',
+            'service.name' => 'required|string|max:30',
+            'service.cost' => 'required|numeric',
+            'service.comments' => 'required|string|max:30',
         ];
     }
 }

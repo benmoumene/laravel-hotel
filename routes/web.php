@@ -47,7 +47,6 @@ Route::get('/reservations/{id}/cancel', 'ReservationController@cancel');
 Route::post('/guests/{id}/checkin', 'GuestController@checkIn');
 // Salid de guest
 Route::post('/guests/{id}/checkout', 'GuestController@checkOut');
-
 // =============================================
 // ROOMS
 // =============================================
@@ -84,14 +83,12 @@ Route::delete('/inventory-items/{id}', 'InventoryController@destroy');
 // =============================================
 // Generar factura
 Route::post('/invoices', 'InvoiceController@store');
-// Pagar
-Route::put('/invoices/{id}/pay', 'InvoiceController@setAsPaid');
 // Recalcular
 Route::post('/invoices/{id}/recalc', 'InvoiceController@recalculate');
 // Actualizar factura
-//Route::put('/invoices/{id}', 'InvoiceController@update');
+Route::put('/invoices/{id}', 'InvoiceController@update');
 // Borrar factura
-Route::delete('/invoices/{id}', 'InvoiceController@destroy');
+//Route::delete('/invoices/{id}', 'InvoiceController@destroy');
 // =============================================
 
 // =============================================

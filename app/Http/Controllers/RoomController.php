@@ -6,65 +6,37 @@ use Illuminate\Http\Request;
 use Auth;
 use App\Room;
 use App\Http\Requests\RoomRequest;
+use App\Services\RoomService;
 
 class RoomController extends Controller
 {
-    public function __construct()
+    public function __construct(RoomService $roomService)
     {
-        // Se necesita esta autentificado para llevar a cabo acciones
         $this->middleware('auth');
+        $this->roomService = $roomService;
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+    // Metodo para gestionar los request de creacion (Room)
     public function store(RoomRequest $request)
     {
-        $currentUserId = Auth::user()->id;
-        $room = new Room;
-        $room->name = $request['room']['name'];
-        $room->type = $request['room']['type'];
-        $room->size = $request['room']['size'];
-        $room->floor = $request['room']['floor'];
-        $room->save();
-
-        $room['reservations'] = array();
+        // Utilizamos RoomService para la logica.
+        $room = $this->roomService->storeRoom($request);
         return response()->json(['room' => $room], 200);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    // Metodo para gestionar los request de actualizacion (Room)
     public function update(RoomRequest $request, $roomId)
     {
-        // ID del usuario logeado en la app
-        $currentUserId = Auth::user()->id;
-        $room = Room::where('id', $roomId)->first();
-        $room->name = $request['room']['name'];
-        $room->size = $request['room']['size'];
-        $room->type = $request['room']['type'];
-        $room->floor = $request['room']['floor'];
-        $room->save();
-                
+        // Utilizamos RoomService para la logica.
+        $room = $this->roomService->updateRoom($request, $roomId);
+
         // Devolvemos el json con el perfil y codigo 200
         return response()->json(['room' => $room], 200);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
-        //
+        // Pendiente de implementar
+        // Requerir role admin, los recepcionistas no pueden borrar
     }
 }

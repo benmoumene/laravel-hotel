@@ -14,7 +14,7 @@
       <b-form-group label-cols="12" label-cols-sm="4" label="Payment Method">
         <b-form-select
           cols="12"
-          v-model="invoice.payment_method"
+          v-model="payment_method"
           :options="{ '': 'Please select an option', 'cash': 'Cash', 'credit_card': 'Credit Card'}"
         ></b-form-select>
       </b-form-group>
@@ -35,6 +35,7 @@ export default {
   },
   data: function() {
     return {
+      payment_method: "",
       invoicex: { billed_services: [] }
     };
   },
@@ -48,10 +49,14 @@ export default {
       printWindow.close();
     },
     markAsPaid() {
-      this.invoice.status = "paid";
+      let invoiceCopy = this.invoice;
+      invoiceCopy.status = "paid";
+      invoiceCopy.payment_method = this.payment_method;
+
+      //this.invoice.status = "paid";
       this.$store.dispatch("invoice/payInvoice", {
         vm: this,
-        invoice: this.invoice
+        invoice: invoiceCopy
       });
     },
     recalculate() {

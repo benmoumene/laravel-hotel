@@ -12,6 +12,10 @@ class Invoice extends Model
         'laravel_through_key'
     ];
 
+    protected $fillable = [
+        'reservation_id', "status", "payment_method"
+    ];
+
     // Genera la factura
     public function generate()
     {
@@ -23,21 +27,10 @@ class Invoice extends Model
 
     public function totalDue()
     {
-        return $this->billedServices->sum('service.cost');
+        $invoice = Invoice::find($this->id);
+        return $invoice->billedServices->sum('service.cost');
     }
     
-    // SQL Original
-    //SELECT tCustomers.id, tReservations.id, tInvoices.id
-    //FROM customers AS tCustomers
-    //INNER JOIN reservations tReservations ON tCustomers.id = tReservations.customer_id
-    //INNER JOIN invoices tInvoices ON tInvoices.reservation_id = tReservations.id
-    //WHERE tInvoices.reservation_id IN (58, 59)
-    // ---------
-    // SQL Eloquent
-    //SELECT tCustomers.id, tReservations.id
-    //FROM customers AS tCustomers
-    //INNER JOIN reservations tReservations ON tCustomers.id = tReservations.customer_id
-    //WHERE tReservations.id IN (58, 59)
     public function customer()
     {
         return $this->hasOneThrough(

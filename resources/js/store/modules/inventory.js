@@ -15,7 +15,7 @@ export default ({
         },
     },
     actions: {
-        addItem(context, { vm, item }) {
+        storeItem(context, { vm, item }) {
             axios.post("/inventory-items/", {
                 item
             }).then(function (response) {
@@ -30,11 +30,11 @@ export default ({
                     context.commit('ADD_ITEM', newItem);
                     vm.makeToast("Item ", newItem.name + ' added.', 'success');
                 }
-            }).catch(function (response) {
-                vm.makeToast("Error", 'The item cannot be added!!!', 'danger');
+            }).catch(function (error) {
+                vm.makeToast("Inventory", "Something went wrong.", "danger");
             });
         },
-        editItem(context, { vm, item }) {
+        updateItem(context, { vm, item }) {
             axios.post("/inventory-items/" + item.id, {
                 item,
                 _method: "put"
@@ -49,8 +49,8 @@ export default ({
                     var item = response['data']['item'];
                     vm.makeToast("Item ", item.name + ' update.', 'success');
                 }
-            }).catch(function (response) {
-                vm.makeToast("Error", 'The item cannot be updated!!!', 'danger');
+            }).catch(function (error) {
+                vm.makeToast("Inventory", "Something went wrong.", "danger");
             });
         },
     }

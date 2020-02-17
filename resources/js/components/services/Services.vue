@@ -146,7 +146,7 @@ export default {
       });
     },
     updateService(service) {
-      this.$store.dispatch("service/editService", { vm: this, service });
+      this.$store.dispatch("service/updateService", { vm: this, service });
     },
     onFiltered(filteredItems) {
       this.filteredRows = filteredItems.length;

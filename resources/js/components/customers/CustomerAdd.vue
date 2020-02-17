@@ -71,7 +71,7 @@ export default {
   },
   methods: {
     add() {
-      this.$store.dispatch("customer/addCustomer", {
+      this.$store.dispatch("customer/storeCustomer", {
         vm: this,
         customer: this.customer
       });
