@@ -2205,18 +2205,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Dashboard",
   methods: {},
-  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])({
-    guests: function guests(state) {
-      return state.guest.guests;
-    },
-    reservations: function reservations(state) {
-      return state.reservation.reservations;
-    },
-    invoices: function invoices(state) {
-      return state.invoice.invoices;
-    }
-  }), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])({
-    rooms: "room/getRooms"
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])({
+    rooms: "room/getRooms",
+    guests: "guest/getGuests",
+    invoices: "invoice/getInvoices",
+    reservations: "reservation/getReservations"
   }), {
     countMaintenanceRooms: function countMaintenanceRooms() {
       var maintenanceRooms = this.rooms.filter( //room => room.status === "maintenance"

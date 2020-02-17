@@ -306,13 +306,11 @@ export default {
   name: "Dashboard",
   methods: {},
   computed: {
-    ...mapState({
-      guests: state => state.guest.guests,
-      reservations: state => state.reservation.reservations,
-      invoices: state => state.invoice.invoices
-    }),
     ...mapGetters({
-      rooms: "room/getRooms"
+      rooms: "room/getRooms",
+      guests: "guest/getGuests",
+      invoices: "invoice/getInvoices",
+      reservations: "reservation/getReservations"
     }),
     countMaintenanceRooms() {
       var maintenanceRooms = this.rooms.filter(
