@@ -80,19 +80,13 @@ class ReservationService
             // Si ocurre algun problema se borrara cualquier
             // cambio realizado en la DB
             \DB::rollback();
+            return false;
         }
 
-        // Usar modelos para obtener la info ...
-        // $guest->with(['customer:id', 'room:id'])
-        $guest['customer'] = ['id' => $guest->customer()->first()->id];
-        $guest['room'] = ['id' => $guest->room()->first()->id];
-        $reservation['guest'] = ['id' => $guest->id];
-        $reservation['invoice'] = ['id' => $invoice->id];
-        
         return [
-            'guest' => $guest,
             'reservation' => $reservation,
-            'invoice' => $invoice
+            'invoice' => $invoice,
+            'guest' => $guest,
         ];
     }
 
