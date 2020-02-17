@@ -56,9 +56,11 @@ export default ({
                     }
                     let newGuest = response["data"]["guest"];
                     let newReservation = response["data"]["reservation"];
+                    let newInvoice = response.data.invoice;
                     // Comprobar si reservation lleva reservation.guest
                     context.commit("ADD_RESERVATION", newReservation);
                     vm.$store.commit("guest/ADD_GUEST", newGuest)
+                    vm.$store.commit("invoice/ADD_INVOICE", newInvoice)
                     vm.makeToast("Reservation", "Reservation created.", "success");
                 }
             }).catch(function (error) {
