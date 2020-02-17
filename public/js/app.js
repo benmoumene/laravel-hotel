@@ -5215,10 +5215,18 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       var room = this.filteredRooms.find(function (room) {
         return room.id === roomId;
       });
+      var fromDate = this.reservation.from_date;
+      var toDate = this.reservation.to_date; // Buscamos reservas activas en la misma fecha
 
-      if (typeof room === "undefined") {
+      var reservations = this.reservations.find(function (reservation) {
+        return reservation.room_id === roomId && reservation.status === "active" && (fromDate >= reservation.from_date && fromDate <= reservation.to_date || toDate >= reservation.from_date && toDate <= reservation.to_date || fromDate <= reservation.from_date && toDate >= reservation.to_date);
+      }); // SI existen reservas activas en la misma fecha, no esta disponible
+
+      if (typeof reservations !== "undefined") {
+        //console.log("no disponible");
         return false;
-      }
+      } //console.log("disponible");
+
 
       return true;
     },
@@ -5264,7 +5272,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     }
   },
   computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])({
-    rooms: "room/getRooms"
+    rooms: "room/getRooms",
+    reservations: "reservation/getReservations"
   }), {
     filteredRooms: function filteredRooms() {
       var _this = this;

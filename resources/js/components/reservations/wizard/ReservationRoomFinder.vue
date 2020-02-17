@@ -102,10 +102,28 @@ export default {
     },
     isAvailabe(roomId) {
       var room = this.filteredRooms.find(room => room.id === roomId);
+      let fromDate = this.reservation.from_date;
+      let toDate = this.reservation.to_date;
 
-      if (typeof room === "undefined") {
+      // Buscamos reservas activas en la misma fecha
+      let reservations = this.reservations.find(
+        reservation =>
+          reservation.room_id === roomId &&
+          reservation.status === "active" &&
+          ((fromDate >= reservation.from_date &&
+            fromDate <= reservation.to_date) ||
+            (toDate >= reservation.from_date &&
+              toDate <= reservation.to_date) ||
+            (fromDate <= reservation.from_date &&
+              toDate >= reservation.to_date))
+      );
+
+      // SI existen reservas activas en la misma fecha, no esta disponible
+      if (typeof reservations !== "undefined") {
+        //console.log("no disponible");
         return false;
       }
+      //console.log("disponible");
       return true;
     },
     applyFilters(room) {
@@ -132,7 +150,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      rooms: "room/getRooms"
+      rooms: "room/getRooms",
+      reservations: "reservation/getReservations"
     }),
     filteredRooms: function() {
       return this.rooms.filter(room => this.applyFilters(room));
