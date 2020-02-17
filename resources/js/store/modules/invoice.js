@@ -1,30 +1,29 @@
 export default ({
     namespaced: true,
     state: {
-        invoices: [],
+        invoices: {},
     },
     getters: {
-        getInvoiceById: (state, getters) => (invoiceId) => {
-            return state.invoices.find(invoice => invoice.id === invoiceId);
-        },
-        getInvoiceIndex: (state, getters) => (invoiceId) => {
-            return state.invoices.findIndex(invoice => invoice.id === invoiceId);
+        getInvoices: (state) => {
+            return Object.keys(state.invoices).map(
+                id => state.invoices[id]
+            );
         },
         getInvoiceFromReservation: (state, getters) => (reservationId) => {
-            return state.invoices.find(
+            return getters.getInvoices.find(
                 invoice => invoice.reservation_id === reservationId
             );
         },
         getInvoice: (state, getters) => (invoiceId) => {
-            return getters.getInvoiceById(invoiceId);
+            return state.invoices[invoiceId];
         },
         getCustomerInvoices: (state, getters) => (customerId) => {
-            return state.invoices.filter(
+            return getters.getInvoices.filter(
                 invoice => invoice.customer.id === customerId
             );
         },
         hasPendingInvoices: (state, getters) => (customerId) => {
-            let invoices = state.invoices.filter(
+            let invoices = getters.getInvoices.filter(
                 invoice => invoice.customer.id === customerId
                     && invoice.status === 'pending'
             );
@@ -35,7 +34,7 @@ export default ({
             return false;
         },
         countPendingInvoices: (state, getters) => {
-            return state.invoices.filter(
+            return getters.getInvoices.filter(
                 invoice => invoice.status === 'pending'
             ).length;
         },
@@ -44,26 +43,17 @@ export default ({
         SET_INVOICES(state, invoices) {
             state.invoices = invoices;
         },
-        REPLACE_INVOICE(state, { invoiceIndex, newInvoice }) {
-            Vue.set(state.invoices, invoiceIndex, newInvoice);
+        ADD_INVOICE(state, invoice) {
+            Vue.set(state.invoices, invoice.id, invoice);
+        },
+        UPDATE_INVOICE(state, invoice) {
+            //state.invoices[invoice.id].total = invoice.total;
+            Vue.set(state.invoices, invoice.id, invoice);
         },
     },
     actions: {
-        updateInvoice(context, { newInvoice }) {
-            let invoiceIndex = context.getters.getInvoiceIndex(newInvoice.id);
-            context.commit("REPLACE_INVOICE", {
-                invoiceIndex,
-                newInvoice
-            });
-        },
-        // Usar updateInvoice en lugar de este???
-        replaceInvoiceById(context, { invoiceId, newInvoice }) {
-            let invoiceIndex = context.getters.getInvoiceIndex(invoiceId);
-            context.commit("REPLACE_INVOICE", {
-                invoiceIndex,
-                newInvoice
-            });
-
+        updateInvoice(context, newInvoice) {
+            context.commit("UPDATE_INVOICE", newInvoice);
         },
         generateInvoice(context, { vm, reservation }) {
             //axios.post("/invoices/" + reservation.id, {
@@ -82,9 +72,7 @@ export default ({
                 _method: "put"
             }).then(function (response) {
                 let newInvoice = response["data"]["invoice"];
-                context.dispatch("updateInvoice", {
-                    newInvoice
-                });
+                context.commit("UPDATE_INVOICE", newInvoice);
                 vm.makeToast("Invoice updated", 'The invoice has been paid.', 'success');
             }).catch(function (error) {
                 vm.makeToast("Invoice", "Something went wrong.", "danger");
@@ -97,7 +85,7 @@ export default ({
                 _method: "post"
             }).then(function (response) {
                 let newInvoice = response["data"]["invoice"];
-                invoice.total = newInvoice.total;
+                context.commit("UPDATE_INVOICE", newInvoice);
                 vm.makeToast("Invoice updated", 'The invoice has been updated.', 'success');
             }).catch(function (error) {
                 vm.makeToast("Invoice", "Something went wrong.", "danger");

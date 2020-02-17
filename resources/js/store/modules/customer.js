@@ -8,10 +8,9 @@ export default ({
             return state.customers[customerId];
         },
         getCustomers: (state) => {
-            const customersArray = Object.keys(state.customers).map(
+            return Object.keys(state.customers).map(
                 id => state.customers[id]
             );
-            return customersArray;
         },
     },
     mutations: {

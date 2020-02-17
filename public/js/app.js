@@ -2696,7 +2696,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   }), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])({
     getService: "service/getService",
     getCustomer: "customer/getCustomer",
-    getBilledServices: "billedservice/getBilledServices",
+    getBilledServicesFromReservation: "billedservice/getBilledServicesFromReservation",
     getReservation: "reservation/getReservation",
     getGuestWithReservationId: "guest/getGuestWithReservationId",
     getSettingValue: "setting/getSettingValue",
@@ -2824,10 +2824,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   },
   computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])({
     getService: "service/getService",
-    getBilledServices: "billedservice/getBilledServices"
+    getBilledServicesFromReservation: "billedservice/getBilledServicesFromReservation"
   }), {
     billedServices: function billedServices() {
-      return this.getBilledServices(this.reservationId);
+      return this.getBilledServicesFromReservation(this.reservationId);
     },
     totalRows: function totalRows() {
       return this.billedServices.length;
@@ -4095,9 +4095,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])(["settings"]), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])({
     getService: "service/getService",
     getCustomer: "customer/getCustomer",
-    getBilledServices: "billedservice/getBilledServices",
+    getBilledServicesFromReservation: "billedservice/getBilledServicesFromReservation",
     getReservation: "reservation/getReservation",
-    getGuestWithReservationId: "guest/getGuestWithReservationId",
+    getGuest: "guest/getGuestWithReservationId",
     getSettingValue: "setting/getSettingValue",
     getInvoice: "invoice/getInvoice",
     getRoom: "room/getRoom"
@@ -4115,7 +4115,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       return reservation;
     },
     guest: function guest() {
-      var guest = this.getGuestWithReservationId(this.invoice.reservation_id);
+      var guest = this.getGuest(this.invoice.reservation_id);
 
       if (typeof guest === "undefined") {
         //return { id: 0, from_date: "", to_date: "" };
@@ -4144,7 +4144,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       return room;
     },
     billedServices: function billedServices() {
-      var services = this.getBilledServices(this.reservation.id);
+      var services = this.getBilledServicesFromReservation(this.reservation.id);
 
       if (typeof services === "undefined") {
         return [];
@@ -4440,10 +4440,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.currentPage = 1;
     }
   },
-  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])({
-    invoices: function invoices(state) {
-      return state.invoice.invoices;
-    }
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])({
+    invoices: "invoice/getInvoices"
   }), {
     sortOptions: function sortOptions() {
       // Create an options list from our fields
@@ -4690,7 +4688,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   }), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])({
     getCustomer: "customer/getCustomer",
     getRoom: "room/getRoom",
-    getGuest: "guest/getGuestWithReservationId",
     getReservation: "reservation/getReservation"
   }), {
     getReservationId: function getReservationId() {
@@ -6493,9 +6490,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
       return false;
     }
-  }),
-  components: {},
-  mounted: function mounted() {}
+  })
 });
 
 /***/ }),
@@ -97895,33 +97890,32 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   namespaced: true,
   state: {
-    billedServices: []
+    billedServices: {}
   },
   getters: {
-    getBilledServices: function getBilledServices(state, getters) {
-      return function (reservationId) {
-        return state.billedServices.filter(function (service) {
-          return service.reservation_id === reservationId;
-        });
-      };
+    getBilledServices: function getBilledServices(state) {
+      return Object.keys(state.billedServices).map(function (id) {
+        return state.billedServices[id];
+      });
     },
-    getBilledServiceIndex: function getBilledServiceIndex(state, getters) {
-      return function (serviceId) {
-        return state.billedServices.findIndex(function (service) {
-          return service.id === serviceId;
+    getBilledServicesFromReservation: function getBilledServicesFromReservation(state, getters) {
+      return function (reservationId) {
+        return getters.getBilledServices.filter(function (service) {
+          return service.reservation_id === reservationId;
         });
       };
     }
   },
   mutations: {
     ADD_SERVICE: function ADD_SERVICE(state, service) {
-      state.billedServices.push(service);
+      //state.billedServices.push(service);
+      Vue.set(state.billedServices, service.id, service);
     },
     SET_BILLED_SERVICES: function SET_BILLED_SERVICES(state, billed_services) {
       state.billedServices = billed_services;
     },
-    REMOVE_SERVICE: function REMOVE_SERVICE(state, index) {
-      Vue["delete"](state.billedServices, index);
+    REMOVE_SERVICE: function REMOVE_SERVICE(state, id) {
+      Vue["delete"](state.billedServices, id);
     }
   },
   actions: {
@@ -97948,9 +97942,8 @@ __webpack_require__.r(__webpack_exports__);
       axios.post("/billed-services/" + id, {
         _method: "delete"
       }).then(function (response) {
-        var index = context.getters.getBilledServiceIndex(id);
         vm.makeToast("Billed service has been removed.", 'success');
-        context.commit('REMOVE_SERVICE', index);
+        context.commit('REMOVE_SERVICE', id);
       })["catch"](function (error) {
         vm.makeToast("Billed Service", "Something went wrong.", "danger");
       });
@@ -97981,10 +97974,9 @@ __webpack_require__.r(__webpack_exports__);
       };
     },
     getCustomers: function getCustomers(state) {
-      var customersArray = Object.keys(state.customers).map(function (id) {
+      return Object.keys(state.customers).map(function (id) {
         return state.customers[id];
       });
-      return customersArray;
     }
   },
   mutations: {
@@ -98060,39 +98052,30 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   namespaced: true,
   state: {
-    guests: []
+    guests: {}
   },
   getters: {
-    getGuest: function getGuest(state, getters) {
-      return function (customerId) {
-        return getters.getGuestById(customerId);
+    getGuest: function getGuest(state) {
+      return function (guestId) {
+        return state.guests[guestId];
       };
+    },
+    getGuests: function getGuests(state) {
+      return Object.keys(state.guests).map(function (id) {
+        return state.guests[id];
+      });
     },
     getGuestWithCustomerId: function getGuestWithCustomerId(state, getters) {
       return function (customerId) {
-        return state.guests.find(function (guest) {
+        return getters.getGuests.find(function (guest) {
           return guest.customer.id === customerId;
-        });
-      };
-    },
-    getGuestIndex: function getGuestIndex(state, getters) {
-      return function (guestId) {
-        return state.guests.findIndex(function (guest) {
-          return guest.id === guestId;
         });
       };
     },
     getGuestWithReservationId: function getGuestWithReservationId(state, getters) {
       return function (reservationId) {
-        return state.guests.find(function (guest) {
+        return getters.getGuests.find(function (guest) {
           return guest.reservation_id === reservationId;
-        });
-      };
-    },
-    getGuestById: function getGuestById(state, getters) {
-      return function (guestId) {
-        return state.guests.find(function (guest) {
-          return guest.id === guestId;
         });
       };
     },
@@ -98130,7 +98113,7 @@ __webpack_require__.r(__webpack_exports__);
         var time = hour + ":" + minutes + ":" + seconds; //2020-01-13 19:59:12
 
         var datetime = date + " " + time;
-        var rows = state.guests.filter(function (guest) {
+        var rows = getters.getGuests.filter(function (guest) {
           if (guest.customer.id !== customerId) {
             return false;
           }
@@ -98173,18 +98156,16 @@ __webpack_require__.r(__webpack_exports__);
       Vue.set(state.guests[guestIndex], 'check_out', checkOut);
     },
     ADD_GUEST: function ADD_GUEST(state, guest) {
-      state.guests.push(guest);
+      Vue.set(state.guests, guest.id, guest);
     },
-    REPLACE_GUEST: function REPLACE_GUEST(state, _ref3) {
-      var guestIndex = _ref3.guestIndex,
-          newGuest = _ref3.newGuest;
-      Vue.set(state.guests, guestIndex, newGuest);
+    UPDATE_GUEST: function UPDATE_GUEST(state, guest) {
+      Vue.set(state.guests, guest.id, guest);
     }
   },
   actions: {
-    checkIn: function checkIn(context, _ref4) {
-      var vm = _ref4.vm,
-          reservation = _ref4.reservation;
+    checkIn: function checkIn(context, _ref3) {
+      var vm = _ref3.vm,
+          reservation = _ref3.reservation;
       axios.post("/guests/" + reservation.guest.id + "/checkin", {
         guest: reservation.guest
       }).then(function (response) {
@@ -98196,24 +98177,19 @@ __webpack_require__.r(__webpack_exports__);
           } // Nuevos datos del guest
 
 
-          var checkIn = response["data"]["guest"]['check_in']; // Buscamos el index del guest
+          var newGuest = response.data.guest; // Llevamos a cabo la modificacion
 
-          var guestIndex = context.getters.getGuestIndex(reservation.guest.id); // Llevamos a cabo la modificacion
+          context.commit("UPDATE_GUEST", newGuest); // Mostramos un mensaje
 
-          context.commit("SET_CHECK_IN", {
-            guestIndex: guestIndex,
-            checkIn: checkIn
-          }); // Mostramos un mensaje
-
-          vm.makeToast("Check In", "Guest check in " + checkIn, "success");
+          vm.makeToast("Check In", "Guest check in " + newGuest.check_in, "success");
         }
       })["catch"](function (error) {
         vm.makeToast("Guest", "Something went wrong.", "danger");
       });
     },
-    checkOut: function checkOut(context, _ref5) {
-      var vm = _ref5.vm,
-          reservation = _ref5.reservation;
+    checkOut: function checkOut(context, _ref4) {
+      var vm = _ref4.vm,
+          reservation = _ref4.reservation;
       axios.post("/guests/" + reservation.guest.id + "/checkout", {
         guest: reservation.guest
       }).then(function (response) {
@@ -98225,26 +98201,18 @@ __webpack_require__.r(__webpack_exports__);
           } // Nuevos datos del guest
 
 
-          var checkOut = response["data"]["guest"]['check_out'];
-          var newReservation = response["data"]["reservation"]; // Buscamos el index del guest
+          var newGuest = response.data.guest; // Llevamos a cabo la modificacion
 
-          var guestIndex = context.getters.getGuestIndex(reservation.guest.id); // Llevamos a cabo la modificacion
-
-          context.commit("SET_CHECK_OUT", {
-            guestIndex: guestIndex,
-            checkOut: checkOut
-          });
+          context.commit("UPDATE_GUEST", newGuest);
+          var newReservation = response["data"]["reservation"];
           vm.$store.dispatch("reservation/updateStatus", {
             reservationId: newReservation.id,
             newStatus: newReservation.status
           });
           var newInvoice = response["data"]["invoice"];
-          vm.$store.dispatch("invoice/replaceInvoiceById", {
-            invoiceId: newInvoice.id,
-            newInvoice: newInvoice
-          }); // Mostramos un mensaje
+          vm.$store.dispatch("invoice/updateInvoice", newInvoice); // Mostramos un mensaje
 
-          vm.makeToast("Check Out", "Guest check out " + checkOut, "success");
+          vm.makeToast("Check Out", "Guest check out " + newGuest.check_out, "success");
         }
       })["catch"](function (error) {
         vm.makeToast("Guest", "Something went wrong.", "danger");
@@ -98350,45 +98318,36 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   namespaced: true,
   state: {
-    invoices: []
+    invoices: {}
   },
   getters: {
-    getInvoiceById: function getInvoiceById(state, getters) {
-      return function (invoiceId) {
-        return state.invoices.find(function (invoice) {
-          return invoice.id === invoiceId;
-        });
-      };
-    },
-    getInvoiceIndex: function getInvoiceIndex(state, getters) {
-      return function (invoiceId) {
-        return state.invoices.findIndex(function (invoice) {
-          return invoice.id === invoiceId;
-        });
-      };
+    getInvoices: function getInvoices(state) {
+      return Object.keys(state.invoices).map(function (id) {
+        return state.invoices[id];
+      });
     },
     getInvoiceFromReservation: function getInvoiceFromReservation(state, getters) {
       return function (reservationId) {
-        return state.invoices.find(function (invoice) {
+        return getters.getInvoices.find(function (invoice) {
           return invoice.reservation_id === reservationId;
         });
       };
     },
     getInvoice: function getInvoice(state, getters) {
       return function (invoiceId) {
-        return getters.getInvoiceById(invoiceId);
+        return state.invoices[invoiceId];
       };
     },
     getCustomerInvoices: function getCustomerInvoices(state, getters) {
       return function (customerId) {
-        return state.invoices.filter(function (invoice) {
+        return getters.getInvoices.filter(function (invoice) {
           return invoice.customer.id === customerId;
         });
       };
     },
     hasPendingInvoices: function hasPendingInvoices(state, getters) {
       return function (customerId) {
-        var invoices = state.invoices.filter(function (invoice) {
+        var invoices = getters.getInvoices.filter(function (invoice) {
           return invoice.customer.id === customerId && invoice.status === 'pending';
         });
 
@@ -98400,7 +98359,7 @@ __webpack_require__.r(__webpack_exports__);
       };
     },
     countPendingInvoices: function countPendingInvoices(state, getters) {
-      return state.invoices.filter(function (invoice) {
+      return getters.getInvoices.filter(function (invoice) {
         return invoice.status === 'pending';
       }).length;
     }
@@ -98409,34 +98368,21 @@ __webpack_require__.r(__webpack_exports__);
     SET_INVOICES: function SET_INVOICES(state, invoices) {
       state.invoices = invoices;
     },
-    REPLACE_INVOICE: function REPLACE_INVOICE(state, _ref) {
-      var invoiceIndex = _ref.invoiceIndex,
-          newInvoice = _ref.newInvoice;
-      Vue.set(state.invoices, invoiceIndex, newInvoice);
+    ADD_INVOICE: function ADD_INVOICE(state, invoice) {
+      Vue.set(state.invoices, invoice.id, invoice);
+    },
+    UPDATE_INVOICE: function UPDATE_INVOICE(state, invoice) {
+      //state.invoices[invoice.id].total = invoice.total;
+      Vue.set(state.invoices, invoice.id, invoice);
     }
   },
   actions: {
-    updateInvoice: function updateInvoice(context, _ref2) {
-      var newInvoice = _ref2.newInvoice;
-      var invoiceIndex = context.getters.getInvoiceIndex(newInvoice.id);
-      context.commit("REPLACE_INVOICE", {
-        invoiceIndex: invoiceIndex,
-        newInvoice: newInvoice
-      });
+    updateInvoice: function updateInvoice(context, newInvoice) {
+      context.commit("UPDATE_INVOICE", newInvoice);
     },
-    // Usar updateInvoice en lugar de este???
-    replaceInvoiceById: function replaceInvoiceById(context, _ref3) {
-      var invoiceId = _ref3.invoiceId,
-          newInvoice = _ref3.newInvoice;
-      var invoiceIndex = context.getters.getInvoiceIndex(invoiceId);
-      context.commit("REPLACE_INVOICE", {
-        invoiceIndex: invoiceIndex,
-        newInvoice: newInvoice
-      });
-    },
-    generateInvoice: function generateInvoice(context, _ref4) {
-      var vm = _ref4.vm,
-          reservation = _ref4.reservation;
+    generateInvoice: function generateInvoice(context, _ref) {
+      var vm = _ref.vm,
+          reservation = _ref.reservation;
       //axios.post("/invoices/" + reservation.id, {
       axios.post("/reservations/" + reservation.id, {
         reservation: reservation,
@@ -98446,32 +98392,30 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     // Marca una factura como pagada. (Status/Payment Method)
-    payInvoice: function payInvoice(context, _ref5) {
-      var vm = _ref5.vm,
-          invoice = _ref5.invoice;
+    payInvoice: function payInvoice(context, _ref2) {
+      var vm = _ref2.vm,
+          invoice = _ref2.invoice;
       axios.post("/invoices/" + invoice.id, {
         invoice: invoice,
         _method: "put"
       }).then(function (response) {
         var newInvoice = response["data"]["invoice"];
-        context.dispatch("updateInvoice", {
-          newInvoice: newInvoice
-        });
+        context.commit("UPDATE_INVOICE", newInvoice);
         vm.makeToast("Invoice updated", 'The invoice has been paid.', 'success');
       })["catch"](function (error) {
         vm.makeToast("Invoice", "Something went wrong.", "danger");
       });
     },
     // Marca una factura como pagada. (Status/Payment Method)
-    recalculateInvoice: function recalculateInvoice(context, _ref6) {
-      var vm = _ref6.vm,
-          invoice = _ref6.invoice;
+    recalculateInvoice: function recalculateInvoice(context, _ref3) {
+      var vm = _ref3.vm,
+          invoice = _ref3.invoice;
       axios.post("/invoices/" + invoice.id + '/recalc', {
         invoice: invoice,
         _method: "post"
       }).then(function (response) {
         var newInvoice = response["data"]["invoice"];
-        invoice.total = newInvoice.total;
+        context.commit("UPDATE_INVOICE", newInvoice);
         vm.makeToast("Invoice updated", 'The invoice has been updated.', 'success');
       })["catch"](function (error) {
         vm.makeToast("Invoice", "Something went wrong.", "danger");

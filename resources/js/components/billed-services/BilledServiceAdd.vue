@@ -59,7 +59,8 @@ export default {
     ...mapGetters({
       getService: "service/getService",
       getCustomer: "customer/getCustomer",
-      getBilledServices: "billedservice/getBilledServices",
+      getBilledServicesFromReservation:
+        "billedservice/getBilledServicesFromReservation",
       getReservation: "reservation/getReservation",
       getGuestWithReservationId: "guest/getGuestWithReservationId",
       getSettingValue: "setting/getSettingValue",

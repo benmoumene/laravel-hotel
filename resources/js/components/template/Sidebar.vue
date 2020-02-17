@@ -158,9 +158,7 @@ export default {
       }
       return false;
     }
-  },
-  components: {},
-  mounted() {}
+  }
 };
 </script>
 <style scoped>

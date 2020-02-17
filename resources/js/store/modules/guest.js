@@ -2,28 +2,26 @@
 export default ({
     namespaced: true,
     state: {
-        guests: [],
+        guests: {},
     },
     getters: {
-        getGuest: (state, getters) => (customerId) => {
-            return getters.getGuestById(customerId);
+        getGuest: (state) => (guestId) => {
+            return state.guests[guestId];
+        },
+        getGuests: (state) => {
+            return Object.keys(state.guests).map(
+                id => state.guests[id]
+            );
         },
         getGuestWithCustomerId: (state, getters) => (customerId) => {
-            return state.guests.find(
+            return getters.getGuests.find(
                 guest => guest.customer.id === customerId
             );
         },
-        getGuestIndex: (state, getters) => (guestId) => {
-            return state.guests.findIndex(
-                guest => guest.id === guestId);
-        },
         getGuestWithReservationId: (state, getters) => (reservationId) => {
-            return state.guests.find(
+            return getters.getGuests.find(
                 guest => guest.reservation_id === reservationId
             );
-        },
-        getGuestById: (state, getters) => (guestId) => {
-            return state.guests.find(guest => guest.id === guestId);
         },
         isCurrentGuest: (state, getters) => (customerId) => {
             // Si check_in != null && check_out == null
@@ -58,7 +56,7 @@ export default ({
             //2020-01-13 19:59:12
             var datetime = date + " " + time;
 
-            var rows = state.guests.filter(
+            var rows = getters.getGuests.filter(
                 function (guest) {
                     if (guest.customer.id !== customerId) {
                         return false;
@@ -98,10 +96,10 @@ export default ({
             Vue.set(state.guests[guestIndex], 'check_out', checkOut);
         },
         ADD_GUEST(state, guest) {
-            state.guests.push(guest);
+            Vue.set(state.guests, guest.id, guest);
         },
-        REPLACE_GUEST(state, { guestIndex, newGuest }) {
-            Vue.set(state.guests, guestIndex, newGuest);
+        UPDATE_GUEST(state, guest) {
+            Vue.set(state.guests, guest.id, guest);
         },
     },
     actions: {
@@ -116,16 +114,13 @@ export default ({
                         return;
                     }
                     // Nuevos datos del guest
-                    let checkIn = response["data"]["guest"]['check_in'];
-
-                    // Buscamos el index del guest
-                    let guestIndex = context.getters.getGuestIndex(reservation.guest.id);
+                    let newGuest = response.data.guest;
 
                     // Llevamos a cabo la modificacion
-                    context.commit("SET_CHECK_IN", { guestIndex, checkIn });
+                    context.commit("UPDATE_GUEST", newGuest);
 
                     // Mostramos un mensaje
-                    vm.makeToast("Check In", "Guest check in " + checkIn, "success");
+                    vm.makeToast("Check In", "Guest check in " + newGuest.check_in, "success");
                 }
             }).catch(function (error) {
                 vm.makeToast("Guest", "Something went wrong.", "danger");
@@ -143,27 +138,21 @@ export default ({
                     }
 
                     // Nuevos datos del guest
-                    let checkOut = response["data"]["guest"]['check_out'];
-                    let newReservation = response["data"]["reservation"];
-
-                    // Buscamos el index del guest
-                    let guestIndex = context.getters.getGuestIndex(reservation.guest.id);
+                    let newGuest = response.data.guest;
                     // Llevamos a cabo la modificacion
-                    context.commit("SET_CHECK_OUT", { guestIndex, checkOut });
+                    context.commit("UPDATE_GUEST", newGuest);
 
+                    let newReservation = response["data"]["reservation"];
                     vm.$store.dispatch("reservation/updateStatus", {
                         reservationId: newReservation.id,
                         newStatus: newReservation.status
                     });
 
                     let newInvoice = response["data"]["invoice"];
-                    vm.$store.dispatch("invoice/replaceInvoiceById", {
-                        invoiceId: newInvoice.id,
-                        newInvoice
-                    });
+                    vm.$store.dispatch("invoice/updateInvoice", newInvoice);
 
                     // Mostramos un mensaje
-                    vm.makeToast("Check Out", "Guest check out " + checkOut, "success");
+                    vm.makeToast("Check Out", "Guest check out " + newGuest.check_out, "success");
                 }
             }).catch(function (error) {
                 vm.makeToast("Guest", "Something went wrong.", "danger");

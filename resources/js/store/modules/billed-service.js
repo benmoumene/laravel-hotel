@@ -2,29 +2,30 @@
 export default ({
     namespaced: true,
     state: {
-        billedServices: [],
+        billedServices: {},
     },
     getters: {
-        getBilledServices: (state, getters) => (reservationId) => {
-            return state.billedServices.filter(service =>
-                service.reservation_id === reservationId
+        getBilledServices: (state) => {
+            return Object.keys(state.billedServices).map(
+                id => state.billedServices[id]
             );
         },
-        getBilledServiceIndex: (state, getters) => (serviceId) => {
-            return state.billedServices.findIndex(
-                service => service.id === serviceId
+        getBilledServicesFromReservation: (state, getters) => (reservationId) => {
+            return getters.getBilledServices.filter(service =>
+                service.reservation_id === reservationId
             );
         },
     },
     mutations: {
         ADD_SERVICE(state, service) {
-            state.billedServices.push(service);
+            //state.billedServices.push(service);
+            Vue.set(state.billedServices, service.id, service);
         },
         SET_BILLED_SERVICES(state, billed_services) {
             state.billedServices = billed_services;
         },
-        REMOVE_SERVICE(state, index) {
-            Vue.delete(state.billedServices, index);
+        REMOVE_SERVICE(state, id) {
+            Vue.delete(state.billedServices, id);
         },
     },
     actions: {
@@ -46,9 +47,8 @@ export default ({
             axios.post("/billed-services/" + id, {
                 _method: "delete"
             }).then(function (response) {
-                var index = context.getters.getBilledServiceIndex(id);
                 vm.makeToast("Billed service has been removed.", 'success');
-                context.commit('REMOVE_SERVICE', index);
+                context.commit('REMOVE_SERVICE', id);
             }).catch(function (error) {
                 vm.makeToast("Billed Service", "Something went wrong.", "danger");
             });

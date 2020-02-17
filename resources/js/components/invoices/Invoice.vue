@@ -130,9 +130,10 @@ export default {
     ...mapGetters({
       getService: "service/getService",
       getCustomer: "customer/getCustomer",
-      getBilledServices: "billedservice/getBilledServices",
+      getBilledServicesFromReservation:
+        "billedservice/getBilledServicesFromReservation",
       getReservation: "reservation/getReservation",
-      getGuestWithReservationId: "guest/getGuestWithReservationId",
+      getGuest: "guest/getGuestWithReservationId",
       getSettingValue: "setting/getSettingValue",
       getInvoice: "invoice/getInvoice",
       getRoom: "room/getRoom"
@@ -149,7 +150,7 @@ export default {
       return reservation;
     },
     guest() {
-      var guest = this.getGuestWithReservationId(this.invoice.reservation_id);
+      var guest = this.getGuest(this.invoice.reservation_id);
 
       if (typeof guest === "undefined") {
         //return { id: 0, from_date: "", to_date: "" };
@@ -173,7 +174,7 @@ export default {
       return room;
     },
     billedServices() {
-      var services = this.getBilledServices(this.reservation.id);
+      var services = this.getBilledServicesFromReservation(this.reservation.id);
       if (typeof services === "undefined") {
         return [];
       }
