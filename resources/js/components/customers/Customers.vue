@@ -188,8 +188,6 @@ export default {
   },
   methods: {
     showCustomerInfo(customer) {
-      console.log(customer.id);
-      console.log(customer.first_name);
       this.selectedCustomer = customer;
       this.$bvModal.show("customer-edit-modal");
     },

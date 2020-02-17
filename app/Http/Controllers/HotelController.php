@@ -37,9 +37,7 @@ class HotelController extends Controller
         $data['app_user'] = Profile::profile()->find($currentUserId);
 
         // Datos de los clientes del hotel
-        $data['customers'] = Customer::with(
-            ['invoices:invoices.id', 'reservations:reservations.id']
-        )->get()->keyBy("id");
+        $data['customers'] = Customer::get()->keyBy("id");
         
         // Huespedes
         $data['guests'] = Guest::get()->keyBy("id");
