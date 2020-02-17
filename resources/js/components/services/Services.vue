@@ -96,7 +96,7 @@
   </b-container>
 </template>
 <script>
-import { mapState } from "vuex";
+import { mapState, mapGetters } from "vuex";
 import ServiceAdd from "./ServiceAdd";
 export default {
   name: "Services",
@@ -154,8 +154,8 @@ export default {
     }
   },
   computed: {
-    ...mapState({
-      services: state => state.service.services
+    ...mapGetters({
+      services: "service/getServices"
     }),
     sortOptions() {
       // Create an options list from our fields

@@ -1,17 +1,26 @@
 export default ({
     namespaced: true,
     state: {
-        items: [],
+        items: {},
     },
     getters: {
-
+        getItems: (state) => {
+            return Object.keys(state.items).map(
+                id => state.items[id]
+            );
+        },
     },
     mutations: {
         SET_ITEMS(state, items) {
             state.items = items;
         },
         ADD_ITEM(state, item) {
-            state.items.push(item);
+            //state.items.push(item);
+            //state.items[item.id] = item;
+            Vue.set(state.items, item.id, item);
+        },
+        UPDATE_ITEM(state, item) {
+            Vue.set(state.items, item.id, item);
         },
     },
     actions: {
@@ -22,11 +31,11 @@ export default ({
                 // Si el request tuvo exito (codigo 200)
                 if (response.status == 200) {
                     // Agregamos una nueva conversacion si existe el objeto
-                    if (response['data'].length == 0) {
+                    if (response.data.length == 0) {
                         return;
                     }
 
-                    var newItem = response['data']['item'];
+                    let newItem = response.data.item;
                     context.commit('ADD_ITEM', newItem);
                     vm.makeToast("Item ", newItem.name + ' added.', 'success');
                 }
@@ -42,11 +51,12 @@ export default ({
                 // Si el request tuvo exito (codigo 200)
                 if (response.status == 200) {
                     // Agregamos una nueva conversacion si existe el objeto
-                    if (response['data'].length == 0) {
+                    if (response.data.length == 0) {
                         return;
                     }
 
-                    var item = response['data']['item'];
+                    let newItem = response.data.item;
+                    context.commit("UPDATE_ITEM", newItem);
                     vm.makeToast("Item ", item.name + ' update.', 'success');
                 }
             }).catch(function (error) {

@@ -137,11 +137,11 @@ export default {
       isRecepcionist: "appuser/isRecepcionist",
       isManager: "appuser/isManager",
       countPendingInvoices: "invoice/countPendingInvoices",
-      getSetting: "setting/getSettingValue"
+      getSetting: "setting/getSettingValue",
+      inventory: "inventory/getItems"
     }),
     ...mapState({
       appUser: state => state.appuser.appUser,
-      inventory: state => state.inventory.items,
       isReady: state => state.ready
     }),
     avatarPath() {
@@ -158,9 +158,7 @@ export default {
       }
       return false;
     }
-  },
-  components: {},
-  mounted() {}
+  }
 };
 </script>
 <style scoped>

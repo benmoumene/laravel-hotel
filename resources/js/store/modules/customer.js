@@ -1,17 +1,15 @@
 export default ({
     namespaced: true,
     state: {
-        customers: [],
+        customers: {},
     },
     getters: {
-        getCustomerById: (state, getters) => (customerId) => {
-            return state.customers.find(
-                customer => customer.id === customerId
-            );
+        getCustomer: (state) => (customerId) => {
+            return state.customers[customerId];
         },
-        getCustomer: (state, getters) => (customerId) => {
-            return state.customers.find(
-                customer => customer.id === customerId
+        getCustomers: (state) => {
+            return Object.keys(state.customers).map(
+                id => state.customers[id]
             );
         },
     },
@@ -20,7 +18,11 @@ export default ({
             state.customers = customers;
         },
         ADD_CUSTOMER(state, customer) {
-            state.customers.push(customer);
+            //state.customers.push(customer);
+            Vue.set(state.customers, customer.id, customer);
+        },
+        UPDATE_CUSTOMER(state, customer) {
+            Vue.set(state.customers, customer.id, customer);
         },
     },
     actions: {
@@ -35,7 +37,7 @@ export default ({
                         return;
                     }
 
-                    var newCustomer = response['data']['customer'];
+                    let newCustomer = response.data.customer;
                     context.commit('ADD_CUSTOMER', newCustomer);
 
                     vm.makeToast(
@@ -59,6 +61,9 @@ export default ({
                     if (response['data'].length == 0) {
                         return;
                     }
+
+                    let newCustomer = response.data.customer;
+                    context.commit("UPDATE_CUSTOMER", newCustomer);
                     vm.makeToast(
                         'Customer updated',
                         'The customer ' + customer.first_name + ' has been updated.',

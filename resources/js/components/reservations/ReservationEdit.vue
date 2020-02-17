@@ -58,7 +58,6 @@ export default {
     ...mapGetters({
       getCustomer: "customer/getCustomer",
       getRoom: "room/getRoom",
-      getGuest: "guest/getGuestWithReservationId",
       getReservation: "reservation/getReservation"
     }),
     getReservationId() {

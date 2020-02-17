@@ -2,17 +2,19 @@
 export default ({
     namespaced: true,
     state: {
-        rooms: [],
+        rooms: {},
     },
     getters: {
-        getRoomById: (state, getters) => (roomId) => {
-            return state.rooms.find(room => room.id === roomId);
-        },
         getRoom: (state, getters) => (roomId) => {
-            return state.rooms.find(room => room.id === roomId);
+            return state.rooms[roomId];
         },
         getRoomName: (state, getters) => (roomId) => {
-            return state.rooms.find(room => room.id === roomId).name;
+            return getters.getRoom(roomId).name;
+        },
+        getRooms: (state) => {
+            return Object.keys(state.rooms).map(
+                id => state.rooms[id]
+            );
         },
     },
     mutations: {
@@ -20,7 +22,11 @@ export default ({
             state.rooms = rooms;
         },
         ADD_ROOM(state, room) {
-            state.rooms.push(room);
+            //state.rooms.push(room);
+            Vue.set(state.rooms, room.id, room);
+        },
+        UPDATE_ROOM(state, room) {
+            Vue.set(state.rooms, room.id, room);
         },
     },
     actions: {
@@ -54,6 +60,9 @@ export default ({
                     if (response['data'].length == 0) {
                         return;
                     }
+
+                    let newRoom = response.data.room;
+                    context.commit("UPDATE_ROOM", newRoom);
                     vm.makeToast("Room updated", 'The room ' + room.name
                         + ' has been updated.', 'success');
                 }

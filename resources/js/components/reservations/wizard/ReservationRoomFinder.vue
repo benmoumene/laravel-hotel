@@ -71,7 +71,7 @@
   </b-container>
 </template>
 <script>
-import { mapState } from "vuex";
+import { mapState, mapGetters } from "vuex";
 export default {
   name: "ReservationRoomFinder",
   props: {
@@ -99,12 +99,6 @@ export default {
     },
     selectRoom(room) {
       this.reservation.room = room;
-      //this.reservation.from_date = this.filter.from_date;
-      //this.reservation.to_date = this.filter.to_date;
-
-      //this.$emit("updateReservation", this.reservation);
-      //this.$store.commit("reservation/SET_RESERVATION", reservation);
-      //this.$store.dispatch("reservation/storeReservation", reservation);
     },
     isAvailabe(roomId) {
       var room = this.filteredRooms.find(room => room.id === roomId);
@@ -137,8 +131,8 @@ export default {
     }
   },
   computed: {
-    ...mapState({
-      rooms: state => state.room.rooms
+    ...mapGetters({
+      rooms: "room/getRooms"
     }),
     filteredRooms: function() {
       return this.rooms.filter(room => this.applyFilters(room));

@@ -39,26 +39,23 @@ class HotelController extends Controller
         // Datos de los clientes del hotel
         $data['customers'] = Customer::with(
             ['invoices:invoices.id', 'reservations:reservations.id']
-        )->get();
+        )->get()->keyBy("id");
         
         // Huespedes
-        $data['guests'] = Guest::with(
-            ['customer:customers.id', 'room:rooms.id']
-        )->get();
+        $data['guests'] = Guest::get()->keyBy("id");
 
         // Reservas
-        $data['reservations'] = Reservation::with('guest:guests.id')->get();
+        $data['reservations'] = Reservation::get()->keyBy("id");
 
         // Servicios
-        $data['services'] = Service::get();
-        $data['rooms'] = Room::get();
+        $data['services'] = Service::get()->keyBy("id");
+        $data['rooms'] = Room::get()->keyBy("id");
         $data['settings'] = Setting::get()->keyBy("id");
-        $data['inventory'] = InventoryItem::get();
+        $data['inventory'] = InventoryItem::get()->keyBy("id");
         // Facturas con el cliente asociado.
-        $data['invoices'] = Invoice::with(['customer:customers.id'])->get();
-        //$data['invoices'] = Invoice::get();
+        $data['invoices'] = Invoice::get()->keyBy("id");
         // Servicios facturados
-        $data['billed_services'] = BilledService::get();
+        $data['billed_services'] = BilledService::get()->keyBy("id");
         return response()->json($data, 200);
     }
 }

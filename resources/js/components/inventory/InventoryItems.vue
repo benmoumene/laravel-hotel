@@ -100,7 +100,7 @@
   </b-container>
 </template>
 <script>
-import { mapState } from "vuex";
+import { mapState, mapGetters } from "vuex";
 import InventoryItemAdd from "./InventoryItemAdd";
 export default {
   name: "InventoryItemList",
@@ -165,8 +165,8 @@ export default {
     }
   },
   computed: {
-    ...mapState({
-      inventory: state => state.inventory.items
+    ...mapGetters({
+      inventory: "inventory/getItems"
     }),
     sortOptions() {
       // Create an options list from our fields

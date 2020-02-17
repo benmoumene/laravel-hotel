@@ -11,6 +11,10 @@ class Reservation extends Model
         'laravel_through_key'
     ];
 
+    protected $fillable = [
+        "customer_id", "room_id", "from_date", "to_date", "status"
+    ];
+
     public function expire()
     {
         $this->status = "expired";

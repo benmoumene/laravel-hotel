@@ -67,11 +67,23 @@ class ReservationService
             $reservation->save();
 
             // Creamos el guest asociado a la reserva
-            $guest = new Guest(["reservation_id" => $reservation->id]);
+            $guest = new Guest(
+                [
+                    "reservation_id" => $reservation->id,
+                    "check_in" => null,
+                    "check_out" => null
+                ]
+            );
             $guest->save();
 
             // Creamos la factura de la reserva
-            $invoice = new Invoice(["reservation_id" => $reservation->id]);
+            $invoice = new Invoice([
+                "reservation_id" => $reservation->id,
+                "status" => null,
+                "payment_method" => null,
+                "total" => null,
+                "generated_on" => null
+            ]);
             $invoice->save();
             
             // Realizar cambios
@@ -80,19 +92,13 @@ class ReservationService
             // Si ocurre algun problema se borrara cualquier
             // cambio realizado en la DB
             \DB::rollback();
+            return false;
         }
 
-        // Usar modelos para obtener la info ...
-        // $guest->with(['customer:id', 'room:id'])
-        $guest['customer'] = ['id' => $guest->customer()->first()->id];
-        $guest['room'] = ['id' => $guest->room()->first()->id];
-        $reservation['guest'] = ['id' => $guest->id];
-        $reservation['invoice'] = ['id' => $invoice->id];
-        
         return [
-            'guest' => $guest,
             'reservation' => $reservation,
-            'invoice' => $invoice
+            'invoice' => $invoice,
+            'guest' => $guest,
         ];
     }
 

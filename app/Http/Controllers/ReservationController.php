@@ -27,7 +27,7 @@ class ReservationController extends Controller
 
         if (!$reservation) {
             return response()->json([
-                "message" => "Room occupied in these dates."
+                "message" => "Something went wrong. Probably wrong dates."
             ], 500);
         }
 
