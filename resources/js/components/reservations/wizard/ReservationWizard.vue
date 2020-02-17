@@ -97,12 +97,12 @@ export default {
       isReady: state => state.ready
     }),
     ...mapGetters({
-      getCustomerById: "customer/getCustomerById",
+      getCustomer: "customer/getCustomer",
       getRoom: "room/getRoom"
     }),
     customer() {
       var customerId = parseInt(this.$route.params.customer_id);
-      return this.getCustomerById(customerId);
+      return this.getCustomer(customerId);
     }
   },
   components: {

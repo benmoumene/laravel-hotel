@@ -1,17 +1,15 @@
 export default ({
     namespaced: true,
     state: {
-        services: [],
+        services: {},
     },
     getters: {
-        getServiceById: (state, getters) => (serviceId) => {
-            return state.services.find(
-                service => service.id === serviceId
-            );
-        },
         getService: (state, getters) => (serviceId) => {
-            return state.services.find(
-                service => service.id === serviceId
+            return state.services[serviceId];
+        },
+        getServices: (state) => {
+            return Object.keys(state.services).map(
+                id => state.services[id]
             );
         },
     },
@@ -20,7 +18,11 @@ export default ({
             state.services = services;
         },
         ADD_SERVICE(state, service) {
-            state.services.push(service);
+            //state.services.push(service);
+            Vue.set(state.services, service.id, service);
+        },
+        UPDATE_SERVICE(state, service) {
+            Vue.set(state.services, service.id, service);
         },
     },
     actions: {
@@ -35,7 +37,7 @@ export default ({
                         return;
                     }
 
-                    var newService = response['data']['service'];
+                    var newService = response.data.service;
                     context.commit('ADD_SERVICE', newService);
                     vm.makeToast("Service added", 'The service ' + newService.name
                         + ' has been added.', 'success');
@@ -55,6 +57,9 @@ export default ({
                     if (response['data'].length == 0) {
                         return;
                     }
+
+                    let newService = response.data.service;
+                    context.commit("UPDATE_SERVICE", newService);
                     vm.makeToast("Service updated", 'The service ' + service.name
                         + ' has been updated.', 'success');
                 }

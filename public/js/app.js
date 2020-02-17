@@ -2209,15 +2209,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     guests: function guests(state) {
       return state.guest.guests;
     },
-    rooms: function rooms(state) {
-      return state.room.rooms;
-    },
     reservations: function reservations(state) {
       return state.reservation.reservations;
     },
     invoices: function invoices(state) {
       return state.invoice.invoices;
     }
+  }), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])({
+    rooms: "room/getRooms"
   }), {
     countMaintenanceRooms: function countMaintenanceRooms() {
       var maintenanceRooms = this.rooms.filter( //room => room.status === "maintenance"
@@ -3570,6 +3569,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   },
   methods: {
     showCustomerInfo: function showCustomerInfo(customer) {
+      console.log(customer.id);
+      console.log(customer.first_name);
       this.selectedCustomer = customer;
       this.$bvModal.show("customer-edit-modal");
     },
@@ -3587,16 +3588,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.filteredRows = filteredItems.length;
     }
   },
-  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])({
-    customers: function customers(state) {
-      return state.customer.customers;
-    }
-  }), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])({
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])({
     isCurrentGuest: "guest/isCurrentGuest",
     customerInvoices: "invoice/getCustomerInvoices",
     hasPendingInvoices: "invoice/hasPendingInvoices",
-    hasActiveReservation: "reservation/hasActiveReservation",
     getGuest: "guest/getGuestWithCustomerId",
+    customers: "customer/getCustomers",
     customerReservations: "reservation/getCustomerReservations"
   }), {
     filteredCustomers: function filteredCustomers() {
@@ -3897,10 +3894,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       });
     }
   },
-  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])({
-    inventory: function inventory(state) {
-      return state.inventory.items;
-    }
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])({
+    inventory: "inventory/getItems"
   }), {
     sortOptions: function sortOptions() {
       // Create an options list from our fields
@@ -5284,10 +5279,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       return false;
     }
   },
-  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])({
-    rooms: function rooms(state) {
-      return state.room.rooms;
-    }
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])({
+    rooms: "room/getRooms"
   }), {
     filteredRooms: function filteredRooms() {
       var _this = this;
@@ -5418,12 +5411,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       return state.ready;
     }
   }), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])({
-    getCustomerById: "customer/getCustomerById",
+    getCustomer: "customer/getCustomer",
     getRoom: "room/getRoom"
   }), {
     customer: function customer() {
       var customerId = parseInt(this.$route.params.customer_id);
-      return this.getCustomerById(customerId);
+      return this.getCustomer(customerId);
     }
   }),
   components: {
@@ -5871,10 +5864,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       });
     }
   },
-  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])({
-    rooms: function rooms(state) {
-      return state.room.rooms;
-    }
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])({
+    rooms: "room/getRooms"
   }), {
     sortOptions: function sortOptions() {
       // Create an options list from our fields
@@ -6157,10 +6148,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.currentPage = 1;
     }
   },
-  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])({
-    services: function services(state) {
-      return state.service.services;
-    }
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])({
+    services: "service/getServices"
   }), {
     sortOptions: function sortOptions() {
       // Create an options list from our fields
@@ -6458,13 +6447,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     isRecepcionist: "appuser/isRecepcionist",
     isManager: "appuser/isManager",
     countPendingInvoices: "invoice/countPendingInvoices",
-    getSetting: "setting/getSettingValue"
+    getSetting: "setting/getSettingValue",
+    inventory: "inventory/getItems"
   }), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])({
     appUser: function appUser(state) {
       return state.appuser.appUser;
-    },
-    inventory: function inventory(state) {
-      return state.inventory.items;
     },
     isReady: function isReady(state) {
       return state.ready;
@@ -97985,22 +97972,19 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   namespaced: true,
   state: {
-    customers: []
+    customers: {}
   },
   getters: {
-    getCustomerById: function getCustomerById(state, getters) {
+    getCustomer: function getCustomer(state) {
       return function (customerId) {
-        return state.customers.find(function (customer) {
-          return customer.id === customerId;
-        });
+        return state.customers[customerId];
       };
     },
-    getCustomer: function getCustomer(state, getters) {
-      return function (customerId) {
-        return state.customers.find(function (customer) {
-          return customer.id === customerId;
-        });
-      };
+    getCustomers: function getCustomers(state) {
+      var customersArray = Object.keys(state.customers).map(function (id) {
+        return state.customers[id];
+      });
+      return customersArray;
     }
   },
   mutations: {
@@ -98008,7 +97992,11 @@ __webpack_require__.r(__webpack_exports__);
       state.customers = customers;
     },
     ADD_CUSTOMER: function ADD_CUSTOMER(state, customer) {
-      state.customers.push(customer);
+      //state.customers.push(customer);
+      Vue.set(state.customers, customer.id, customer);
+    },
+    UPDATE_CUSTOMER: function UPDATE_CUSTOMER(state, customer) {
+      Vue.set(state.customers, customer.id, customer);
     }
   },
   actions: {
@@ -98025,7 +98013,7 @@ __webpack_require__.r(__webpack_exports__);
             return;
           }
 
-          var newCustomer = response['data']['customer'];
+          var newCustomer = response.data.customer;
           context.commit('ADD_CUSTOMER', newCustomer);
           vm.makeToast('Customer added', 'The customer ' + newCustomer.first_name + ' has been added.', 'success');
         }
@@ -98047,6 +98035,8 @@ __webpack_require__.r(__webpack_exports__);
             return;
           }
 
+          var newCustomer = response.data.customer;
+          context.commit("UPDATE_CUSTOMER", newCustomer);
           vm.makeToast('Customer updated', 'The customer ' + customer.first_name + ' has been updated.', 'success');
         }
       })["catch"](function (error) {
@@ -98277,15 +98267,26 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   namespaced: true,
   state: {
-    items: []
+    items: {}
   },
-  getters: {},
+  getters: {
+    getItems: function getItems(state) {
+      return Object.keys(state.items).map(function (id) {
+        return state.items[id];
+      });
+    }
+  },
   mutations: {
     SET_ITEMS: function SET_ITEMS(state, items) {
       state.items = items;
     },
     ADD_ITEM: function ADD_ITEM(state, item) {
-      state.items.push(item);
+      //state.items.push(item);
+      //state.items[item.id] = item;
+      Vue.set(state.items, item.id, item);
+    },
+    UPDATE_ITEM: function UPDATE_ITEM(state, item) {
+      Vue.set(state.items, item.id, item);
     }
   },
   actions: {
@@ -98298,11 +98299,11 @@ __webpack_require__.r(__webpack_exports__);
         // Si el request tuvo exito (codigo 200)
         if (response.status == 200) {
           // Agregamos una nueva conversacion si existe el objeto
-          if (response['data'].length == 0) {
+          if (response.data.length == 0) {
             return;
           }
 
-          var newItem = response['data']['item'];
+          var newItem = response.data.item;
           context.commit('ADD_ITEM', newItem);
           vm.makeToast("Item ", newItem.name + ' added.', 'success');
         }
@@ -98320,11 +98321,12 @@ __webpack_require__.r(__webpack_exports__);
         // Si el request tuvo exito (codigo 200)
         if (response.status == 200) {
           // Agregamos una nueva conversacion si existe el objeto
-          if (response['data'].length == 0) {
+          if (response.data.length == 0) {
             return;
           }
 
-          var item = response['data']['item'];
+          var newItem = response.data.item;
+          context.commit("UPDATE_ITEM", newItem);
           vm.makeToast("Item ", item.name + ' update.', 'success');
         }
       })["catch"](function (error) {
@@ -98618,29 +98620,23 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   namespaced: true,
   state: {
-    rooms: []
+    rooms: {}
   },
   getters: {
-    getRoomById: function getRoomById(state, getters) {
-      return function (roomId) {
-        return state.rooms.find(function (room) {
-          return room.id === roomId;
-        });
-      };
-    },
     getRoom: function getRoom(state, getters) {
       return function (roomId) {
-        return state.rooms.find(function (room) {
-          return room.id === roomId;
-        });
+        return state.rooms[roomId];
       };
     },
     getRoomName: function getRoomName(state, getters) {
       return function (roomId) {
-        return state.rooms.find(function (room) {
-          return room.id === roomId;
-        }).name;
+        return getters.getRoom(roomId).name;
       };
+    },
+    getRooms: function getRooms(state) {
+      return Object.keys(state.rooms).map(function (id) {
+        return state.rooms[id];
+      });
     }
   },
   mutations: {
@@ -98648,7 +98644,11 @@ __webpack_require__.r(__webpack_exports__);
       state.rooms = rooms;
     },
     ADD_ROOM: function ADD_ROOM(state, room) {
-      state.rooms.push(room);
+      //state.rooms.push(room);
+      Vue.set(state.rooms, room.id, room);
+    },
+    UPDATE_ROOM: function UPDATE_ROOM(state, room) {
+      Vue.set(state.rooms, room.id, room);
     }
   },
   actions: {
@@ -98687,6 +98687,8 @@ __webpack_require__.r(__webpack_exports__);
             return;
           }
 
+          var newRoom = response.data.room;
+          context.commit("UPDATE_ROOM", newRoom);
           vm.makeToast("Room updated", 'The room ' + room.name + ' has been updated.', 'success');
         }
       })["catch"](function (error) {
@@ -98710,22 +98712,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   namespaced: true,
   state: {
-    services: []
+    services: {}
   },
   getters: {
-    getServiceById: function getServiceById(state, getters) {
-      return function (serviceId) {
-        return state.services.find(function (service) {
-          return service.id === serviceId;
-        });
-      };
-    },
     getService: function getService(state, getters) {
       return function (serviceId) {
-        return state.services.find(function (service) {
-          return service.id === serviceId;
-        });
+        return state.services[serviceId];
       };
+    },
+    getServices: function getServices(state) {
+      return Object.keys(state.services).map(function (id) {
+        return state.services[id];
+      });
     }
   },
   mutations: {
@@ -98733,7 +98731,11 @@ __webpack_require__.r(__webpack_exports__);
       state.services = services;
     },
     ADD_SERVICE: function ADD_SERVICE(state, service) {
-      state.services.push(service);
+      //state.services.push(service);
+      Vue.set(state.services, service.id, service);
+    },
+    UPDATE_SERVICE: function UPDATE_SERVICE(state, service) {
+      Vue.set(state.services, service.id, service);
     }
   },
   actions: {
@@ -98750,7 +98752,7 @@ __webpack_require__.r(__webpack_exports__);
             return;
           }
 
-          var newService = response['data']['service'];
+          var newService = response.data.service;
           context.commit('ADD_SERVICE', newService);
           vm.makeToast("Service added", 'The service ' + newService.name + ' has been added.', 'success');
         }
@@ -98772,6 +98774,8 @@ __webpack_require__.r(__webpack_exports__);
             return;
           }
 
+          var newService = response.data.service;
+          context.commit("UPDATE_SERVICE", newService);
           vm.makeToast("Service updated", 'The service ' + service.name + ' has been updated.', 'success');
         }
       })["catch"](function (error) {
@@ -98809,9 +98813,11 @@ __webpack_require__.r(__webpack_exports__);
           return setting.name === name;
         });
 
-        if (typeof setting !== "undefined") {
-          return setting.value;
+        if (typeof setting === "undefined") {
+          return "";
         }
+
+        return setting.value;
       };
     },
     getSettings: function getSettings(state) {
@@ -98824,6 +98830,10 @@ __webpack_require__.r(__webpack_exports__);
   mutations: {
     SET_SETTINGS: function SET_SETTINGS(state, settings) {
       state.settings = settings;
+    },
+    UPDATE_SETTING: function UPDATE_SETTING(state, setting) {
+      //state.settings[setting.id] = setting;
+      Vue.set(state.settings, setting.id, setting);
     }
   },
   actions: {
@@ -98841,6 +98851,8 @@ __webpack_require__.r(__webpack_exports__);
             return;
           }
 
+          var newSetting = response.data.setting;
+          context.commit("UPDATE_SETTING", newSetting);
           vm.makeToast("Setting updated", "The setting " + setting.name + " has been updated.", "success");
         }
       })["catch"](function (error) {

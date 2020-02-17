@@ -71,7 +71,7 @@
   </b-container>
 </template>
 <script>
-import { mapState } from "vuex";
+import { mapState, mapGetters } from "vuex";
 export default {
   name: "ReservationRoomFinder",
   props: {
@@ -137,8 +137,8 @@ export default {
     }
   },
   computed: {
-    ...mapState({
-      rooms: state => state.room.rooms
+    ...mapGetters({
+      rooms: "room/getRooms"
     }),
     filteredRooms: function() {
       return this.rooms.filter(room => this.applyFilters(room));

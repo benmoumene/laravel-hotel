@@ -9,13 +9,15 @@ export default ({
             return state.settings[settingId];
         },
         getSettingValue: (state, getters) => (name) => {
-            var setting = getters.getSettings.find(
+            let setting = getters.getSettings.find(
                 setting => setting.name === name
             );
 
-            if (typeof setting !== "undefined") {
-                return setting.value;
+            if (typeof setting === "undefined") {
+                return "";
             }
+
+            return setting.value;
         },
         getSettings: (state) => {
             const settingsArray = Object.keys(state.settings).map(
@@ -27,6 +29,10 @@ export default ({
     mutations: {
         SET_SETTINGS(state, settings) {
             state.settings = settings;
+        },
+        UPDATE_SETTING(state, setting) {
+            //state.settings[setting.id] = setting;
+            Vue.set(state.settings, setting.id, setting);
         },
     },
     actions: {
@@ -41,6 +47,9 @@ export default ({
                     if (response["data"].length == 0) {
                         return;
                     }
+
+                    let newSetting = response.data.setting;
+                    context.commit("UPDATE_SETTING", newSetting);
                     vm.makeToast("Setting updated", "The setting " + setting.name
                         + " has been updated.", "success");
                 }

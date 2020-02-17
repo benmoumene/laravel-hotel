@@ -112,7 +112,7 @@
   </b-container>
 </template>
 <script>
-import { mapState } from "vuex";
+import { mapState, mapGetters } from "vuex";
 import RoomAdd from "./RoomAdd";
 export default {
   name: "RoomList",
@@ -176,8 +176,8 @@ export default {
     }
   },
   computed: {
-    ...mapState({
-      rooms: state => state.room.rooms
+    ...mapGetters({
+      rooms: "room/getRooms"
     }),
     sortOptions() {
       // Create an options list from our fields

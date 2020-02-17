@@ -188,6 +188,8 @@ export default {
   },
   methods: {
     showCustomerInfo(customer) {
+      console.log(customer.id);
+      console.log(customer.first_name);
       this.selectedCustomer = customer;
       this.$bvModal.show("customer-edit-modal");
     },
@@ -206,15 +208,12 @@ export default {
     }
   },
   computed: {
-    ...mapState({
-      customers: state => state.customer.customers
-    }),
     ...mapGetters({
       isCurrentGuest: "guest/isCurrentGuest",
       customerInvoices: "invoice/getCustomerInvoices",
       hasPendingInvoices: "invoice/hasPendingInvoices",
-      hasActiveReservation: "reservation/hasActiveReservation",
       getGuest: "guest/getGuestWithCustomerId",
+      customers: "customer/getCustomers",
       customerReservations: "reservation/getCustomerReservations"
     }),
     filteredCustomers() {

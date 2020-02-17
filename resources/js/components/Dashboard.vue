@@ -301,16 +301,18 @@
   </b-container>
 </template>
 <script>
-import { mapState } from "vuex";
+import { mapState, mapGetters } from "vuex";
 export default {
   name: "Dashboard",
   methods: {},
   computed: {
     ...mapState({
       guests: state => state.guest.guests,
-      rooms: state => state.room.rooms,
       reservations: state => state.reservation.reservations,
       invoices: state => state.invoice.invoices
+    }),
+    ...mapGetters({
+      rooms: "room/getRooms"
     }),
     countMaintenanceRooms() {
       var maintenanceRooms = this.rooms.filter(

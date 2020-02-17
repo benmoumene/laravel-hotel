@@ -122,7 +122,8 @@ export default {
   },
   methods: {
     updateSetting(setting) {
-      this.$store.dispatch("setting/updateSetting", { vm: this, setting });
+      this.$store.dispatch("setting/updateSetting", { vm: this, 
+      setting });
     },
     onFiltered(filteredItems) {
       // Trigger pagination to update the number of buttons/pages due to filtering
