@@ -80,7 +80,7 @@
             v-b-tooltip.hover
             title="Customer details"
             size="sm"
-            variant="info"
+            variant="primary"
             @click="showCustomerInfo(row.item)"
           >
             <i class="fa fa-user"></i>
@@ -89,7 +89,7 @@
             v-b-tooltip.hover
             title="Customer reservations"
             size="sm"
-            variant="info"
+            variant="primary"
             @click="showReservations(row.item)"
           >
             <i class="fa fa-calendar-alt"></i>
@@ -211,8 +211,8 @@ export default {
     }),
     ...mapGetters({
       isCurrentGuest: "guest/isCurrentGuest",
-      customerInvoices: "billing/getCustomerInvoices",
-      hasPendingInvoices: "billing/hasPendingInvoices",
+      customerInvoices: "invoice/getCustomerInvoices",
+      hasPendingInvoices: "invoice/hasPendingInvoices",
       hasActiveReservation: "reservation/hasActiveReservation",
       getGuest: "guest/getGuestWithCustomerId",
       customerReservations: "reservation/getCustomerReservations"

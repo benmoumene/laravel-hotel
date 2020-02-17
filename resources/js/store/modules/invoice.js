@@ -7,6 +7,9 @@ export default ({
         getInvoiceById: (state, getters) => (invoiceId) => {
             return state.invoices.find(invoice => invoice.id === invoiceId);
         },
+        getInvoiceIndex: (state, getters) => (invoiceId) => {
+            return state.invoices.findIndex(invoice => invoice.id === invoiceId);
+        },
         getInvoiceFromReservation: (state, getters) => (reservationId) => {
             return state.invoices.find(
                 invoice => invoice.reservation_id === reservationId
@@ -41,14 +44,19 @@ export default ({
         SET_INVOICES(state, invoices) {
             state.invoices = invoices;
         },
-        ADD_INVOICE(state, invoice) {
-
+        REPLACE_INVOICE(state, { invoiceIndex, newInvoice }) {
+            Vue.set(state.invoices, invoiceIndex, newInvoice);
         },
-        SET_INVOICE(state, invoice) {
-
-        }
     },
     actions: {
+        replaceInvoiceById(context, { invoiceId, newInvoice }) {
+            let invoiceIndex = context.getters.getInvoiceIndex(invoiceId);
+            context.commit("REPLACE_INVOICE", {
+                invoiceIndex,
+                newInvoice
+            });
+
+        },
         generateInvoice(context, { vm, reservation }) {
             //axios.post("/invoices/" + reservation.id, {
             axios.post("/reservations/" + reservation.id, {
@@ -75,6 +83,8 @@ export default ({
                 invoice,
                 _method: "post"
             }).then(function (response) {
+                let newInvoice = response["data"]["invoice"];
+                invoice.total = newInvoice.total;
                 vm.makeToast("Invoice updated", 'The invoice has been updated.', 'success');
             }).catch(function (response) {
                 vm.makeToast("Invoice update error", ' The invoice cannot be updated', 'danger');

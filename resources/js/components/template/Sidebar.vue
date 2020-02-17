@@ -41,31 +41,31 @@
               </router-link>
             </li>
             <li class="nav-item">
-              <router-link to="/customer/list" class="nav-link">
+              <router-link to="/customers" class="nav-link">
                 <i class="nav-icon fa fa-users"></i>
                 Customers
               </router-link>
             </li>
             <li class="nav-item">
-              <router-link to="/reservation/list" class="nav-link">
+              <router-link to="/reservations" class="nav-link">
                 <i class="nav-icon fa fa-calendar-alt"></i>
                 Reservations
               </router-link>
             </li>
             <li class="nav-item">
-              <router-link to="/room/list" class="nav-link">
+              <router-link to="/rooms" class="nav-link">
                 <i class="nav-icon fa fa-bed"></i>
                 Rooms
               </router-link>
             </li>
             <li class="nav-item">
-              <router-link to="/services/list" class="nav-link">
+              <router-link to="/services" class="nav-link">
                 <i class="nav-icon fa fa-coffee"></i>
                 Services
               </router-link>
             </li>
             <li class="nav-item">
-              <router-link to="/inventory/list" class="nav-link">
+              <router-link to="/inventory" class="nav-link">
                 <i class="nav-icon fa fa-shopping-cart"></i>
                 Stock
                 <span
@@ -75,7 +75,7 @@
               </router-link>
             </li>
             <li class="nav-item">
-              <router-link to="/billing/list" class="nav-link">
+              <router-link to="/invoices" class="nav-link">
                 <i class="nav-icon fa fa-file-invoice-dollar"></i>
                 Invoices
                 <span
@@ -133,11 +133,14 @@ export default {
   computed: {
     ...mapGetters(["isAdmin", "isRecepcionist", "isManager"]),
     ...mapGetters({
-      countPendingInvoices: "billing/countPendingInvoices",
-      getSetting: "getSettingValue"
+      isAdmin: "appuser/isAdmin",
+      isRecepcionist: "appuser/isRecepcionist",
+      isManager: "appuser/isManager",
+      countPendingInvoices: "invoice/countPendingInvoices",
+      getSetting: "setting/getSettingValue"
     }),
-    ...mapState(["appUser"]),
     ...mapState({
+      appUser: state => state.appuser.appUser,
       inventory: state => state.inventory.items,
       isReady: state => state.ready
     }),

@@ -17,6 +17,9 @@ export default ({
         },
     },
     mutations: {
+        ADD_SERVICE(state, service) {
+            state.billedServices.push(service);
+        },
         SET_BILLED_SERVICES(state, billed_services) {
             state.billedServices = billed_services;
         },
@@ -32,13 +35,14 @@ export default ({
                     reservation_id: reservationId
                 }
             }).then(function (response) {
-                // commit    
+                let service = response["data"]["service"];
+                context.commit("ADD_SERVICE", service);
                 vm.makeToast("Success", "Billed service has been add.", 'success');
             }).catch(function (response) {
                 vm.makeToast("Error", "Something went wrong.", 'danger');
             });
         },
-        deleteBilledService(context, { vm, id }) {
+        delete(context, { vm, id }) {
             axios.post("/billed-services/" + id, {
                 _method: "delete"
             }).then(function (response) {

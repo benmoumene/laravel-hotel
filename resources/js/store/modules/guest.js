@@ -156,6 +156,12 @@ export default ({
                         newStatus: newReservation.status
                     });
 
+                    let newInvoice = response["data"]["invoice"];
+                    vm.$store.dispatch("invoice/replaceInvoiceById", {
+                        invoiceId: newInvoice.id,
+                        newInvoice
+                    });
+
                     // Mostramos un mensaje
                     vm.makeToast("Check Out", "Guest check out " + checkOut, "success");
                 }

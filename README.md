@@ -18,9 +18,8 @@ Esta aplicacion es un dashboard que permite gestionar el Backend de un hotel. La
 - Perfil de usuario (Permite subir avatares al servidor)
 
 ## Pendiente
-- Implementar el resto de la aplicacion  (Guest)
 - Mejorar y Terminar el sistema de invoices
-- Reorganizacion y mejora de nombres de archivos/carpetas
+- Reorganizaciosn y mejora de nombres de archivos/carpetas
 - Validacion y Filtros de input (tambien para el avatar) Request.
 - Terminar de implementar los roles en la app
 ===============

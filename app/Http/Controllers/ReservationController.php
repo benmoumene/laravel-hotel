@@ -60,6 +60,8 @@ class ReservationController extends Controller
                 $is->getError()], 500);
         }
 
+        // Usar modelos para obtener la info ...
+        // $guest->with(['customer:id', 'room:id'])
         $guest['customer'] = ['id' => $guest->customer()->first()->id];
         $guest['room'] = ['id' => $guest->room()->first()->id];
         $reservation['guest'] = ['id' => $guest->id];
@@ -76,6 +78,9 @@ class ReservationController extends Controller
     }
 
     // Metodo para cancelar reservas
+    //public function updateCancel(Request $request, $reservationId)
+    //public function updateStatus(Request $request, $reservationId)
+    //agregar status en $request validations
     public function cancel(Request $request, $reservationId)
     {
         // Servicios

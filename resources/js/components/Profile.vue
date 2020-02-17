@@ -53,10 +53,13 @@ export default {
   },
   methods: {
     updateProfile() {
-      this.$store.dispatch("updateProfile", { vm: this });
+      this.$store.dispatch("appuser/updateProfile", { vm: this });
     },
     updateAvatar() {
-      this.$store.dispatch("updateAvatar", { vm: this, avatar: this.image });
+      this.$store.dispatch("appuser/updateAvatar", {
+        vm: this,
+        avatar: this.image
+      });
     },
     makeToast(title, message, variant = "info") {
       this.$bvToast.toast(message, {
@@ -74,7 +77,9 @@ export default {
     }
   },
   computed: {
-    ...mapState(["appUser"]),
+    ...mapState({
+      appUser: state => state.appuser.appUser
+    }),
     avatarPath() {
       return "/storage/" + this.appUser.avatar_filename;
     }

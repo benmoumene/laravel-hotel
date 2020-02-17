@@ -25,8 +25,12 @@ export default {
   name: "About",
   methods: {},
   computed: {
-    ...mapState(["settings"]),
-    ...mapGetters(["getSettingValue"])
+    ...mapState({
+      settings: state => state.setting.settings
+    }),
+    ...mapGetters({
+      getSettingValue: "setting/getSettingValue"
+    })
   },
   components: {},
   mounted() {}

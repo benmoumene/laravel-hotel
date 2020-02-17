@@ -8,7 +8,7 @@
               v-for="service in services"
               v-bind:key="service.id"
               v-bind:value="service.id"
-            >{{ service.name }}</option>
+            >{{ service.name }} - {{ service.cost }}$</option>
           </select>
         </b-form-group>
       </b-col>
@@ -35,7 +35,7 @@ export default {
   },
   methods: {
     add() {
-      this.$store.dispatch("billed_services/add", {
+      this.$store.dispatch("billedservice/add", {
         vm: this,
         serviceId: this.serviceId,
         reservationId: this.reservationId
@@ -59,11 +59,11 @@ export default {
     ...mapGetters({
       getService: "service/getService",
       getCustomer: "customer/getCustomer",
-      getBilledServices: "billed_services/getBilledServices",
+      getBilledServices: "billedservice/getBilledServices",
       getReservation: "reservation/getReservation",
       getGuestWithReservationId: "guest/getGuestWithReservationId",
-      getSettingValue: "getSettingValue",
-      getInvoice: "billing/getInvoice",
+      getSettingValue: "setting/getSettingValue",
+      getInvoice: "invoice/getInvoice",
       getRoom: "room/getRoom"
     }),
     reservation() {

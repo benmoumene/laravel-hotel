@@ -24,11 +24,7 @@
         :options="{'male':'Male', 'female':'Female'}"
         id="inline-form-custom-select-pref"
         v-model="customer.sex"
-      >
-        <template v-slot:first>
-          <option :value="null">Sex</option>
-        </template>
-      </b-form-select>
+      ></b-form-select>
     </b-form-group>
 
     <b-form-group label-cols="12" label-cols-sm="4" label="Document Identity">
@@ -39,11 +35,7 @@
           :value="null"
           :options="{'national_id':'National Id', 'passport':'Passport'}"
           v-model="customer.document_id_type"
-        >
-          <template v-slot:first>
-            <option :value="null">Choose...</option>
-          </template>
-        </b-form-select>
+        ></b-form-select>
       </b-form-group>
 
       <b-form-group label-cols="12" label-cols-sm="4" label="Id">

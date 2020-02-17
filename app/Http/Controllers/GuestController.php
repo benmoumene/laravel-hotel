@@ -7,6 +7,7 @@ use Auth;
 use App\Http\Requests\GuestRequest;
 use App\Guest;
 use App\Reservation;
+use App\Invoice;
 
 class GuestController extends Controller
 {
@@ -43,9 +44,15 @@ class GuestController extends Controller
         $reservation->status = 'expired';
         $reservation->save();
 
+        $invoice = Invoice::where('reservation_id', $guest->reservation_id)->first();
+        $invoice->generate();
+
         return response()->json(
-            ['guest' => $guest,
-            'reservation' => $reservation],
+            [
+                'guest' => $guest,
+                'reservation' => $reservation,
+                'invoice' => $invoice
+            ],
             200
         );
     }

@@ -310,7 +310,7 @@ export default {
       guests: state => state.guest.guests,
       rooms: state => state.room.rooms,
       reservations: state => state.reservation.reservations,
-      invoices: state => state.billing.invoices
+      invoices: state => state.invoice.invoices
     }),
     countMaintenanceRooms() {
       var maintenanceRooms = this.rooms.filter(

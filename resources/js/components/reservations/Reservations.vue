@@ -90,7 +90,7 @@
           v-b-tooltip.hover
           title="Customer details"
           size="sm"
-          variant="info"
+          variant="primary"
           @click="customerInfo(item.customer.id)"
         >
           <i class="fa fa-user"></i>
@@ -99,7 +99,7 @@
           v-b-tooltip.hover
           title="Reservation details"
           size="sm"
-          variant="info"
+          variant="primary"
           @click="reservationInfo(item.id)"
         >
           <i class="fa fa-calendar-alt"></i>
@@ -108,7 +108,7 @@
           v-b-tooltip.hover
           title="Room details"
           size="sm"
-          variant="info"
+          variant="primary"
           @click="roomInfo(item.room_id)"
         >
           <i class="fa fa-bed"></i>
@@ -117,7 +117,7 @@
           v-b-tooltip.hover
           title="Services"
           size="sm"
-          variant="success"
+          variant="primary"
           @click="billingInfo(item.id)"
         >
           <i class="nav-icon fa fa-coffee"></i>
@@ -126,8 +126,8 @@
           v-b-tooltip.hover
           title="Invoice"
           size="sm"
-          variant="success"
-          @click="invoiceInfo(item.id)"
+          variant="primary"
+          @click="invoiceInfo(item.invoice.id)"
         >
           <i class="nav-icon fa fa-file-invoice-dollar"></i>
         </b-button>
@@ -143,11 +143,12 @@
     <b-modal id="reservation-modal" size="xl" centered title="Reservation Info" hide-footer>
       <reservation :reservationId="reservationId" :readonly="false" />
     </b-modal>
-    <b-modal id="billing-modal" size="xl" centered title="Billing Info" hide-footer>
-      <billed-info :reservationId="reservationId" :readonly="true" />
+    <b-modal id="billed-services-modal" size="xl" centered title="Billed Services" hide-footer>
+      <billed-service-add :reservationId="reservationId" :readonly="true" />
+      <billed-services :reservationId="reservationId" :readonly="true" />
     </b-modal>
     <b-modal id="invoice-modal" size="xl" centered title="Invoice Info" hide-footer>
-      <invoice-info :invoiceId="invoiceId" :readonly="true"></invoice-info>
+      <invoice-edit :id="invoiceId" :readonly="true" />
     </b-modal>
   </b-container>
 </template>
@@ -155,8 +156,9 @@
 // Implementar filtro de fechas por defecto en RESERVATION LIST.
 import { mapState, mapGetters } from "vuex";
 import Room from "../rooms/Room";
-import Invoice from "../billing/Invoice";
-import BilledServices from "../billing/BilledServices";
+import InvoiceEdit from "../invoices/InvoiceEdit";
+import BilledServiceAdd from "../billed-services/BilledServiceAdd";
+import BilledServices from "../billed-services/BilledServices";
 import ReservationEdit from "./ReservationEdit";
 import Customer from "../customers/Customer";
 export default {
@@ -227,7 +229,7 @@ export default {
     },
     billingInfo(reservation_id) {
       this.reservationId = reservation_id;
-      this.$bvModal.show("billing-modal");
+      this.$bvModal.show("billed-services-modal");
     },
     customerInfo(id) {
       this.customerId = id;
@@ -265,10 +267,11 @@ export default {
       reservations: state => state.reservation.reservations
     }),
     ...mapGetters({
+      isCurrentGuest: "guest/isCurrentGuest",
       getCustomer: "customer/getCustomer",
       getRoom: "room/getRoom",
       getGuest: "guest/getGuest",
-      getInvoice: "billing/getInvoiceFromReservation"
+      getInvoice: "invoice/getInvoiceFromReservation"
     }),
     filteredReservations() {
       let newArray = [];
@@ -282,6 +285,12 @@ export default {
 
       if (this.onStatus === "all") {
         return newArray;
+      }
+
+      if (this.filterOn.indexOf("current_guests") > -1) {
+        newArray = newArray.filter(reservation =>
+          this.isCurrentGuest(reservation.customer_id)
+        );
       }
 
       return newArray.filter(
@@ -306,8 +315,9 @@ export default {
   components: {
     "room-info": Room,
     "customer-info": Customer,
-    "invoice-info": Invoice,
-    "billed-info": BilledServices,
+    "invoice-edit": InvoiceEdit,
+    "billed-service-add": BilledServiceAdd,
+    "billed-services": BilledServices,
     reservation: ReservationEdit
   }
 };

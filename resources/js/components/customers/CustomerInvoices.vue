@@ -19,7 +19,9 @@
         <b-badge :variant="row.item.status == 'paid' ? 'success' : 'danger'">{{ row.item.status }}</b-badge>
       </template>
       <template v-slot:cell(actions)="row">
-        <router-link :to="{path: '/billing/' + row.item.id +'/edit'}" class="nav-link">View Invoice</router-link>
+        <router-link :to="{path: '/invoices/' + row.item.id +'/edit'}" class="nav-link">
+          <b-button variant="primary">Show</b-button>
+        </router-link>
       </template>
     </b-table>
   </b-container>
@@ -60,7 +62,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      customerInvoices: "billing/getCustomerInvoices"
+      customerInvoices: "invoice/getCustomerInvoices"
     }),
     invoices() {
       return this.customerInvoices(this.customerId).filter(

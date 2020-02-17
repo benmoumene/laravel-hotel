@@ -65,7 +65,7 @@
         <b-badge :variant="row.item.status == 'paid' ? 'success' : 'danger'">{{ row.item.status }}</b-badge>
       </template>
       <template v-slot:cell(actions)="row">
-        <router-link :to="{path: '/billing/' + row.item.id +'/edit'}">
+        <router-link :to="{path: '/invoices/' + row.item.id +'/edit'}">
           <b-button variant="info" size="sm">Show</b-button>
         </router-link>
       </template>
@@ -75,7 +75,7 @@
 <script>
 import { mapState } from "vuex";
 export default {
-  name: "CustomerList",
+  name: "Invoices",
   data: function() {
     return {
       fields: [
@@ -128,9 +128,8 @@ export default {
     }
   },
   computed: {
-    //...mapState(["billing/invoices"]),
     ...mapState({
-      invoices: state => state.billing.invoices
+      invoices: state => state.invoice.invoices
     }),
     sortOptions() {
       // Create an options list from our fields
