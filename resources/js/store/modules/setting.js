@@ -2,14 +2,26 @@
 export default ({
     namespaced: true,
     state: {
-        settings: [],
+        settings: {},
     },
     getters: {
+        getSetting: (state) => (settingId) => {
+            return state.settings[settingId];
+        },
         getSettingValue: (state, getters) => (name) => {
-            var setting = state.settings.find(setting => setting.name === name);
+            var setting = getters.getSettings.find(
+                setting => setting.name === name
+            );
+
             if (typeof setting !== "undefined") {
                 return setting.value;
             }
+        },
+        getSettings: (state) => {
+            const settingsArray = Object.keys(state.settings).map(
+                id => state.settings[id]
+            );
+            return settingsArray;
         },
     },
     mutations: {

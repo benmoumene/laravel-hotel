@@ -2588,10 +2588,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       });
     }
   },
-  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])({
-    settings: function settings(state) {
-      return state.setting.settings;
-    }
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])({
+    settings: "setting/getSettings"
   }), {
     sortOptions: function sortOptions() {
       // Create an options list from our fields
@@ -98797,12 +98795,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   namespaced: true,
   state: {
-    settings: []
+    settings: {}
   },
   getters: {
+    getSetting: function getSetting(state) {
+      return function (settingId) {
+        return state.settings[settingId];
+      };
+    },
     getSettingValue: function getSettingValue(state, getters) {
       return function (name) {
-        var setting = state.settings.find(function (setting) {
+        var setting = getters.getSettings.find(function (setting) {
           return setting.name === name;
         });
 
@@ -98810,6 +98813,12 @@ __webpack_require__.r(__webpack_exports__);
           return setting.value;
         }
       };
+    },
+    getSettings: function getSettings(state) {
+      var settingsArray = Object.keys(state.settings).map(function (id) {
+        return state.settings[id];
+      });
+      return settingsArray;
     }
   },
   mutations: {

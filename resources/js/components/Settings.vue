@@ -83,7 +83,7 @@
   </b-container>
 </template>
 <script>
-import { mapState } from "vuex";
+import { mapState, mapGetters } from "vuex";
 export default {
   name: "Settings",
   data: function() {
@@ -141,8 +141,8 @@ export default {
     }
   },
   computed: {
-    ...mapState({
-      settings: state => state.setting.settings
+    ...mapGetters({
+      settings: "setting/getSettings"
     }),
     sortOptions() {
       // Create an options list from our fields

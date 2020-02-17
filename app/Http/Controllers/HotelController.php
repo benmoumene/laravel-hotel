@@ -52,11 +52,11 @@ class HotelController extends Controller
         // Servicios
         $data['services'] = Service::get();
         $data['rooms'] = Room::get();
-        $data['settings'] = Setting::get();
+        $data['settings'] = Setting::get()->keyBy("id");
         $data['inventory'] = InventoryItem::get();
         // Facturas con el cliente asociado.
         $data['invoices'] = Invoice::with(['customer:customers.id'])->get();
-
+        //$data['invoices'] = Invoice::get();
         // Servicios facturados
         $data['billed_services'] = BilledService::get();
         return response()->json($data, 200);
