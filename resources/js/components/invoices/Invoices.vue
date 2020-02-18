@@ -1,25 +1,12 @@
 <template>
   <b-container fluid>
     <!-- User Interface controls -->
-    <b-row>
-      <b-col sm="4" class="my-1">
-        <b-form-group
-          label="Rows"
-          label-cols-sm="3"
-          label-align-sm="right"
-          label-size="sm"
-          label-for="perPageSelect"
-          class="mb-0"
-        >
-          <b-form-select v-model="perPage" id="perPageSelect" size="sm" :options="pageOptions"></b-form-select>
-        </b-form-group>
-      </b-col>
-      <b-col sm="4" class="my-1">
+    <b-row class="my-3">
+      <b-col cols="12" sm="6">
         <b-form-group
           label="Status"
           label-cols-sm="3"
           label-align-sm="right"
-          label-size="sm"
           label-for="perPageSelect"
           class="mb-0"
         >
@@ -27,19 +14,17 @@
             v-model="status"
             @change="onFilter"
             id="perPageSelect"
-            size="sm"
             :options="statusOptions"
           ></b-form-select>
         </b-form-group>
       </b-col>
 
-      <b-col sm="4" class="my-1">
+      <b-col cols="12" sm="6">
         <b-pagination
           v-model="currentPage"
           :total-rows="totalRows"
           :per-page="perPage"
           align="fill"
-          size="sm"
           class="my-0"
         ></b-pagination>
       </b-col>
@@ -101,9 +86,8 @@ export default {
         { key: "actions", label: "Actions" }
       ],
       currentPage: 1,
-      perPage: 5,
+      perPage: 10,
       totalRows: 0,
-      pageOptions: [5, 10, 15],
       status: "pending",
       statusOptions: ["all", "pending", "paid"],
       sortBy: "",
@@ -131,24 +115,12 @@ export default {
     ...mapGetters({
       invoices: "invoice/getInvoices"
     }),
-    sortOptions() {
-      // Create an options list from our fields
-      return this.fields
-        .filter(f => f.sortable)
-        .map(f => {
-          return { text: f.label, value: f.key };
-        });
-    },
     filteredInvoices() {
       if (this.status === "all") {
-        return this.invoices;
+        return this.invoices.filter(invoice => invoice.status !== null);
       }
       return this.invoices.filter(invoice => invoice.status === this.status);
     }
-  },
-  mounted() {},
-  updated() {}
+  }
 };
 </script>
-<style scoped>
-</style>

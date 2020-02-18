@@ -82,7 +82,7 @@
       <template v-slot:cell(last_name)="row">{{ customer(row.item.customer_id).last_name }}</template>
       <template v-slot:cell(room_name)="row">
         <router-link
-          :to="{path: '/room/' + row.item.room_id +'/edit'}"
+          :to="{path: '/rooms/' + row.item.room_id +'/edit'}"
         >{{ room(row.item.room_id).name }}</router-link>
       </template>
       <template v-slot:cell(actions)="{item}">
@@ -196,7 +196,7 @@ export default {
         { key: "actions", label: "Actions" }
       ],
       currentPage: 1,
-      perPage: 20,
+      perPage: 10,
       statusOptions: ["all", "active", "cancelled", "expired"],
       sortBy: "",
       sortDesc: false,
@@ -294,14 +294,6 @@ export default {
       return newArray.filter(
         reservation => reservation.status === this.onStatus
       );
-    },
-    sortOptions() {
-      // Create an options list from our fields
-      return this.fields
-        .filter(f => f.sortable)
-        .map(f => {
-          return { text: f.label, value: f.key };
-        });
     },
     totalRows() {
       if (this.filteredRows !== null) {

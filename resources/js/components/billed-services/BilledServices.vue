@@ -93,11 +93,10 @@ export default {
   computed: {
     ...mapGetters({
       getService: "service/getService",
-      getBilledServicesFromReservation:
-        "billedservice/getBilledServicesFromReservation"
+      getBilledServices: "billedservice/getBilledServicesFromReservation"
     }),
     billedServices() {
-      return this.getBilledServicesFromReservation(this.reservationId);
+      return this.getBilledServices(this.reservationId);
     },
     totalRows() {
       return this.billedServices.length;

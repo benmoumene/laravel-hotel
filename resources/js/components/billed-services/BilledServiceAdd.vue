@@ -3,7 +3,7 @@
     <b-row>
       <b-col cols="10">
         <b-form-group label-cols="12" label-cols-sm="4" label="Services">
-          <select v-model="serviceId" class="custom-select">
+          <select v-model="selectedServiceId" class="custom-select">
             <option
               v-for="service in services"
               v-bind:key="service.id"
@@ -30,14 +30,14 @@ export default {
   },
   data: function() {
     return {
-      serviceId: null
+      selectedServiceId: null
     };
   },
   methods: {
     add() {
       this.$store.dispatch("billedservice/storeService", {
         vm: this,
-        serviceId: this.serviceId,
+        serviceId: this.selectedServiceId,
         reservationId: this.reservationId
       });
     },
@@ -53,19 +53,9 @@ export default {
     }
   },
   computed: {
-    ...mapState({
-      services: state => state.service.services
-    }),
     ...mapGetters({
-      getService: "service/getService",
-      getCustomer: "customer/getCustomer",
-      getBilledServicesFromReservation:
-        "billedservice/getBilledServicesFromReservation",
-      getReservation: "reservation/getReservation",
-      getGuestWithReservationId: "guest/getGuestWithReservationId",
-      getSettingValue: "setting/getSettingValue",
-      getInvoice: "invoice/getInvoice",
-      getRoom: "room/getRoom"
+      services: "service/getServices",
+      getReservation: "reservation/getReservation"
     }),
     reservation() {
       return this.getReservation(this.reservationId);

@@ -15,8 +15,6 @@ export default ({
             state.items = items;
         },
         ADD_ITEM(state, item) {
-            //state.items.push(item);
-            //state.items[item.id] = item;
             Vue.set(state.items, item.id, item);
         },
         UPDATE_ITEM(state, item) {
@@ -28,16 +26,14 @@ export default ({
             axios.post("/inventory-items/", {
                 item
             }).then(function (response) {
-                // Si el request tuvo exito (codigo 200)
-                if (response.status == 200) {
-                    // Agregamos una nueva conversacion si existe el objeto
-                    if (response.data.length == 0) {
-                        return;
-                    }
+                // Objeto recibido
+                let newItem = response.data.item;
 
-                    let newItem = response.data.item;
-                    context.commit('ADD_ITEM', newItem);
-                    vm.makeToast("Item ", newItem.name + ' added.', 'success');
+                // Si la respuesta tuvo el codigo 200 y el objeto tiene id
+                // Asumimos que es un objeto valido
+                if (response.status == 200 && newItem.hasOwnProperty("id")) {
+                    context.commit("ADD_ITEM", newItem);
+                    vm.makeToast("Inventory", newItem.name + " has been added.", "success");
                 }
             }).catch(function (error) {
                 vm.makeToast("Inventory", "Something went wrong.", "danger");
@@ -48,16 +44,14 @@ export default ({
                 item,
                 _method: "put"
             }).then(function (response) {
-                // Si el request tuvo exito (codigo 200)
-                if (response.status == 200) {
-                    // Agregamos una nueva conversacion si existe el objeto
-                    if (response.data.length == 0) {
-                        return;
-                    }
+                // Objeto recibido
+                let newItem = response.data.item;
 
-                    let newItem = response.data.item;
+                // Si la respuesta tuvo el codigo 200 y el objeto tiene id
+                // Asumimos que es un objeto valido
+                if (response.status == 200 && newItem.hasOwnProperty("id")) {
                     context.commit("UPDATE_ITEM", newItem);
-                    vm.makeToast("Item ", item.name + ' update.', 'success');
+                    vm.makeToast("Inventory", newItem.name + " has been updated.", "success");
                 }
             }).catch(function (error) {
                 vm.makeToast("Inventory", "Something went wrong.", "danger");

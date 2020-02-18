@@ -81,7 +81,9 @@ export default {
       appUser: state => state.appuser.appUser
     }),
     avatarPath() {
-      return "/storage/" + this.appUser.avatar_filename;
+      if (this.appUser.avatar_filename) {
+        return "/storage/" + this.appUser.avatar_filename;
+      }
     }
   }
 };

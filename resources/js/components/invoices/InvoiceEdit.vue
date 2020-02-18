@@ -19,7 +19,7 @@
         ></b-form-select>
       </b-form-group>
       <template v-slot:modal-footer>
-        <b-button @click="markAsPaid" variant="success" class="float-right">Mark as paid</b-button>
+        <b-button @click="markAsPaid" variant="success">Mark as paid</b-button>
       </template>
     </b-modal>
   </b-container>
@@ -35,8 +35,7 @@ export default {
   },
   data: function() {
     return {
-      payment_method: "",
-      invoicex: { billed_services: [] }
+      payment_method: ""
     };
   },
   methods: {

@@ -25,21 +25,6 @@
         </b-form-group>
       </b-col>
 
-      <b-col sm="5" md="6" class="my-1">
-        <b-form-group
-          label="Per page"
-          label-cols-sm="6"
-          label-cols-md="4"
-          label-cols-lg="3"
-          label-align-sm="right"
-          label-size="sm"
-          label-for="perPageSelect"
-          class="mb-0"
-        >
-          <b-form-select v-model="perPage" id="perPageSelect" size="sm" :options="pageOptions"></b-form-select>
-        </b-form-group>
-      </b-col>
-
       <b-col sm="7" md="6" class="my-1">
         <b-pagination
           v-model="currentPage"
@@ -62,10 +47,6 @@
       :current-page="currentPage"
       :per-page="perPage"
       :filter="filter"
-      :filterIncludedFields="filterOn"
-      :sort-by.sync="sortBy"
-      :sort-desc.sync="sortDesc"
-      :sort-direction="sortDirection"
       @filtered="onFiltered"
     >
       <template v-slot:cell(value)="row">
@@ -110,20 +91,14 @@ export default {
         { key: "actions", label: "Actions" }
       ],
       currentPage: 1,
-      perPage: 20,
-      pageOptions: [5, 10, 15, 20, 25, 50],
-      sortBy: "",
-      sortDesc: false,
-      sortDirection: "asc",
+      perPage: 10,
       filter: null,
-      filteredRows: null,
-      filterOn: []
+      filteredRows: null
     };
   },
   methods: {
     updateSetting(setting) {
-      this.$store.dispatch("setting/updateSetting", { vm: this, 
-      setting });
+      this.$store.dispatch("setting/updateSetting", { vm: this, setting });
     },
     onFiltered(filteredItems) {
       // Trigger pagination to update the number of buttons/pages due to filtering
@@ -145,19 +120,14 @@ export default {
     ...mapGetters({
       settings: "setting/getSettings"
     }),
-    sortOptions() {
-      // Create an options list from our fields
-      return this.fields
-        .filter(f => f.sortable)
-        .map(f => {
-          return { text: f.label, value: f.key };
-        });
-    },
     totalRows() {
+      // Cuando se aplica el filtro ...
       if (this.filteredRows !== null) {
+        // Total de filas al aplicar filtros
         return this.filteredRows;
       }
 
+      // Total de filas sin filtros
       return this.settings.length;
     }
   }

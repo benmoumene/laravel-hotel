@@ -3,7 +3,7 @@
     <b-row>
       <room-info v-if="roomId" :roomId="roomId" :readonly="false"></room-info>
     </b-row>
-    <b-form-group class="float-right">
+    <b-form-group class="text-right">
       <b-button variant="primary" @click="update">Update Room</b-button>
     </b-form-group>
   </b-container>

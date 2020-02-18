@@ -26,7 +26,7 @@
       ></b-form-select>
     </b-form-group>
 
-    <b-form-group class="float-right">
+    <b-form-group class="text-right">
       <b-button variant="primary" @click="add">Add Room</b-button>
     </b-form-group>
   </b-container>

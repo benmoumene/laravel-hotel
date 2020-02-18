@@ -19,7 +19,7 @@ export default ({
         },
         getCustomerInvoices: (state, getters, rootState, rootGetters) => (customerId) => {
             // Buscamos todas las reservas asociadas al cliente.
-            let customerReservations = rootGetters['reservation/getCustomerReservations'](customerId);
+            let customerReservations = rootGetters["reservation/getCustomerReservations"](customerId);
 
             let customerInvoices = customerReservations.map(
                 reservation => getters.getInvoiceFromReservation(reservation.id)
@@ -31,7 +31,7 @@ export default ({
             let customerInvoices = getters.getCustomerInvoices(customerId);
 
             let invoices = customerInvoices.filter(
-                invoice => invoice.status === 'pending'
+                invoice => invoice.status === "pending"
             );
 
             if (invoices.length >= 1) {
@@ -41,7 +41,7 @@ export default ({
         },
         countPendingInvoices: (state, getters) => {
             return getters.getInvoices.filter(
-                invoice => invoice.status === 'pending'
+                invoice => invoice.status === "pending"
             ).length;
         },
     },
@@ -61,38 +61,40 @@ export default ({
         updateInvoice(context, newInvoice) {
             context.commit("UPDATE_INVOICE", newInvoice);
         },
-        generateInvoice(context, { vm, reservation }) {
-            //axios.post("/invoices/" + reservation.id, {
-            axios.post("/reservations/" + reservation.id, {
-                reservation,
-                _method: "put"
-            }).then(function (response) {
-            }).catch(function (error) {
-                vm.makeToast("Invoice", "Something went wrong.", "danger");
-            });
-        },
         // Marca una factura como pagada. (Status/Payment Method)
         payInvoice(context, { vm, invoice }) {
             axios.post("/invoices/" + invoice.id, {
                 invoice,
                 _method: "put"
             }).then(function (response) {
-                let newInvoice = response["data"]["invoice"];
-                context.commit("UPDATE_INVOICE", newInvoice);
-                vm.makeToast("Invoice updated", 'The invoice has been paid.', 'success');
+                // Objeto recibido
+                let newInvoice = response.data.invoice;
+
+                // Si la respuesta tuvo el codigo 200 y el objeto tiene id
+                // Asumimos que es un objeto valido
+                if (response.status == 200 && newInvoice.hasOwnProperty("id")) {
+                    context.commit("UPDATE_INVOICE", newInvoice);
+                    vm.makeToast("Invoice", "The invoice has been updated.", "success");
+                }
             }).catch(function (error) {
                 vm.makeToast("Invoice", "Something went wrong.", "danger");
             });
         },
         // Marca una factura como pagada. (Status/Payment Method)
         recalculateInvoice(context, { vm, invoice }) {
-            axios.post("/invoices/" + invoice.id + '/recalc', {
+            axios.post("/invoices/" + invoice.id + "/recalc", {
                 invoice,
                 _method: "post"
             }).then(function (response) {
-                let newInvoice = response["data"]["invoice"];
-                context.commit("UPDATE_INVOICE", newInvoice);
-                vm.makeToast("Invoice updated", 'The invoice has been updated.', 'success');
+                // Objeto recibido
+                let newInvoice = response.data.invoice;
+
+                // Si la respuesta tuvo el codigo 200 y el objeto tiene id
+                // Asumimos que es un objeto valido
+                if (response.status == 200 && newInvoice.hasOwnProperty("id")) {
+                    context.commit("UPDATE_INVOICE", newInvoice);
+                    vm.makeToast("Invoice", "The invoice has been updated.", "success");
+                }
             }).catch(function (error) {
                 vm.makeToast("Invoice", "Something went wrong.", "danger");
             });

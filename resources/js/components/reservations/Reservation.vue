@@ -73,7 +73,6 @@ export default {
   },
   computed: {
     ...mapState({
-      reservations: state => state.reservation.reservations,
       onReady: state => state.reservation.ready
     }),
     ...mapGetters({
@@ -84,10 +83,9 @@ export default {
     }),
     reservation() {
       // Comprobar si existe reservationId en props
-      if (this.reservationId) {
-        return this.getReservation(this.reservationId);
+      if (!this.reservationId) {
+        this.reservationId = parseInt(this.$route.params.reservation_id);
       }
-      this.reservationId = parseInt(this.$route.params.reservation_id);
       return this.getReservation(this.reservationId);
     },
     customer() {

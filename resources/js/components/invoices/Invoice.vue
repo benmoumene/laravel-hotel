@@ -4,10 +4,10 @@
     <div id="invoice" class="invoice">
       <b-row class="header mb-3">
         <b-col cols="12">
-          <strong>{{ getSettingValue('hotel_name') }}</strong>
+          <strong>{{ setting('hotel_name') }}</strong>
         </b-col>
-        <b-col cols="12">{{ getSettingValue('hotel_address') }}</b-col>
-        <b-col cols="12">{{ getSettingValue('hotel_phone') }}</b-col>
+        <b-col cols="12">{{ setting('hotel_address') }}</b-col>
+        <b-col cols="12">{{ setting('hotel_phone') }}</b-col>
       </b-row>
 
       <b-row class="mb-3">
@@ -126,15 +126,13 @@ export default {
     }
   },
   computed: {
-    ...mapState(["settings"]),
     ...mapGetters({
       getService: "service/getService",
       getCustomer: "customer/getCustomer",
-      getBilledServicesFromReservation:
-        "billedservice/getBilledServicesFromReservation",
+      getBilledServices: "billedservice/getBilledServicesFromReservation",
       getReservation: "reservation/getReservation",
       getGuest: "guest/getGuestWithReservationId",
-      getSettingValue: "setting/getSettingValue",
+      setting: "setting/getSettingValue",
       getInvoice: "invoice/getInvoice",
       getRoom: "room/getRoom"
     }),
@@ -174,14 +172,13 @@ export default {
       return room;
     },
     billedServices() {
-      var services = this.getBilledServicesFromReservation(this.reservation.id);
+      let services = this.getBilledServices(this.reservation.id);
       if (typeof services === "undefined") {
         return [];
       }
       return services;
     }
-  },
-  mounted() {}
+  }
 };
 </script>
 <style scoped>

@@ -1,59 +1,37 @@
 <template>
   <b-container fluid>
     <!-- User Interface controls -->
-    <b-row>
-      <b-col lg="6" class="my-1">
-        <b-form-group
-          label="Filter"
-          label-cols-sm="3"
-          label-align-sm="right"
-          label-size="sm"
-          label-for="filterInput"
-          class="mb-0"
-        >
-          <b-input-group size="sm">
-            <b-form-input
-              v-model="filter"
-              type="search"
-              id="filterInput"
-              placeholder="Type to Search"
-            ></b-form-input>
-            <b-input-group-append>
-              <b-button :disabled="!filter" @click="filter = ''">Clear</b-button>
-            </b-input-group-append>
-          </b-input-group>
-        </b-form-group>
+
+    <b-row class="my-1">
+      <b-col cols="12" class="text-right">
+        <b-button v-b-modal.room-modal variant="primary">
+          <i class="fas fa-plus"></i>
+        </b-button>
+      </b-col>
+    </b-row>
+    <b-row class="my-3">
+      <b-col cols="12" sm="6">
+        <b-input-group>
+          <b-form-input
+            v-model="filter"
+            type="search"
+            id="filterInput"
+            placeholder="Type to Search"
+          ></b-form-input>
+          <b-input-group-append>
+            <b-button :disabled="!filter" @click="filter = ''">Clear</b-button>
+          </b-input-group-append>
+        </b-input-group>
       </b-col>
 
-      <b-col sm="5" md="6" class="my-1">
-        <b-form-group
-          label="Per page"
-          label-cols-sm="6"
-          label-cols-md="4"
-          label-cols-lg="3"
-          label-align-sm="right"
-          label-size="sm"
-          label-for="perPageSelect"
-          class="mb-0"
-        >
-          <b-form-select v-model="perPage" id="perPageSelect" size="sm" :options="pageOptions"></b-form-select>
-        </b-form-group>
-      </b-col>
-
-      <b-col sm="7" md="6" class="my-1">
+      <b-col cols="12" sm="6">
         <b-pagination
           v-model="currentPage"
           :total-rows="totalRows"
           :per-page="perPage"
           align="fill"
-          size="sm"
           class="my-0"
         ></b-pagination>
-      </b-col>
-      <b-col sm="7" md="6" class="my-1 text-right">
-        <b-button v-b-modal.room-modal variant="primary">
-          <i class="fas fa-plus"></i>
-        </b-button>
       </b-col>
     </b-row>
 
@@ -147,7 +125,6 @@ export default {
       ],
       currentPage: 1,
       perPage: 10,
-      pageOptions: [5, 10, 15],
       sortBy: "",
       sortDesc: false,
       sortDirection: "asc",
@@ -179,14 +156,6 @@ export default {
     ...mapGetters({
       rooms: "room/getRooms"
     }),
-    sortOptions() {
-      // Create an options list from our fields
-      return this.fields
-        .filter(f => f.sortable)
-        .map(f => {
-          return { text: f.label, value: f.key };
-        });
-    },
     totalRows() {
       if (this.filteredRows !== null) {
         return this.filteredRows;

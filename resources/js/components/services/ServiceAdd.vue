@@ -12,7 +12,7 @@
       <b-form-input v-model="service.comments" placeholder="Description of this service"></b-form-input>
     </b-form-group>
 
-    <b-form-group class="float-right">
+    <b-form-group class="text-right">
       <b-button variant="primary" @click="add">Add Service</b-button>
     </b-form-group>
   </b-container>
@@ -46,10 +46,6 @@ export default {
         appendToast: true
       });
     }
-  },
-  computed: {},
-  mounted() {}
+  }
 };
 </script>
-<style scoped>
-</style>

@@ -18,7 +18,6 @@ export default ({
             state.services = services;
         },
         ADD_SERVICE(state, service) {
-            //state.services.push(service);
             Vue.set(state.services, service.id, service);
         },
         UPDATE_SERVICE(state, service) {
@@ -30,17 +29,15 @@ export default ({
             axios.post("/services/", {
                 service
             }).then(function (response) {
-                // Si el request tuvo exito (codigo 200)
-                if (response.status == 200) {
-                    // Agregamos una nueva conversacion si existe el objeto
-                    if (response['data'].length == 0) {
-                        return;
-                    }
+                // Objeto recibido
+                let newService = response.data.service;
 
-                    var newService = response.data.service;
-                    context.commit('ADD_SERVICE', newService);
-                    vm.makeToast("Service added", 'The service ' + newService.name
-                        + ' has been added.', 'success');
+                // Si la respuesta tuvo el codigo 200 y el objeto tiene id
+                // Asumimos que es un objeto valido
+                if (response.status == 200 && newService.hasOwnProperty("id")) {
+                    context.commit("ADD_SERVICE", newService);
+                    vm.makeToast("Services", newService.name
+                        + " has been added.", "success");
                 }
             }).catch(function (error) {
                 vm.makeToast("Services", "Something went wrong.", "danger");
@@ -51,17 +48,15 @@ export default ({
                 service,
                 _method: "put"
             }).then(function (response) {
-                // Si el request tuvo exito (codigo 200)
-                if (response.status == 200) {
-                    // Agregamos una nueva conversacion si existe el objeto
-                    if (response['data'].length == 0) {
-                        return;
-                    }
+                // Objeto recibido
+                let newService = response.data.service;
 
-                    let newService = response.data.service;
+                // Si la respuesta tuvo el codigo 200 y el objeto tiene id
+                // Asumimos que es un objeto valido
+                if (response.status == 200 && newService.hasOwnProperty("id")) {
                     context.commit("UPDATE_SERVICE", newService);
-                    vm.makeToast("Service updated", 'The service ' + service.name
-                        + ' has been updated.', 'success');
+                    vm.makeToast("Services", newService.name
+                        + " has been updated.", "success");
                 }
             }).catch(function (error) {
                 vm.makeToast("Services", "Something went wrong.", "danger");

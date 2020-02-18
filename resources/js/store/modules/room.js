@@ -22,7 +22,6 @@ export default ({
             state.rooms = rooms;
         },
         ADD_ROOM(state, room) {
-            //state.rooms.push(room);
             Vue.set(state.rooms, room.id, room);
         },
         UPDATE_ROOM(state, room) {
@@ -34,16 +33,15 @@ export default ({
             axios.post("/rooms/", {
                 room
             }).then(function (response) {
-                // Si el request tuvo exito (codigo 200)
-                if (response.status == 200) {
-                    // Agregamos una nueva conversacion si existe el objeto
-                    if (response['data'].length == 0) {
-                        return;
-                    }
+                // Objeto recibido
+                let newRoom = response.data.room;
 
-                    var newRoom = response['data']['room'];
-                    context.commit('ADD_ROOM', newRoom);
-                    vm.makeToast("Room ", newRoom.name + ' has been added.', 'success');
+                // Si la respuesta tuvo el codigo 200 y el objeto tiene id
+                // Asumimos que es un objeto valido
+                if (response.status == 200 && newRoom.hasOwnProperty("id")) {
+                    context.commit("ADD_ROOM", newRoom);
+                    vm.makeToast("Room", newRoom.name
+                        + " has been added.", "success");
                 }
             }).catch(function (error) {
                 vm.makeToast("Room", "Something went wrong.", "danger");
@@ -54,17 +52,15 @@ export default ({
                 room,
                 _method: "put"
             }).then(function (response) {
-                // Si el request tuvo exito (codigo 200)
-                if (response.status == 200) {
-                    // Agregamos una nueva conversacion si existe el objeto
-                    if (response['data'].length == 0) {
-                        return;
-                    }
+                // Objeto recibido
+                let newRoom = response.data.room;
 
-                    let newRoom = response.data.room;
+                // Si la respuesta tuvo el codigo 200 y el objeto tiene id
+                // Asumimos que es un objeto valido
+                if (response.status == 200 && newRoom.hasOwnProperty("id")) {
                     context.commit("UPDATE_ROOM", newRoom);
-                    vm.makeToast("Room updated", 'The room ' + room.name
-                        + ' has been updated.', 'success');
+                    vm.makeToast("Room", newRoom.name
+                        + " has been updated.", "success");
                 }
             }).catch(function (error) {
                 vm.makeToast("Room", "Something went wrong.", "danger");
