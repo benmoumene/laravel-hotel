@@ -109,7 +109,7 @@ export default {
   },
   methods: {
     deleteBilledService(id) {
-      this.$store.dispatch("billed_services/delete", {
+      this.$store.dispatch("billedservice/destroyService", {
         vm: this,
         id
       });

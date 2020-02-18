@@ -3953,7 +3953,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   },
   methods: {
     deleteBilledService: function deleteBilledService(id) {
-      this.$store.dispatch("billed_services/delete", {
+      this.$store.dispatch("billedservice/destroyService", {
         vm: this,
         id: id
       });
