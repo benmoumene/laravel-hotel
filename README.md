@@ -17,16 +17,16 @@ Esta aplicacion es un dashboard que permite gestionar el Backend de un hotel. La
 - Perfil de usuario (Permite subir avatares al servidor)
 
 ## Imagenes
-!(https://raw.githubusercontent.com/damianS7/laravel-hotel/master/images/Screenshot_2020-02-18%20Laravel.png)
+![1](https://raw.githubusercontent.com/damianS7/laravel-hotel/master/images/Screenshot_2020-02-18%20Laravel.png)
 
-!(https://raw.githubusercontent.com/damianS7/laravel-hotel/master/images/Screenshot_2020-02-18%20Laravel(1).png)
+![2](https://raw.githubusercontent.com/damianS7/laravel-hotel/master/images/Screenshot_2020-02-18%20Laravel(1).png)
 
-!(https://raw.githubusercontent.com/damianS7/laravel-hotel/master/images/Screenshot_2020-02-18%20Laravel(2).png)
+![3](https://raw.githubusercontent.com/damianS7/laravel-hotel/master/images/Screenshot_2020-02-18%20Laravel(2).png)
 
-!(https://raw.githubusercontent.com/damianS7/laravel-hotel/master/images/Screenshot_2020-02-18%20Laravel(3).png)
+![4](https://raw.githubusercontent.com/damianS7/laravel-hotel/master/images/Screenshot_2020-02-18%20Laravel(3).png)
 
-!(https://raw.githubusercontent.com/damianS7/laravel-hotel/master/images/Screenshot_2020-02-18%20Laravel(4).png)
+![5](https://raw.githubusercontent.com/damianS7/laravel-hotel/master/images/Screenshot_2020-02-18%20Laravel(4).png)
 
-!(https://raw.githubusercontent.com/damianS7/laravel-hotel/master/images/Screenshot_2020-02-18%20Laravel(5).png)
+![6](https://raw.githubusercontent.com/damianS7/laravel-hotel/master/images/Screenshot_2020-02-18%20Laravel(5).png)
 
-!(https://raw.githubusercontent.com/damianS7/laravel-hotel/master/images/Screenshot_2020-02-18%20Laravel(6).png)
+![7](https://raw.githubusercontent.com/damianS7/laravel-hotel/master/images/Screenshot_2020-02-18%20Laravel(6).png)
