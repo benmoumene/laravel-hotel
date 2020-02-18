@@ -16,11 +16,17 @@ Esta aplicacion es un dashboard que permite gestionar el Backend de un hotel. La
 - Sistema de roles (Recepcionista/Manager/Admin)
 - Perfil de usuario (Permite subir avatares al servidor)
 
-## Pendiente
-- Mejorar y Terminar el sistema de invoices
-- Terminar de implementar los roles en la app
-===============
-- Terminar de implmentar las relaciones de Eloquent en los modelos
-- Mejorar codigo(nombre de metodos etc...) de las stores/routes
-- Limpieza de codigo y separacion de la logica del backend en Services
-- Pensar en otros usos al dashboard. Mostrar habitaciones libres???
+## Imagenes
+!(https://raw.githubusercontent.com/damianS7/laravel-hotel/master/images/Screenshot_2020-02-18%20Laravel.png)
+
+!(https://raw.githubusercontent.com/damianS7/laravel-hotel/master/images/Screenshot_2020-02-18%20Laravel(1).png)
+
+!(https://raw.githubusercontent.com/damianS7/laravel-hotel/master/images/Screenshot_2020-02-18%20Laravel(2).png)
+
+!(https://raw.githubusercontent.com/damianS7/laravel-hotel/master/images/Screenshot_2020-02-18%20Laravel(3).png)
+
+!(https://raw.githubusercontent.com/damianS7/laravel-hotel/master/images/Screenshot_2020-02-18%20Laravel(4).png)
+
+!(https://raw.githubusercontent.com/damianS7/laravel-hotel/master/images/Screenshot_2020-02-18%20Laravel(5).png)
+
+!(https://raw.githubusercontent.com/damianS7/laravel-hotel/master/images/Screenshot_2020-02-18%20Laravel(6).png)
