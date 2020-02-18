@@ -5197,11 +5197,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }
     }
   },
-  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])({
-    isReady: function isReady(state) {
-      return state.ready;
-    }
-  }), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])({
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])({
     getCustomer: "customer/getCustomer",
     getRoom: "room/getRoom"
   }), {
@@ -96428,16 +96424,13 @@ __webpack_require__.r(__webpack_exports__);
       axios.post("/customers/", {
         customer: customer
       }).then(function (response) {
-        // Si el request tuvo exito (codigo 200)
-        if (response.status == 200) {
-          // Agregamos una nueva conversacion si existe el objeto
-          if (response['data'].length == 0) {
-            return;
-          }
+        // Objeto recibido
+        var newCustomer = response.data.customer; // Si la respuesta tuvo el codigo 200 y el objeto tiene id
+        // Asumimos que es un objeto valido
 
-          var newCustomer = response.data.customer;
-          context.commit('ADD_CUSTOMER', newCustomer);
-          vm.makeToast('Customer added', 'The customer ' + newCustomer.first_name + ' has been added.', 'success');
+        if (response.status == 200 && newCustomer.hasOwnProperty("id")) {
+          context.commit("ADD_CUSTOMER", newCustomer);
+          vm.makeToast('Customers', 'The customer ' + newCustomer.first_name + ' has been added.', 'success');
         }
       })["catch"](function (error) {
         vm.makeToast("Customer", "Something went wrong.", "danger");
@@ -96450,16 +96443,13 @@ __webpack_require__.r(__webpack_exports__);
         customer: customer,
         _method: "put"
       }).then(function (response) {
-        // Si el request tuvo exito (codigo 200)
-        if (response.status == 200) {
-          // Agregamos una nueva conversacion si existe el objeto
-          if (response['data'].length == 0) {
-            return;
-          }
+        // Objeto recibido
+        var newCustomer = response.data.customer; // Si la respuesta tuvo el codigo 200 y el objeto tiene id
+        // Asumimos que es un objeto valido
 
-          var newCustomer = response.data.customer;
+        if (response.status == 200 && newCustomer.hasOwnProperty("id")) {
           context.commit("UPDATE_CUSTOMER", newCustomer);
-          vm.makeToast('Customer updated', 'The customer ' + customer.first_name + ' has been updated.', 'success');
+          vm.makeToast('Customers', 'The customer ' + newCustomer.first_name + ' has been updated.', 'success');
         }
       })["catch"](function (error) {
         vm.makeToast("Customer", "Something went wrong.", "danger");
@@ -96525,18 +96515,6 @@ __webpack_require__.r(__webpack_exports__);
     SET_GUESTS: function SET_GUESTS(state, guests) {
       state.guests = guests;
     },
-    SET_CHECK_IN: function SET_CHECK_IN(state, _ref) {
-      var guestIndex = _ref.guestIndex,
-          checkIn = _ref.checkIn;
-      //state.guests[guestIndex].check_in = checkIn;
-      Vue.set(state.guests[guestIndex], 'check_in', checkIn);
-    },
-    SET_CHECK_OUT: function SET_CHECK_OUT(state, _ref2) {
-      var guestIndex = _ref2.guestIndex,
-          checkOut = _ref2.checkOut;
-      //state.guests[guestIndex].check_out = checkOut;
-      Vue.set(state.guests[guestIndex], 'check_out', checkOut);
-    },
     ADD_GUEST: function ADD_GUEST(state, guest) {
       Vue.set(state.guests, guest.id, guest);
     },
@@ -96545,53 +96523,43 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   actions: {
-    checkIn: function checkIn(context, _ref3) {
-      var vm = _ref3.vm,
-          reservation = _ref3.reservation;
+    checkIn: function checkIn(context, _ref) {
+      var vm = _ref.vm,
+          reservation = _ref.reservation;
       axios.post("/guests/" + reservation.guest.id + "/checkin", {
         guest: reservation.guest
       }).then(function (response) {
-        // Si el request tuvo exito (codigo 200)
-        if (response.status == 200) {
-          // Comprobamos que json en el objeto
-          if (response["data"].length == 0) {
-            return;
-          } // Nuevos datos del guest
+        // Objeto recibido
+        var newGuest = response.data.guest; // Si la respuesta tuvo el codigo 200 y el objeto tiene id
+        // Asumimos que es un objeto valido
 
-
-          var newGuest = response.data.guest; // Llevamos a cabo la modificacion
-
-          context.commit("UPDATE_GUEST", newGuest); // Mostramos un mensaje
-
+        if (response.status == 200 && newGuest.hasOwnProperty("id")) {
+          context.commit("UPDATE_GUEST", newGuest);
           vm.makeToast("Check In", "Guest check in " + newGuest.check_in, "success");
         }
       })["catch"](function (error) {
         vm.makeToast("Guest", "Something went wrong.", "danger");
       });
     },
-    checkOut: function checkOut(context, _ref4) {
-      var vm = _ref4.vm,
-          reservation = _ref4.reservation;
+    checkOut: function checkOut(context, _ref2) {
+      var vm = _ref2.vm,
+          reservation = _ref2.reservation;
       axios.post("/guests/" + reservation.guest.id + "/checkout", {
         guest: reservation.guest
       }).then(function (response) {
-        // Si el request tuvo exito (codigo 200)
-        if (response.status == 200) {
-          // Comprobamos que json en el objeto
-          if (response["data"].length == 0) {
-            return;
-          } // Nuevos datos del guest
+        // Objeto recibido
+        var newGuest = response.data.guest; // Si la respuesta tuvo el codigo 200 y el objeto tiene id
+        // Asumimos que es un objeto valido
 
-
-          var newGuest = response.data.guest; // Llevamos a cabo la modificacion
-
+        if (response.status == 200 && newGuest.hasOwnProperty("id")) {
           context.commit("UPDATE_GUEST", newGuest);
-          var newReservation = response["data"]["reservation"];
+          vm.makeToast("Check In", "Guest check in " + newGuest.check_in, "success");
+          var newReservation = response.data.reservation;
           vm.$store.dispatch("reservation/updateReservation", {
             reservationId: newReservation.id,
             newStatus: newReservation.status
           });
-          var newInvoice = response["data"]["invoice"];
+          var newInvoice = response.data.invoice;
           vm.$store.dispatch("invoice/updateInvoice", newInvoice); // Mostramos un mensaje
 
           vm.makeToast("Check Out", "Guest check out " + newGuest.check_out, "success");

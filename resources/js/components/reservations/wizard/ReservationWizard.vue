@@ -93,9 +93,6 @@ export default {
     }
   },
   computed: {
-    ...mapState({
-      isReady: state => state.ready
-    }),
     ...mapGetters({
       getCustomer: "customer/getCustomer",
       getRoom: "room/getRoom"

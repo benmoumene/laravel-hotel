@@ -39,14 +39,6 @@ export default ({
         SET_GUESTS(state, guests) {
             state.guests = guests;
         },
-        SET_CHECK_IN(state, { guestIndex, checkIn }) {
-            //state.guests[guestIndex].check_in = checkIn;
-            Vue.set(state.guests[guestIndex], 'check_in', checkIn);
-        },
-        SET_CHECK_OUT(state, { guestIndex, checkOut }) {
-            //state.guests[guestIndex].check_out = checkOut;
-            Vue.set(state.guests[guestIndex], 'check_out', checkOut);
-        },
         ADD_GUEST(state, guest) {
             Vue.set(state.guests, guest.id, guest);
         },
@@ -59,19 +51,13 @@ export default ({
             axios.post("/guests/" + reservation.guest.id + "/checkin", {
                 guest: reservation.guest,
             }).then(function (response) {
-                // Si el request tuvo exito (codigo 200)
-                if (response.status == 200) {
-                    // Comprobamos que json en el objeto
-                    if (response["data"].length == 0) {
-                        return;
-                    }
-                    // Nuevos datos del guest
-                    let newGuest = response.data.guest;
+                // Objeto recibido
+                let newGuest = response.data.guest;
 
-                    // Llevamos a cabo la modificacion
+                // Si la respuesta tuvo el codigo 200 y el objeto tiene id
+                // Asumimos que es un objeto valido
+                if (response.status == 200 && newGuest.hasOwnProperty("id")) {
                     context.commit("UPDATE_GUEST", newGuest);
-
-                    // Mostramos un mensaje
                     vm.makeToast("Check In", "Guest check in " + newGuest.check_in, "success");
                 }
             }).catch(function (error) {
@@ -82,25 +68,22 @@ export default ({
             axios.post("/guests/" + reservation.guest.id + "/checkout", {
                 guest: reservation.guest,
             }).then(function (response) {
-                // Si el request tuvo exito (codigo 200)
-                if (response.status == 200) {
-                    // Comprobamos que json en el objeto
-                    if (response["data"].length == 0) {
-                        return;
-                    }
+                // Objeto recibido
+                let newGuest = response.data.guest;
 
-                    // Nuevos datos del guest
-                    let newGuest = response.data.guest;
-                    // Llevamos a cabo la modificacion
+                // Si la respuesta tuvo el codigo 200 y el objeto tiene id
+                // Asumimos que es un objeto valido
+                if (response.status == 200 && newGuest.hasOwnProperty("id")) {
                     context.commit("UPDATE_GUEST", newGuest);
+                    vm.makeToast("Check In", "Guest check in " + newGuest.check_in, "success");
 
-                    let newReservation = response["data"]["reservation"];
+                    let newReservation = response.data.reservation;
                     vm.$store.dispatch("reservation/updateReservation", {
                         reservationId: newReservation.id,
                         newStatus: newReservation.status
                     });
 
-                    let newInvoice = response["data"]["invoice"];
+                    let newInvoice = response.data.invoice;
                     vm.$store.dispatch("invoice/updateInvoice", newInvoice);
 
                     // Mostramos un mensaje

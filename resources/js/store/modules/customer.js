@@ -30,18 +30,15 @@ export default ({
             axios.post("/customers/", {
                 customer
             }).then(function (response) {
-                // Si el request tuvo exito (codigo 200)
-                if (response.status == 200) {
-                    // Agregamos una nueva conversacion si existe el objeto
-                    if (response['data'].length == 0) {
-                        return;
-                    }
+                // Objeto recibido
+                let newCustomer = response.data.customer;
 
-                    let newCustomer = response.data.customer;
-                    context.commit('ADD_CUSTOMER', newCustomer);
-
+                // Si la respuesta tuvo el codigo 200 y el objeto tiene id
+                // Asumimos que es un objeto valido
+                if (response.status == 200 && newCustomer.hasOwnProperty("id")) {
+                    context.commit("ADD_CUSTOMER", newCustomer);
                     vm.makeToast(
-                        'Customer added',
+                        'Customers',
                         'The customer ' + newCustomer.first_name + ' has been added.',
                         'success'
                     );
@@ -55,18 +52,16 @@ export default ({
                 customer,
                 _method: "put"
             }).then(function (response) {
-                // Si el request tuvo exito (codigo 200)
-                if (response.status == 200) {
-                    // Agregamos una nueva conversacion si existe el objeto
-                    if (response['data'].length == 0) {
-                        return;
-                    }
+                // Objeto recibido
+                let newCustomer = response.data.customer;
 
-                    let newCustomer = response.data.customer;
+                // Si la respuesta tuvo el codigo 200 y el objeto tiene id
+                // Asumimos que es un objeto valido
+                if (response.status == 200 && newCustomer.hasOwnProperty("id")) {
                     context.commit("UPDATE_CUSTOMER", newCustomer);
                     vm.makeToast(
-                        'Customer updated',
-                        'The customer ' + customer.first_name + ' has been updated.',
+                        'Customers',
+                        'The customer ' + newCustomer.first_name + ' has been updated.',
                         'success'
                     );
                 }
