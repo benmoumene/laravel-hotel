@@ -3474,7 +3474,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         label: "Actions"
       }],
       currentPage: 1,
-      perPage: 15,
+      perPage: 10,
       pageOptions: [5, 10, 15],
       sortBy: "",
       sortDesc: false,
