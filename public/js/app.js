@@ -5028,11 +5028,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   data: function data() {
     return {
       filter: {
-        roomType: "single",
-        hotelFloor: "1F"
+        roomType: "common",
+        roomFloor: "1F"
       },
       roomTypes: ["Any", "common", "suite"],
-      hotelFloors: ["Any", "1F", "2F", "3F"],
+      roomFloors: ["Any", "1F", "2F", "3F"],
       selectedRoom: {},
       selectedReservation: {}
     };
@@ -5048,6 +5048,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     selectRoom: function selectRoom(room) {
       this.reservation.room = room;
+    },
+    isSelected: function isSelected(roomId) {
+      if (roomId === this.reservation.room.id) {
+        return true;
+      }
+
+      return false;
     },
     isAvailable: function isAvailable(roomId) {
       var room = this.filteredRooms.find(function (room) {
@@ -5077,7 +5084,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       var _this = this;
 
       return this.rooms.filter(function (room) {
-        return (_this.filter.hotelFloor === "Any" ? true : room.floor === _this.filter.hotelFloor) && (_this.filter.roomType === "Any" ? true : room.type === _this.filter.roomType);
+        return (_this.filter.roomFloor === "Any" ? true : room.floor === _this.filter.roomFloor) && (_this.filter.roomType === "Any" ? true : room.type === _this.filter.roomType);
       });
     }
   })
@@ -75855,13 +75862,13 @@ var render = function() {
                 },
                 [
                   _c("b-form-select", {
-                    attrs: { options: _vm.hotelFloors, size: "sm" },
+                    attrs: { options: _vm.roomFloors, size: "sm" },
                     model: {
-                      value: _vm.filter.hotelFloor,
+                      value: _vm.filter.roomFloor,
                       callback: function($$v) {
-                        _vm.$set(_vm.filter, "hotelFloor", $$v)
+                        _vm.$set(_vm.filter, "roomFloor", $$v)
                       },
-                      expression: "filter.hotelFloor"
+                      expression: "filter.roomFloor"
                     }
                   })
                 ],
@@ -75956,7 +75963,11 @@ var render = function() {
               key: room.id,
               class: [
                 "room",
-                _vm.isAvailable(room.id) ? "bg-success" : "bg-danger"
+                _vm.isSelected(room.id)
+                  ? "bg-primary"
+                  : _vm.isAvailable(room.id)
+                  ? "bg-success"
+                  : "bg-danger"
               ],
               attrs: { cols: "12", sm: "1" },
               on: {

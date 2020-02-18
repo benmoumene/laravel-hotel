@@ -26,7 +26,7 @@
           label-for="perPageSelect"
           class="mb-0"
         >
-          <b-form-select v-model="filter.hotelFloor" :options="hotelFloors" size="sm"></b-form-select>
+          <b-form-select v-model="filter.roomFloor" :options="roomFloors" size="sm"></b-form-select>
         </b-form-group>
       </b-col>
       <b-col sm="5" md="6" class="my-1">
@@ -64,7 +64,7 @@
         sm="1"
         v-for="room in filteredRooms"
         :key="room.id"
-        :class="['room', isAvailable(room.id) ? 'bg-success' : 'bg-danger']"
+        :class="['room', isSelected(room.id) ? 'bg-primary' : isAvailable(room.id) ? 'bg-success' : 'bg-danger']"
         @click="selectRoom(room)"
       >{{room.name}}</b-col>
     </b-row>
@@ -80,11 +80,11 @@ export default {
   data: function() {
     return {
       filter: {
-        roomType: "single",
-        hotelFloor: "1F"
+        roomType: "common",
+        roomFloor: "1F"
       },
       roomTypes: ["Any", "common", "suite"],
-      hotelFloors: ["Any", "1F", "2F", "3F"],
+      roomFloors: ["Any", "1F", "2F", "3F"],
       selectedRoom: {},
       selectedReservation: {}
     };
@@ -99,6 +99,12 @@ export default {
     },
     selectRoom(room) {
       this.reservation.room = room;
+    },
+    isSelected(roomId) {
+      if (roomId === this.reservation.room.id) {
+        return true;
+      }
+      return false;
     },
     isAvailable(roomId) {
       var room = this.filteredRooms.find(room => room.id === roomId);
@@ -135,9 +141,9 @@ export default {
     filteredRooms() {
       return this.rooms.filter(
         room =>
-          (this.filter.hotelFloor === "Any"
+          (this.filter.roomFloor === "Any"
             ? true
-            : room.floor === this.filter.hotelFloor) &&
+            : room.floor === this.filter.roomFloor) &&
           (this.filter.roomType === "Any"
             ? true
             : room.type === this.filter.roomType)
