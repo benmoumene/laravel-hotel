@@ -32,28 +32,27 @@
     </div>
 
     <footer class="main-footer">
-      <myfooter></myfooter>
+      <div>
+        <strong>
+          Copyright &copy; 2014-2019
+          <a href="http://adminlte.io">AdminLTE.io</a>.
+        </strong>
+        All rights reserved.
+        <div class="float-right d-none d-sm-inline-block">
+          <b>Version</b> 3.0.2-pre
+        </div>
+      </div>
     </footer>
     <!-- ./wrapper -->
   </b-container>
 </template>
 <script>
-import Navbar from "./template/Navbar";
-import Sidebar from "./template/Sidebar";
-import Footer from "./template/Footer";
+import Navbar from "./Navbar";
+import Sidebar from "./Sidebar";
 export default {
   name: "HotelApp",
-  computed: {
-    getRouterTitle: function() {
-      return this.$route.title;
-    },
-    getRouterName: function() {
-      return this.$route.name;
-    }
-  },
   components: {
     sidebar: Sidebar,
-    myfooter: Footer,
     navbar: Navbar
   },
   beforeCreate() {
