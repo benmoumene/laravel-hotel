@@ -9,20 +9,6 @@
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
-      <!-- Content Header (Page header) -->
-      <div class="content-header">
-        <div class="container-fluid">
-          <div class="row mb-2">
-            <div class="col-sm-12">
-              <h1 class="m-0 text-dark">{{ $route.meta.title }}</h1>
-            </div>
-          </div>
-          <!-- /.row -->
-        </div>
-        <!-- /.container-fluid -->
-      </div>
-      <!-- /.content-header -->
-
       <!-- Main content -->
       <section class="content">
         <div class="container-fluid">
@@ -62,6 +48,7 @@ export default {
 </script>
 <style scoped>
 .content-wrapper {
-  padding-bottom: 1px;
+  padding-top: 20px;
+  padding-bottom: 5px;
 }
 </style>

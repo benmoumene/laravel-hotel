@@ -2285,20 +2285,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -39735,7 +39721,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.content-wrapper[data-v-00afdab8] {\n  padding-bottom: 1px;\n}\n", ""]);
+exports.push([module.i, "\n.content-wrapper[data-v-00afdab8] {\n  padding-top: 20px;\n  padding-bottom: 5px;\n}\n", ""]);
 
 // exports
 
@@ -72685,18 +72671,6 @@ var render = function() {
       ),
       _vm._v(" "),
       _c("div", { staticClass: "content-wrapper" }, [
-        _c("div", { staticClass: "content-header" }, [
-          _c("div", { staticClass: "container-fluid" }, [
-            _c("div", { staticClass: "row mb-2" }, [
-              _c("div", { staticClass: "col-sm-12" }, [
-                _c("h1", { staticClass: "m-0 text-dark" }, [
-                  _vm._v(_vm._s(_vm.$route.meta.title))
-                ])
-              ])
-            ])
-          ])
-        ]),
-        _vm._v(" "),
         _c("section", { staticClass: "content" }, [
           _c("div", { staticClass: "container-fluid" }, [_c("router-view")], 1)
         ])
