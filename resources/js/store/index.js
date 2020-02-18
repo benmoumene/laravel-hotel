@@ -25,6 +25,9 @@ export default new Vuex.Store({
         ready: false
     },
     getters: {
+        appReady: (state, getters) => {
+            return state.ready;
+        },
     },
     mutations: {
         SET_READY(state, ready) {

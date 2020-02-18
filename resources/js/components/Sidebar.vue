@@ -19,7 +19,7 @@
         </p>
       </b-col>
       <b-col cols="4" class="pull-left image">
-        <img :src="avatarPath" class="img-circle" alt="User Image" />
+        <img v-if="avatarPath" :src="avatarPath" class="img-circle" alt="User Image" />
       </b-col>
     </b-row>
 
@@ -69,7 +69,7 @@
                 <i class="nav-icon fa fa-shopping-cart"></i>
                 Stock
                 <span
-                  v-if="lowStock"
+                  v-if="hasLowStock"
                   class="badge badge-danger right"
                 >Low Stock!</span>
               </router-link>
@@ -124,33 +124,28 @@ export default {
   name: "Sidebar",
   methods: {
     logout() {
-      return this.$store.dispatch("logout");
-    },
-    setting(name) {
-      return this.getSetting(name);
+      return this.$store.dispatch("appuser/logout");
     }
   },
   computed: {
-    ...mapGetters(["isAdmin", "isRecepcionist", "isManager"]),
     ...mapGetters({
       isAdmin: "appuser/isAdmin",
       isRecepcionist: "appuser/isRecepcionist",
       isManager: "appuser/isManager",
       countPendingInvoices: "invoice/countPendingInvoices",
-      getSetting: "setting/getSettingValue",
-      inventory: "inventory/getItems"
+      setting: "setting/getSettingValue",
+      inventory: "inventory/getItems",
+      appReady: "appReady"
     }),
     ...mapState({
-      appUser: state => state.appuser.appUser,
-      isReady: state => state.ready
+      appUser: state => state.appuser.appUser
     }),
     avatarPath() {
-      //if (typeof this.appUser.avatar_filename !== "undefined") {
-      if (this.isReady && this.appUser.avatar_filename != null) {
+      if (this.appReady && this.appUser.avatar_filename != null) {
         return "/storage/" + this.appUser.avatar_filename;
       }
     },
-    lowStock() {
+    hasLowStock() {
       for (var item of this.inventory) {
         if (item.quantity < item.min_stock) {
           return true;

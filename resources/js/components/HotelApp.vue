@@ -1,6 +1,21 @@
 <template>
   <b-container fluid class="p-0 wrapper">
-    <navbar></navbar>
+    <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+      <!-- Left navbar links -->
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" data-widget="pushmenu" href="#">
+            <i class="fa fa-bars"></i>
+          </a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+          <router-link to="/" class="nav-link" exact>Dashboard</router-link>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+          <router-link to="/about" class="nav-link" exact>About</router-link>
+        </li>
+      </ul>
+    </nav>
 
     <!-- Main Sidebar Container -->
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
@@ -33,13 +48,11 @@
   </b-container>
 </template>
 <script>
-import Navbar from "./Navbar";
 import Sidebar from "./Sidebar";
 export default {
   name: "HotelApp",
   components: {
-    sidebar: Sidebar,
-    navbar: Navbar
+    sidebar: Sidebar
   },
   beforeCreate() {
     this.$store.dispatch("fetchData");
