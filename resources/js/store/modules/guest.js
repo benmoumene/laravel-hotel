@@ -75,7 +75,6 @@ export default ({
                 // Asumimos que es un objeto valido
                 if (response.status == 200 && newGuest.hasOwnProperty("id")) {
                     context.commit("UPDATE_GUEST", newGuest);
-                    vm.makeToast("Check In", "Guest check in " + newGuest.check_in, "success");
 
                     let newReservation = response.data.reservation;
                     vm.$store.dispatch("reservation/updateReservation", {
